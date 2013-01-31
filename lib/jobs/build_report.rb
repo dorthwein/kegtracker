@@ -39,22 +39,22 @@ class BuildReport
 						
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
-							print "+ 1  Empty SKU Summary Fact \n \n"
-							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity + 1
+
+
 						when 1 # Full
 							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity + 1
-							print "+ 1  Full SKU Summary Fact \n \n"
+
 						when 2 # Market
 							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity + 1
-							print "+ 1  Market SKU Summary Fact\n \n"
+
 						end						
 						if asset_summary_fact.save!
-							print "Fact Saved - #{asset_summary_fact.to_json} \n \n"
+
 						end
 					
 					# Else, create new one
 					else
-						print "New Fact \n \n"								
+
 						asset_summary_fact = AssetSummaryFact.new(	
 												:report_entity => entity,
 												:fact_time => @date,
@@ -110,11 +110,11 @@ class BuildReport
 										).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
 
 				if !asset_activity_summary_fact.nil?
-					print "+ 1 \n \n"		
+
 					asset_activity_summary_fact.quantity = asset_activity_summary_fact.quantity + 1
 					asset_activity_summary_fact.save!
 				else
-					print "New Fact \n \n"								
+
 					AssetActivitySummaryFact.create(	
 											:report_entity => entity,
 											:fact_time => @date,
@@ -169,18 +169,18 @@ class BuildReport
 							if !asset_location_network_in_out_summary_fact.nil?									
 								case x.asset_status.to_i
 								when 0 # Empty
-									print "+ 1  Empty \n \n"
+
 									asset_location_network_in_out_summary_fact.in_empty_quantity = asset_location_network_in_out_summary_fact.in_empty_quantity + 1
 								when 1 # Full
 									asset_location_network_in_out_summary_fact.in_full_quantity = asset_location_network_in_out_summary_fact.in_full_quantity + 1
-									print "+ 1  Full \n \n"
+
 								when 2 # Market
 									asset_location_network_in_out_summary_fact.in_market_quantity = asset_location_network_in_out_summary_fact.in_market_quantity + 1
-									print "+ 1  Market \n \n"
+
 								end													
 								asset_location_network_in_out_summary_fact.save!								
 							else
-								print "New Fact \n \n"								
+
 								asset_location_network_in_out_summary_fact = AssetLocationNetworkInOutSummaryFact.new(	
 																					:report_entity => entity,
 																					:fact_time => @date,
@@ -230,7 +230,7 @@ class BuildReport
 												).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
 
 						if !asset_location_network_in_out_summary_fact.nil?
-							print "+ 1 \n \n"	
+
 							case x.asset_status.to_i
 							when 0 # Empty
 								asset_location_network_in_out_summary_fact.out_empty_quantity = asset_location_network_in_out_summary_fact.out_empty_quantity + 1
@@ -241,7 +241,7 @@ class BuildReport
 							end													
 							asset_location_network_in_out_summary_fact.save!
 						else
-							print "New Fact \n \n"								
+
 							asset_location_network_in_out_summary_fact = AssetLocationNetworkInOutSummaryFact.new(	
 													:report_entity => entity,
 													:fact_time => @date,
