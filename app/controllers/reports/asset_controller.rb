@@ -6,7 +6,7 @@ class Reports::AssetController < ApplicationController
 	def browse    
 		respond_to do |format|		
 		  	format.html # index.html.erb
-		  	format.json { 
+		  	format.json { 		  		
 			 	gatherer = Gatherer.new current_user.entity
 				if current_user.system_admin == 1
 					assets = Asset.all
@@ -109,6 +109,7 @@ class Reports::AssetController < ApplicationController
 		respond_to do |format|  
 			format.html
 		    format.json { 				
+		    	print params['test']
 				@response = AssetSummaryFact.where(:report_entity => current_user.entity).desc(:fact_time).map { |asset_summary_fact| {
 																						:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
 																						:location_network => asset_summary_fact.location_network_description,

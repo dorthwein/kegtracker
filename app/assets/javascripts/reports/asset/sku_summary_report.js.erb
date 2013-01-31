@@ -5,7 +5,7 @@ $( '#_reports_asset_sku_summary_report' ).live('pageshow', function(event){
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme
-
+	
 	var source = {
 		datatype : "json",
 		type: 'GET',
@@ -22,7 +22,8 @@ $( '#_reports_asset_sku_summary_report' ).live('pageshow', function(event){
 			{ name: 'sku_id' },
 			{ name: 'date_id' }
 		],
-		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
+		url: system.server + $('.ui-page-active').attr('data-url') + '.json',
+		data:{test: 'test fuck'}
 	};
 	var dataAdapter = new $.jqx.dataAdapter(source);
 	// Initialize Grid
@@ -79,6 +80,12 @@ $( '#_reports_asset_sku_summary_report' ).live('pageshow', function(event){
 	// Button Processing/Action
 	
 	// NEW BUTTON
+	$("#jqxgrid").bind("filter", function (event) {
+	     var filterinfo = $("#jqxgrid").jqxGrid('getfilterinformation');
+	     var x = filterinfo[1].getfilters;
+	     alert(x);
+	     alert(JSON.stringify(filterinfo[0]));
+	});                       
 
 
 	$("#excelExport").click(function () {
