@@ -68,12 +68,21 @@ class Asset
 
 	# Set before all actions to detect if the asset should have "Smart Actions" applied to it.
 	def smart_network_processing options
-		to_network = Location.find(options[:to_location]).network
+		to_location = Location.find(options[:to_location]).network
+		to_network = location.network
+
 		if self.location_network_id != to_network._id		
 			print "Smart Network Processing \n"
 		# Effects at From Network
 		### OUTBOUND ####
-		# Asset Leaving a brewery		
+		# Asset Leaving a brewery
+			if self.location_network.nil?
+				self.location_network = to_network
+			end
+			if self.location.nil?
+				self.location = to_location
+			end
+			
 			if self.location_network.network_type_id == 1 && self.asset_status != 1
 				# Fill Asset at Outbound Location
 				opt = {

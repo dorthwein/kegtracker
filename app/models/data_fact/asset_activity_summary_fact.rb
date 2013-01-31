@@ -45,7 +45,6 @@ class AssetActivitySummaryFact
 		self.product_description = self.product.description	
 		self.location_network_description = self.location_network.description			
 	end
-
 	# Indexes
 	index({ report_entity_id: 1 }, { name: "report_entity_index" })	
 end

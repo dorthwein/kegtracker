@@ -108,9 +108,15 @@ class Reports::AssetController < ApplicationController
 	def sku_summary_report
 		respond_to do |format|  
 			format.html
-		    format.json { 				
-		    	print params['test']
-				@response = AssetSummaryFact.where(:report_entity => current_user.entity).desc(:fact_time).map { |asset_summary_fact| {
+		    format.json {
+		    	if params['date'].nil?
+		    		start_date = Time.new() - (14 * 86400)
+		    		end_date = Time.new()
+		    	else
+		    		start_date = DateTime.parse(params['date']['0'])
+		    		end_date = DateTime.parse(params['date']['1'])
+		    	end
+				response = AssetSummaryFact.where(:report_entity => current_user.entity).between(fact_time: start_date..end_date).desc(:fact_time).map { |asset_summary_fact| {
 																						:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
 																						:location_network => asset_summary_fact.location_network_description,
 																						:asset_type => asset_summary_fact.asset_type_description,
@@ -121,11 +127,10 @@ class Reports::AssetController < ApplicationController
 																						:product_entity => asset_summary_fact.product_entity_description,
 																						:empty_quantity => asset_summary_fact.empty_quantity,
 																						:full_quantity => asset_summary_fact.full_quantity,
-																						:market_quantity => asset_summary_fact.market_quantity,
-																						
+																						:market_quantity => asset_summary_fact.market_quantity,																						
 																					}
 																				}
-		    render json: @response
+		    render json: response
 		}			
 		end			
 	end
