@@ -1,0 +1,125 @@
+<% if @rfid_antenna.errors.any? %>	
+	<li>	  
+		<div id="error_explanation">
+			<h2><%= pluralize(@rfid_antenna.errors.count, "error") %> prohibited this location from being saved:</h2>
+			<ul>
+			  <% @rfid_antenna.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			  <% end %>
+			</ul>
+		</div>
+	</li>
+<% end %>
+<li class="li-content">
+	<%= form_for [:scanners_rfid_readers, @rfid_antenna] do |f| %>
+		<%= toolbar({:save => true, :rfid_antenna_cancel => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>			
+		<div class="li-content">
+			<table class="rt">
+				<thead>
+					<tr>
+						<th class="label"> </th>
+						<th class="input"> </th>								
+					</tr>
+				</thead>
+				<tbody>
+					<tr>	
+						<td>
+							<b> Reader Name: </b>
+						</td>
+						<td>
+							<%= @rfid_antenna.rfid_reader.reader_name %>
+						</td>				
+					</tr>
+					<tr>
+						<td>
+							<b> Network: </b>
+						</td>
+						<td>
+							<%= @rfid_antenna.rfid_reader.network.description %>
+						</td>				
+					</tr>						
+				</tbody>
+			</table>	
+			<table class="rt">
+				<thead>
+					<tr>
+						<th class="label"> </th>
+						<th class="input"> </th>								
+					</tr>
+				</thead>
+				<tbody>
+					<tr>	
+						<td>
+							<b> Reader Type: </b>
+						</td>
+						<td>
+							<%= @rfid_antenna.rfid_reader.reader_type %>					
+						</td>				
+					</tr>
+					<tr>
+						<td>
+							<b> Antenna #: </b>
+						</td>
+						<td>
+							<%= @rfid_antenna.antenna_number %>
+						</td>
+					</tr>
+				</tbody>
+			</table>		
+			<div style="clear:both"> </div>
+		</div>
+		<div class="li-content">
+		<!-- Form Entry Fields -->	
+			<div style="width:30%; float:left; margin:0 2% 2% 2%">
+				Select Action & Location <br />			
+				<ul data-role="listview" data-inset="true">
+					<li>
+			
+						<%= f.label :handle_code, 'Action'  %>
+						<%= f.select(:handle_code, options_for_select(@handle_codes_array, (@rfid_antenna.handle_code.nil? ? @handle_codes_array.first : @rfid_antenna.handle_code.id)), {}, :onchange => 'pgFunc.change_handle_code();') %>
+		
+					</li>
+					<li>
+						<%= f.label :location, 'Location'  %> 				
+						<%= f.select(:location, options_for_select(@locations, (@rfid_antenna.location.nil? ? @locations.first : @rfid_antenna.location.id))) %>						
+					</li>
+	
+				</ul>
+			</div>
+			<div style="width:30%;float:left; margin:0;">
+				Set Action Details
+				<ul data-role="listview" data-inset="true">
+					<li>
+						<%= f.label :product, 'Product'  %> 
+						<%= f.select(:product, options_for_select(@products, (@rfid_antenna.product.nil? ? @products.first : @rfid_antenna.product.id)),{}, :disabled => true) %>
+					</li>
+					<li>
+						<%= f.label :asset_type, 'Asset Type'  %>
+						<%= f.select(:asset_type, options_for_select(@asset_types, (@rfid_antenna.asset_type.nil? ? @asset_types.first : @rfid_antenna.asset_type.id)), {}, :disabled => true) %>
+	
+					</li>							
+				</ul>
+			</div>
+			<div style="width:30%;float:left; margin:0 2% 20px 2%;">
+				Notes & Save
+				<ul data-role="listview" data-inset="true">
+					<li>
+						<%= f.label :physical_location, 'Notes'  %> 
+						<%= f.text_area :physical_location, :style => 'height:200px' %>	
+					</li>									
+					<li>
+						<%= f.submit 'Save' %> 
+					</li>						
+					
+				</ul>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+	<% end %>
+</li>
+
+
+
+
+
+

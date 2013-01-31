@@ -1,0 +1,17 @@
+<%= form_for(@rfid_reader) do |f| %>
+  <% if @rfid.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@rfid.errors.count, "error") %> prohibited this rfid from being saved:</h2>
+
+      <ul>
+      <% @rfid.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

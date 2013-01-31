@@ -1,0 +1,64 @@
+<div class="li-content">	
+	<%= form_for([:maintenance, @network_membership]) do |f| %>
+		<table class="ft">
+			<thead>
+				<tr>
+					<th ></th>
+					<th > </th>										
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="2"><br /><h1> Partnership </h1>	</td>
+				</tr>
+				<tr>				
+					<td>
+						<%= f.label(:entity_id, 'Partner:') %>
+					</td>
+					<td>
+						<%= f.select(:entity_id, options_for_select(@entities, (@network_membership.entity.nil? ? @entities.first : @network_membership.entity.id)))  %>
+					</td>
+				</tr>
+				<tr>				
+					<td>
+						<%= f.label(:network_id, 'Network:') %>
+					</td>
+					<td>
+						<%= f.select(:network_id, options_for_select(@networks, (@network_membership.network.nil? ? @networks.first : @network_membership.network.id)))  %>
+					</td>
+				</tr>				
+				<tr>				
+					<td>
+						<label> Type: </label>
+					</td>
+					<td>
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :asset_distribution, 'Distribution:' %>
+							<br />
+							<%= f.select(:asset_distribution, options_for_select([['Off', 0],['On', 1]], @network_membership.asset_distribution), {}) %>
+						</div>
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :product_production, 'Production:' %>
+							<br />
+							<%= f.select(:product_production, options_for_select([['Off', 0],['On', 1]], @network_membership.product_production), {}) %>	
+						</div>
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :asset_leasing, 'Asset Leasing:' %>
+							<br />					
+							<%= f.select(:asset_leasing, options_for_select([['Off', 0],['On', 1]], @network_membership.asset_leasing), {}) %>	
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td align="right"></td>
+					<td style="padding-top: 10px;" align="right">
+						<input style="margin-right: 5px;" type="button" data-role="none" id="Save" value="Save" />
+						<input id="Cancel" type="button" value="Cancel" data-role="none" />
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+		<div style="clear:both"></div>
+	<% end %>
+</div>

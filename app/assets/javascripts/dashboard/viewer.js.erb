@@ -1,0 +1,352 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_dashboard_viewer' ).live('pageshow', function(event){
+	// prepare the data
+
+	$.mobile.loading('show');
+	var theme =  'metro' // settings.theme
+	url = system.server + $('.ui-page-active').attr('data-url');
+    // LEFT OFF HERE!! BUILDING AJAX JSON CALLBACK TO PAGE FOR FILTER DATA
+
+    $("#date_filter").jqxDateTimeInput({ width: '250px', height: '25px', theme: theme });              
+//    var date2 = new Date();
+//    var date1 = new Date((date2 - (86400 * 1000 * 30)))
+//    $("#date_filter").jqxDateTimeInput('setRange', date1, date2);
+//    $("#date_filter").jqxDateTimeInput({disabled: true});
+
+
+    // Initialize window pane docking
+    $("#docking").jqxDocking({
+    	theme: theme,
+    	mode: 'docked',        
+        width: '100%',
+    });
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_1');
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_2');
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_3');
+
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_4');
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_5');
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_6');
+
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_1', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_2', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_3', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_4', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_5', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_6', 'keyboardCloseKey', 'none' );
+
+
+    $('#docking').jqxDocking('hideAllCloseButtons');    
+ 
+    function loadFilters(){
+        url = system.server + $('.ui-page-active').attr('data-url');
+        $.ajax({
+            type: "POST",        
+            dataType: "JSON",
+            data: {
+                date: $('#date_filter').jqxDateTimeInput('getDate')                
+            },
+            url: url,
+        }).done(function(data) { 
+            // alert(JSON.stringify(data['asset_location_network_in_out_bound_summary_series']));            
+            // alert(JSON.stringify(data['recent_activity_data']));
+            $("#product_filter").jqxDropDownList({  
+                                                checkboxes: true,
+                                                source: data['products'], 
+                                                displayMember: "product_description", 
+                                                valueMember: "product_id", 
+                                                width: 200, 
+                                                height: 25, 
+                                                theme: theme,
+                                                animationType: 'none',
+                                            });
+
+
+            $("#product_entity_filter").jqxDropDownList({   
+                                                checkboxes: true,
+                                                source: data['product_entities'], 
+                                                displayMember: "product_entity_description", 
+                                                valueMember: "product_entity_id", 
+                                                width: 200, 
+                                                height: 25, 
+                                                theme: theme,      
+                                                animationType: 'none',                                          
+                                            });
+
+
+            $("#asset_type_filter").jqxDropDownList({  
+                                                checkboxes: true,
+                                                source: data['asset_types'], 
+                                                displayMember: "asset_type_description", 
+                                                valueMember: "asset_type_id", 
+                                                width: 200, 
+                                                height: 25, 
+                                                theme: theme,
+                                                animationType: 'none',
+                                            });
+
+
+            $("#location_network_filter").jqxDropDownList({  
+                                                checkboxes: true,
+                                                source: data['location_networks'], 
+                                                displayMember: "location_network_description", 
+                                                valueMember: "location_network_id", 
+                                                width: 200, 
+                                                height: 25, 
+                                                theme: theme,
+                                                animationType: 'none',
+                                            });    
+
+            var asset_location_network_in_bound_summary_settings = {
+                title: " ",                
+                enableAnimations: true,
+                showLegend: true,
+                showBorderLine: false,                
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['asset_location_network_in_bound_summary_data'],
+                categoryAxis: {
+                    dataField: 'date',                                          
+                    textRotationAngle: 90,
+                    tickMarksColor: '#888888',
+                    axisSize: 'auto',
+                    alignEndPointsWithIntervals: true,              
+                    enableAnimations: true,                     
+                    gridLinesColor: '#888888',
+                },
+                colorScheme: 'scheme01',
+                seriesGroups:[
+                    {
+                        type: 'column',
+                        valueAxis: {             
+                            minValue: 0,
+//                            maxValue: 20,                            
+//                            unitInterval: 5,
+                            formatSettings: { decimalPlaces:  0 },              
+                            description: '# Assets',
+                            showGridLines: false
+                        },
+                        series: data['asset_location_network_in_out_bound_summary_series'],
+                    }                   
+                ]
+            };
+            $('#dashboard_slot_1_content').jqxChart(asset_location_network_in_bound_summary_settings);
+
+
+            var asset_location_network_out_bound_summary_settings = {
+                title: " ",                
+                enableAnimations: true,
+                showLegend: true,
+                showBorderLine: false,
+                showBorderLine: false,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['asset_location_network_out_bound_summary_data'],
+                categoryAxis: {
+                    dataField: 'date',                                          
+                    textRotationAngle: 90,
+                    tickMarksColor: '#888888',
+                    axisSize: 'auto',
+                    alignEndPointsWithIntervals: true,              
+                    enableAnimations: true,                     
+                    gridLinesColor: '#888888',
+                },
+                colorScheme: 'scheme01',
+                seriesGroups:[
+                    {
+                        type: 'column',
+                        valueAxis: {             
+                            minValue: 0,
+//                            maxValue: 20,                            
+//                            unitInterval: 5,
+                            formatSettings: { decimalPlaces:  0 },              
+                            description: '# Assets',
+                            showGridLines: false
+                        },
+                        series: data['asset_location_network_in_out_bound_summary_series'],
+                    }                   
+                ]
+            };
+            $('#dashboard_slot_3_content').jqxChart(asset_location_network_out_bound_summary_settings);
+
+            
+            var asset_summary_chart_full_settings = {
+                title: " ",                
+                enableAnimations: true,
+                showLegend: true,
+                showBorderLine: false,
+                showBorderLine: false,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['asset_summary_chart_full_data'],
+                categoryAxis:
+                    {
+                        text: 'Category Axis',
+                        textRotationAngle: 90,
+                        dataField: 'sku_description',
+                        showTickMarks: true,
+                        tickMarksInterval: 1,
+                        tickMarksColor: '#888888',
+                        unitInterval: 1,
+                        showGridLines: false,
+                        gridLinesInterval: 1,
+                        gridLinesColor: '#888888',
+                        axisSize: 'auto'
+                    },
+                colorScheme: 'scheme06',
+                seriesGroups:
+                    [
+                        {
+                            type: 'stackedcolumn',                            
+
+//                            columnsGapPercent: 100,
+  //                          seriesGapPercent: 5,
+                            valueAxis: {
+                                unitInterval: data['asset_summary_chart_settings']['max']/5,
+                                minValue: 0,
+                                maxValue: data['asset_summary_chart_settings']['max'],
+                                formatSettings: {                                
+                                    decimalPlaces: 0,                                
+                                },
+                                displayValueAxis: true,
+                                description: '# Assets',
+                                axisSize: 'auto',
+                                tickMarksColor: '#888888'
+                            },
+                            series: data['asset_summary_chart_series'],
+                        }
+                    ]
+            };
+            // setup the chart
+            $('#dashboard_slot_2_content').jqxChart(asset_summary_chart_full_settings);            
+
+        
+        
+            $("#dashboard_slot_5_content").jqxListBox({ source: data['recent_activity_data'], height: '90%', theme: theme });
+
+
+
+            // prepare jqxChart settings
+            var asset_summary_chart_market_settings = {
+                title: " ",                
+                enableAnimations: true,
+                showLegend: true,
+                showBorderLine: false,
+                showBorderLine: false,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['asset_summary_chart_market_data'],
+                categoryAxis:
+                    {
+                        text: 'Category Axis',
+                        textRotationAngle: 90,
+                        dataField: 'sku_description',
+                        showTickMarks: true,
+                        tickMarksInterval: 1,
+                        tickMarksColor: '#888888',
+                        unitInterval: 1,
+                        showGridLines: false,
+                        gridLinesInterval: 1,
+                        gridLinesColor: '#888888',
+                        axisSize: 'auto'
+                    },
+                colorScheme: 'scheme06',
+                seriesGroups:
+                    [
+                        {
+                            type: 'stackedcolumn',
+//                            columnsGapPercent: 100,
+  //                          seriesGapPercent: 5,
+
+                            valueAxis:{
+                                unitInterval: data['asset_summary_chart_settings']['max']/5,
+                                minValue: 0,
+                                maxValue: data['asset_summary_chart_settings']['max'],
+                                formatSettings: {                                
+                                    decimalPlaces: 0,                                
+                                },
+                                displayValueAxis: true,
+                                description: '# Assets',
+                                axisSize: 'auto',
+                                tickMarksColor: '#888888'
+                            },
+                            series: data['asset_summary_chart_series'],
+                        }
+                    ]
+            };
+            // setup the chart
+            $('#dashboard_slot_4_content').jqxChart(asset_summary_chart_market_settings); 
+
+
+            var asset_summary_chart_empty_settings = {
+                title: " ",                
+                enableAnimations: true,
+                showLegend: true,
+                showBorderLine: false,
+                showBorderLine: false,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['asset_summary_chart_empty_data'],
+                categoryAxis:
+                    {
+                        text: 'Category Axis',
+                        textRotationAngle: 90,
+                        dataField: 'sku_description',
+                        showTickMarks: true,
+                        tickMarksInterval: 1,
+                        tickMarksColor: '#888888',
+                        unitInterval: 1,
+                        showGridLines: false,
+                        gridLinesInterval: 1,
+                        gridLinesColor: '#888888',
+                        axisSize: 'auto'
+                    },
+                colorScheme: 'scheme06',
+                seriesGroups:
+                    [
+                        {
+                            type: 'stackedcolumn',
+//                            columnsGapPercent: 100,
+  //                          seriesGapPercent: 5,
+                            valueAxis:
+                            {
+                                unitInterval: data['asset_summary_chart_settings']['max']/5,
+                                minValue: 0,
+                                maxValue: data['asset_summary_chart_settings']['max'],
+                                formatSettings: {                                
+                                    decimalPlaces: 0,                                
+                                },
+                                displayValueAxis: true,
+                                description: '# Assets',
+                                axisSize: 'auto',
+                                tickMarksColor: '#888888'
+                            },
+                            series: data['asset_summary_chart_series'],
+                        }
+                    ]
+            };
+            // setup the chart
+            $('#dashboard_slot_6_content').jqxChart(asset_summary_chart_empty_settings);                        
+        });
+    }
+    
+    $('#date_filter').bind('valuechanged', function (event) {  
+        loadFilters();           
+    }); 
+
+
+    // Trigger chart reize on window size change
+    $(window).resize(function() {
+        $('#dashboard_slot_1_content').jqxChart('refresh')
+        $('#dashboard_slot_2_content').jqxChart('refresh')
+        $('#dashboard_slot_3_content').jqxChart('refresh')
+        $('#dashboard_slot_4_content').jqxChart('refresh')                
+        $('#dashboard_slot_5_content').jqxListBox('refresh')
+        $('#dashboard_slot_6_content').jqxChart('refresh')
+    });
+
+    loadFilters();
+	$.mobile.loading('hide');       
+});

@@ -1,0 +1,55 @@
+<!-- Form Entry Fields -->
+<div class="li-content" style="overflow: hidden;">
+	<%= form_for [:maintenance, @network] do |f| %>
+		<table class="ft">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>										
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td> <%= f.label :entity_id, 'Entity:' %> </td>						
+					<td>	 <%= f.select(:entity_id, options_for_select(@entities, (@user.entity.nil? ? @entities.first : @user.entity.id)))  %>	</td>
+				</tr>
+				<tr>
+					<td>	<%= f.label :description, 'Name:'  %> </td>
+					<td>	<%= f.text_field :description, 'class' => 'input textfield' %>	</td>							
+				</tr>
+
+				<tr>
+					<td>							
+						<label> Type: </label>
+					</td>
+					<td>	
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :production, 'Production' %>
+							<br />
+							<%= f.select(:production, options_for_select([['Off', 0],['On', 1]], @network.production), {}, 'data-role' => 'slider') %>
+						</div>
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :distribution, 'Distribution' %>				
+							<br />													
+							<%= f.select(:distribution, options_for_select([['Off', 0],['On', 1]], @network.distribution), {}, 'data-role' => 'slider') %>
+						</div>
+						<div style="width:100px; float:left; padding:5px">
+							<%= f.label :market, 'Market'  %>						<br />			
+							<%= f.select(:market, options_for_select([['Off', 0],['On', 1]], @network.market), {}, 'data-role' => 'slider') %>
+						</div>
+					</td>								
+				</tr>	
+				<tr>
+					<td align="right"></td>
+					<td style="padding-top: 10px;" align="right">
+						<input style="margin-right: 5px;" type="button" data-role="none" id="Save" value="Save" />
+						<input id="Cancel" type="button" value="Cancel" data-role="none" />
+					</td>
+				</tr>
+								
+			</tbody>
+		</table>		
+		<div style="clear:both"> </div>		
+	<% end %>
+</li>
+

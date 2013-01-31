@@ -1,0 +1,126 @@
+<li class="li-content">
+	<div class="li-content">
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader Name: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.reader_name %>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Reader Type: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.reader_type %>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Network: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.network.description %>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b> Antennas: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.rfid_antennas.count %>
+					</td>
+				</tr>
+				
+				
+			</tbody>
+		</table>	
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader ID: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.id %>
+					</td>				
+				</tr>			
+				<tr>	
+					<td>
+						<b> MAC Address: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.mac_address %>
+						<%= 
+							# "#{@rfid_reader.mac_address_1}:#{@rfid_reader.mac_address_2}:#{@rfid_reader.mac_address_3}:#{@rfid_reader.mac_address_4}:#{@rfid_reader.mac_address_5}:#{@rfid_reader.mac_address_6}" 
+						%>
+					</td>
+					
+				</tr>
+				<tr>
+					<td>
+						<b> Last IP: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.last_ip %>
+					</td>
+					
+				</tr>
+				<tr>
+					<td>
+						<b> Command Port: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.command_port %>
+					</td>
+				</tr>
+			</tbody>
+		</table>		
+		<div style="clear:both"></div>
+	</div>
+</li>
+
+<li class="li-table">
+	<h1>Antennas Table: </h1>
+	<table class="dt">
+		<thead>
+			<tr>
+				<th> Ant #		</th>
+				<th> Handle Code	</th>
+				<th> Location	</th>				
+				<th> Product	</th>				
+				<th> Read Rate	</th>				
+				<th> 	</th>								
+			</tr>
+		</thead>
+		<tbody>		
+			<% @rfid_reader.rfid_antennas.each do |rfid_antenna| %>
+				<tr>
+					<td><%= rfid_antenna.antenna_number %>	</td>
+					<td><%= rfid_antenna.handle_code.description %>	</td>
+					<td><%= rfid_antenna.location.description %>	</td>				
+					<td><%= rfid_antenna.product.description %>	</td>				
+					<td>N/A	</td>		
+					<td>	</td>				
+				</tr>
+			<% end %>			
+			<!-- PARTNER PRODUCTS -->
+		</tbody>
+	</table>
+	<div style="clear:both"> </div>
+</li>

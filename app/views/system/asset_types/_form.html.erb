@@ -1,0 +1,47 @@
+<% if @asset_type.errors.any? %>	
+	<li>  
+		<div id="error_explanation">
+			<h2>
+				<%= pluralize(@asset_type.errors.count, "error") %> prohibited this asset_type from being saved:
+			</h2>
+			<ul>
+				<% @asset_type.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	</li>
+<% end %>
+<!-- Form Entry Fields -->
+<li class="li-content">
+	<%= form_for([:system, @asset_type]) do |f| %>
+		<%= toolbar({:save => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :cancel => true, :index => true, :maintenance_menu => true}) %>			
+		<div class="li-content">	
+			<table class="ft">
+				<thead>
+					<tr>
+						<th class="label"> </th>
+						<th class="input"> </th>										
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>	<%= f.label :description, 'Description:'  %> </td>
+						<td>	<%= f.text_field :description, 'class' => 'input textfield' %>	</td>							
+					</tr>
+					<tr>
+						<td>	<%= f.label :size, 'Size:'  %> </td>
+						<td>	<%= f.text_field :size, 'class' => 'input textfield' %>	</td>							
+					</tr>
+
+					<tr>
+						<td>	<%= f.label :measurement_unit, 'Unit Type:'  %> </td>
+						<td> 	<%= f.select(:measurement_unit, options_for_select(@measurement_units, @measurement_units[0]), {}) %> </td>
+					</tr>
+				</tbody>
+			</table>		
+			<div style="clear:both"> </div>		
+		</div>
+	<% end %>
+</li>
+

@@ -1,0 +1,200 @@
+// Scanner JS
+/* Handle Codes
+	1 = Delivery
+	2 = Pickup
+	3 = Add
+	4 = Fill
+	5 = Move	
+*/
+$( '#_scanners_barcode' ).live( 'pageshow',function(event){      
+	pgFunc = {};		// clear page function
+	var	params = {};		// Default scan options
+	params.scanner = {};	
+
+	pgFunc = {
+		asset_type_toggle : function() {
+			var asset_type_toggle = $('#asset_type_toggle').find(":selected").attr('value');
+			if(asset_type_toggle == 'true'){
+				$('#asset_type').selectmenu('enable')						
+			} else {
+				$('#asset_type').selectmenu('disable')									
+			}
+		},
+		change_handle_code : function() {
+			var hc = $('#handle_code').find(":selected").attr('data-code');
+			$('#asset_type_toggle').val("false").slider('refresh');
+			if( hc == 3){
+				$('#asset_type').selectmenu('enable')
+			} else {
+				$('#asset_type').selectmenu('disable')			
+			}
+			
+			if( hc == 4){
+				$('#asset_type_toggle').slider('enable')
+				$('#product').selectmenu('enable')
+
+			} else {
+				$('#product').selectmenu('disable')
+			}	
+			if( hc == 7){
+				$('#product').selectmenu('disable')
+				$('#location').selectmenu('disable')				
+				$('#asset_type').selectmenu('disable')				
+				$('#asset_type_toggle').slider('disable')								
+			} else {
+				$('#asset_type_toggle').slider('enable')
+				$('#location').selectmenu('enable')
+			}
+		},
+				
+		scanSubmit : function(obj){		
+			var scan = {};
+			scan.user = {};
+			scan.processing = {};
+			var user = $('#scanner').attr('userName');								
+			function IsJsonString(str) {
+				try {
+					if(typeof jQuery.parseJSON(obj)	== 'object'){
+						return true;
+					} else {
+						return false;
+					}
+				} catch (e) {
+					return false;
+				}
+				return true;
+			}
+			if( IsJsonString(obj) ){
+				 var tag = jQuery.parseJSON(obj);
+				 console.log('Valid JSON: ' + tag);         
+			} else if(
+				((obj.split("{").length - 1) > 0 && (obj.split("}").length - 1) == 0 ) ||
+				((obj.split("}").length - 1) > 0 && (obj.split("{").length - 1) == 0 ) ||				
+				((obj.split("[").length - 1) > 0 && (obj.split("]").length - 1) == 0 ) ||				
+				((obj.split("]").length - 1) > 0 && (obj.split("[").length - 1) == 0 ) || 
+				((obj.split("]").length - 1) >= 1 && (obj.split("[").length - 1) >= 1 ) || 				
+				((obj.split("}").length - 1) >= 1 && (obj.split("{").length - 1) >= 1 ) 
+			) {
+				$('#scan_input').val("");							
+				$('#scan_light').css('background', '#FF0000');
+				$('#scan_light span').html('FAIL');
+				
+				<% beep = asset_path 'beep-3.mp3' %>
+				$('#content-alert').html('<audio autoplay="autoplay"> <source src="<%= beep %>" type="audio/mp3" /> </audio>');
+				
+				$('#slot_1').html('');
+				$('#slot_2').html('');
+				$('#slot_3').html('');
+				$('#slot_4').html('');
+				
+				return false
+			} else {
+				
+				console.log('scan not valid json: ' + obj);                     
+				var tag = {};
+				tag.N;
+				tag.V = obj;
+				tag.K = 0;
+				tag.M = 3;			
+			}
+
+			scan.tag = tag;
+			scan.user = {};
+			var N = $('#scanner').attr('userName');
+			var P = 'PASS';
+			scan.user.N = N;
+			scan.user.P = P;
+					
+			scan.location = $('#location').find(":selected").attr('value');	
+
+			scan.processing.HC = $('#handle_code').find(":selected").attr('data-code');
+			scan.processing.correction = $('#correction_toggle').find(":selected").attr('value');
+
+			scan.version = "s1";
+
+			if($('#product').attr('disabled') != 'disabled'){
+				scan.processing.P = $('#product').find(":selected").attr('value');	
+			}
+			if($('#asset_type').attr('disabled') != 'disabled'){
+				scan.processing.AT = $('#asset_type').find(":selected").attr('value');	
+			}
+			scan.processing.T = + new Date / 1000;
+//			alert(JSON.stringify(scan));
+			var url = system.server + '/scanners/barcode/scan.json';
+			$('#scan_input').val("");				
+			$.ajax({
+				   url: url,	
+				   type: "POST",
+				   data: { scan : JSON.stringify(scan) },				   
+				   dataType: "JSON",
+				   success: function( data ){ 
+
+						// Update Recents table
+						for (var i=0; i < data.length; i++){
+							var tag = data[i];
+							var d = new Date();							
+/*							$('#scanAlerts').dataTable().fnAddData( [
+								d.toLocaleTimeString(),
+								tag.Network, 
+								tag.Value, 
+								tag.Location, 
+								tag.Brewery,
+								tag.Product,
+								tag.Fill,
+								tag.Size, 
+								tag.Action
+							] );		
+*/											
+							$('#slot_1').html(tag.Location);
+							$('#slot_2').html(tag.Action);
+							$('#slot_3').html(tag.Product);
+							$('#slot_4').html(tag.Size);
+							
+							<% beep = asset_path 'beep-2.mp3' %>
+							$('#content-alert').html('<audio autoplay="autoplay"> <source src="<%= beep %>" type="audio/mp3" /> </audio>');
+							$('#scan_light').css('background', '#00FF00')
+							$('#scan_light span').html('SUCCESS')
+	
+	
+						};
+				   },
+				   error: function( data ){					
+						$('#slot_1').html('');
+						$('#slot_2').html('');
+						$('#slot_3').html('');
+						$('#slot_4').html('');
+					
+						$('#scan_light').css('background', '#FF0000')
+						$('#scan_light span').html('FAIL')
+
+						<% beep = asset_path 'beep-3.mp3' %>
+						$('#content-alert').html('<audio autoplay="autoplay"> <source src="<%= beep %>" type="audio/mp3" /> </audio>');
+				   
+						console.log('Connection Failed');
+						console.log(JSON.stringify(data));
+				   }
+			}); 	
+		}	
+		
+	};
+	pgFunc.change_handle_code();
+	
+	// *****************************
+	// Key Listener & Click Lock
+	// *****************************
+	$(window).unbind('keydown');	// Unbinding incase previously bound to prevent multiple sends
+	$(window).keydown(function(event) {				
+		$('#scan_input').focus();
+		console.log('scanned: '+event.keyCode);
+		if(event.keyCode == '13'){
+			event.preventDefault();		
+			pgFunc.scanSubmit($('#scan_input').val());					
+		}
+	});	
+});
+// UNBIND KEY LOCK ON HIDE
+$( '#_scanners_barcode' ).live( 'pagehide',function(event){      
+	$(window).unbind('keydown');
+	delete pgFunc;
+	delete scanOptions;
+});

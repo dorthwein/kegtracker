@@ -1,0 +1,27 @@
+<li class="li-table">
+	<%= toolbar({:new => true, :module_menu => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>		
+	<table class="dt">
+		<thead>
+		  <tr>
+			<th>Description		</th>
+			<th>Abbreviation	</th>	
+			<th>Gallon Equiv.	</th>
+			<th>				</th>
+		  </tr>
+		</thead>
+		<tbody>
+			<% @measurement_units.each do |measurement_unit| %>
+			  <tr>
+			  	<td> <%= measurement_unit.description %>	</td>
+			  	<td> <%= measurement_unit.abbreviation %>	</td>			  	
+			  	<td> <%= measurement_unit.gallon_equivalent %>	</td>
+				<td>	
+					<%= link_to 'Show', [:system, measurement_unit] %>
+					<%= link_to 'Edit', edit_system_measurement_unit_path(measurement_unit) %>
+					<%= link_to 'Destroy', [:system, measurement_unit], confirm: 'Are you sure?', method: :delete %>
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+</li>		

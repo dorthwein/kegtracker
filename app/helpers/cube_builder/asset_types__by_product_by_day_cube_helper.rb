@@ -1,0 +1,2 @@
+module CubeBuilder::AssetTypesByProductByDayCubeHelper
+end

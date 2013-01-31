@@ -1,0 +1,93 @@
+    
+			<div style="width:100%;">
+				<input type="button" style="float:left; margin:5px 5px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
+				<input type="button" style="float:left; margin:5px;" value="Export to CSV" id='csvExport' data-role="none"/>
+
+				<input type="button" style="float:left; margin:5px;" value="Export to JSON" id='jsonExport' data-role="none"/>
+			    <div id="jqxgrid"></div>
+			</div>
+	        
+	        <div id="docking">
+	            <div style="width:33%;">
+	                <div id="window1" class="report_dock_window">
+	                    <div>
+	                    	Antennas
+	                    </div>
+	                    <div>
+		                    <div id="jqxListBox">				
+
+		                    </div>
+		                </div>
+	                </div>
+	            </div>
+
+	            <div style="width:33%;">
+	                <div id="window2" class="report_dock_window">
+	                    <div>
+	                        Antenna Settings
+	                    </div>
+	                    <div style="text-align:center;">
+
+							<table style="width:100%;">
+								<tbody>
+									<tr>
+			                    		<td style="width:40%; padding:10px;">				
+											<h3> Action </h3>
+											<div id="action_select" style="margin:auto;"> </div>
+										</td>
+			                    		<td style="width:40%; padding:10px;">
+					                    	<h3> Product </h3>
+					                    	<div id="product_select" style="margin:auto;"> </div>
+			                    		</td>									
+
+			                    	</tr>
+			                    	<tr> <td> <br /> </td> <td> <br /></td></tr>
+			                    	<tr> <td> <br /> </td> <td> <br /></td></tr>
+			                    	<tr>
+										<td style="width:40%; padding:10px;">           	
+			                				<h3> Location </h3>
+			                    			<div id="location_select" style="margin:auto;"> </div>
+			                    		</td>		                    		
+			                    		
+
+			                    		<td style="width:40%; padding:10px;">
+											<h3 style=""> Asset Type 
+	                							<input style='float:right;' type="button" value="Off" id='asset_type_toggle' data-role="none"  />	            					
+											</h3>							
+		            				
+			                    			<div id="asset_type_select" style="margin:auto;"> 
+			                    			</div>
+			                    		</td>
+			                    	</tr>	
+			                    	<tr>
+			                    		<td colspan="2" style="text-align:center;">
+											<div id="save_confirmation"> 
+												<br />
+				         					</div>
+	            							<input type="button" style="width:75%; margin:5px auto 0 auto;" value="Save" id='saveButton' data-role="none"/>
+	            							<br/>
+			                    		</td>
+
+			                    	</tr>	                    
+			                    </tbody>
+		                    </table>
+		                </div>
+	                
+					</div>
+				</div>	            		
+
+	            <div style="width:33%;">
+	                <div id="window3" class="report_dock_window">
+	                    <div>
+	                        Recent Reader Activity
+	                    </div>
+	                    <div style="text-align:center">
+	                    	<h1> 
+	                    		Feature Coming Soon
+	                    	</h1>
+	                    </div>
+	                </div>
+	            </div>	            
+	        </div>
+
+

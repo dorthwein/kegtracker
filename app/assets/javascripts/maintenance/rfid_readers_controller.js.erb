@@ -1,0 +1,284 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_maintenance_rfid_readers' ).live('pageshow', function(event){
+
+	// prepare the data
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'reader_name' },
+			{ name: 'network'},
+			{ name: 'entity'},
+			{ name: 'antenna_count' },
+			{ name: 'reader_type'},
+			{ name: 'mac_address' }, 
+			{ name: 'last_ip' },
+			{ name: 'command_port' },
+			{ name: '_id' },
+			{ name: 'network_id' },
+		], 
+		url: url,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}
+		
+	};
+
+	var dataAdapter = new $.jqx.dataAdapter(source, {
+		loadComplete: function (data) { },
+		loadError: function (xhr, status, error) { }      
+	});
+
+	// Initialize Grid
+	$("#jqxgrid").jqxGrid(
+	{
+		// Grid Options
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,				
+		columns: [
+			{ text: 'Reader Name', datafield: 'reader_name', filtertype: 'checkedlist' },
+			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist'},
+			{ text: 'Entity', datafield: 'entity', filtertype: 'checkedlist'},
+			{ text: '# Antenna', datafield: 'antenna_count', filtertype: 'number' },
+			{ text: 'Reader Type', datafield: 'reader_type', filtertype: 'checkedlist'},
+			{ text: 'Mac Address', datafield: 'mac_address' }, 
+			{ text: 'Last IP', datafield: 'last_ip' },
+			{ text: 'Command Port', datafield: 'command_port' },
+		]
+	});
+
+	$('#jqxgrid').bind('rowselect', function (event){	    
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+
+		$("#reader_name").val(rowdata['reader_name']);
+		$("#reader_type").val(rowdata['reader_type']);
+		$("#mac_address").val(rowdata['mac_address']);		
+		$("#command_port").val(rowdata['command_port']);
+		$("#save_reader").jqxButton({ disabled: false });		
+		$("#new_antenna").jqxButton({ disabled: false });
+
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/reader_select',
+			data: { 
+				_id: rowdata['_id']
+			},
+		}).done(function( data ) {		
+			$("#antenna_list").jqxDropDownList({ source: data['antennas'], disabled: false});
+			$("#network").jqxDropDownList({ source: data['networks'], disabled: false});
+
+			var item = $("#network").jqxDropDownList('getItemByValue', rowdata['network_id'])			
+			$("#network").jqxDropDownList('selectItem', item ); 
+		});		
+	});
+
+	$("#antenna_list").jqxDropDownList({ source: source, width: '50%', height: '25', theme: theme, disabled: true });
+	$('#antenna_list').bind('select', function (event) {
+	    var args = event.args;	   	   
+        var index = args.index;
+        var item = args.item;
+        // get item's label and value.
+        var value = item.value;
+
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_select',
+			data: { 
+				_id: value
+			},
+		}).done(function( data ) {
+			$("#physical_location").val(data['physical_location']);
+			$("#antenna_number").val(data['antenna_number']);
+			$("#save_antenna").jqxButton({ disabled: false });
+			$("#delete_antenna").jqxButton({ theme: theme, disabled: false });
+	
+		});		        
+	});
+
+
+	// Style Buttons
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+	
+
+
+	$("#reader_name").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});
+	$("#reader_type").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});
+	$("#mac_address").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});
+	
+	$("#network").jqxDropDownList({source: {}, theme: theme, width: '100%', height: '25'});
+	$("#command_port").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});
+
+	$("#physical_location").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});
+	$("#antenna_number").jqxInput({height: 25, width: '100%', minLength: 1, theme: theme});    
+	
+
+	// Button Processing/Action
+	
+	// NEW BUTTON
+
+	$("#new_antenna").jqxButton({ theme: theme, disabled: true });	
+	$("#new_antenna").click(function () {			
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_new',
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			$('#antenna_save_confirmation').html('New Antenna Created - See dropdown list').fadeTo(10, 1.0).fadeTo(5000, 0);	
+			$("#antenna_list").jqxDropDownList({ source: data, disabled: false});			
+			dataAdapter.dataBind();
+		});		        		
+	});
+
+	$("#delete_antenna").jqxButton({ theme: theme, disabled: true });
+	$("#delete_antenna").click(function () {			
+		var item = $("#antenna_list").jqxDropDownList('getSelectedItem');
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_delete',
+			data: { 
+				_id: item.value,
+			},
+		}).done(function( data ) {
+			$('#antenna_save_confirmation').html('Antenna Deleted').fadeTo(10, 1.0).fadeTo(5000, 0);	
+			$("#antenna_list").jqxDropDownList({ source: data, disabled: false});			
+			$("#physical_location").val(' ');
+			$("#antenna_number").val(' ');	
+			$("#save_antenna").jqxButton({ disabled: true });
+			$("#jqxgrid").jqxGrid('refreshdata')
+			 dataAdapter.dataBind();
+
+	
+
+		});		        		
+	});	
+
+	$("#save_antenna").jqxButton({ theme: theme, disabled: true });	
+	$("#save_antenna").click(function () {			
+		var item = $("#antenna_list").jqxDropDownList('getSelectedItem');
+		var physical_location = $("#physical_location").val();
+		var antenna_number = $("#antenna_number").val();		
+
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_save',
+			data: { 
+				_id: item.value,
+				physical_location: physical_location,
+				antenna_number: antenna_number
+			},
+		}).done(function( data ) {
+			$('#antenna_save_confirmation').html('Settings saved!').fadeTo(10, 1.0).fadeTo(5000, 0);	
+			$("#antenna_list").jqxDropDownList({ source: data, disabled: false});						
+		});		        
+	});
+
+
+
+
+
+
+	$("#new_reader").jqxButton({ theme: theme });            
+	$("#new_reader").click(function () {
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/reader_new',
+			data: { },
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+		});		        	
+	});
+
+
+	$("#save_reader").jqxButton({ theme: theme, disabled: true });	
+	$("#save_reader").click(function () {			
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);				
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/reader_save',
+			data: { 
+				_id: rowdata['_id'],
+				reader_name: $("#reader_name").val(),
+				mac_address: $("#mac_address").val(),
+				command_port: $("#command_port").val(),
+				reader_type: $("#reader_type").val(),
+				network_id: $("#network").jqxDropDownList('getSelectedItem').value
+			},
+		}).done(function( data ) {
+			$('#reader_save_confirmation').html('Reader Saved').fadeTo(10, 1.0).fadeTo(5000, 0);				
+			dataAdapter.dataBind();
+		});		        		
+	});
+	
+
+	$("#delete_reader").jqxButton({ theme: theme });
+	$("#delete_reader").click(function () {
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/reader_delete',
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+		});		        	
+	});
+	
+
+	$("#excelExport").jqxButton({ theme: theme });
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+	
+	$.mobile.loading('hide');				
+
+});
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+<li class="li-content">
+	<%= toolbar({:rfid_antenna_cancel => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>			
+	<div class="li-content">
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader Name: </b>
+					</td>
+					<td>
+						<%= @rfid_antenna.rfid_reader.reader_name %>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Network: </b>
+					</td>
+					<td>
+						<%= @rfid_antenna.rfid_reader.network.description %>
+					</td>				
+				</tr>						
+			</tbody>
+		</table>	
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader Type: </b>
+					</td>
+					<td>
+						<%= @rfid_antenna.rfid_reader.reader_type %>					
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Antenna #: </b>
+					</td>
+					<td>
+						<%= @rfid_antenna.antenna_number %>
+					</td>
+				</tr>
+			</tbody>
+		</table>		
+		<div style="clear:both"></div>
+	</div>
+</li>

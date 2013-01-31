@@ -1,0 +1,60 @@
+<li class="toolbar">
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">					
+
+	</div>
+</li>
+<li>
+	<div>
+		<div class="box-button">
+			<div>
+				<%= link_to 'Entity/Network Management', :system_entities %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;">  </div>
+		</div>			
+		<div class="box-button">
+			<div>
+				<%= link_to 'Entity Types', :system_entity_types %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Entity Types </div>
+		</div>
+		<div class="box-button">
+			<div>
+				<%= link_to 'Product Types', :system_product_types %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Product Types </div>
+		</div>
+		<div class="box-button">
+			<div>
+				<%= link_to 'Asset Types', :system_asset_types %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Asset Types </div>
+		</div>
+		<div class="box-button">
+			<div>
+				<%= link_to 'Unit Sizes', :system_measurement_units %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Unit Sizes </div>
+		</div>		
+		<div class="box-button">
+			<div>
+				<%= link_to 'Asset State', :system_asset_states %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Asset States </div>
+		</div>		
+
+		<div class="box-button">
+			<div>
+				<%= link_to 'Handle Codes', :system_handle_codes %>
+			</div>
+			<div style="margin:5px 0px 15px 0px;"> Handle Codes </div>
+		</div>		
+	</div>
+	<div>
+		<% Asset.all.each do |asset| %>
+			<span> <%= asset.tag_value %>  	 <%= asset.tag_key %>   <%= asset.netid %> </span>
+			<br />
+		<% end %>
+	</div>
+	<div style="clear:both; height:15px;"> </div>
+
+</li>

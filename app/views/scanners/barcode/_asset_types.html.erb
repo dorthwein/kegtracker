@@ -1,0 +1,16 @@
+<div data-role="collapsible" data-theme="a" data-content-theme="a">
+	<h3> Asset Types: </h3> 
+	<p>
+
+	</p>
+	<ul id="" data-inset="true" data-filter="true" data-split-icon="info" data-role="listview" data-theme="d" data-dividertheme="d">
+		<% @asset_types.each do |asset_type| %>
+			<li> 
+				<a onClick="pageFunctions.selectAssetType(<%= '\'' + asset_type.id.to_s + '\', \'' + asset_type.description + '\'' %>)">
+					<%= asset_type.description  %> 
+				</a>	
+			</li>			
+		<% end %>	
+	<ul>
+</div>
+

@@ -1,0 +1,38 @@
+<% if @asset_state.errors.any? %>	
+	<li>  
+		<div id="error_explanation">
+			<h2>
+				<%= pluralize(@asset_state.errors.count, "error") %> prohibited this asset_state from being saved:
+			</h2>
+			<ul>
+				<% @asset_state.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	</li>
+<% end %>
+<!-- Form Entry Fields -->
+<li class="li-content">
+	<%= form_for([:system, @asset_state]) do |f| %>
+		<%= toolbar({:save => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :cancel => true, :index => true, :maintenance_menu => true}) %>			
+		<div class="li-content">	
+			<table class="ft">
+				<thead>
+					<tr>
+						<th class="label"> </th>
+						<th class="input"> </th>										
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>	<%= f.label :description, 'Description:'  %> </td>
+						<td>	<%= f.text_field :description, 'class' => 'input textfield' %>	</td>							
+					</tr>
+				</tbody>
+			</table>		
+			<div style="clear:both"> </div>		
+		</div>
+	<% end %>
+</li>
+

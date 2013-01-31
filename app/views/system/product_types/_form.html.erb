@@ -1,0 +1,51 @@
+<%= title('Product Types', current_user) %>
+<li class="toolbar">
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">					
+		<%= link_to "Back", product_types_path, :class => "toolbar-action" %>		
+	</div>
+</li>
+<li>
+  <% if @product_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product_type.errors.count, "error") %> prohibited this product_type from being saved:</h2>
+
+      <ul>
+      <% @product_type.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+</li>
+<li>
+	<%= form_for(@product_type) do |f| %>
+		<table class="ft">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>					
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<%= f.label(:description, 'Product Type') %>					
+					</td>
+					<td>
+						<%= f.text_field :description %>					
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<%= f.label(:notes, 'Notes') %>					
+					</td>
+					<td>
+						<%= f.text_area :notes %>	
+					</td>
+				</tr>
+			</tbody>
+		</table>			
+	  <div class="actions">
+		<%= f.submit %>
+	  </div>
+	<% end %>
+</li>

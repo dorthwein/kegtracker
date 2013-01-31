@@ -1,0 +1,35 @@
+<li class="toolbar">
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">					
+		<%= link_to "New Handle Code", new_system_handle_code_path, :class => "toolbar-action", 'data-role' => :button, 'data-icon' => :plus %>		
+	</div>
+</li>
+<li class="li-table">
+	<table class="dt">
+		<thead>
+		  <tr>
+			<th>Description</th>
+			<th>ID</th>
+			<th>Code</th>
+			<th>Scanner	</th>
+			<th>RFID </th>			
+			<th>		</th>
+		  </tr>
+		</thead>
+		<tbody>
+			<% @handle_codes.each do |handle_code| %>
+			  <tr>
+			  	<td> <%= handle_code.description %>	</td>
+			  	<td> <%= handle_code.id %>	</td>
+			  	<td> <%= handle_code.code %>	</td>
+			  	<td> <%= handle_code.scanner %>	</td>			  	
+			  	<td> <%= handle_code.rfid %>	</td>			  	
+				<td>	
+					<%= link_to 'Show', [:system, handle_code] %>
+					<%= link_to 'Edit', edit_system_handle_code_path(handle_code) %>
+					<%= link_to 'Destroy', [:system, handle_code], confirm: 'Are you sure?', method: :delete %>
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+</li>		

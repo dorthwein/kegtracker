@@ -1,0 +1,451 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_maintenance_networks' ).live('pageshow', function(event){
+	// prepare the data
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'
+	var source =
+	{
+		datatype : "json",
+		type: 'GET',
+		datafields: [
+			{ name: 'netid' },
+			{ name: 'description' },
+			{ name: 'entity' },
+			{ name: 'network_type_description' },		
+			{ name: 'smart_mode_product_description' },					
+			{ name: 'smart_mode_in_location_description' },					
+			{ name: 'smart_mode_out_location_description' },					
+		
+			{ name: 'auto_mode' }, 
+			{ name: 'smart_mode' }, 
+
+			{ name: '_id'}					
+		],
+		url: url,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}		
+	};
+
+	var dataAdapter = new $.jqx.dataAdapter(source, {
+		loadComplete: function (data) { },
+		loadError: function (xhr, status, error) { }      
+	});
+	// Initialize Grid
+	$("#jqxgrid").jqxGrid(
+	{
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,		
+		ready: function () {
+
+		},                			
+		columns: [
+			{ text: 'NetID', datafield: 'netid' },
+			{ text: 'Network', datafield: 'description' },
+			{ text: 'Network Type', datafield: 'network_type_description', filtertype: 'checkedlist' },
+			{ text: 'Entity', datafield: 'entity', filtertype: 'checkedlist' },
+			{ text: 'Auto Fill Product', datafield: 'smart_mode_product_description' },			
+			{ text: 'In Bound Location', datafield: 'smart_mode_in_location_description' },		
+			{ text: 'Out Bound Location', datafield: 'smart_mode_out_location_description' },					
+/*
+			{ text: 'Production', datafield: 'production', filterable:false,  width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Distribution', datafield: 'distribution', filterable:false,  width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}			},
+			{ text: 'Market', datafield: 'market', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+*/			
+			{ text: 'Smart Mode', datafield: 'smart_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},		
+			{ text: 'Auto Mode', datafield: 'auto_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},		
+
+
+			
+		]
+	});
+
+	$('#jqxgrid').bind('rowselect', function (event){	    
+		$.mobile.loading('show');
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			type: "GET",
+			dataType : "JSON",
+			data: rowdata,
+		}).done(function( data ) {				
+			// Entity List
+			smart_mode_product_id
+			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });			
+			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['network']['entity_id']);
+			$("#entity_id").jqxDropDownList('selectItem', item ); 			
+
+			$("#network_type_id").jqxDropDownList({ source: data['network_types'], disabled: false });			
+			var item = $("#network_type_id").jqxDropDownList('getItemByValue', data['network']['network_type_id']);
+			$("#network_type_id").jqxDropDownList('selectItem', item ); 			
+
+
+
+			$("#smart_mode_product_id").jqxDropDownList({ source: data['products'], disabled: false });			
+			var item = $("#smart_mode_product_id").jqxDropDownList('getItemByValue', data['network']['smart_mode_product_id']);
+			$("#smart_mode_product_id").jqxDropDownList('selectItem', item );
+
+			$("#smart_mode_in_location_id").jqxDropDownList({ source: data['locations'], disabled: false });			
+			var item = $("#smart_mode_in_location_id").jqxDropDownList('getItemByValue', data['network']['smart_mode_in_location_id']);
+			$("#smart_mode_in_location_id").jqxDropDownList('selectItem', item ); 			
+
+			$("#smart_mode_out_location_id").jqxDropDownList({ source: data['locations'], disabled: false });			
+			var item = $("#smart_mode_out_location_id").jqxDropDownList('getItemByValue', data['network']['smart_mode_out_location_id']);
+			$("#smart_mode_out_location_id").jqxDropDownList('selectItem', item ); 			
+
+			
+			// Enable Inputs
+			$(".form_input").jqxInput({disabled: false });
+			$(".form_input").val('');
+			$(".toggle_switch").jqxToggleButton({disabled: false });
+			
+			$("#updateSaveButton").jqxButton({disabled: false});
+			$("#updateSaveButton").show();
+			$("#newSaveButton").hide();
+			$("#newCancelButton").hide();
+
+//			alert(JSON.stringify(data['user']));
+			// User Detail Input Values
+
+			$.each(data['network'], function(key, value){
+				element = $('#' + key)
+				if( element.hasClass('toggle_switch')){
+//			        var toggled = $(this).jqxToggleButton('toggled');					
+			        if (value == 1) {			        	
+			            element.html('On');
+//			            element.val(1);
+			            element.jqxToggleButton({ toggled: true });
+			            element.jqxToggleButton('refresh');
+			        }
+			        else {
+						element.html('Off');
+//			            element.val(0);
+			            element.jqxToggleButton({toggled: false });
+			            element.jqxToggleButton('refresh');
+			        }			    				
+				}
+				element.val(value)				
+			})
+			$.mobile.loading('hide');
+		});			
+	});
+
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+
+	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' ),
+
+
+	$("#entity_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+	$("#network_type_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+
+	$("#smart_mode_product_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });		
+	$("#smart_mode_in_location_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });	
+	$("#smart_mode_out_location_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });		
+
+
+	$(".form_input").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: true });
+	
+	$(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
+    $(".toggle_switch").bind('click', function () {        
+		$.mobile.loading('show');
+        if(!$(this).attr('disabled')){	        
+	        var toggled = $(this).jqxToggleButton('toggled');
+	        if (toggled) {
+	            $(this).html('On');
+	            $(this).val(1);
+	        }
+	        else {
+				$(this).html('Off');
+	            $(this).val(0);
+	        }
+	    }
+		$.mobile.loading('hide');	    
+    });
+
+	$('#form_validator').jqxValidator({
+	 	rules: [
+	 		// Email Rules
+	        { input: '#description', message: 'Name is required!', action: 'keyup, blur', rule: 'required' },
+
+	        // First/Last Name
+	        { input: '#entity_id', message: 'Entity Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#entity_id").jqxDropDownList('getSelectedItem') != null) {
+		                return true;		                
+		            }
+		           	return false;		           
+	        	}
+	        },
+	        { input: '#network_type_id', message: 'Network Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#network_type_id").jqxDropDownList('getSelectedItem') != null) {
+		                return true;		                
+		            }
+		           	return false;		           
+	        	}
+	        },
+
+	        { input: '#smart_mode_product_id', message: 'Smart Mode on - Product Required', action: 'keyup, blur',rule: function(input, commit){
+	        		if (  $("#smart_mode").val() == 1 && $('#network_type_id').val() == 1) {
+			            if (  $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null) {
+			                return true;		                
+			            }
+			           	return false;		           
+			        }
+			        return true;
+	        	}
+	        },
+		],
+		theme: theme
+	});
+
+
+	// Style Buttons
+	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#updateSaveButton").bind('click', function () {
+		$.mobile.loading('show');
+    	if($('#form_validator').jqxValidator('validate')){
+	        var params = {}
+	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        params['network_type_id'] = $("#network_type_id").jqxDropDownList('getSelectedItem').value;              	        
+
+	        
+			
+			if( $("#smart_mode_in_location_id").jqxDropDownList('getSelectedItem') != null){
+		        params['smart_mode_in_location_id'] = $("#smart_mode_in_location_id").jqxDropDownList('getSelectedItem').value;              	        
+			}
+
+			if( $("#smart_mode_out_location_id").jqxDropDownList('getSelectedItem') != null){
+				params['smart_mode_out_location_id'] = $("#smart_mode_out_location_id").jqxDropDownList('getSelectedItem').value;              	        		        
+			}
+
+			if( $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null){			
+				params['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getSelectedItem').value;              	        
+			}
+
+
+
+
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });        
+
+			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+		    
+		    var url =  system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id']	    
+			$.ajax({
+				url: url,
+				type: "PUT",
+				dataType : "JSON",
+				data: params,
+			}).done(function( data ) {	
+				if(data['success'] == false){
+					alert(data['message'])
+				}
+				dataAdapter.dataBind();
+				$.mobile.loading('hide');		
+			})
+		}		
+    });
+    
+    $("#newCancelButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#newSaveButton").bind('click', function () {
+		$.mobile.loading('show');
+
+    	if($('#form_validator').jqxValidator('validate')){	
+	        var params = {}
+	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+			params['network_type_id'] = $("#network_type_id").jqxDropDownList('getSelectedItem').value;
+
+			if( $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null){
+				params['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getselectedrowindexetSelectedItem').value;
+			}
+
+
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });        
+
+			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			$.ajax({
+				url: system.server + $('.ui-page-active').attr('data-url'),
+				type: "POST",
+				data: params,
+			}).done(function( data ) {	
+				if(data['success'] == false){
+					alert(data['message'])
+				}
+				dataAdapter.dataBind();
+
+//				$("#entity_id").jqxDropDownList({ source: data['networks'], disabled: false });
+				$("#entity_id").jqxDropDownList('clearSelection' ); 
+				$("#network_type_id").jqxDropDownList('clearSelection' ); 				
+				$("#smart_mode_product_id").jqxDropDownList('clearSelection' ); 
+				$("#smart_mode_in_location_id").jqxDropDownList('clearSelection' ); 				
+				$("#smart_mode_out_location_id").jqxDropDownList('clearSelection' ); 								
+				
+				
+				$(".toggle_switch").html('Off');
+	            $(".toggle_switch").val(0);
+	            $(".toggle_switch").jqxToggleButton({toggled: false });
+	            $(".toggle_switch").jqxToggleButton('refresh');
+
+				$(".form_input").jqxInput({disabled: false });
+				$(".form_input").val('');
+
+				$(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });			
+				$.mobile.loading('hide');		
+			})
+		}		
+    });	
+
+
+	$("#new").jqxButton({ theme: theme, width:100 });            
+	$("#new").click(function () {
+		$.mobile.loading('show');
+		$.ajax({
+			type: "GET",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/new',
+			data: { },
+		}).done(function( data ) {			
+			
+			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+			$("#entity_id").jqxDropDownList('clearSelection' ); 
+
+			$("#network_type_id").jqxDropDownList({ source: data['network_types'], disabled: false });
+			$("#network_type_id").jqxDropDownList('clearSelection' ); 
+
+
+			$("#smart_mode_product_id").jqxDropDownList({ source: data['products'], disabled: false });
+			$("#smart_mode_product_id").jqxDropDownList('clearSelection' ); 
+
+			$("#smart_mode_in_location_id").jqxDropDownList({ source: data['locations'], disabled: true });
+			$("#smart_mode_in_location_id").jqxDropDownList('clearSelection' ); 
+
+			$("#smart_mode_out_location_id").jqxDropDownList({ source: data['locations'], disabled: true });
+			$("#smart_mode_out_location_id").jqxDropDownList('clearSelection' ); 
+
+
+			
+			$(".toggle_switch").html('Off');
+            $(".toggle_switch").val(0);
+            $(".toggle_switch").jqxToggleButton({toggled: false });
+            $(".toggle_switch").jqxToggleButton('refresh');
+
+			$(".form_input").jqxInput({disabled: false });
+			$(".form_input").val('');
+
+			$(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });
+
+			$("#newSaveButton").jqxButton({disabled: false});			
+			$("#newCancelButton").jqxButton({disabled: false});			
+
+			$("#newSaveButton").show();			
+			$("#newCancelButton").show();
+			$("#updateSaveButton").hide();
+			$.mobile.loading('hide');		        	
+		});				
+	});
+
+
+	$("#delete").jqxButton({ theme: theme, width:100 });            
+	$("#delete").click(function () {
+		$.mobile.loading('show');
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "DELETE",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+			$.mobile.loading('hide');
+		});		
+
+	});
+	
+
+	// Button Processing/Action
+	
+	// NEW BUTTON
+	$("#excelExport").jqxButton({ theme: theme, width:100 });                        
+	$("#excelExport").click(function () {
+		$.mobile.loading('show');
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$.mobile.loading('hide');
+	});
+	$.mobile.loading('hide');					
+
+});

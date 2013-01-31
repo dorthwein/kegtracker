@@ -1,0 +1,27 @@
+<li class="li-table">
+	<%= toolbar({:new => true, :module_menu => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>		
+	<table class="dt">
+		<thead>
+			<tr>
+				<th>Description	</th>
+				<th>			</th>
+			</tr>	
+		<thead>		
+		<tbody>
+			<% @asset_states.each do |asset_state| %>
+
+				<tr>
+					<td> <%= asset_state.description %>	</td>
+					<td>
+						<%= link_to 'Show', system_asset_state_path(asset_state) %>
+						<%= link_to 'Edit', edit_system_asset_state_path(asset_state) %> 
+						<%= link_to 'Destroy', system_asset_state_path(asset_state), confirm: 'Are you sure?', method: :delete %> 
+					</td>
+				</tr>
+	<% end %>
+		</tbody>
+	</table>
+</li>	
+<li>
+
+</li>

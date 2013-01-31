@@ -1,0 +1,2 @@
+module System::EntityHelper
+end

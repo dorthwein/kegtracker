@@ -1,0 +1,96 @@
+
+
+	<input type="button" style="float:left; margin:5px 5px 5px 0;" value="New" id='new_reader' data-role="none"/>
+
+	<input type="button" style="float:left; margin:5px;" value="Delete" id='delete_reader' data-role="none"/>
+
+	<input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
+	<div id="jqxgrid"></div>
+
+	<div id="docking">
+	    <div style="width:50%;">
+	        <div id="window1" class="report_dock_window">
+	            <div>
+	                RFID Reader Details
+	            </div>
+	            <div>
+	            	<div style="height:220px; width:100%;  float:left;">
+		            	<div style="width:40%; padding:10px; float:left">
+							<h3 style=> Reader Name </h3>
+							 <input type="text" id="reader_name" style="margin-bottom:10px;" data-role="none" />
+							 
+							<h3> Reader Type </h3>
+							<input type="text" id="reader_type" style="margin-bottom:10px;" data-role="none" />
+
+							<h3> MAC Address </h3>
+							<input type="text" id="mac_address" style="margin-bottom:10px;" data-role="none" />
+							<br />
+							Example: 00:1B:5F:00:54:DE
+						</div>							
+						<div style="width:40%; padding:10px; float:left">
+							<h3> Network </h3>
+							 <div id="network" style="margin-bottom:10px;" data-role="none">
+							 </div>
+							
+							 <h3> Command Port </h3>
+							<input type="text" id="command_port" style="margin-bottom:10px;" data-role="none" />		 					
+						</div>
+					</div>
+					<div style="clear:both; text-align:center">
+						<div id="reader_save_confirmation"> 
+							<br />
+	 					</div>
+						<input type="button" style="width:75%; margin:5px auto 0 auto;" value="Save" id='save_reader' data-role="none"/>						
+					</div>
+					
+	            </div>
+	        </div>
+	    </div>
+
+	    <div style="width:50%;">
+	        <div id="window2" class="report_dock_window">
+	            <div>
+	                Entity/Network Details
+	            </div>
+	            <div>
+		            <div style="height:220px; width:100%; float:left;">
+			            <div style=' padding:10px;'>
+							<input type="button" style="width:150px; margin:5px auto 0 auto;" value="New Antenna" id='new_antenna' data-role="none"/>						
+							
+							<input type="button" style="width:150px; margin:5px auto 0 auto;" value="Delete Antenna" id='delete_antenna' data-role="none"/>						
+
+							<div style="width:100%; padding:10px 0px 10px 0; float:left">
+					           	<h3> Select Antenna </h3>
+					            <div id="antenna_list">		            	
+					            </div>
+					        </div>
+
+				            <div style="width:40%; padding:10px 0px 10px 0; float:left">
+			 					<h3> Antenna Location </h3>
+								<input type="text" id="physical_location" style="margin-bottom:10px;" data-role="none" />
+							</div>
+
+							<div style="width:40%; padding:10px; float:left">
+			 					<h3> Antenna # </h3>
+								<input type="number" id="antenna_number" style="" data-role="none" />		 												 	
+							</div>	
+						</div>		
+					</div>
+				
+					<div style="text-align:center; clear:both;">
+						<div id="antenna_save_confirmation"> 
+							<br />
+	 					</div>
+						<input type="button" style="width:75%; margin:5px auto 0 auto;" value="Save" id='save_antenna' data-role="none"/>						
+					</div>						
+				</div>
+	        </div>
+	    </div>
+	</div>
+
+	<div id="popupWindow" style="display:none">
+		<div> Location </div>
+		<div>			</div>
+	</div>
+
+

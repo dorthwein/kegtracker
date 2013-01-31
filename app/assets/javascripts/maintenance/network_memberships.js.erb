@@ -1,0 +1,356 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_maintenance_network_memberships' ).live('pageshow', function(event){
+	// prepare the data
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'
+	var source =
+	{		
+		datatype: "json",
+		datafields: [
+			{ name: 'network' },
+			{ name: 'entity' },
+			{ name: 'asset_distribution' },
+			{ name: 'product_production' },
+			{ name: 'asset_leasing' },	
+			{ name: '_id' },
+			{ name: 'edit_permission' },
+			{ name: 'delete_permission' }
+		],
+		url: url,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}		
+	};
+
+	var dataAdapter = new $.jqx.dataAdapter(source, {
+		loadComplete: function (data) { },
+		loadError: function (xhr, status, error) { }      
+	});
+	// Initialize Grid
+	$("#jqxgrid").jqxGrid(
+	{
+		// Grid Options
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,		
+		ready: function () {
+
+		},                			
+		columns: [
+			{ text: 'Partner Entity', datafield: 'entity', filtertype: 'checkedlist' },
+			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' },
+			{ text: 'Distribution', datafield: 'asset_distribution', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Production', datafield: 'product_production', filterable:false,  width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			}, 
+			{ text: 'Leasing', datafield: 'asset_leasing',  filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+//					{ text: 'Reporting', datafield: 'location_reporting' },					
+			{ text: 'Edit', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				
+				if(dataRecord.edit_permission == 0){
+					return "Can't Edit"
+				} else {
+					return "Edit"
+				}
+			},
+			buttonclick: function (row) {
+				$.mobile.loading('show');
+				editrow = row;
+				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', editrow);
+
+				if(dataRecord.edit_permission == 0){
+					$.mobile.loading('hide');									                    	
+					alert('Can\'t edit - please contact ' + dataRecord.entity + ' or Craft-Net support to change permissions');
+				} else {
+					var url = system.server + $('.ui-page-active').attr('data-url') + '/' + dataRecord._id + '/edit'
+					$.ajax({
+						url: url,
+						type: "GET",
+						success: function( data ){ 
+							var offset = $("#jqxgrid").offset();
+
+							// Initialize Popup Window
+							$("#popupWindow").jqxWindow({
+								content: data, 
+								position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60}, 
+								width: 650, 
+								resizable: true, 
+								theme: theme, 
+								autoOpen: true, 
+								cancelButton: $("#Cancel") 
+							});
+
+	
+						// Theme Form																
+							// initialize the popup window and buttons.								
+							$("#Cancel").jqxButton({ theme: theme });								
+							$("#Cancel").click(function () {
+								$("#popupWindow").jqxWindow('hide');
+							});
+
+							$("#Save").jqxButton({ theme: theme });
+
+							// send edit to server
+							$("#Save").click(function () {
+								var values = {};
+								$.each($(this).closest('form').serializeArray(), function(i, field) {
+									values[field.name] = field.value;
+								});
+								$.ajax({
+									url: $(this).closest('form').attr('action'),
+									type: "PUT",
+									data: values,
+								 dataType: 'json',
+									success: function( data ){ 
+										if (editrow >= 0) {
+//										$('#jqxgrid').jqxGrid('updaterow', editrow, response);
+							            dataAdapter.dataBind();
+
+											$("#popupWindow").jqxWindow('hide');
+										}
+									},
+									error: function (data) {
+										alert('fail')
+										$("#popupWindow").jqxWindow('hide');																							
+									}
+								});
+
+							});
+
+
+							$("#popupWindow").jqxWindow('show');																
+							$.mobile.loading('hide');								
+						},
+						error: function (data) {
+							alert('Failed to load ' + url);
+							$.mobile.loading('hide');									
+						}
+					});
+				}
+			}},
+			{ text: 'Delete', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				if(dataRecord.delete_permission == 0){
+					return "Can't Delete"
+				} else {
+					return "Delete"
+				}
+			},
+			buttonclick: function (row) {
+				$.mobile.loading('show');				
+				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+
+				if(dataRecord.delete_permission == 0){
+					$.mobile.loading('hide');									                    	
+					alert('You may only edit memberships for your networks');	                
+				} else {
+					var url = system.server + $('.ui-page-active').attr('data-url') + '/' + dataRecord._id
+					$.ajax({
+						url: url,
+						dataType: 'json',
+						type: "DELETE",
+
+						success: function( data ){ 							
+							 // var id = $("#jqxgrid").jqxGrid('getrowid', selectedrowindex);
+                    	//	$("#jqxgrid").jqxGrid('deleterow', row);
+                    		dataAdapter.dataBind();
+							$.mobile.loading('hide');								
+						},
+						error: function (data) {
+							alert('Failed to load ' + url);
+							$.mobile.loading('hide');									
+						}
+					});
+				}
+			}},			
+		]
+	});
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+
+	// Style Buttons
+	$("#addrowbutton").jqxButton({ theme: theme });            
+	$("#new_distributor_partnership").jqxButton({ theme: theme });            	
+	$("#excelExport").jqxButton({ theme: theme });
+	$("#csvExport").jqxButton({ theme: theme });
+
+	// Button Processing/Action
+	
+	// NEW BUTTON
+	$("#addrowbutton").click(function () {
+		$.mobile.loading('show');
+		url = system.server + $('.ui-page-active').attr('data-url') + '/new'
+		$.ajax({
+			url: url,
+			type: "GET",
+			success: function( data ){ 
+				var offset = $("#jqxgrid").offset();
+
+				$("#popupWindow").jqxWindow({
+					content: data, 
+					position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60}, 
+					width: 650, 
+					resizable: true, 
+					theme: theme, 
+					autoOpen: true, 
+					cancelButton: $("#Cancel") 
+				});
+
+			// open the popup window when the user clicks a button.						
+				$("#popupWindow").jqxWindow('show');												
+				// initialize the popup window and buttons.
+				$("#Cancel").jqxButton({ theme: theme });
+				$("#Cancel").click(function () {
+					$("#popupWindow").jqxWindow('hide');
+				});
+
+				$("#Save").jqxButton({ theme: theme });
+				// update the edited row when the user clicks the 'Save' button.
+
+				$("#Save").click(function () {
+					// send edit to server
+					var values = {};
+					$.each($(this).closest('form').serializeArray(), function(i, field) {
+						values[field.name] = field.value;
+					});
+
+					$.ajax({
+						url: $(this).closest('form').attr('action'),
+						type: "POST",
+						data: values,										
+						dataType: 'json',
+						success: function( data ){ 
+							$("#jqxgrid").jqxGrid('addrow', null, data);
+							$("#popupWindow").jqxWindow('hide');												
+						},
+						error: function (data) {
+							alert('fail')
+							$("#popupWindow").jqxWindow('hide');																							
+						}
+					});
+				});
+				
+				$.mobile.loading('hide');								
+			},
+			error: function (data) {
+				alert('Failed to load ' + url);
+				$.mobile.loading('hide');									
+			}
+		});
+	
+	});
+
+	$("#new_distributor_partnership").click(function () {
+		$.mobile.loading('show');
+		url = system.server + $('.ui-page-active').attr('data-url') + '/new_distributor_partnership'
+		$.ajax({
+			url: url,
+			type: "GET",
+			success: function( data ){ 
+				var offset = $("#jqxgrid").offset();
+
+				$("#popupWindow").jqxWindow({
+					content: data, 
+					position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60}, 
+					width: 450, 
+					resizable: true, 
+					theme: theme, 
+					autoOpen: true, 
+					cancelButton: $("#Cancel") 
+				});
+
+			// open the popup window when the user clicks a button.						
+				$("#popupWindow").jqxWindow('show');												
+				// initialize the popup window and buttons.
+				$("#Cancel").jqxButton({ theme: theme });
+				$("#Cancel").click(function () {
+					$("#popupWindow").jqxWindow('hide');
+				});
+
+				$("#Save").jqxButton({ theme: theme });
+				// update the edited row when the user clicks the 'Save' button.
+
+				$("#Save").click(function () {
+					// send edit to server
+					var values = {};
+					$.each($(this).closest('form').serializeArray(), function(i, field) {
+						values[field.name] = field.value;
+					});
+
+					$.ajax({
+						url: $(this).closest('form').attr('action'),
+						type: "POST",
+						data: values,										
+						dataType: 'json',
+						success: function( data ){ 
+							$("#jqxgrid").jqxGrid('addrow', null, data);
+							$("#popupWindow").jqxWindow('hide');												
+						},
+						error: function (data) {
+							alert('fail')
+							$("#popupWindow").jqxWindow('hide');																							
+						}
+					});
+
+				});
+				
+				$.mobile.loading('hide');								
+			},
+			error: function (data) {
+				alert('Failed to load ' + url);
+				$.mobile.loading('hide');									
+			}
+		});
+	
+	});
+
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+	$("#csvExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+	});
+	$.mobile.loading('hide');				
+
+});

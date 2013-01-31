@@ -1,0 +1,70 @@
+<% if @handle_code.errors.any? %>
+	<li>
+		<div id="error_explanation">
+		  <h2><%= pluralize(@handle_code.errors.count, "error") %> prohibited this entity from being saved:</h2>
+		
+		  <ul>
+		  <% @handle_code.errors.full_messages.each do |msg| %>
+			<li><%= msg %></li>
+		  <% end %>
+		  </ul>
+		</div>
+	</li>
+<% end %>
+
+<li class="li-content">
+	<%= form_for([:system, @handle_code]) do |f| %>		
+		<%= toolbar({:save => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :cancel => true, :index => true, :maintenance_menu => true}) %>			
+		<div class="li-content">
+			<table class="ft">
+				<thead>
+					<tr>
+						<th class="label" </th>
+						<th class="input" </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<%= f.label :description,'Description' %>
+						</td>
+						<td>
+							<%= f.text_field(:description, :required => true ) %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<%= f.label :code,'Code:' %>
+						</td>
+						<td>
+							<%= f.text_field(:code, :required => true ) %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<%= f.label :scanner,'Scanner:' %>
+						</td>
+						<td>
+							<%= f.select(:scanner, options_for_select([['On',true],['Off',false]], @handle_code.scanner), {}, :disabled => false) %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<%= f.label :rfid,'RFID:' %>
+						</td>
+						<td>
+							<%= f.select(:rfid, options_for_select([['On',true],['Off',false]], @handle_code.rfid), {}, :disabled => false) %>
+						</td>
+					</tr>
+					
+					
+				</tbody>
+			</table>
+		  <div class="actions">
+			<%= f.submit %>
+		  </div>
+		<% end %>
+	</div>
+</li>
+
+

@@ -1,0 +1,65 @@
+<li>
+	<%= @output %>
+	<div id="scanner" userName="<%= current_user.email %>" handleCode="<%=  %>">
+		<!--	 Scanner Panel		-->
+		<div id="scanner_panel">
+			<fieldset id="scanner_actions" data-type="horizontal" data-role="controlgroup">
+				<input type="radio" name="hcSelect" id="hc1" value="1" onClick="pgFunc.load_actions.hc1()" />
+				<label for="hc1">Delivery</label>
+	
+				<input type="radio" name="hcSelect" id="hc2" value="2" onClick="pgFunc.load_actions.hc2()" />
+				<label for="hc2">Pickup</label>
+	
+				<input type="radio" name="hcSelect" id="hc3" value="3" onClick="pgFunc.load_actions.hc3()"  />
+				<label for="hc3">Add</label>
+	
+				<input type="radio" name="hcSelect" id="hc4" value="4" onClick="pgFunc.load_actions.hc4()" />
+				<label for="hc4">Fill</label>
+				
+				<input type="radio" name="hcSelect" id="hc5" value="5" onClick="pgFunc.load_actions.hc5()" />
+				<label for="hc5">Move</label>			
+			</fieldset>
+			<!--	Current Scanner Options		-->
+			<ul id="scanner_current_options" data-role="listview" data-divider-theme="a" data-inset="true" style="margin:10px 0 0 0">
+
+			</ul>
+			<!--	 Scanner Input		-->			
+			<ul data-role="listview" data-divider-theme="a" data-inset="true" style="margin:10px 0 0 0">
+				<li data-role="list-divider"> 	Scanner 	</li>
+				<li> 										
+					Connect barcode scanner to begin scanning
+					<input type="text" id="scan_input" />					
+				</li>
+			</ul>					
+		</div> 
+		<div id="scanner_options">
+		</div>
+	</div>		
+	<div style="clear:both; margin:25px"> </div>	
+</li>	
+<li class="li-table">
+	<div style="" >
+		<span style="padding:5px 5px 20px 5px"> 
+
+		Recent Scans:
+		</span>
+		<table  class="dt" id="scanAlerts">
+			<thead>
+				<tr>
+					<th> Time:	</th>
+					<th> Tag Network	</th>
+					<th> Tag Value		</th>
+					<th> Location		</th>
+					<th> Brewery		</th>
+					<th> Product		</th>
+					<th> Fill Count		</th>
+					<th> Size			</th>
+					<th> Action			</th>				
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<span style="font-size:10px"> Warning: Refreshing, leaving this page, or changing scan mode will clear table.	</span>
+</li>

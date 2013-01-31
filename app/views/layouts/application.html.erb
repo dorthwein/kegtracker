@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CraftNet</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+
+  <meta name="viewport" content="width=960, user-scalable=yes" />   
+
+  <%= csrf_meta_tags %>
+</head>
+<body> 
+	<div data-role="page" data-cache="never" id="<%= request.path.gsub('/', '_') %>" data-url="<%= request.path %>">		
+		<div data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px;" data-theme="none" >
+			<% if !user_signed_in? %>			
+            <div id="jqxMenu">
+                <ul>                				
+					<li> <%= link_to 'Home', root_path %> </li>							
+					
+					<li style="display:none"> <%= link_to 'About Us', public_about_path %> </li>
+					<li style="display:none"> <%= link_to 'Contact', public_contact_path %> </li>		
+					<li style="display:none"> <%= link_to 'Pricing', public_pricing_path %> </li>
+					<li style="display:none"> <%= link_to 'Order', public_order_path %> </li>									
+					<li> <%= link_to 'Log in', new_user_session_path %> </li>
+				</ul>
+			</div>
+			<input data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" " />
+
+			<% else %> 			
+
+			<div id="jqxMenu">
+                <ul>                					
+					<li>
+						Home
+						<ul>
+							<li> <%= link_to 'Dashboard', :dashboard_viewer %> </li>
+							<li> <%= current_user.email %> </li>								 
+							<li> <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %> </li>
+						</ul>
+					
+					</li>
+					
+					<li> 
+						Reporting 
+						<ul>
+							<li> 	
+								Assets
+								<ul>
+									<li>
+										<%= link_to 'Browse', :reports_asset_browse %> 									
+									</li>
+									<li>
+										<%= link_to 'SKU Summary', :reports_asset_sku_summary_report %> 									
+									</li>
+
+								</ul>							
+							</li>
+
+							<li> 	
+								Locations
+								<ul>
+									<li>
+										<%= link_to 'Browse', :reports_location_browse %> 			
+									</li>
+								</ul>							
+							</li>
+							<li> 	
+								Network
+								<ul>
+									<li>
+										<%= link_to 'In-bound/Out-bound', :reports_network_in_out_asset_report %> 																		
+									</li>
+									<li>
+										<%= link_to 'Performance Scorecard', :reports_network_performance_scorecard_report %> 																		
+									</li>
+								</ul>							
+							</li>
+<!--
+							<li> 	
+								Products
+								<ul>
+									<li>
+										Browse									
+									</li>
+									<li>
+										Performance Scorecard																		
+									</li>
+								</ul>							
+							</li>	
+-->																				
+							<li> 	
+								Float Health
+								<!-- Broad float wide reporting --> 
+								<ul>
+									<li>
+											<%= link_to 'Life Cycle', :reports_float_life_cycle_summary_report %> 							
+									</li>
+									<li>
+										<%= link_to 'Asset Activity', :reports_float_activity_summary_report %> 									
+									</li>
+									
+								</ul>							
+							</li>							
+						</ul>
+					</li>					
+					<li> 
+						Scanners/Readers 
+						<ul>	
+							<li> <%= link_to 'Barcode Scanner', :scanners_barcode %> </li>
+							<li> <%= link_to 'RFID Readers', :scanners_rfid_readers %> </li>
+						</ul>							
+					</li>
+					<li> 
+						Maintenance
+						<ul>
+							<li> <%= link_to 'Users', :maintenance_users %> </li>
+							<li> <%= link_to 'Partnerships', :maintenance_network_memberships %> </li>
+							<li> <%= link_to 'Networks', :maintenance_networks %> </li>
+							<li> <%= link_to 'Locations', :maintenance_locations %> </li>
+							<li> <%= link_to 'Products', :maintenance_products %> </li>
+							<li> <%= link_to 'Print Barcodes', :new_maintenance_barcode_maker %> </li>
+							<li> <%= link_to 'RFID', :maintenance_rfid_readers %> </li>
+						</ul>
+					</li>
+					<% if current_user.system_admin == 1 %>
+					<li> System 
+						<ul>
+							<li> <%= link_to 'Entities', :system_entities %> </li>
+							<li> Networks (Disabled) </li>
+							<li> <%= link_to 'Entity Types', :system_entity_types %> </li>
+							<li> <%= link_to 'Product Types', :system_product_types %> </li>
+							<li> <%= link_to 'Asset Types', :system_asset_types %> </li>
+							<li> <%= link_to 'Unit Sizes', :system_measurement_units %> </li>
+							<li> <%= link_to 'Asset State', :system_asset_states %> </li>
+							<li> <%= link_to 'Handle Codes', :system_handle_codes %> </li>
+						</ul>
+					</li>
+					<% end %>
+				</ul>
+			</div>
+			<input data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" Quick search coming soon" />
+		
+			<% end %>							
+            
+			<div style="clear:both"> </div>	
+		</div>
+		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:10px;">			
+		<!-- Main Content -->	
+
+					<%= yield %>																		
+
+		</div>
+		<div data-role="footer" data-position="fixed" style="position:fixed; bottom:0px">
+			<div id="content-alert" style="display:none">	</div>								
+			<span style="float:left; padding:0px 0px 0px 10px"> Black Stag Solutions, LLC </span>
+			<span style="float:right; padding: 0px 10px 0px 0px"> Cobalt </span>
+		</div>
+	</div>
+</body>
+</html>

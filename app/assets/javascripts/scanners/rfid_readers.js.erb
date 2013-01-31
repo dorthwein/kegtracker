@@ -1,0 +1,267 @@
+// Scanner JS
+/* Handle Codes
+	1 = Delivery
+	2 = Pickup
+	3 = Add
+	4 = Fill
+	5 = Move	
+*/
+$( '#_scanners_rfid_readers' ).live( 'pageshow',function(event){      
+	$.mobile.loading('show');
+	theme = settings.theme;
+
+	// Grid data source
+	var grid_source = {
+		datatype : "json",
+		type: 'GET',
+		datafields: [
+			{ name: 'network' },
+			{ name: 'mac_address'},
+			{ name: 'reader_name' },			
+			{ name: '_id' },			
+		],
+		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
+	};
+	var grid_data_adapter = new $.jqx.dataAdapter(grid_source, {
+		loadComplete: function (data) {},
+		loadError: function (xhr, status, error) { }      
+	});
+		
+	// Initiate grid
+	$("#jqxgrid").jqxGrid({
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: grid_data_adapter,
+		columnsresize: true,
+		altrows: true,				
+		columns: [
+			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' },			
+			{ text: 'MAC Address', datafield: 'mac_address' },			
+			{ text: 'Reader Name', datafield: 'reader_name' },			
+		],
+	});
+
+
+	$('#jqxgrid').bind('rowselect', function (event){	    
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/row_select',
+			type: "POST",
+			data: rowdata,
+			success: function( data ){
+//				$('#asset_transactions').html('<div style="text-align:center;"> <h1> Please Select a Life Cycle <h1> </div>');	
+				$("#jqxListBox").jqxListBox({ source: data, width: '100%', height: '100%', theme: theme });
+				$("#jqxListBox").jqxListBox('selectIndex', 0 ); 
+				// Load the data from the Select html element.
+			}
+		});
+	});
+
+	$("#jqxListBox").bind('select', function (event) {	
+        var args = event.args;	        
+        var item = args.item;
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_select',
+			type: "POST",
+			dataType:"JSON",
+			data: {_id: item.value},
+			success: function( data ){
+				 // Load Select Options				 
+
+				$("#location_select").jqxDropDownList({ source: data['locations'], selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: false });
+				var location_item = $("#location_select").jqxDropDownList('getItemByValue', data['current_settings']['location']);
+				$("#location_select").jqxDropDownList('selectItem', location_item ); 
+
+
+				
+				$("#product_select").jqxDropDownList({ source: data['products'], selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+				var product_item = $("#product_select").jqxDropDownList('getItemByValue', data['current_settings']['product']);
+				$("#product_select").jqxDropDownList('selectItem', product_item ); 
+				
+
+				
+				$("#asset_type_select").jqxDropDownList({ source: data['asset_types'], selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+				var asset_type_item = $("#asset_type_select").jqxDropDownList('getItemByValue', data['current_settings']['asset_type']);
+				$("#asset_type_select").jqxDropDownList('selectItem', asset_type_item );       
+
+
+				$("#action_select").jqxDropDownList({ source: data['handle_codes'], width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: false });				
+				var action_item = $("#action_select").jqxDropDownList('getItemByValue', data['current_settings']['handle_code']);
+				$("#action_select").jqxDropDownList('selectItem', action_item ); 
+
+
+				$("#saveButton").jqxButton({disabled: false});
+//				$("#saveButton").jqxButton('refresh');
+
+//				 var action_item = $("#action_select").jqxDropDownList('getItemByValue', data['current_settings']['handle_code']);
+//				 $("#action_select").jqxDropDownList('selectItem', action_item ); 
+
+//				 var location_item = $("#action_select").jqxDropDownList('getItemByValue', data['current_settings']['location']);
+				 
+//				 alert(JSON.stringify(data['current_settings']))
+//				 var action_item = $("#action_select").jqxDropDownList('getItemByValue', data['current_settings']['handle_code']);
+			},
+			error: function(data){
+
+			}
+		});	        
+	});			
+
+
+	// Column source
+/*	
+	var jqx_column_filter_source = [		
+		{ label: 'Brewery', value: 'entity', checked: true }, 
+		{ label: 'Tag Value', value: 'tag_value', checked: true },             	
+		{ label: 'Size', value: 'asset_type', checked: true }, 
+		{ label: 'Status', value: 'asset_status', checked: true }, 
+		{ label: 'Product', value: 'product', checked: true }, 
+		{ label: 'Location', value: 'location', checked: true},
+		{ label: 'Location Network', value: 'location_network', checked: true }, 		
+		{ label: 'Fill Date', value: 'fill_time', checked: true },
+		{ label: 'Owner', value: 'entity', checked: true }, 
+		{ label: 'Last Scene', value: 'last_action_time', checked: true }, 
+		{ label: 'Options', value: '_id', checked: true }, 
+	];
+*/
+
+	$("#action_select").jqxDropDownList({ source: {}, selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+	$("#location_select").jqxDropDownList({ source: {}, selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+	$("#product_select").jqxDropDownList({ source: {}, selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+	$("#asset_type_select").jqxDropDownList({ source: {}, selectedIndex: 0, width: '100%', height: '25px', theme: theme, valueMember: 'value', displayMember: 'html', disabled: true });
+
+
+	$('#action_select').bind('select', function (event) {
+//		alert('change');
+	    // the event is raised when the selection is changed.
+	    var args = event.args;
+//        var index = args.index;
+        var item = args.item;
+        var originalEvent = args.originalEvent;
+        // get item's label and value.
+        var label = item.label;
+        var value = item.value;
+        if(value == 4){
+        	$("#product_select").jqxDropDownList({disabled: false});        	
+        }else {
+			$("#product_select").jqxDropDownList({disabled: true});        	
+        }
+
+        if(value == 3 || $("#asset_type_toggle").jqxToggleButton('toggled')) {
+        	$("#asset_type_select").jqxDropDownList({disabled: false});        	
+        } else {
+			$("#asset_type_select").jqxDropDownList({disabled: true});        	
+        }
+
+	  	for(i=0;i<3;i++) {
+			$('#save_confirmation').html('Settings not saved...').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+	  	}            
+	});       	
+	$('#location_select').bind('select', function (event) {
+	  	for(i=0;i<3;i++) {
+			$('#save_confirmation').html('Settings not saved...').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+	  	}            
+	});
+	$('#product_select').bind('select', function (event) {	
+	  	for(i=0;i<3;i++) {
+			$('#save_confirmation').html('Settings not saved...').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+	  	}            
+	});
+	$('#asset_type_select').bind('select', function (event) {
+	  	for(i=0;i<3;i++) {
+			$('#save_confirmation').html('Settings not saved...').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+	  	}            
+	});
+
+    $(window).resize(function() {
+		$('#docking').jqxDocking('refresh');   					
+		$("#asset_type_select").jqxDropDownList('refresh')
+		$("#action_select").jqxDropDownList('refresh')
+		$("#location_select").jqxDropDownList('refresh')
+		$("#product_select").jqxDropDownList('refresh')
+
+//    	$('#jqxgrid').jqxGrid('refresh');
+    })
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+    $('#docking').jqxDocking('disableWindowResize', 'window3');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window3');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+    
+	// Create a jqxListBox
+
+	$("#excelExport").jqxButton({ theme: theme });
+	$("#csvExport").jqxButton({ theme: theme });
+	$("#jsonExport").jqxButton({ theme: theme });
+	$("#saveButton").jqxButton({ theme: theme, disabled: true });
+	$('#saveButton').bind('click', function () {  
+		var location_item = $("#location_select").jqxDropDownList('getSelectedItem'); 
+		var action_item = $("#action_select").jqxDropDownList('getSelectedItem'); 
+		var product_item = $("#product_select").jqxDropDownList('getSelectedItem'); 
+		var asset_type_item = $("#asset_type_select").jqxDropDownList('getSelectedItem'); 
+		
+		var antenna_item = $("#jqxListBox").jqxListBox('getSelectedItem'); 		
+
+		$.ajax({
+			type: "POST",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/antenna_update',
+			data: { 
+				_id: antenna_item.value,
+				location_id: location_item.value,
+				handle_code: action_item.value,
+				product_id: product_item.value,
+				asset_type_id: asset_type_item.value							
+			},
+		}).done(function( data ) {
+			
+			$('#save_confirmation').html('Settings saved!').fadeTo(5000, 1.0).fadeTo(3000, 0);
+			
+			
+		});
+
+	}); 
+    $("#asset_type_toggle").jqxToggleButton({ width: '75', height:'20px', toggled: false, theme: theme  });
+
+    $("#asset_type_toggle").bind('click', function () {
+        var toggled = $("#asset_type_toggle").jqxToggleButton('toggled');
+        if (toggled) {
+            $("#asset_type_toggle")[0].value = 'On';
+        	$("#asset_type_select").jqxDropDownList({disabled: false});        	            
+        }
+        else { 
+        	$("#asset_type_toggle")[0].value = 'Off';
+        	$("#asset_type_select").jqxDropDownList({disabled: true});        	        	
+        }
+		$('#save_confirmation').html('Settings not saved...').fadeTo('slow', 0.5).fadeTo('slow', 1.0);        
+    });
+
+
+
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+
+	$("#csvExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+	});
+
+	$("#jsonExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'json' );
+	});
+
+	$.mobile.loading('hide');		
+});

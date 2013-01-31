@@ -1,0 +1,228 @@
+#public_content  {
+	width:960px;
+	padding:25px 25px;
+	
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(bottom, #E3E3E3 0%, #FFFFFF 50%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(bottom, #E3E3E3 0%, #FFFFFF 50%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(bottom, #E3E3E3 0%, #FFFFFF 50%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E3E3E3), color-stop(.5, #FFFFFF));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(bottom, #E3E3E3 0%, #FFFFFF 50%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to top, #E3E3E3 0%, #FFFFFF 50%);
+	
+	margin:auto;
+	border:1px solid #ccc;
+	
+}
+
+#public_slide_frame {
+	width:100%;
+	height:200px;
+	background-color:#FFA;
+
+}
+.public_text_frame {
+	margin-top:0px;		
+	margin-bottom:0px;	
+	padding:5px 5px 15px 5px;
+
+}
+	.public_text_frame .quote_block h5, p {				
+		font-size: 14px;
+		padding:0px;	
+		margin-bottom: 5px;
+		margin-top: 0px;
+	}
+
+	.public_text_frame .quote_block p {				
+		font-size: 10pt;
+		
+	}
+
+	.public_text_frame .quote_block {				
+		width: 290px;
+		padding:0 15px 0 15px;
+	}
+
+
+	.public_text_frame.full {
+		float:left;
+		clear:both;
+		width: 960px;	
+	
+	}
+		.public_text_frame.full h1 {			
+			font-weight:normal;
+			color:#444; 
+		}
+		.public_text_frame.full p {
+			margin-top:10px;
+			font-weight:normal;
+			font-size:11pt;
+			color:#444; 
+		}
+		.public_text_frame.left h5 {
+			font-style: italic;
+			margin:0px;
+		}
+	.public_text_frame.right {
+		float:right;
+		width: 470px;	
+		height:200px;
+
+	}
+
+	.public_text_frame.left {
+		float:left;
+		width: 470px;	
+		height:200px;			
+	}
+	.public_text_frame.left p {
+		font-style: italic;		
+		font-size: 10pt;
+	}	
+#public_table_frame {
+	margin-top:10px;		
+	margin-bottom:10px;	
+	padding:5px;
+}
+
+.public_text_frame table {
+	width: 960px;
+	border-spacing: 15px;
+	
+	background-color: transparent;
+}
+.public_text_frame table th {
+	padding:10px;
+}
+
+
+.public_text_frame table td, th {
+	border-spacing: 5px;
+	
+}
+.public_text_frame table td  {
+	padding: 0px 0px 0px 0px;		
+
+}
+.public_price_row .price{
+	font-size:22pt;
+	font-family:sans-serif;
+}
+.public_price_row .month{
+	font-size:12pt;
+	font-family:sans-serif;
+}
+.public_price_row .asterisk {
+	font-size:10pt;
+	font-family: sans-serif;
+}
+.public_price_row li {
+	font-style: italic;
+
+}
+.public_price_row .header{
+	font-style: normal;
+	font-weight: bolder;
+	
+}
+.public_price_row .detail{
+	font-size:12pt;
+	font-style: italic;
+	font-family:sans-serif;
+}
+
+.public_text_frame ul {
+	padding:0px 15px 15px 10px;
+	margin:0;
+	list-style: none;
+
+}
+.public_text_frame li {
+	padding-top:5px;
+	font-size:11pt;
+}
+.public_text_frame h4 {
+	margin:0;
+	font-style:italic;
+}
+
+th.pricing_col_5, th.pricing_col_6 {
+/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(bottom, #3CFF2E 0%, #CCFF99 75%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(bottom, #3CFF2E 0%, #CCFF99 75%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(bottom, #3CFF2E 0%, #CCFF99 75%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #3CFF2E), color-stop(.75, #CCFF99));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(bottom, #3CFF2E 0%, #CCFF99 75%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to top, #3CFF2E 0%, #CCFF99 75%);
+
+
+	
+	font-weight: normal;
+	text-shadow: none;	
+}
+th.pricing_col_3, th.pricing_col_4 {
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(bottom, #BFCC00 0%, #FFF785 100%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(bottom, #BFCC00 0%, #FFF785 100%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(bottom, #BFCC00 0%, #FFF785 100%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #BFCC00), color-stop(1, #FFF785));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(bottom, #BFCC00 0%, #FFF785 100%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to top, #BFCC00 0%, #FFF785 100%);
+
+	font-weight: normal;
+	text-shadow: none;		
+}
+th.pricing_col_1, th.pricing_col_2 {
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(bottom, #FF6459 0%, #FF968F 100%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(bottom, #FF6459 0%, #FF968F 100%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(bottom, #FF6459 0%, #FF968F 100%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FF6459), color-stop(1, #FF968F));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(bottom, #FF6459 0%, #FF968F 100%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to top, #FF6459 0%, #FF968F 100%);
+
+	font-weight: normal;
+	text-shadow: none;	
+}

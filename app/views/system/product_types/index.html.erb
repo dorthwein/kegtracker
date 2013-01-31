@@ -1,0 +1,26 @@
+<li class="li-table">
+	<%= toolbar({:new => true, :module_menu => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>		
+	<table class="dt">
+		<thead>
+		  <tr>
+			<th>Varital</th>
+			<th>Description</th>
+			<th></th>
+		  </tr>
+		</thead>
+		<tbody>							
+			<% @product_types.each do |product_type| %>
+			  <tr>
+			  	<td> <%= product_type.description %>  </td>
+			  	<td> <%= product_type.notes %> </td>
+				<td>
+					<%= link_to 'Show', product_type %>
+					<%= link_to 'Edit', edit_product_type_path(product_type) %>
+					<%= link_to 'Destroy', product_type, confirm: 'Are you sure?', method: :delete %>
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+	<div style="clear:both"> </div>
+</li>

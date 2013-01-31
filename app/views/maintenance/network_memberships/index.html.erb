@@ -1,0 +1,158 @@
+
+	<div style="width:100%;">
+		<input type="button" style="float:left; margin:5px 5px 5px 0;" value="Add a Partner to your Network" id='addrowbutton' data-role="none"/>
+
+		<input type="button" style="float:left; margin:5px 5px 5px 0;" value="Join a Distributor's Network" id='new_distributor_partnership' data-role="none"/>
+		<br /><br />
+		<input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
+		<input type="button" style="float:left; margin:5px;" value="Export to CSV" id='csvExport' data-role="none"/>
+	    <div id="jqxgrid"></div>
+	</div>
+	<div id="docking">
+	    <div style="width:100%;">
+	        <div id="window1" class="report_dock_window">
+	            <div>
+	                Partnership Information
+	            </div>
+				<div style="text-align:center; width:100%;" >
+	            	<h1> Fields comming soon <h1>
+	            		<h3> Please use New, Edit, and Delete buttons to manage Partnerships</h3>
+	            	<table style="width:100%; display:none;">
+	            		<thead>
+	            			<tr>
+	            				<th  colspan="1">
+				            		<h2> User Information </h2>	           	
+	            				</th>
+	            				<th> </th>
+	            				<th> </th>
+	            				<th colspan="2">	            			
+	            					<h2> Scanning Permissions </h2>	           	
+	            				</th>	
+	            				<th colspan="2">	            			
+	            					<h2> Maintenance Permissions </h2>           
+	            				</th>	  
+	            			</tr>
+						</thead>
+	            		<tbody>
+	            			<tr>
+	            				<td style="width:10%" colspan="1">  
+									<h3 > First Name </h3>
+									 <input type="text" id="first_name" class="form_input" data-role="none" />
+	            				</td>
+
+	            				<td style="width:10%" colspan="1">  
+									<h3> Last Name </h3>
+									<input type="text" id="last_name" class="form_input" data-role="none" />	            					
+	            				</td>
+	            				<td style="width:10%" colspan="1"> 
+									<h3> Entity </h3>
+									<div id="entity_id"> 
+									</div>
+
+	            				</td>
+	            				<td style="width:10%" colspan="1"> 
+					                <h3> Pickup/Delivery </h3>
+					              	<div id="scanner_delivery_pickup" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+					            <td style="width:10%" colspan="1"> 
+					                <h3> Fill </h3>
+					              	<div id="scanner_fill" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+								<td style="width:10%" colspan="1"> 
+					                <h3> User  </h3>
+					              	<div id="user_maintenance" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+					            <td style="width:10%" colspan="1"> 
+					                <h3> Network  </h3>
+					              	<div id="network_maintenance" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+
+	            			</tr>
+
+	            			<tr>
+	            				<td style="width:10%" colspan="1">  
+									<h3> Email/Login </h3>
+									<input type="text" id="email" class="form_input" data-role="none" />
+
+	            				</td>
+	            				<td style="width:10%" colspan="1">  	
+									<h3> Cell Phone </h3>
+									<input type="text" id="cell_phone" class="form_input" data-role="none" />
+	            				</td>
+
+	            				<td style="width:10%" colspan="1">  	
+									 <h3> Office Phone </h3>
+									<input type="text" id="office_phone" class="form_input" data-role="none" />	
+	            				</td>
+
+								<td style="width:10%" colspan="1"> 
+					                <h3> Add </h3>
+					              	<div id="scanner_add" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+					            <td style="width:10%" colspan="1"> 
+					                <h3> Move </h3>
+					              	<div id="scanner_move" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+
+	            				<td style="width:10%" colspan="1"> 
+					                <h3> Location  </h3>		                
+					              	<div id="location_maintenance" class="toggle_switch">
+					              		Off
+					              	</div>
+
+								</td>
+								<td style="width:10%" colspan="1"> 
+					                <h3> Product </h3>
+					              	<div id="product_maintenance" class="toggle_switch">
+					              		Off
+					              	</div>
+					            </td>
+
+	            			</tr>
+
+	            			<tr>
+	            				<td style="width:10%" colspan="1">  	
+									<h3> Change Password </h3>
+									<input type="password" class="form_input" id="password" data-role="none" />
+	            					
+
+	            				</td>
+	            				<td style="width:10%" colspan="1">  	
+									<h3> Confirm Password </h3>
+									<input type="password" id="password_confirmation" class="form_input" data-role="none" />
+	            				</td>
+	            				<td style="width:10%" colspan="1">  	
+
+	            				</td>
+	            				<td> </td>
+	            				<td> </td>
+	            				<td> </td>
+								<td> 	            				
+	            					<input type="button" style="width:75%; margin:5px auto 0 auto;" value="Save" id='saveButton' data-role="none"/>
+	            				</td>	            				
+	            			</tr>	            				
+			
+	            		</tbody>
+	            	</div>
+	            </div>
+	        </div>
+	    </div>	    
+	</div>
+
+	<div id="popupWindow" style="display:none">
+	<div> Network 	</div>
+	<div>			</div>
+	</div>
+

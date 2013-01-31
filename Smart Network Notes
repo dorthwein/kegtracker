@@ -1,0 +1,40 @@
+*********************
+Brewery
+*********************
+	Brewery -> Brewery
+		Same Entity - 
+			- Do Nothing
+
+		Different Entities
+			- Check if product owned by to_network.entity
+				- If YES  do nothing
+				- If NO Purge product from asset on Exit
+
+	Brewery -> Distributor
+		If asset not filled
+			- From Network: Fill Asset
+
+		If auto_mode on for To Network
+			- Set asset as in market
+
+	Brewer -> Market
+		If asset not filled
+			- From Network: Fill Asset			
+
+*********************
+Distributor
+*********************
+	Distributor -> Brewery
+		If asset not Empty
+			- Pickup Asset to from_network out_location
+
+		If asset Empty
+			- Do Nothing
+
+	Distributor -> Distributor
+
+	Distributor -> Market
+
+*********************
+Market
+*********************

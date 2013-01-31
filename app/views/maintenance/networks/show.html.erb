@@ -1,0 +1,91 @@
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader Name: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.reader_name %>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Reader Type: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.reader_type %>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<b> Network: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.network.description %>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b> Antennas: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.rfid_antennas.count %>
+					</td>
+				</tr>
+				
+				
+			</tbody>
+		</table>	
+		<table class="rt">
+			<thead>
+				<tr>
+					<th class="label"> </th>
+					<th class="input"> </th>								
+				</tr>
+			</thead>
+			<tbody>
+				<tr>	
+					<td>
+						<b> Reader ID: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.id %>
+					</td>				
+				</tr>			
+				<tr>	
+					<td>
+						<b> MAC Address: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.mac_address %>
+						<%= 
+							# "#{@rfid_reader.mac_address_1}:#{@rfid_reader.mac_address_2}:#{@rfid_reader.mac_address_3}:#{@rfid_reader.mac_address_4}:#{@rfid_reader.mac_address_5}:#{@rfid_reader.mac_address_6}" 
+						%>
+					</td>
+					
+				</tr>
+				<tr>
+					<td>
+						<b> Last IP: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.last_ip %>
+					</td>
+					
+				</tr>
+				<tr>
+					<td>
+						<b> Command Port: </b>
+					</td>
+					<td>
+						<%= @rfid_reader.command_port %>
+					</td>
+				</tr>
+			</tbody>
+		</table>		

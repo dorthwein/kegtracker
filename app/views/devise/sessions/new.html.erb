@@ -1,0 +1,27 @@
+<div style="text-align:center; margin:auto; width:175px;">
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+		<div style="text-align:left">
+			<%= f.label :email, 'E-mail:', 'data-role' => :none %><br />
+			<%= f.email_field :email, 'data-role' => :none %>
+		</div>
+
+		<div style="text-align:left">
+			<%= f.label :password, 'Password:', 'data-role' => :none %><br />
+			<%= f.password_field :password, 'data-role' => :none %>
+		</div>
+
+		<% if devise_mapping.rememberable? -%>
+		<div style="text-align:left">
+			<%= f.check_box :remember_me, 'data-role' => :none %> 
+			<%= f.label :remember_me, 'data-role' => :none %>
+		</div>
+		<% end -%>
+
+		<div style="text-align:left">
+			<%= f.submit "Sign in", 'data-role' => :none %>
+		</div>
+	<% end %>
+		<div style="text-align:left">		
+			<%= render :partial => "devise/shared/links" %>
+		</div>
+</div>

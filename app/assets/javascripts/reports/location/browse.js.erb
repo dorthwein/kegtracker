@@ -1,0 +1,217 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_reports_location_browse' ).live('pageshow', function(event){
+	// prepare the data
+	$.mobile.loading('show');
+	theme = settings.theme;
+
+	// Grid data source
+	var grid_source = {
+		datatype : "json",
+		type: 'GET',		
+		datafields: [
+			{ name: 'external_id' },
+			{ name: 'description' },
+			{ name: 'network' }, 
+
+			{ name: 'name' },
+			{ name: 'street' },
+			{ name: 'city' },
+			{ name: 'state' },					
+			{ name: 'zip' },                	
+
+			{ name: 'on_premise' },                	                	
+			{ name: 'off_premise' },                	                	                	
+			{ name: 'empty' },                	                	
+			{ name: 'inventory' },                	                	
+			{ name: 'production' },                	                											                
+			{ name: 'partner_entity' },
+			{ name: '_id'}
+		], 
+		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
+	};
+	var grid_data_adapter = new $.jqx.dataAdapter(grid_source, {
+
+		loadComplete: function (data) {},
+		loadError: function (xhr, status, error) { }      
+	});
+
+		
+	// Initiate grid
+	$("#jqxgrid").jqxGrid({
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: grid_data_adapter,
+		columnsresize: true,
+		altrows: true,				
+		columns: [		
+			{ text: 'Act #', datafield: 'external_id' },
+			{ text: 'Location', datafield: 'description' },
+			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' },
+
+			{ text: 'Name', datafield: 'name' },
+			{ text: 'Address', datafield: 'street' },
+			{ text: 'City', datafield: 'city' },
+			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },			
+			{ text: 'Zip', datafield: 'zip' },
+
+			{ text: 'On Premise', datafield: 'on_premise', filterable: false,  width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Off Premise', datafield: 'off_premise', filterable: false,  width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Empties', datafield: 'empty',  width: '75px', filterable: false, cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Inventory', datafield: 'inventory',  width: '75px', filterable: false, cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Production', datafield: 'production',  width: '75px', filterable: false, cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Partner', datafield: 'partner_entity',  width: '75px', filterable: false, cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},	
+		],
+        groups: ['network']		
+	});
+
+									
+
+
+	$('#jqxgrid').bind('rowselect', function (event){	    
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/row_select',
+			type: "POST",
+			data: rowdata,
+			success: function( data ){ 			
+				$('#asset_transactions').html('<div style="text-align:center;"> <h1> Please Select an Asset <h1> </div>');										
+				if(data.length > 0 ) {												
+//					$('#jqxListBox').empty();
+//					$('#jqxListBox').removeClass();					
+					$("#jqxListBox").jqxListBox({ source: data, width: '100%', height: '100%', theme: theme });				
+					$("#jqxListBox").jqxListBox('selectIndex', 0 );					
+				} else {
+//					$('#jqxListBox').empty();
+//					$('#jqxListBox').removeClass();
+					source_data =  [{html : '<div style="text-align:center;"> <h1> No Assets <h1> </div>'}]
+					$("#jqxListBox").jqxListBox({ source: source_data, width: '100%', height: '100%', theme: theme });									
+					console.log('no assets');
+				}
+			}
+		});
+	});
+	$("#jqxListBox").bind('select', function (event) {	
+        var args = event.args;	        
+        var item = args.item;
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/asset_select',
+			type: "POST",
+			data: {asset_id: item.value},
+			success: function( data ){ 								
+				$('#asset_transactions').html(data.html);
+			},
+			error: function(data){
+//				alert(JSON.stringify(data));
+
+			}
+		});	        
+	});			
+	// Column source
+/*	
+	var jqx_column_filter_source = [		
+		{ label: 'Brewery', value: 'entity', checked: true }, 
+		{ label: 'Tag Value', value: 'tag_value', checked: true },             	
+		{ label: 'Size', value: 'asset_type', checked: true }, 
+		{ label: 'Status', value: 'asset_status', checked: true }, 
+		{ label: 'Product', value: 'product', checked: true }, 
+		{ label: 'Location', value: 'location', checked: true},
+		{ label: 'Location Network', value: 'location_network', checked: true }, 		
+		{ label: 'Fill Date', value: 'fill_time', checked: true },
+		{ label: 'Owner', value: 'entity', checked: true }, 
+		{ label: 'Last Scene', value: 'last_action_time', checked: true }, 
+		{ label: 'Options', value: '_id', checked: true }, 
+	];
+*/
+    $(window).resize(function() {
+//		$('#docking').jqxDocking('refresh');   		
+			
+//    	$('#jqxgrid').jqxGrid('refresh');
+    })
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+    
+	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' );
+	
+	// Create a jqxListBox
+	source_data =  [{html : '<div style="text-align:center;"> <h1> Please Select a Location <h1> </div>'}]
+	$("#jqxListBox").jqxListBox({ source: source_data, width: '100%', height: '100%', theme: theme });
+
+	$("#excelExport").jqxButton({ theme: theme });
+	$("#csvExport").jqxButton({ theme: theme });
+	$("#jsonExport").jqxButton({ theme: theme });
+
+
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+
+	$("#csvExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+	});
+
+	$("#jsonExport").click(function () {
+		alert($("#jqxgrid").jqxGrid('exportdata', 'json' ))
+	});
+
+	$.mobile.loading('hide');		
+
+});

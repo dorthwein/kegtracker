@@ -1,0 +1,127 @@
+--- NOTES ---
+January 16th, 2013
+Items to complete before marketable
+
+Inside Rim Weld Start Date: January 24th, 2013
+--- SYSTEM RELATED TASKS ---
+*****************************************
+reporting - Est. Time: 3 weeks (21 days)
+*****************************************
+	1) Asset Browse Report (COMPLETE)
+		- Rework into reports structure (disolve Browse structure)
+		- Add on select show details at bottom.
+
+	2) Location Browse Report (COMPLETE)
+		- Design & Build		
+		- Included features - look at location, see locations /w my assets etc...
+			- Shows current asset lifecycle (i.e. how it got there)
+
+	3) Product Browse
+		- Design & Build
+
+	4) Network Performance Scorecard
+		- Design & Build
+
+	5) Product Perfomance Scorecard
+		- Design & Build
+
+	6) Float Life Cycle
+		- Design & Build
+
+	7) Asset Activity
+		- Refine existing - essentially design & build
+
+	8) Avg. Lifecycle Time
+		- Design & Build
+
+	9) Lost Asset Report
+
+	10) Keg Register
+
+***********************************************
+Maintenance - Est. Time: TBD minimal 2 weeks
+***********************************************
+	1) Users	(COMPLETE)
+		- Redo UI		
+
+	2) Partnerships
+		- Redo UI
+		- Refine Mechanics
+
+	3) Networks (COMPLETE)
+		- Redo UI		
+
+	4) Locations (COMPLETE)
+		- Redo UI
+
+	5) Products (COMPLETE)
+		- Redo UI
+
+	6) Barcode Maker
+		- Redo UI
+
+	7) RFID (COMPLETE)
+
+	8) Verify/define user permissions/roles	
+	
+	9) Product Variatals List
+		- Define & add items to list
+
+***********************************************
+SmartNetworks - Est. Time: TBD minimal 1 week
+***********************************************
+	1) Create/Determine Network Types
+		- Distributor
+		- Brewery		
+
+*******************************************
+dashboard - Est. Time: TBD minimal 1 week
+*******************************************
+	(COMPLETE)
+
+*******************************************
+System Management - Est. Time:  1 week
+*******************************************
+	1) Create new entity/customer
+		- Build & refine process
+
+	2) Monitoring tools
+
+	3) RFID Management (COMPLETE)
+
+--- CONSUMER/BUSINESS RELATED ---
+*******************************************
+seo/google ads - 1 week
+*******************************************
+	TBD
+	
+*******************************************
+payment proccess - Est. Time: 1 week
+*******************************************
+	TBD
+
+*******************************************
+Public facing site - Est. Time 6 weeks
+*******************************************
+	1) General Design
+		- Refine/style header bar
+		- develop craft beer centric theme	
+
+	2) home page
+		- Slide Show
+		- Quick Start Trial Image
+
+	3) pricing
+		- image
+
+	4) about page
+		- design & build
+
+	5) contact page
+		- design & build
+
+	6) order page
+		- design & build
+
+	7) members (maybe removed)
+		- design & build

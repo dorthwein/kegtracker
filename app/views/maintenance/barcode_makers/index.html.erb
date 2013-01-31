@@ -1,0 +1,13 @@
+<li class="li-content">
+	<%= toolbar({:new => true, :module_menu => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :maintenance_menu => true}) %>		
+	<div class="li-content">	
+		<% if !@path.nil? %>
+	
+			<%= render "download" %>
+			
+		<% else %>
+			Select "New" to create a barcode set
+			
+		<% end %>
+	</div>
+</li>	
