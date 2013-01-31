@@ -1,5 +1,5 @@
 class ScanDrone
-	require 's1'
+	require 'S1'
 #	require 'scan_object'	
 	require 'scan_process'		
 	require 'T0'	
