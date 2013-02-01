@@ -1,3 +1,4 @@
+=begin
 class T1 < ScanDrone
 	attr_accessor :version
 	attr_accessor :value	
@@ -20,3 +21,4 @@ class T1 < ScanDrone
 		@key = tag[3]		
 	end
 end
+=end

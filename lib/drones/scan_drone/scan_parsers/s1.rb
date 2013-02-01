@@ -1,3 +1,4 @@
+=begin
 class S1 < ScanDrone	
 	# User
 	attr_accessor :email
@@ -37,7 +38,6 @@ class S1 < ScanDrone
 		TAG : 'TAG BASED ON TAG PARSER'
 	}
 	
-=end
 
 	# *************	
 	# Scan Parsing
@@ -86,3 +86,4 @@ class S1 < ScanDrone
 		end	
 	end
 end
+=end

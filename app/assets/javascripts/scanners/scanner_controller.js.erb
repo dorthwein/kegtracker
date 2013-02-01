@@ -127,8 +127,7 @@ $( '#_scanners_barcode' ).live( 'pageshow',function(event){
 				   type: "POST",
 				   data: { scan : JSON.stringify(scan) },				   
 				   dataType: "JSON",
-				   success: function( data ){ 
-
+				   success: function( data ){ 				   		
 						// Update Recents table
 						for (var i=0; i < data.length; i++){
 							var tag = data[i];

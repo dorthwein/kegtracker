@@ -23,21 +23,24 @@ class Scanners::BarcodeController < ApplicationController
 	scans_array = Array.new
 	scans_array.push(params[:scan])
 
-	scan_drone = ScanDrone.new scans_array
-#	scan_drone.process(scans_array)
-	
+#	scan_drone = ScanDrone.new scans_array
+  scan = Asset.process_scans({:scans => scans_array})
+  scan_snapshot = []  
+  scan_snapshot.push(scan)
+  	
     respond_to do |format|
-        format.html { redirect_to @scans, notice: 'Scan was successfully created.' }
-		format.json { render :json => scan_drone.processed_scans }
+		    format.json { render :json => scan_snapshot} #scan_drone.processed_scans }
     end
   end
 
 # Scan Table 
+=begin
   def scanTable
   	data = Hash.new
   	data.merge!(:scans => Scan.new)
-	respond_to do |format|
-		format.json { render json: data }
-	end  	
+	   respond_to do |format|
+		    format.json { render json: data }
+	   end  	
   end
+=end
 end

@@ -1,3 +1,4 @@
+=begin
 class T0 < ScanDrone
 	attr_accessor :version
 	attr_accessor :value	
@@ -15,7 +16,7 @@ class T0 < ScanDrone
 	}
 {"N":"3","V":"36","K":"asd34","M":"1"}
 
-=end
+
 	# Check if valid JSON - 
 
 		# Tag Array Map
@@ -29,3 +30,4 @@ class T0 < ScanDrone
 		@key = tag['K']	
 	end
 end
+=end

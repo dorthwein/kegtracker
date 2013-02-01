@@ -1,3 +1,4 @@
+
 class ScanProcess
 	attr_accessor :scan_snap_shots
 	def initialize scan
@@ -47,20 +48,12 @@ class ScanProcess
 				print "HC Error \n"
 			end
 			@asset.save
-
-
 			print "Scan Complete \n"			
-			if @reject != true
-				print "Not Rejected \n"
-			else
-				print "Rejected \n"			
-			end						
 		end
 	end	
 
 	def authenticate
 		@user = User.where(:email => @scan_email).first
-		print "Scan Authenticated \n"
 		return true
 	end
 	
@@ -83,7 +76,6 @@ class ScanProcess
 	end	
 		
 	def check_correction
-		print "Checking if correction \n"
 		# Same Location & Same Action & Within 24 Hours
 		if @asset.location_id == @scan_location && @asset.handle_code.to_i == @scan_handle_code.to_i && @asset.last_action_time.to_i > (@scan_time.to_i - 86400)
 			print "Standard Correction \n"
@@ -116,7 +108,7 @@ class ScanProcess
 		else
 			@tag_network = Network.where(:netid => @tag_network_netid).first		
 		end
-		print "\nNetid: " + @tag_network.netid.to_s + " \n"		
+		print "\nNetid: " + @tag_network.netid.to_s + " - " + @tag_network.description + " \n"		
 	end
 	def process_general
 	# After Find Asset
@@ -125,8 +117,6 @@ class ScanProcess
 			@asset.asset_type = AssetType.find(@scan_asset_type)
 		end
 		@asset.save!
-
-#		@old_location_network_id = @asset.location_network._id		
 	end
 	def parse_scan	
 	# User/Password
