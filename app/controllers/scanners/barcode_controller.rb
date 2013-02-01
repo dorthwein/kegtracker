@@ -25,6 +25,7 @@ class Scanners::BarcodeController < ApplicationController
 
 #	scan_drone = ScanDrone.new scans_array
   scan = Asset.process_scans({:scans => scans_array})
+
   scan_snapshot = []  
   scan_snapshot.push(scan)
   	
