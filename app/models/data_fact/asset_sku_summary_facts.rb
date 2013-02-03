@@ -1,3 +1,4 @@
+=begin
 class AssetSkuSummaryFacts
   include Mongoid::Document
   include Mongoid::Timestamps  	
@@ -18,8 +19,10 @@ class AssetSkuSummaryFacts
 	field :empty_quantity, type: Integer				  
 	field :full_quantity, type: Integer				  
 	field :market_quantity, type: Integer				  
+	field :total_quantity, type: Integer				  	
 	
 	field :fact_time, :type => Time
+
 
 	before_save :sync_descriptions	
 	def sync_descriptions
@@ -27,7 +30,10 @@ class AssetSkuSummaryFacts
 		self.asset_type_description = self.asset_type.description			
 		self.product_description = self.product.description	
 		self.location_network_description = self.location_network.description	
+
+		self.total_quantity = self.empty_quantity + self.full_quantity + market_quantity
 	end	
 	# Indexes	
 	index({ report_entity_id: 1 }, { name: "report_entity_index" })
 end
+=end

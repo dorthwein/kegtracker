@@ -19,10 +19,25 @@ Max Width Override
 .hidden {
 	display:none;
 }
+.inline {
+	display:inline-block;
+
+}
 div.ui-slider-switch {
  width: 100%;
 }
+.jqx-grid-column-header-metro {
+	font-weight: bolder;
+	
+}
+.clear{
+	clear:both;
 
+}
+.jqx-grid-cell-metro div{
+
+
+}
 li {
 	margin:0px;
 	padding:0px;

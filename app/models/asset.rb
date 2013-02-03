@@ -350,10 +350,9 @@ class Asset
 							:entity_id => tag_network.entity._id
 						)
 
-			asset.user = User.where(:email => scan_email).first
-			print 'fuck'
+			asset.user = User.where(:email => scan_email).first		
 			print asset.user.to_json
-			if !scan_asset_type.nil?		
+			if !scan_asset_type.nil?
 				asset.asset_type = AssetType.find(scan_asset_type)
 			end
 

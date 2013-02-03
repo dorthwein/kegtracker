@@ -44,7 +44,9 @@ Cobalt::Application.routes.draw do
 #		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
 		
 		# Asset
-		match 'asset/sku_summary_report' => 'asset#sku_summary_report', :via => [:get, :post]
+		match 'asset/sku_summary_report_advanced' => 'asset#sku_summary_report_advanced', :via => [:get, :post]
+		match 'asset/sku_summary_report_simple' => 'asset#sku_summary_report_simple', :via => [:get, :post]		
+		
 		match 'asset/browse' => 'asset#browse', :via => [:get, :post]		
 		match "asset/browse/row_select" => 'asset#browse_row_select', :via => [:get, :post]
 		match "asset/browse/life_cycle_select" => 'asset#browse_life_cycle_select', :via => [:get, :post]
@@ -55,7 +57,9 @@ Cobalt::Application.routes.draw do
 		match "location/browse/asset_select" => 'location#browse_asset_select', :via => [:get, :post]				
 
 		# Network
-		match 'network/in_out_asset_report' => 'network#in_out_asset_report', :via => [:get, :post]
+		match 'network/in_out_asset_report_advanced' => 'network#in_out_asset_report_advanced', :via => [:get, :post]
+		match 'network/in_out_asset_report_simple' => 'network#in_out_asset_report_simple', :via => [:get, :post]		
+
 		match 'network/performance_scorecard_report' => 'network#performance_scorecard_report', :via => [:get, :post]
 		
 		# Float

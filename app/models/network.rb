@@ -67,10 +67,19 @@ class Network
 
       self.smart_mode_in_location_description = self.smart_mode_in_location.description
       self.smart_mode_out_location_description = self.smart_mode_out_location.description    
-
     end
 
 	end	
+  def self.visible_networks options = {}
+    networks = []
+    networks = networks + options[:entity].networks        
+    
+    options[:entity].network_memberships.each do |x|
+      networks.push(x.network)
+    end
+    return networks
+  end
+
   def on_create  
     location = Location.create(:description => self.description + " Default Location", :network => self)
     self.smart_mode_in_location = location
