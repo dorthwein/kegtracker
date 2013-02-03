@@ -1,45 +1,53 @@
-<div style="display:none">
-	<div class="dashboard_filter">				
-		<h5> Products </h5>
-		<div id="product_filter">	</div>
-	</div>
-
-	<div class="dashboard_filter">				
-		<h5> Breweries </h5>	
-		<div id="product_entity_filter">	</div>
-	</div>
-
-	<div class="dashboard_filter">				
-		<h5> Asset Types </h5>
-		<div id="asset_type_filter">	</div>
-	</div>
-
-	<div class="dashboard_filter">		
-		<h5> Location Networks </h5>		
-		<div id="location_network_filter">	</div>
-	</div>
+<div class="dashboard_filter">				
+	<h5> Select Date </h5>
+	<div id="date_filter">	</div>
 </div>
-	<div class="dashboard_filter">				
-		<h5> Select Date </h5>
-		<div id="date_filter">	</div>
-	</div>
 
 <div id="docking">
 	<!-- COLUMN 1 -->
 	<div style="width:33%">			
 		<div id="dashboard_slot_1">
 			<div> 
-				In Bound Assets by Network
+				Quick Links
 			</div>
-			<div id='dashboard_slot_1_content' class="dashboard_chart" style="overflow:hidden">	
-				
-			</div>						
+			<div id='dashboard_slot_1_content' class="dashboard content" style="overflow:hidden">	
+				<div class="dashboard button-group">
+					<h2> Reports</h2>
+
+					<%= link_to '<h3> Activity Report </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
+					<%= link_to '<h3> In/Out Report </h3>'.html_safe, :reports_network_in_out_asset_report_simple, :class => "dashboard button left" %> 
+					
+					<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_asset_sku_summary_report_simple, :class => "dashboard button left" %> 
+
+
+				</div>
+
+				<div class="dashboard button-group">
+					<h2> Scanning </h2>
+					<%= link_to '<h3> Barcode Scanner </h3>'.html_safe, :scanners_barcode, :class => "dashboard button left" %> 
+
+					<%= link_to '<h3> RFID Reader </h3>'.html_safe, :scanners_rfid_readers, :class => "dashboard button left" %> 
+				</div>
+
+				<div class="dashboard button-group">
+					<h2> Maintenance </h2>
+					<%= link_to '<h3> Locations </h3>'.html_safe, :maintenance_locations, :class => "dashboard button left" %> 
+						
+					<%= link_to '<h3> Networks </h3>'.html_safe, :maintenance_networks, :class => "dashboard button left" %> 
+						
+					<%= link_to '<h3> Distributors </h3>'.html_safe, :maintenance_network_memberships, :class => "dashboard button left" %> 					
+
+					<%= link_to '<h3> Users </h3>'.html_safe, :maintenance_users, :class => "dashboard button left" %> 
+					<%= link_to '<h3> Products </h3>'.html_safe, :maintenance_products, :class => "dashboard button left" %> 
+					
+				</div>
+			</div>
 		</div>
 		<div id="dashboard_slot_2">
 			<div> 	
 				Full Assets by Network
 			</div>
-			<div id='dashboard_slot_2_content' class="dashboard_chart" style="overflow:hidden">						
+			<div id='dashboard_slot_2_content' class="dashboard chart" style="overflow:hidden">						
 			</div>
 		</div>
 	</div>
@@ -49,17 +57,19 @@
 
 		<div id="dashboard_slot_3">
 			<div> 
-				Out Bound Assets by Network
+				Alerts
 			</div>
-			<div id='dashboard_slot_3_content' class="dashboard_chart" style="overflow:hidden">	
-			</div>
+			<div id='dashboard_slot_3_content' class="dashboard chart" style="overflow:hidden; text-align: center;">	
+				<h1> Alerts Comming Soon </h1>
+			</div>						
+
 		</div>				
 
 		<div id="dashboard_slot_4">
 			<div> 
 				In Market Assets by Network
 			</div>
-			<div id='dashboard_slot_4_content' class="dashboard_chart" style="overflow:hidden">	
+			<div id='dashboard_slot_4_content' class="dashboard chart" style="overflow:hidden">	
 			</div>
 		</div>
 	</div>
@@ -70,7 +80,7 @@
 			<div> 
 				Recent Activity
 			</div>
-			<div id='dashboard_slot_5_content' class="dashboard_chart" style="overflow: scroll;">								
+			<div id='dashboard_slot_5_content' class="dashboard chart" style="overflow: scroll;">								
 			</div>
 		
 		</div>				
@@ -79,7 +89,7 @@
 			<div> 
 				Empty Assets by Network
 			</div>
-			<div id='dashboard_slot_6_content' class="dashboard_chart" style="overflow:hidden">	
+			<div id='dashboard_slot_6_content' class="dashboard chart" style="overflow:hidden">	
 			</div>
 		</div>
 	</div>			

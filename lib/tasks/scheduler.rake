@@ -3,7 +3,7 @@ task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.new)
 	build_report.asset_summary_fact
 	build_report.asset_location_network_in_out_report
-	build_report.asset_activity_summary_fact 	
+	build_report.asset_activity_summary_fact
 
 end
 
@@ -18,6 +18,7 @@ task :build_asset_summaries => :environment do
 		a = BuildReport.new(current)	
 		a.asset_summary_fact 
 		a.asset_location_network_in_out_report
+		a.asset_activity_summary_fact
 	end	
 end
 

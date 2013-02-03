@@ -5,11 +5,12 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
 	// prepare the data
 
 	$.mobile.loading('show');
-	var theme =  'metro' // settings.theme
+	var theme =  settings.theme // settings.theme
 	url = system.server + $('.ui-page-active').attr('data-url');
     // LEFT OFF HERE!! BUILDING AJAX JSON CALLBACK TO PAGE FOR FILTER DATA
 
     $("#date_filter").jqxDateTimeInput({ width: '250px', height: '25px', theme: theme });              
+    $(".dashboard.button").jqxButton({ theme: theme, width:'30%', height:50 });                
 //    var date2 = new Date();
 //    var date1 = new Date((date2 - (86400 * 1000 * 30)))
 //    $("#date_filter").jqxDateTimeInput('setRange', date1, date2);
@@ -39,6 +40,9 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
 
 
     $('#docking').jqxDocking('hideAllCloseButtons');    
+
+
+
  
     function loadFilters(){
         url = system.server + $('.ui-page-active').attr('data-url');
@@ -52,6 +56,7 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
         }).done(function(data) { 
             // alert(JSON.stringify(data['asset_location_network_in_out_bound_summary_series']));            
             // alert(JSON.stringify(data['recent_activity_data']));
+/*
             $("#product_filter").jqxDropDownList({  
                                                 checkboxes: true,
                                                 source: data['products'], 
@@ -98,7 +103,8 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
                                                 theme: theme,
                                                 animationType: 'none',
                                             });    
-
+*/
+/*
             var asset_location_network_in_bound_summary_settings = {
                 title: " ",                
                 enableAnimations: true,
@@ -170,7 +176,7 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
                 ]
             };
             $('#dashboard_slot_3_content').jqxChart(asset_location_network_out_bound_summary_settings);
-
+*/
             
             var asset_summary_chart_full_settings = {
                 title: " ",                

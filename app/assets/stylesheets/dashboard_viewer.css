@@ -1,0 +1,42 @@
+.dashboard.chart, .dashboard.content {	
+	height:450px;
+	padding-bottom:30px;
+	padding-right:30px;
+	
+}
+
+.dashboard.content  {
+	
+
+}
+.dashboard.content h2 {		
+	width:100%;	
+	display: inline-block;
+	margin:10px 10px 10px -20px;
+}
+.dashboard.button-group {
+	margin-bottom:20px;
+	margin-left:20px;
+	display: inline-block;		
+	width:100%;
+}
+
+.dashboard.button {	
+	margin-left:1%;
+	margin-bottom:5px;
+
+}
+.dashboard.button h3 {	
+	vertical-align: middle;
+}
+.dashboard_filter h5 {
+	margin:2px;
+	color:#767676;
+}
+.dashboard_filter {
+	float:left;
+	margin-right:20px;
+	margin-left:5px;
+	margin-bottom:5px;
+}
+

@@ -99,13 +99,13 @@ class BuildReport
 			gatherer = Gatherer.new entity
 			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
 
-			AssetActivityFact.between(fact_time: last_date..first_date).any_of( location_network, product, asset_entity ).each do |asset_activity_fact|			
+			AssetActivityFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).any_of( location_network, product, asset_entity ).each do |asset_activity_fact|			
 				asset_activity_summary_fact = AssetActivitySummaryFact.where(	
 											:report_entity => entity,
 											:location_network => asset_activity_fact.location_network,
 											:product => asset_activity_fact.product,
 											:asset_type => asset_activity_fact.asset_type,
-											:asset_status => asset_activity_fact.asset_status,
+#											:asset_status => asset_activity_fact.asset_status,
 											:handle_code => asset_activity_fact.handle_code
 										).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
 
@@ -114,14 +114,13 @@ class BuildReport
 					asset_activity_summary_fact.quantity = asset_activity_summary_fact.quantity + 1
 					asset_activity_summary_fact.save!
 				else
-
-					AssetActivitySummaryFact.create(	
+					AssetActivitySummaryFact.create(
 											:report_entity => entity,
 											:fact_time => @date,
 											:location_network => asset_activity_fact.location_network,
 											:product => asset_activity_fact.product,
 											:asset_type => asset_activity_fact.asset_type,
-											:asset_status => asset_activity_fact.asset_status,
+#											:asset_status => asset_activity_fact.asset_status,
 											:handle_code => asset_activity_fact.handle_code,
 											:quantity => 1
 										)

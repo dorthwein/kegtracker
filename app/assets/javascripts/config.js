@@ -10,6 +10,7 @@ $(document).bind('pageshow', function(event){
 	$("#jqxMenu").jqxMenu({ 	width: '100%', 
 								height: 30,
 								autoOpen: false,
+								theme: settings.theme,
 								animationShowDuration: 0,
 								animationHideDuration: 0,
 								animationShowDelay: 0 

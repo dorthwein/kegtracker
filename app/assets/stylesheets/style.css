@@ -42,31 +42,7 @@ li {
 	margin:0px;
 	padding:0px;
 }
-.dashboard_chart {
-	width:300px;
-	height:450px;
-	padding-bottom:30px;
-	padding-right:30px;
-	text-align: center;
-}
 
-.dashboard_filters {	
-	text-align: center;
-	width:100%;
-}
-.dashboard_filters {
-	
-}
-.dashboard_filter h5 {
-	margin:2px;
-	color:#767676;
-}
-.dashboard_filter {
-	float:left;
-	margin-right:20px;
-	margin-left:5px;
-	margin-bottom:5px;
-}
 /*
 ul.main_nav  {
 	display: inline; 
@@ -215,7 +191,7 @@ table.ft tr > td
 /*************************
 Data Tables
 *************************/
-
+/*
 .dt th {
 	font-size:12px;
 }
@@ -243,6 +219,7 @@ td {
 	padding:0px 0px 0px 0px;
 	text-align:center;
 }
+*/
 #content {
 
 }
