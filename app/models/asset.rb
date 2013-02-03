@@ -68,9 +68,10 @@ class Asset
 
 	# Set before all actions to detect if the asset should have "Smart Actions" applied to it.
 	def smart_network_processing options
-		to_location = Location.find(options[:to_location]).network
-		to_network = location.network
+		to_location = Location.find(options[:to_location])
+		to_network = to_location.network
 
+		print to_network.description + " -- " + to_location.description + " \n"
 		if self.location_network_id != to_network._id		
 			print "Smart Network Processing \n"
 		# Effects at From Network
@@ -351,7 +352,7 @@ class Asset
 						)
 
 			asset.user = User.where(:email => scan_email).first		
-			print asset.user.to_json
+			
 			if !scan_asset_type.nil?
 				asset.asset_type = AssetType.find(scan_asset_type)
 			end
