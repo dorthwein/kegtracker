@@ -1,0 +1,43 @@
+
+
+#simple_container {
+	width:960px;
+	border:1px solid #CCC;
+	
+	margin:auto;
+	background-color: #FFF;
+
+	
+}
+
+.simple.input {
+	margin:5px 5px 5px 5px;
+
+}
+#grid_title.simple {
+	margin:10px 0 0px 0;
+	width:100%;
+	display:inline-block;
+
+}
+#grid_title.simple h2{
+	margin:0px 5px 5px 5px;
+	text-align: center;
+}
+#grid_title.simple h5{
+	margin:5px 5px 5px 5px;
+
+
+}
+.simple.toolbar {
+	margin:25px 0 0 0;
+	width:100%;
+	display:inline-block;
+
+}
+#jqxgrid.simple {
+	margin:5px 5px 5px 5px;
+	width:450px;
+	font-weight: 20px;
+
+}

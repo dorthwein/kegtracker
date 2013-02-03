@@ -1,0 +1,44 @@
+
+    <div id="simple_container">
+        <div id="grid_title" class="simple">
+            <h2>
+                <%= current_user.entity.description %> In/Out Report
+            </h2>
+
+            <h5>
+                <span class="simple left"> 
+                    Network: <br />                    
+                    <span id="displayNetwork"> </span>
+                </span>
+                
+
+                <span class="simple right"> 
+                    Date: <br />
+                    <span id="displayDate"> </span>
+                </span>
+            </h3>            
+        </div>
+
+        <div class="simple toolbar">
+
+            <%= link_to 'Advanced View', :reports_network_in_out_asset_report_advanced , :id => :advancedView, :class => 'simple input right' %>
+            <%= link_to 'Simple View', :reports_network_in_out_asset_report_simple , :id => :simpleView, :class => 'simple input right' %>
+
+
+
+            <div id='date' class="simple input left">
+            </div>
+
+            <div id='location_network_id' class="simple input left">
+            </div>
+
+            <input type="button" class="simple input left" value="Find Record" id='findRecord' data-role="none"/>
+
+            <input type="button" class="simple input left" value="Export to Excel" id='excelExport' data-role="none"/>
+
+
+        </div>
+
+        <div id="jqxgrid" class="simple">
+        </div>
+    </div>
