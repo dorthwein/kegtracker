@@ -18,11 +18,15 @@ class BuildReport
 		Entity.all.each do |entity|
 			AssetSummaryFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete
 
-			gatherer = Gatherer.new(entity)			
-			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
+#			gatherer = Gatherer.new(entity)			
+
+#			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
 			
-			AssetActivityFact.between(fact_time: last_date..first_date).any_of(location_network, product, asset_entity ).desc(:fact_time).group_by {
-			|asset_activity_fact| asset_activity_fact.asset_id }.each do |asset_activity_fact_by_asset|
+			# AssetActivityFact.between(fact_time: last_date..first_date).any_of(location_network, product, asset_entity ).desc(:fact_time)
+
+			facts = entity.asset_activity_facts.between(fact_time: last_date..first_date).desc(:fact_time)
+
+			facts.group_by {|asset_activity_fact| asset_activity_fact.asset_id }.each do |asset_activity_fact_by_asset|
 				asset_activity_fact = asset_activity_fact_by_asset[1].first
 				# Asset Summary Fact
 				if !asset_activity_fact.nil?						
@@ -39,7 +43,6 @@ class BuildReport
 						
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
-
 
 						when 1 # Full
 							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity + 1

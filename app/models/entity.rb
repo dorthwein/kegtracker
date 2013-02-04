@@ -27,4 +27,21 @@ class Entity
 # Entity Mode
 	# 0 = Deactivated, 1 = Activated, 2 = Automated
 	field :mode, type: Integer, :default => 0
+	
+	def asset_activity_facts		
+		AssetActivityFact.any_of({ :location_network.in => self.visible_networks },{ :product.in => self.entity_products },{ :entity => self })
+	end
+	def entity_products
+		return self.products.map{|x| x}
+	end
+
+	def visible_networks
+		networks = []
+		networks = networks + self.networks        
+
+		self.network_memberships.each do |x|
+		  networks.push(x.network)
+		end
+		return networks
+	end
 end
