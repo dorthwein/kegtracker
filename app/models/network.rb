@@ -70,6 +70,7 @@ class Network
     end
 
 	end	
+
   def self.visible_networks options = {}
     networks = []
     networks = networks + options[:entity].networks        

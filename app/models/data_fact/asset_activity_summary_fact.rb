@@ -51,9 +51,9 @@ class AssetActivitySummaryFact
     	end
 
     	params = {:report_entity => options[:entity]}
-#    	if !options[:location_network].nil?
- #   		params[:location_network] = options[:location_network]
-  #  	end
+    	if !options[:location_network].nil?
+	   		params[:location_network] = options[:location_network]
+    	end
 
 		response = AssetActivitySummaryFact.where(params).between(fact_time: start_date..end_date).desc(:fact_time).map { |asset_summary_fact| {
 																				:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
@@ -71,7 +71,6 @@ class AssetActivitySummaryFact
 																			}
 																		}
 		return response
-
 	end
 
 	def handle_code_description

@@ -43,12 +43,12 @@ class BuildReport
 						
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
-							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity + 1
+							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity.to_i + 1
 						when 1 # Full
-							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity + 1
+							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity.to_i + 1
 
 						when 2 # Market
-							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity + 1
+							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity.to_i + 1
 
 						end						
 						asset_summary_fact.save!
@@ -70,13 +70,13 @@ class BuildReport
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
 							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity.to_i + 1
-							print "+1 Empty  - Total:" + asset_summary_fact.empty_quantity.to_s + "\n"
+
 						when 1 # Full
 							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity.to_i + 1
-							print "+1 Full  - Total:" + asset_summary_fact.full_quantity.to_s + "\n"
+
 						when 2 # Market
 							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity.to_i + 1
-							print "+1 Market  - Total:" + asset_summary_fact.market_quantity.to_s + "\n"
+
 						end						
 						asset_summary_fact.save!
 					end					
@@ -90,20 +90,22 @@ class BuildReport
 # Asset Activity Summary Report Build
 # **************************************
 	def asset_activity_summary_fact		
-		first_date = @date.end_of_day
-		last_date = first_date - (86400 * 365)
+		first_date = @date.beginning_of_day
+		last_date = @date.end_of_day
 
 		print @date.beginning_of_day.to_s + " <-- Start of Day \n"
 		print @date.end_of_day.to_s + " <-- End of Day \n"
 		print @date.to_s + " <-- Report Date \n\n"
 
 		Entity.all.each do |entity|
-			AssetActivitySummaryFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete
+			AssetActivitySummaryFact.between(fact_time: first_date..last_date).where(:report_entity => entity).delete
 			
-			gatherer = Gatherer.new entity
-			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
-
-			AssetActivityFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).any_of( location_network, product, asset_entity ).each do |asset_activity_fact|			
+#			gatherer = Gatherer.new entity
+#			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
+			
+			facts = entity.asset_activity_facts.between(fact_time: first_date..last_date).desc(:fact_time)
+			# AssetActivityFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).any_of( location_network, product, asset_entity )
+			facts.each do |asset_activity_fact|
 				asset_activity_summary_fact = AssetActivitySummaryFact.where(	
 											:report_entity => entity,
 											:location_network => asset_activity_fact.location_network,
@@ -114,7 +116,6 @@ class BuildReport
 										).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
 
 				if !asset_activity_summary_fact.nil?
-
 					asset_activity_summary_fact.quantity = asset_activity_summary_fact.quantity + 1
 					asset_activity_summary_fact.save!
 				else

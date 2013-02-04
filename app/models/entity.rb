@@ -29,7 +29,7 @@ class Entity
 	field :mode, type: Integer, :default => 0
 	
 	def asset_activity_facts		
-		AssetActivityFact.any_of({ :location_network.in => self.visible_networks },{ :product.in => self.entity_products },{ :entity => self })
+		AssetActivityFact.any_of({:location_network.in => self.networks.map{|x| x}},{:product.in => self.entity_products },{:entity => self })
 	end
 	def entity_products
 		return self.products.map{|x| x}
