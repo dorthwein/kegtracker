@@ -8,8 +8,8 @@ class BuildReport
 # Asset Summary Report Build
 # **************************************
 	def asset_summary_fact
-		first_date = @date.end_of_day
-		last_date = first_date - (86400 * 365)
+		first_date = @date.end_of_day - (86400 * 365)
+		last_date = @date.end_of_day
 		
 		print @date.beginning_of_day.to_s + " <-- Start of Day \n"
 		print @date.end_of_day.to_s + " <-- End of Day \n"
@@ -24,7 +24,7 @@ class BuildReport
 			
 			# AssetActivityFact.between(fact_time: last_date..first_date).any_of(location_network, product, asset_entity ).desc(:fact_time)
 
-			facts = entity.asset_activity_facts.between(fact_time: last_date..first_date).desc(:fact_time)
+			facts = entity.asset_activity_facts.between(fact_time: first_date..last_date).desc(:fact_time)
 
 			facts.group_by {|asset_activity_fact| asset_activity_fact.asset_id }.each do |asset_activity_fact_by_asset|
 				asset_activity_fact = asset_activity_fact_by_asset[1].first
@@ -35,7 +35,7 @@ class BuildReport
 												:report_entity => entity,												
 												:location_network => asset_activity_fact.location_network,
 												:product => asset_activity_fact.product,
-												:asset_type => asset_activity_fact.asset_type											
+												:asset_type => asset_activity_fact.asset_type
 											).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
 
 					# If found - add to fact
@@ -43,7 +43,7 @@ class BuildReport
 						
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
-
+							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity + 1
 						when 1 # Full
 							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity + 1
 
@@ -51,19 +51,17 @@ class BuildReport
 							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity + 1
 
 						end						
-						if asset_summary_fact.save!
-
-						end
+						asset_summary_fact.save!
+						
 					
 					# Else, create new one
 					else
-
 						asset_summary_fact = AssetSummaryFact.new(	
 												:report_entity => entity,
 												:fact_time => @date,
 												:location_network => asset_activity_fact.location_network,
 												:product => asset_activity_fact.product,
-												:asset_type => asset_activity_fact.asset_type,											
+												:asset_type => asset_activity_fact.asset_type,
 												:empty_quantity => 0,	
 												:full_quantity => 0,
 												:market_quantity => 0
@@ -71,11 +69,14 @@ class BuildReport
 
 						case asset_activity_fact.asset_status.to_i
 						when 0 # Empty
-							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity + 1
+							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity.to_i + 1
+							print "+1 Empty  - Total:" + asset_summary_fact.empty_quantity.to_s + "\n"
 						when 1 # Full
-							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity + 1
+							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity.to_i + 1
+							print "+1 Full  - Total:" + asset_summary_fact.full_quantity.to_s + "\n"
 						when 2 # Market
-							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity + 1
+							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity.to_i + 1
+							print "+1 Market  - Total:" + asset_summary_fact.market_quantity.to_s + "\n"
 						end						
 						asset_summary_fact.save!
 					end					
