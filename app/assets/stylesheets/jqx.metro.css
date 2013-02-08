@@ -167,7 +167,7 @@
 {
     background-image: url('images/metro-icon-right.png');
 }
-.jqx-tabs-arrow-left-metro
+.jqx-tabs-arrow-left-metro, .jqx-tree-item-arrow-collapse-rtl-metro, .jqx-tree-item-arrow-collapse-hover-rtl-metro
 {
     background-image: url('images/metro-icon-left.png');
 }

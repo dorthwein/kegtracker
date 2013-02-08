@@ -28,7 +28,7 @@ system.func = {}
 // Prevent Cacheing
 // ***************************
 
-$(document).live('pagehide', function(event, ui){
+$(document).bind('pagehide', function(event, ui){
 	var page = jQuery(event.target);
 	if(page.attr('data-cache') == 'never'){
 		page.remove();

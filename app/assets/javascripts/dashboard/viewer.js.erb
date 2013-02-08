@@ -2,8 +2,7 @@
 // # All this logic will automatically be available in application.js.
 
 $( '#_dashboard_viewer' ).live('pageshow', function(event){
-	// prepare the data
-
+	// prepare the data    
 	$.mobile.loading('show');
 	var theme =  settings.theme // settings.theme
 	url = system.server + $('.ui-page-active').attr('data-url');

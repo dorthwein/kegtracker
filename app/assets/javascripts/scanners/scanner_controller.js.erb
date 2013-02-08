@@ -363,7 +363,7 @@ $( '#_scanners_barcode' ).live( 'pageshow',function(event){
 	});	
 });
 // UNBIND KEY LOCK ON HIDE
-$( '#_scanners_barcode' ).live( 'pagehide',function(event){      
+$( '#_scanners_barcode' ).bind( 'pagehide',function(event){      
 	$(window).unbind('keydown');
 	delete pgFunc;
 	delete scanOptions;

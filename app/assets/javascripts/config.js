@@ -5,7 +5,7 @@ $(document).bind("mobileinit", function(){
 $(document).bind('pagebeforehide', function(event){
 
 });
-$(document).bind('pageshow', function(event){
+$(document).live('pageshow', function(event){
 	// Load jqX Menu at startup
 	$("#jqxMenu").jqxMenu({ 	width: '100%', 
 								height: 30,

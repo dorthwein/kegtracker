@@ -139,6 +139,7 @@ background: linear-gradient(top, #f87948 0%,#fb4e0b 4%,#f44501 11%,#e24000 19%,#
 .jqx-tabs-arrow-left-black, .jqx-menu-item-arrow-left-selected-black, .jqx-menu-item-arrow-top-left, .icon-arrow-left-black, .icon-arrow-down-left-black, .icon-arrow-left-selected-black{background-image:url('images/icon-left-white.png'); background-repeat:no-repeat; background-position:center}
 .jqx-widget-black .jqx-grid-group-collapse-black, .jqx-grid-group-collapse-black,.jqx-tabs-arrow-right-black, .jqx-menu-item-arrow-right-selected-black, .jqx-menu-item-arrow-top-right-black, .icon-arrow-right-black, .icon-arrow-right-hover-black, .icon-arrow-right-selected-black{background-image:url('images/icon-right-white.png'); background-repeat:no-repeat; background-position:center}
 .jqx-window-close-button-black, .icon-close-black, .jqx-tabs-close-button-black, .jqx-tabs-close-button-hover-black, .jqx-tabs-close-button-selected-black{background-image:url(images/close_white.png);  background-repeat:no-repeat;  background-position:center}
+.jqx-tree-item-arrow-collapse-rtl-black, .jqx-tree-item-arrow-collapse-hover-rtl-black{background-image: url(images/icon-left.png);}
 .jqx-listitem-state-group-black{background: #222;}
 .jqx-calendar-cell-specialDate-black{border: 1px solid black;}
 .jqx-tabs-selection-tracker-top-black, .jqx-tabs-selection-tracker-bottom-black{background-color: #000; border-color: #000;}

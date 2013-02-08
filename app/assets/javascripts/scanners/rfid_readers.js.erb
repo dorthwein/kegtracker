@@ -6,7 +6,7 @@
 	4 = Fill
 	5 = Move	
 */
-$( '#_scanners_rfid_readers' ).live( 'pageshow',function(event){      
+$( '#_scanners_rfid_readers' ).bind( 'pageshow',function(event){      
 	$.mobile.loading('show');
 	theme = settings.theme;
 

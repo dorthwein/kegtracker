@@ -12,7 +12,7 @@ gem "devise"
 gem 'thin'
 gem 'prawn'
 gem 'jquery-rails'
-gem 'jquery_mobile_rails'
+# gem 'jquery_mobile_rails'
 gem 'jquery-ui-rails'
 gem 'cancan'
 gem 'mongoid_auto_increment'

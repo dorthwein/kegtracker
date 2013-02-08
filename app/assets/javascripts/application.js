@@ -10,10 +10,10 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
+//= require plugins/jquery-1.8.3.min.js
 //= require config.js
 //= require jquery_ujs
-//= require jquery.mobile
-//= require plugins/jquery.global.js
+//= require plugins/jquery.mobile-1.3.0-rc.1.min.js
 //= require plugins/jqx-all.js
+//= require plugins/jquery.global.js
 //= require_tree .
