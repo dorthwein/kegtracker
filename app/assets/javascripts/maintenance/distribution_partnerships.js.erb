@@ -1,0 +1,368 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$( '#_maintenance_distribution_partnerships' ).live('pageshow', function(event){
+	// prepare the data
+
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+
+			{ name: 'entity_description' },
+			{ name: 'partner_description' }, 
+
+			{ name: 'entity_name' },
+			{ name: 'entity_street' },
+			{ name: 'entity_city' },
+			{ name: 'entity_state' },					
+			{ name: 'entity_zip' },                	
+			{ name: 'entity_id'},
+
+			{ name: 'partner_name' },
+			{ name: 'partner_street' },
+			{ name: 'partner_city' },
+			{ name: 'partner_state' },					
+			{ name: 'partner_zip' },                	
+			{ name: 'partner_id'},
+
+			{ name: '_id'},			
+		], 
+		url: url,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}	
+	};
+
+	var dataAdapter = new $.jqx.dataAdapter(source, {
+		loadComplete: function (data) { },
+		loadError: function (xhr, status, error) { }      
+	});
+
+	// Initialize Grid
+	$("#jqxgrid").jqxGrid(
+	{
+		// Grid Options
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.table_height,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,		
+		columns: [
+			{ text: 'Brewery', datafield: 'partner_description', filtertype: 'checkedlist' }, 
+			{ text: 'Distributor', datafield: 'entity_description', filtertype: 'checkedlist' }, 
+/*
+			{ text: 'Brew. Address', datafield: 'partner_street' },
+			{ text: 'Brew. City', datafield: 'partner_city' },
+			{ text: 'Brew. State', datafield: 'partner_state', filtertype: 'checkedlist' },
+			{ text: 'Brew. Zip', datafield: 'partner_zip' },
+*/
+
+
+			{ text: 'Dist. Address', datafield: 'entity_street' },
+			{ text: 'Dist. City', datafield: 'entity_city' },
+			{ text: 'Dist. State', datafield: 'entity_state', filtertype: 'checkedlist' },
+			{ text: 'Dist. Zip', datafield: 'entity_zip' },
+/*
+			{ text: 'On Premise', datafield: 'on_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Off Premise', datafield: 'off_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Empties', datafield: 'empty', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Inventory', datafield: 'inventory', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Production', datafield: 'production', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+			{ text: 'Partner', datafield: 'partner_entity', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
+					if(value == 1){
+						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+					} else {
+						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					}
+				}
+			},
+*/			
+		]
+	});
+
+	$('#jqxgrid').bind('rowselect', function (event){	    
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			type: "GET",
+			dataType : "JSON",
+			data: rowdata,
+		}).done(function( data ) {				
+			// Entity List
+			$("#partner_id").jqxDropDownList({ source: data['partners'], disabled: false });			
+			var item = $("#partner_id").jqxDropDownList('getItemByValue', data['entity_partnership']['partner_id']);
+			$("#partner_id").jqxDropDownList('selectItem', item ); 			
+
+			// Enable Inputs
+			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+			var x = $("#entity_id").jqxDropDownList('getItemByValue', data['entity_partnership']['entity_id']);
+			$("#entity_id").jqxDropDownList('selectItem', x ); 			
+
+
+//			$(".form_input").jqxInput({disabled: false });
+//			$(".form_input").val('');
+//			$(".toggle_switch").jqxToggleButton({disabled: false });
+			
+			
+			$("#updateSaveButton").jqxButton({disabled: false});
+			$("#updateSaveButton").show();
+			$("#newSaveButton").hide();
+			$("#newCancelButton").hide();
+
+//			alert(JSON.stringify(data['user']));
+			// User Detail Input Values		
+			$.each(data['entity_partnership'], function(key, value){
+				element = $('#' + key)
+				if(element.hasClass('detail_text')){
+					element.html(value)
+				}
+
+			})
+		});					
+	});
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+	
+	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' ),
+
+	$("#partner_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+	$("#entity_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+
+	$(".form_input").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: true });
+	
+	$(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
+    $(".toggle_switch").bind('click', function () {        
+        if(!$(this).attr('disabled')){	        
+	        var toggled = $(this).jqxToggleButton('toggled');
+	        if (toggled) {
+	            $(this).html('On');
+	            $(this).val(1);
+	        }
+	        else {
+				$(this).html('Off');
+	            $(this).val(0);
+	        }
+	    }
+    });
+
+	$('#form_validator').jqxValidator({
+	 	rules: [
+	 		// Email Rules
+	        // First/Last Name
+	        { input: '#entity_id', message: 'Distributor Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#entity_id").jqxDropDownList('getSelectedItem') != null) {
+		                return true;		                
+		            }
+		           	return false;		           
+	        	}
+	        },
+	        { input: '#partner_id', message: 'Brewery Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#partner_id").jqxDropDownList('getSelectedItem') != null) {
+		                return true;		                
+		            }
+		           	return false;		           
+	        	}
+	        },	       
+		],
+		theme: theme
+	});
+
+
+	// Style Buttons
+	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#updateSaveButton").bind('click', function () {
+    	if($('#form_validator').jqxValidator('validate')){
+	        var params = {}
+	        params['entity_partnership'] = {}
+	        params['entity_partnership']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+			params['entity_partnership']['partner_id'] = $("#partner_id").jqxDropDownList('getSelectedItem').value;              
+
+/*
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params[obj.id] = $(obj).val();
+	        });        
+*/
+			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+		    
+		    var url =  system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id']	    
+			$.ajax({
+				url: url,
+				type: "PUT",
+				dataType : "JSON",
+				data: params,
+			}).done(function( data ) {	
+				dataAdapter.dataBind();
+			})
+		}
+    });
+    
+    $("#newCancelButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#newSaveButton").bind('click', function () {
+    	if($('#form_validator').jqxValidator('validate')){	
+	        var params = {}
+	        params['entity_partnership'] = {}
+
+	        params['entity_partnership']['partner_id'] = $("#partner_id").jqxDropDownList('getSelectedItem').value;              
+			params['entity_partnership']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params['entity_partnership'][obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params['entity_partnership'][obj.id] = $(obj).val();
+	        });	        
+//			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+//		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			$.ajax({
+				url: system.server + $('.ui-page-active').attr('data-url'),
+				type: "POST",
+				data: params,
+			}).done(function( data ) {	
+				dataAdapter.dataBind();
+
+				$("#network_id").jqxDropDownList({ source: data['networks'], disabled: false });
+				$("#network_id").jqxDropDownList('clearSelection' ); 
+				
+				$(".toggle_switch").html('Off');
+	            $(".toggle_switch").val(0);
+	            $(".toggle_switch").jqxToggleButton({toggled: false });
+	            $(".toggle_switch").jqxToggleButton('refresh');
+
+				$(".form_input").jqxInput({disabled: false });
+				$(".form_input").val('');
+
+				$(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });			
+			})
+		}
+    });	
+
+
+	$("#new").jqxButton({ theme: theme, width:100 });            
+	$("#new").click(function () {
+		$.ajax({
+			type: "GET",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/new',
+			data: { },
+		}).done(function( data ) {			
+			
+			$("#partner_id").jqxDropDownList({ source: data['partners'], disabled: false });
+			$("#partner_id").jqxDropDownList('clearSelection' ); 
+
+			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+			$("#entity_id").jqxDropDownList('clearSelection' ); 
+			
+/*			
+			$(".toggle_switch").html('Off');
+            $(".toggle_switch").val(0);
+            $(".toggle_switch").jqxToggleButton({toggled: false });
+            $(".toggle_switch").jqxToggleButton('refresh');
+
+			$(".form_input").jqxInput({disabled: false });
+			$(".form_input").val('');
+
+			$(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });
+*/			
+			
+			$("#newSaveButton").jqxButton({disabled: false});			
+			$("#newCancelButton").jqxButton({disabled: false});			
+
+			$("#newSaveButton").show();			
+			$("#newCancelButton").show();
+			$("#updateSaveButton").hide();
+		});		        	
+	});
+
+
+
+	$("#delete").jqxButton({ theme: theme, width:100 });            
+	$("#delete").click(function () {
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "DELETE",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+		});		        	
+	});
+	
+
+	// Button Processing/Action
+	
+	// NEW BUTTON
+	$("#excelExport").jqxButton({ theme: theme, width:100 });                        
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+	$.mobile.loading('hide');					
+
+});

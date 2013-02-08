@@ -1,0 +1,36 @@
+#simple_container.scanner {
+	padding: 0px 30px 30px 30px;
+	min-height: 300px;
+
+}
+.scanner.dock_window {
+	height:300px;
+
+}
+.scanner.input_group h2{
+	margin:20px 0px 0px 0;
+}
+.scanner.input_group h5{
+	margin:20px 0px 0px 0;
+}
+
+.scanner.input_group {
+	width:225px;
+	margin:0px 20px 0px 0px;
+
+
+}
+#scan_input {
+	width:900px;
+	
+
+}
+#scan_light {
+	border:1px solid #CCC; 
+	height:100px; 
+	width:190px; 
+	margin:10px 10px 0px 5px;
+	background:#FFFF00;
+	text-align:center; 
+	padding-top:50px;	
+}
