@@ -127,7 +127,8 @@ class System::RfidReadsController < ApplicationController
 #			:raw_data => params[:Alien_RFID_Reader_Auto_Notification],
 #			:scan_array => scans_array
 #		)
-		Asset.process_scans({:scans => scans_array})
+		Scanner.process_scans({:scans => scans_array})
+		# Asset.process_scans({:scans => scans_array})
 		print "READ END \n \n"		
 	end
 #	print @scans.to_json
