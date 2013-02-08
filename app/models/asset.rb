@@ -194,7 +194,7 @@ class Asset
 
 	def rfnet options
 		# Options: time, location, correction
-		if self.location_network != Location.find(options[:location]).network
+		if self.location_network != Location.find(options[:location_id]).network
 			self.handle_code = 5	# Records as a move
 			self.last_action_time = options[:time]
 			self.location_id = options[:location_id]
