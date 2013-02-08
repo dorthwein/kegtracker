@@ -22,6 +22,7 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 			{ name: 'state' },					
 			{ name: 'zip' },                	
 
+			{ name: 'location_type_description'},
 			{ name: 'on_premise' },                	                	
 			{ name: 'off_premise' },                	                	                	
 			{ name: 'empty' },                	                	
@@ -71,7 +72,8 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 			{ text: 'City', datafield: 'city' },
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' }, 
 			{ text: 'Zip', datafield: 'zip' },                	
-
+			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },    
+/*
 			{ text: 'On Premise', datafield: 'on_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
 					if(value == 1){
 						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
@@ -120,6 +122,7 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 					}
 				}
 			},
+*/			
 		]
 	});
 	$('#jqxgrid').bind('rowselect', function (event){	    
@@ -137,7 +140,12 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 			
 			var item = $("#network_id").jqxDropDownList('getItemByValue', data['location']['network_id']);
 			$("#network_id").jqxDropDownList('selectItem', item ); 			
+
 			// Enable Inputs
+			$("#location_type").jqxDropDownList({ source: data['location_types'], disabled: false });
+			var x = $("#location_type").jqxDropDownList('getItemByValue', data['location']['location_type']);
+			$("#location_type").jqxDropDownList('selectItem', x ); 			
+
 			$(".form_input").jqxInput({disabled: false });
 			$(".form_input").val('');
 			$(".toggle_switch").jqxToggleButton({disabled: false });
@@ -182,7 +190,8 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' ),
 
 	$("#network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
-	
+	$("#location_type").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+
 	$(".form_input").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: true });
 	
 	$(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
@@ -213,6 +222,13 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 		           	return false;		           
 	        	}
 	        },
+	        { input: '#location_type', message: 'Location Type Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#location_type").jqxDropDownList('getSelectedItem') != null) {
+		                return true;		                
+		            }
+		           	return false;		           
+	        	}
+	        },	        
 		],
 		theme: theme
 	});
@@ -224,6 +240,7 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
     	if($('#form_validator').jqxValidator('validate', element)){
 	        var params = {}
 	        params['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
+			params['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
 
 	        $('.toggle_switch').each(function(key, obj) {        
 	        	params[obj.id] = $(obj).val();
@@ -257,6 +274,8 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
     	if($('#form_validator').jqxValidator('validate', element)){	
 	        var params = {}
 	        params['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
+			params['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
+	        
 	        $('.toggle_switch').each(function(key, obj) {        
 	        	params[obj.id] = $(obj).val();
 	        });
@@ -305,6 +324,9 @@ $( '#_maintenance_locations' ).live('pageshow', function(event){
 			
 			$("#network_id").jqxDropDownList({ source: data['networks'], disabled: false });
 			$("#network_id").jqxDropDownList('clearSelection' ); 
+
+			$("#location_type").jqxDropDownList({ source: data['location_types'], disabled: false });
+			$("#location_type").jqxDropDownList('clearSelection' ); 
 			
 			$(".toggle_switch").html('Off');
             $(".toggle_switch").val(0);

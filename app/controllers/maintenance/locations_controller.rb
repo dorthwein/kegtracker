@@ -21,12 +21,15 @@ class Maintenance::LocationsController < ApplicationController
 														:state => location.state,
 														:zip => location.zip,
 
-														:on_premise => location.on_premise,
-														:off_premise => location.off_premise,
-														:empty => location.empty,
-														:inventory => location.inventory,
-														:production => location.production,
-														:partner_entity => location.partner_entity,
+                            :location_type_description => location.location_type_description,
+                            :location_type => location.location_type,
+
+#														:on_premise => location.on_premise,
+#														:off_premise => location.off_premise,
+#														:empty => location.empty,
+#														:inventory => location.inventory,
+#														:production => location.production,
+#														:partner_entity => location.partner_entity,
 														:_id => location._id
 													}
 										}		    	
@@ -42,11 +45,14 @@ class Maintenance::LocationsController < ApplicationController
   def show
     location = Location.find(params[:id])
     if current_user.system_admin == 1
-      networks = Network.all.map{|x| {:html => x.description, :value => x._id}}
+      networks = JqxConverter.jqxDropDownList(Network.all)
     else
-      networks = current_user.entity.networks.map{|x| { :html => x.description, :value => x._id }}
+      networks = JqxConverter.jqxDropDownList(current_user.entity.networks)
     end
-    response = {:location => location, :networks => networks }
+    location_types = JqxConverter.jqxDropDownList(Location.location_types)
+
+
+    response = {:location => location, :networks => networks, :location_types => location_types }
     respond_to do |format|
       format.json { render json: response }
     end

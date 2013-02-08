@@ -1,91 +1,99 @@
-<div>
-	<div id="scanner" userName="<%= current_user.email %>" handleCode="<%=  %>">
-	<!-- Form Entry Fields -->	
-		<div style="width:30%; float:left; margin:0 2% 20px 2%">		
-			<ul data-role="listview" data-inset="true">
-				<li>				
-					<%= label_tag :handle_code, 'Action'  %>
-					<%= select_tag(:handle_code, options_for_select(@handle_codes), {:onchange => 'pgFunc.change_handle_code();'}) %>
-				</li>
-				<li>
-					<%= label_tag :location, 'Location'  %> 				
-					<%= select_tag(:location, options_for_select(@locations, @locations[0]), {}) %>							
-				</li>		
-			</ul>
+<div id="simple_container" class="scanner" userName="<%= current_user.email %>">
+	
+		<div class="scanner input_group left">
+			<h5> Auto Mode	</h5>
+			<div id="toggle_auto_mode" class="flip_switch scanner">
+			</div>
 		</div>
-		<div style="width:30%; float:left; margin:0 0 20px 0%">
-			<ul data-role="listview" data-inset="true">
-				<li>
-					<%= label_tag :product, 'Product'  %> 
-					<%= select_tag(:product, options_for_select(@products, @products[0]),{ :disabled => true}) %>
-				</li>
-				<li>		
-					<div style="position:absolute; top:2px; right:15px;">					
-						<%= select_tag(:asset_type_toggle, options_for_select([  [:Off, false], [:On, true]], false), {'data-role' => :slider, 'data-mini' => :true, :onchange => 'pgFunc.asset_type_toggle()'}) %>
-					</div>
-					<%= label_tag :asset_type, 'Asset Type'  %>															
-					<%= select_tag(:asset_type, options_for_select(@asset_types, @asset_types[0]), {:disabled => true}) %>
-				</li>							
-			</ul>
-		</div>				
-		<div style="width:30%; float:left; margin:0 2% 20px 2%">		
-			<ul data-role="listview" data-inset="true">
-				<li id="scan_light" style="height:50px; background:#FFFF00; text-align:center; padding-top:35px;">
-					<span style="font-size:30px;">
-						Ready
-					</span>							
-				</li>
-				<li>
-					<div style="height:75px;">	
-						<table style="width:100%;">
-							<tr>
-								<td style="text-align:left; font-weight:bold"> Location: </td>
-								<td style="text-align:left" id="slot_1">  </td>										
-							</tr>
-							<tr>
-								<td style="text-align:left; font-weight:bold"> Action: </td>
-								<td style="text-align:left" id="slot_2"> </td>										
-							</tr>
-							<tr>
-								<td style="text-align:left; font-weight:bold"> Product: </td>
-								<td style="text-align:left" id="slot_3">  </td>										
-							</tr>
 
-							<tr>
-								<td style="text-align:left; font-weight:bold"> Asset Type: </td>
-								<td style="text-align:left" id="slot_4"> </td>										
-							</tr>
-						</table>
-					</div>
-				</li>							
-			</ul>
-		</div>				
+		<div class="scanner input_group left">	
+			<h5> Asset Type	</h5>
+			<div id="toggle_asset_type" class="flip_switch scanner">
+			</div>
+		</div>
 
-		<!--	 Scanner Panel		-->
-		<div id="scanner_panel" style=" float:left; clear:both;">				
-			<!--	Current Scanner Options		-->
-			<!--	 Scanner Input		-->			
-			<ul data-role="listview" data-divider-theme="a" data-inset="true" style="margin:10px 0 0 0">
-				<li data-role="list-divider"> 	
-					Scanner 	
-				</li>
-				<li style="padding:2px">					
-					
-					<div style="float:left; padding:10px">		
-						Correction:						
-					</div>
-					<%= select_tag(:correction_toggle, options_for_select([  [:No, 0], [:Yes, 1]], false), {'data-role' => :slider, 'data-mini' => :true, :onchange => 'pgFunc.asset_type_toggle()'}) %>
-					
-				
-				</li>
-				<li> 										
-					Connect barcode scanner to begin scanning
-					<%= text_field_tag :scan_input %>											
-				</li>
-			</ul>					
-		</div> 
-	</div>		
-	<div style="clear:both; margin:25px"> </div>	
-</div>	
+		<div class="scanner input_group left">
+			<h5> Correction	</h5>
+			<div id="toggle_correction" class="flip_switch scanner">
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div id="scan_light" class="right" style="">					
+			<span style="font-size:30px;">
+				Ready
+			</span>							
+		</div>
+		
+		<div class="left">
+			<div class="scanner input_group left">
+				<h2> Action </h2>
+				<div id="handle_code" class="scanner dropdown">
+				</div>
+			</div>
 
+			<div class="scanner input_group left">
+				<h2> Network </h2>
+				<div id="location_network_id" class="scanner dropdown">
+				</div>
+			</div>
 
+			<div class="scanner input_group left">
+				<h2> Location </h2>
+				<div id="location_id" class="scanner dropdown">
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="scanner input_group left">
+				<h2> Asset Type </h2>
+				<div id="asset_type_id" class="scanner dropdown">
+				</div>
+			</div>
+			<div class="scanner input_group left">
+				<h2> Product </h2>
+				<div id="product_id" class="scanner dropdown">
+				</div>
+			</div>
+		</div>
+		
+
+		<div class="scanner left" style="margin:30px 0 10px 30px; width:100%;">
+			<span style="float:left"> Connect barcode scanner to begin scanning. </span> <br />
+			<%= text_field_tag :scan_input, '', {'data-role' => 'none'} %>
+		</div>
+	</form>
+	<div id="docking" class="hidden">
+		<div style="width:50%">
+			<div id="slot_1">
+				<div>	</div>
+				<div class="scanner dock_window">	
+				</div>
+
+			</div>
+
+			<div id="slot_2">
+				<div>	</div>
+				<div class="scanner dock_window">	
+					Success/Fail/Alerts
+				</div>
+			
+			</div>
+
+		</div>
+		<div style="width:50%">
+			<div id="slot_3">
+				<div>	</div>
+				<div>	
+					Details
+				</div>
+			</div>
+			<div id="slot_4">
+				<div>	</div>
+				<div>	
+					Life Cycle
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>

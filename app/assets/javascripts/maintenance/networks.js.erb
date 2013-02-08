@@ -21,7 +21,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 			{ name: 'smart_mode_out_location_description' },					
 		
 			{ name: 'auto_mode' }, 
-			{ name: 'smart_mode' }, 
+//			{ name: 'smart_mode' }, 
 
 			{ name: '_id'}					
 		],
@@ -89,6 +89,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 				}
 			},
 */			
+/*
 			{ text: 'Smart Mode', datafield: 'smart_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
 					if(value == 1){
 						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
@@ -96,7 +97,8 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
 					}
 				}
-			},		
+			},	
+*/				
 			{ text: 'Auto Mode', datafield: 'auto_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
 					if(value == 1){
 						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
@@ -128,9 +130,9 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['network']['entity_id']);
 			$("#entity_id").jqxDropDownList('selectItem', item ); 			
 
-			$("#network_type_id").jqxDropDownList({ source: data['network_types'], disabled: false });			
-			var item = $("#network_type_id").jqxDropDownList('getItemByValue', data['network']['network_type_id']);
-			$("#network_type_id").jqxDropDownList('selectItem', item ); 			
+			$("#network_type").jqxDropDownList({ source: data['network_types'], disabled: false });			
+			var item = $("#network_type").jqxDropDownList('getItemByValue', data['network']['network_type']);
+			$("#network_type").jqxDropDownList('selectItem', item ); 			
 
 
 
@@ -195,7 +197,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 
 
 	$("#entity_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
-	$("#network_type_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+	$("#network_type").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
 
 	$("#smart_mode_product_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });		
 	$("#smart_mode_in_location_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });	
@@ -234,8 +236,8 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 		           	return false;		           
 	        	}
 	        },
-	        { input: '#network_type_id', message: 'Network Required!', action: 'keyup, blur',rule: function(input, commit){
-		            if (  $("#network_type_id").jqxDropDownList('getSelectedItem') != null) {
+	        { input: '#network_type', message: 'Network Required!', action: 'keyup, blur',rule: function(input, commit){
+		            if (  $("#network_type").jqxDropDownList('getSelectedItem') != null) {
 		                return true;		                
 		            }
 		           	return false;		           
@@ -243,7 +245,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 	        },
 
 	        { input: '#smart_mode_product_id', message: 'Smart Mode on - Product Required', action: 'keyup, blur',rule: function(input, commit){
-	        		if (  $("#smart_mode").val() == 1 && $('#network_type_id').val() == 1) {
+	        		if (  $("#smart_mode").val() == 1 && $('#network_type').val() == 1) {
 			            if (  $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null) {
 			                return true;		                
 			            }
@@ -264,7 +266,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
     	if($('#form_validator').jqxValidator('validate')){
 	        var params = {}
 	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-	        params['network_type_id'] = $("#network_type_id").jqxDropDownList('getSelectedItem').value;              	        
+	        params['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;              	        
 
 	        
 			
@@ -318,7 +320,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
     	if($('#form_validator').jqxValidator('validate')){	
 	        var params = {}
 	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-			params['network_type_id'] = $("#network_type_id").jqxDropDownList('getSelectedItem').value;
+			params['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;
 
 			if( $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null){
 				params['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getselectedrowindexetSelectedItem').value;
@@ -330,8 +332,10 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
-	        });        
+	        	if(obj != undefined){
+		        	params[obj.id] = $(obj).val();
+		        }
+	        });
 
 			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
 		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
@@ -347,7 +351,7 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 
 //				$("#entity_id").jqxDropDownList({ source: data['networks'], disabled: false });
 				$("#entity_id").jqxDropDownList('clearSelection' ); 
-				$("#network_type_id").jqxDropDownList('clearSelection' ); 				
+				$("#network_type").jqxDropDownList('clearSelection' ); 				
 				$("#smart_mode_product_id").jqxDropDownList('clearSelection' ); 
 				$("#smart_mode_in_location_id").jqxDropDownList('clearSelection' ); 				
 				$("#smart_mode_out_location_id").jqxDropDownList('clearSelection' ); 								
@@ -381,8 +385,8 @@ $( '#_maintenance_networks' ).live('pageshow', function(event){
 			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
 			$("#entity_id").jqxDropDownList('clearSelection' ); 
 
-			$("#network_type_id").jqxDropDownList({ source: data['network_types'], disabled: false });
-			$("#network_type_id").jqxDropDownList('clearSelection' ); 
+			$("#network_type").jqxDropDownList({ source: data['network_types'], disabled: false });
+			$("#network_type").jqxDropDownList('clearSelection' ); 
 
 
 			$("#smart_mode_product_id").jqxDropDownList({ source: data['products'], disabled: false });

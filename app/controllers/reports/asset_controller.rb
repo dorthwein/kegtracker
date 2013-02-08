@@ -38,14 +38,15 @@ class Reports::AssetController < ApplicationController
 				location, product, entity = gatherer.asset_activity_fact_criteria				
 				response = []
 				AssetActivityFact.where(:asset => params[:_id], :handle_code => 4).any_of(location, product, entity).desc(:fact_time).each do |x|
-					date = 	"<div class='life_cycle_select'><b> Fill Date: </b> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </div>"
-					product = 	"<div class='life_cycle_select'> <b> Product: </b> #{x.product.description} </div>"
-					brewery = 	"<div class='life_cycle_select'> <b> Brewery: </b> #{x.product.entity.description} </div>"
-					location = 	"<div class='life_cycle_select'> <b> Location: </b> #{x.location.description} </div>"
-					location_network = 	"<div class='life_cycle_select'> <b> Location Network: </b> #{x.location.network_description} </div>"
-
+					
+					date = 	"<td class='life_cycle_select'><b> Fill Date: </b> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
+					product = 	"<td class='life_cycle_select'> <b> Product: </b> #{x.product.description} </td>"
+					brewery = 	"<td class='life_cycle_select'> <b> Brewery: </b> #{x.product.entity.description} </td>"
+					location = 	"<td class='life_cycle_select'> <b> Location: </b> #{x.location.description} </td>"
+					location_network = 	"<td class='life_cycle_select'> <b> Location Network: </b> #{x.location.network_description} </td>"
+					
 					fill_asset_activity_fact = x.fill_asset_activity_fact_id
-					response.push({:value => fill_asset_activity_fact, :html => date + product + brewery + ' <br />' + location + location_network})
+					response.push({:value => fill_asset_activity_fact, :html => '<table><tbody><tr>' + date + product + brewery + '</tr> <tr>' + location + location_network + '</tr></tbody> </table>'})
 				end
 
 				render json: response
@@ -149,7 +150,7 @@ class Reports::AssetController < ApplicationController
 
 		    	end
 
-				visible_networks = Network.visible_networks({:entity => current_user.entity})
+				visible_networks = current_user.entity.visible_networks
 		    	location_network_list = []		    	
 		    	location_network_list = visible_networks.map {|x| 
 					{:html => x.description, :value => x._id}		    	

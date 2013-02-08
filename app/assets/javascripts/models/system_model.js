@@ -1,4 +1,4 @@
-var settings = {"version":"1.0","theme":'metro'};
+var settings = {"version":"1.0","theme":'fresh'};
 var pgFunc = {};
 var params = {};
 var system = {};

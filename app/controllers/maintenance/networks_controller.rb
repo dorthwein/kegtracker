@@ -20,15 +20,12 @@ class Maintenance::NetworksController < ApplicationController
       							:description => network.description, 
       							:entity => network.entity.description, 							
                     :network_type_description => network.network_type_description,
-                    :network_type_description => network.network_type_description,
-                    :network_type_description => network.network_type_description,
 
                     :smart_mode_product_description => network.smart_mode_product_description,
                     :smart_mode_in_location_description => network.smart_mode_in_location_description,
                     :smart_mode_out_location_description => network.smart_mode_out_location_description,
 
                     :auto_mode => network.auto_mode,
-                    :smart_mode => network.smart_mode,
       							:_id => network._id
       							} 
       						}

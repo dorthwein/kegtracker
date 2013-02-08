@@ -1,3 +1,4 @@
+
 class HandleCode
   include Mongoid::Document
   field :description, type: String    

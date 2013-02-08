@@ -8,14 +8,14 @@ class Network
   
 
   # 1 = Production, 2 = Distribution, 3 = Market
-  field :network_type_id, type: Integer, :default => 2
+  field :network_type, type: Integer, :default => 2
 
   field :market, type: Integer, :default => 0
   field :distribution, type: Integer, :default => 0
   field :production, type: Integer, :default => 0
 
-  field :smart_mode, type: Integer, :default => 0   # When assets move in/out things occur to them  
-  field :auto_mode, type: Integer, :default => 0   # To be implemented for non-active networks/auto joins etc...
+ # field :smart_mode, type: Integer, :default => 0   # When assets move in/out things occur to them  
+  field :auto_mode, type: Integer, :default => 1   # To be implemented for non-active networks/auto joins etc...
 
   belongs_to :smart_mode_product, :class_name => 'Product'
   belongs_to :smart_mode_in_location, :class_name => 'Location'
@@ -34,6 +34,9 @@ class Network
   has_many :network_memberships 
   has_many :locations
 
+  def partner_locations
+    self.locations.where(:location_type => 5)
+  end
   def self.network_types
       network_types = [ 
                         {:_id => 1, :description => 'Brewery'},
@@ -42,8 +45,9 @@ class Network
                       ]
     return network_types
   end
+
   def network_type_description
-    case self.network_type_id.to_i
+    case self.network_type.to_i
     when 1
       return 'Brewery' 
     when 2
@@ -54,7 +58,7 @@ class Network
   end
 
 	before_save :sync_descriptions	
-  before_create :on_create  
+  after_create :on_create  
 	def sync_descriptions
     self.smart_mode_product_description = self.smart_mode_product.description
     self.smart_mode_in_location_description = self.smart_mode_in_location.description

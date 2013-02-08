@@ -114,12 +114,37 @@
 						Maintenance
 						<ul>
 							<li> <%= link_to 'Users', :maintenance_users %> </li>
-							<li> <%= link_to 'Partnerships', :maintenance_network_memberships %> </li>
-							<li> <%= link_to 'Networks', :maintenance_networks %> </li>
-							<li> <%= link_to 'Locations', :maintenance_locations %> </li>
-							<li> <%= link_to 'Products', :maintenance_products %> </li>
-							<li> <%= link_to 'Print Barcodes', :new_maintenance_barcode_maker %> </li>
-							<li> <%= link_to 'RFID', :maintenance_rfid_readers %> </li>
+							<li>
+								Distribution
+								<ul>
+									<li> <%= link_to 'Distributors', :maintenance_distribution_partnerships %> </li>
+										<!-- Breweries allows to produce my beers -->
+									<li style="display:none"> <%= link_to 'Brewery Partners', :maintenance_distribution_partnerships %> 
+									</li>
+								</ul>
+							</li>
+							<li>
+								Production
+								<ul>
+									<li> <%= link_to 'Products', :maintenance_products %> </li>
+									<li> 
+										<%= link_to 'Contract Breweries', :maintenance_production_partnerships %> 
+									</li>		
+								</ul>
+							<li> 
+								Locations
+								<ul>
+									<li> <%= link_to 'Networks', :maintenance_networks %> </li>
+									<li> <%= link_to 'Locations', :maintenance_locations %> </li>
+								</ul>
+							</li>
+							<li>
+								Scanning
+								<ul>
+									<li> <%= link_to 'Print Barcodes', :new_maintenance_barcode_maker %> </li>
+									<li> <%= link_to 'RFID', :maintenance_rfid_readers %> </li>
+								</ul>
+							</li>	
 						</ul>
 					</li>
 					<% if current_user.system_admin == 1 %>

@@ -20,13 +20,9 @@ class Reports::LocationController < ApplicationController
 						:city => location.city,
 						:state => location.state,
 						:zip => location.zip,
+						:location_type_description => location.location_type_description,
+                        :location_type => location.location_type,
 
-						:on_premise => location.on_premise,
-						:off_premise => location.off_premise,
-						:empty => location.empty,
-						:inventory => location.inventory,
-						:production => location.production,
-						:partner_entity => location.partner_entity,
 						:_id => location._id
 					}
 				}

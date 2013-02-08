@@ -83,4 +83,44 @@ class User
 
   ## Token authenticatable
 	field :authentication_token, :type => String
+
+  def scanner_data
+      reponse = {}
+      permissions = self.scan_permissions
+
+      response[:toggle_options] = {}
+      response[:handle_codes_auto_mode_on] = []
+      response[:handle_codes_auto_mode_off] = []
+
+      response[:networks] = []
+      response[:locations] = []
+      response[:products] = []
+
+      response[:handle_codes_auto_mode_off] = []
+      response[:handle_codes_auto_mode_off] = []
+      
+      if permissions.scanner_delivery_pickup == 1
+        response[:handle_codes_auto_mode_on].push({:html => 'Move/Deliver/Pickup', :value => 5})
+
+        response[:handle_codes_auto_mode_on].push({:html => 'Deliver', :value => 1})
+        response[:handle_codes_auto_mode_on].push({:html => 'Pickup', :value => 2})
+        response[:handle_codes_auto_mode_off].push({:html => 'Move', :value => 5})
+      end
+      if permissions.scanner_fill == 1            
+        response[:handle_codes_auto_mode_on].push({:html => 'Fill', :value => 4})
+        response[:handle_codes_auto_mode_off].push({:html => 'Fill', :value => 4})            
+      end
+      
+      if permissions.scanner_add == 1        
+        response[:toggle_options][:asset_type] = 1
+        response[:handle_codes_auto_mode_off].push({:html => 'Add', :value => 4})            
+      end
+      networks = current_user.entity.visible_networks
+      response[:networks] = networks.map{|x| {:html => x.description, :value => x._id}}
+      
+
+
+  end
+
+
 end

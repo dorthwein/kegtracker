@@ -20,13 +20,8 @@ $( '#_reports_location_browse' ).live('pageshow', function(event){
 			{ name: 'city' },
 			{ name: 'state' },					
 			{ name: 'zip' },                	
-
-			{ name: 'on_premise' },                	                	
-			{ name: 'off_premise' },                	                	                	
-			{ name: 'empty' },                	                	
-			{ name: 'inventory' },                	                	
-			{ name: 'production' },                	                											                
-			{ name: 'partner_entity' },
+			{ name: 'location_type' },                	
+			{ name: 'location_type_description' },                	
 			{ name: '_id'}
 		], 
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
@@ -62,7 +57,9 @@ $( '#_reports_location_browse' ).live('pageshow', function(event){
 			{ text: 'City', datafield: 'city' },
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },			
 			{ text: 'Zip', datafield: 'zip' },
+			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },			
 
+/*
 			{ text: 'On Premise', datafield: 'on_premise', filterable: false,  width: '75px', cellsrenderer: function (row, column, value) {
 					if(value == 1){
 						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
@@ -111,6 +108,7 @@ $( '#_reports_location_browse' ).live('pageshow', function(event){
 					}
 				}
 			},	
+		*/
 		],
         groups: ['network']		
 	});

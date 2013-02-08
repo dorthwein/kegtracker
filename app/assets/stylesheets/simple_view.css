@@ -2,6 +2,7 @@
 
 #simple_container {
 	width:960px;
+	min-height: 600px;
 	border:1px solid #CCC;
 	
 	margin:auto;
@@ -12,7 +13,6 @@
 
 .simple.input {
 	margin:5px 5px 5px 5px;
-
 }
 #grid_title.simple {
 	margin:10px 0 0px 0;

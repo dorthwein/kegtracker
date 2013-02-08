@@ -20,3 +20,4 @@ class NetworkMembership
 #  field :production_reporting, type: Boolean	 # Grants visability to production 
 #  field :inventory_reporting, type: Boolean	 	 # Grants visability to inventory
 end
+

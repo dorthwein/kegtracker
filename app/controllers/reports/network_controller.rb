@@ -45,7 +45,7 @@ class Reports::NetworkController < ApplicationController
 
 		    	end
 
-				visible_networks = Network.visible_networks({:entity => current_user.entity})
+				visible_networks = current_user.entity.visible_networks
 		    	location_network_list = []		    	
 		    	location_network_list = visible_networks.map {|x| 
 					{:html => x.description, :value => x._id}		    	

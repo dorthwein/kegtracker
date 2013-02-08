@@ -8,28 +8,33 @@ Cobalt::Application.routes.draw do
 
 		resources :rfid_antennas
 		resources :rfid_readers	  
-		match 'rfid_readers/reader_save' => 'rfid_readers#reader_save', :via => [:get, :post]		  	
-		match 'rfid_readers/reader_delete' => 'rfid_readers#reader_delete', :via => [:get, :post]		  					
+		match 'rfid_readers/reader_save' => 'rfid_readers#reader_save', :via => [:get, :post]
+		match 'rfid_readers/reader_delete' => 'rfid_readers#reader_delete', :via => [:get, :post]
 		match 'rfid_readers/reader_new' => 'rfid_readers#reader_new', :via => [:get, :post]
 		match 'rfid_readers/reader_select' => 'rfid_readers#reader_select', :via => [:get, :post]
 	
 
-		match 'rfid_readers/antennas' => 'rfid_readers#antennas', :via => [:get, :post]	
-	  	match 'rfid_readers/antenna_select' => 'rfid_readers#antenna_select', :via => [:get, :post]	
-		match 'rfid_readers/antenna_save' => 'rfid_readers#antenna_save', :via => [:get, :post]		  	
-		match 'rfid_readers/antenna_new' => 'rfid_readers#antenna_new', :via => [:get, :post]		  			
-		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]		  					
+		match 'rfid_readers/antennas' => 'rfid_readers#antennas', :via => [:get, :post]
+	  	match 'rfid_readers/antenna_select' => 'rfid_readers#antenna_select', :via => [:get, :post]
+		match 'rfid_readers/antenna_save' => 'rfid_readers#antenna_save', :via => [:get, :post]
+		match 'rfid_readers/antenna_new' => 'rfid_readers#antenna_new', :via => [:get, :post]
+		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
 
 	  	resources :locations 
 #		devise_for :users	  	
 	  	resources :users 
 	    resources :networks	  			  	
+
 	  	resources :network_memberships
+	  	
+	  	resources :distribution_partnerships
+	  	resources :production_partnerships
+	  	resources :leasing_partnerships
+
 	  	resources :products  	
 	  	resources :barcodes
 	  	resources :production 
 	    resources :barcode_makers  	
-
 		
 	    match 'barcode_maker/download' => 'barcode_makers#download', :via => [:get, :post]	
 	end  

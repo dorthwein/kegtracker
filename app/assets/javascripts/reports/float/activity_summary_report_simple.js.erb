@@ -5,7 +5,11 @@ $( '#_reports_float_activity_summary_report_simple' ).live('pageshow', function(
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme
-
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
+		
+	//	var jsDate = event.args.date; 		
+	}); 
 	var theme = settings.theme
 	var source = {
 		datatype : "json",
@@ -85,11 +89,7 @@ $( '#_reports_float_activity_summary_report_simple' ).live('pageshow', function(
         groups: ['date','location_network']
 	});
 
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
-	$('#date').bind('valuechanged', function (event) {  
-		
-	//	var jsDate = event.args.date; 		
-	}); 
+
 
 	$("#location_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
 /*

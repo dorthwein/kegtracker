@@ -42,6 +42,8 @@ class Asset
 	field :user_email_description, type: String				
 	belongs_to :user
 	
+	belongs_to :production_invoice, :class_name => 'Invoice'
+	field :production_invoice_number, type: String
 
 # Relations	
 	# Life Cycle
@@ -67,6 +69,7 @@ class Asset
 	field :pickup_network_description, type: String	
 
 	# Set before all actions to detect if the asset should have "Smart Actions" applied to it.
+=begin
 	def smart_network_processing options
 		to_location = Location.find(options[:to_location])
 		to_network = to_location.network
@@ -84,11 +87,11 @@ class Asset
 				self.location = to_location
 			end
 			
-			if self.location_network.network_type_id == 1 && self.asset_status != 1
+			if self.location_network.network_type == 1 && self.asset_status != 1
 				# Fill Asset at Outbound Location
 				opt = {
 						:product => self.location_network.smart_mode_product,
-						:location => self.location_network.smart_mode_out_location._id,
+						:location_id => self.location_network.smart_mode_out_location._id,
 						:correction => options[:correction],
 						:time => options[:time]
 					}
@@ -96,9 +99,9 @@ class Asset
 			end
 
 			# Asset leaving a distributor/market pickup at Outbound Location
-			if (self.location_network.network_type_id == 2 || self.location_network.network_type_id == 3) && to_network.network_type_id == 1 && self.asset_status != 0
+			if (self.location_network.network_type == 2 || self.location_network.network_type == 3) && to_network.network_type == 1 && self.asset_status != 0
 				opt = {
-						:location => self.location_network.smart_mode_out_location._id,
+						:location_id => self.location_network.smart_mode_out_location._id,
 						:correction => options[:correction],
 						:time => options[:time]
 					}
@@ -108,21 +111,22 @@ class Asset
 
 			### INBOUND ###			
 			# Asset Arriving at Production Facility - Empty asset, purge other entity product
-			if to_network.network_type_id == 1
+			if to_network.network_type == 1
 				# Needs to be changed to check for Authorized products
 				if to_network.entity != self.product.entity
 					self.product = nil
 				end
 				opt = {
-						:location => self.location_network.smart_mode_out_location._id,
+						:location_id => self.location_network.smart_mode_out_location._id,
 						:correction => options[:correction],
 						:time => options[:time]
 					}
 				self.pickup(opt)
 			end
 		end
+		self.save
 	end
-	
+=end	
 	def deliver options
 		# Options: time, location, correction		
 		self.handle_code = 1
@@ -130,10 +134,10 @@ class Asset
 		print options[:time].to_s + "<--- \n" 
 		
 		self.last_action_time = options[:time]		
-		self.location_id = options[:location]
+		self.location_id = options[:location_id]
 		
 		self.delivery_time = options[:time]
-		self.delivery_location_id = options[:location]				
+		self.delivery_location_id = options[:location_id]				
 		self.create_asset_activity_fact(:correction => options[:correction])
 	end	
 
@@ -143,10 +147,10 @@ class Asset
 		self.asset_status = 0		
 		self.last_action_time = options[:time]
 		
-		self.location_id = options[:location]
+		self.location_id = options[:location_id]
 		
 		self.pickup_time = options[:time]
-		self.pickup_location_id = options[:location]
+		self.pickup_location_id = options[:location_id]
 		self.create_asset_activity_fact(:correction => options[:correction])
 	end
 
@@ -156,25 +160,25 @@ class Asset
 		self.asset_status = 0		
 		self.last_action_time = options[:time]
 
-		self.location_id = options[:location]
+		self.location_id = options[:location_id]
 		self.create_asset_activity_fact(:correction => options[:correction])
 	end
 	
 	def fill options
-		# Options: time, location, product, correction
+		# Options: time, location_id, product_id, correction
 		self.handle_code = 4		
 		self.asset_status = 1
 
 		self.last_action_time = options[:time]				
 		
-		self.location_id = options[:location]
+		self.location_id = options[:location_id]
 
-		self.product_id = options[:product]
+		self.product_id = options[:product_id]
 		self.fill_time = options[:time]
-		self.fill_location_id = options[:location]
+		self.fill_location_id = options[:location_id]
 		
 		# If not correction
-		if !options[:correction]
+		if options[:correction] == 0
 			self.fill_count = self.fill_count.to_i + 1
 		end
 		self.create_asset_activity_fact(:correction => options[:correction])
@@ -184,7 +188,7 @@ class Asset
 		# Options: time, location, correction
 		self.handle_code = 5
 		self.last_action_time = options[:time]
-		self.location_id = options[:location]
+		self.location_id = options[:location_id]
 		self.create_asset_activity_fact(:correction => options[:correction])
 	end
 
@@ -193,7 +197,7 @@ class Asset
 		if self.location_network != Location.find(options[:location]).network
 			self.handle_code = 5	# Records as a move
 			self.last_action_time = options[:time]
-			self.location_id = options[:location]
+			self.location_id = options[:location_id]
 			self.create_asset_activity_fact(:correction => options[:correction])
 		end
 	end	
@@ -210,7 +214,7 @@ class Asset
 									:asset_type_id => self.asset_type_id,																		
 									:entity_id => self.entity_id,
 
-									:product_id => self.product_id,
+									:product => self.product,
 									:handle_code => self.handle_code.to_i,
 									
 									:fact_time => self.last_action_time,
@@ -225,19 +229,19 @@ class Asset
 #									:fill_time => asset.fill_time,								
 								}
 		fact = AssetActivityFact.where(:_id => self.asset_activity_fact._id).first
-		if options[:correction] && !fact.nil?		
+		if options[:correction] == 1 && !fact.nil?		
 			fact.update_attributes(asset_activity_fact_details)
 			print " \n \n"	
 			print fact.to_json
 			print " \n \n"	
 			print "Fact Change \n \n"	
 		else	
-			asset_activity_fact = AssetActivityFact.new(asset_activity_fact_details)
-			self.asset_activity_fact = asset_activity_fact
-			asset_activity_fact.save
-			
-			print "New Fact \n \n"	
-		end
+			asset_activity_fact = AssetActivityFact.create(asset_activity_fact_details)
+
+			self.asset_activity_fact = asset_activity_fact						
+			self.save
+			print "  New Fact \n \n"	
+		end		
 	end	
 
 	def asset_status_description
@@ -275,147 +279,146 @@ class Asset
 			return 'Audit'
 		end
 	end
+=begin
 	def self.process_scans options
 		# expects HASH with key :scans => [Array of Scans]
 		scans = options[:scans]
 		scans.each do |scan|
 			scan = JSON.parse(scan)	
 
-
 		############################
 		####### Scan Parsing #######		
-			scan_email = scan['user']['N']
-			scan_password = scan['user']['P']
-		
-		
-			scan_handle_code = scan['processing']['HC']
-			scan_correction = scan['processing']['correction'].to_i
-			scan_time = Time.at(scan['processing']['T'].to_i)
+			scan_params = {}
 
-			scan['processing']['P'] ? scan_product = scan['processing']['P'] : nil
-			scan['processing']['AT'] ? scan_asset_type = scan['processing']['AT'] : nil
+			scan_params[:email] = scan['user']['N']
+			scan_params[:password] = scan['user']['P']
+			scan_params[:handle_code] = scan['processing']['HC'].to_i 
+			scan_params[:correction] = scan['processing']['correction'].to_i
+			scan_params[:auto_mode] = scan['processing']['auto_mode'].to_i	
+			scan_params[:time] = Time.at(scan['processing']['T'].to_i)
 
-			# Location
-			scan_location = scan['location']
+			scan['processing']['P'] ? scan_params[:product_id] = scan['processing']['P'] : nil
+			scan['processing']['AT'] ? scan_params[:asset_type_id] = scan['processing']['AT'] : nil
 
+			scan_params[:location_id] = scan['location']
+			scan_params[:tag] = {}
 			# TAG
 			if !scan['tag'][0].nil? 								# If array [0] nil, then must be hash
 				if scan['tag'].kind_of?(Array)						# If array, assume tag version in [0]
-					tag_version = scan['tag'][0].capitalize	
+					scan_params[:tag][:version] = scan['tag'][0].capitalize	
 
-					if tag_version == 'T1'
-						tag_value = scan['tag'][1]
-						tag_network_netid = scan['tag'][2]
-						tag_key = scan['tag'][3]
+					if scan_params[:tag][:version] == 'T1'
+						scan_params[:tag][:value] = scan['tag'][1]
+						scan_params[:tag][:netid] = scan['tag'][2]
+						scan_params[:tag][:key] = scan['tag'][3]
 					end						
 				end
 			else
 			# Default to T0			
-				tag_version = 'T0'	# scan['tag'][0].capitalize
-				tag_value = scan['tag']['V']
+				scan_params[:tag][:version] = 'T0'	# scan['tag'][0].capitalize
+				scan_params[:tag][:value] = scan['tag']['V']
 				
 			# Check for Network
 				if !scan['tag']['N'].nil?	
-					tag_network_netid = scan['tag']['N']
+					scan_params[:tag][:netid] = scan['tag']['N']
 				end
 				
 			# Default - Check for Key
 				if scan['tag']['K'].nil?
-					tag_key = 0
+					scan_params[:tag][:key] = 0
 				else
-					tag_key = scan['tag']['K']
+					scan_params[:tag][:key] = scan['tag']['K']
 				end
-			end		
+			end
+
 
 
 		##############################
 		####### Pre Processing #######			
-			user = User.where(:email => scan_email).first			
-			if tag_network_netid.nil?			
+			user = User.where(:email => scan_params[:email]).first			
+			if scan_params[:tag][:netid].nil?			
 				tag_network = user.entity.networks.first
 			else
-				tag_network = Network.where(:netid => tag_network_netid).first		
+				tag_network = Network.where(:netid => scan_params[:tag][:netid]).first		
 			end
+
 			asset = Asset.where(
 							:netid => tag_network.netid,
-							:tag_value => tag_value
+							:tag_value => scan_params[:tag][:value]
 							).first || 
 						Asset.new(
 							:network_id => tag_network._id, 
-							:location_id => scan_location,
+							:location_id => scan_params[:location_id],
 #							:location_network => location.network, 
 							:asset_status => 0, 
-							:tag_value => tag_value,
+							:tag_value => scan_params[:tag][:value],
 							:netid => tag_network.netid,
-							:tag_key => tag_key, 
+							:tag_key => scan_params[:tag][:key],
 							:entity_id => tag_network.entity._id
 						)
 
-			asset.user = User.where(:email => scan_email).first		
+			asset.user = User.where(:email => scan_params[:email]).first		
 			
-			if !scan_asset_type.nil?
-				asset.asset_type = AssetType.find(scan_asset_type)
+			if !scan_params[:asset_type_id].nil?
+				asset.asset_type = AssetType.find(scan_params[:asset_type_id])
 			end
 
 		################################
-		####### Check Correction #######				
-			check_correction = false
-			if asset.location_id == scan_location && asset.handle_code.to_i == scan_handle_code.to_i && asset.last_action_time.to_i > (scan_time.to_i - 86400)
+		####### Check Correction #######						
+			if asset.location_id == scan_params[:location_id] && asset.handle_code.to_i == scan_params[:handle_code] && asset.last_action_time.to_i > (scan_params[:time].to_i - 86400)
 				print "Standard Correction \n"
-				check_correction = true
+				scan_params[:correction] = 1
 			end
 
 			# Same Location within 15 minutes but not a fill
-			if asset.location == scan_location && scan_handle_code.to_i != 4 && asset.last_action_time.to_i > (scan_time.to_i - 900)			
+			if asset.location == scan_params[:location_id] && scan_params[:handle_code].to_i != 4 && asset.last_action_time.to_i > (scan_params[:time].to_i - 900)			
 				print "Same Location within 15 minutes \n"
-				check_correction = true	
+				scan_params[:correction] = 1	
 			end
 					
 			# Fill action within last day
-			if scan_handle_code.to_i == 4 && asset.fill_time.to_i > (scan_time.to_i - 86400)
+			if scan_params[:handle_code].to_i == 4 && asset.fill_time.to_i > (scan_params[:time].to_i - 86400)
 				print "Fill Correction \n"
-				check_correction = true			
-			end
-			if scan_correction == 1
-				check_correction = true
+				scan_params[:correction] = 1			
 			end
 			asset.save!
+
 		################################
 		####### Asset Processing #######				
-			asset.smart_network_processing({:time => scan_time, :to_location => scan_location, :correction => check_correction})
+			asset.smart_network_processing({:time => scan_params[:time], :to_location => scan_params[:location_id], :correction => scan_params[:correction]})
 
-			case scan_handle_code.to_i
+			case scan_params[:handle_code].to_i
 			when 1 		# Delivery
-				asset.deliver({:time => scan_time, :location => scan_location, :correction => check_correction})				
+				asset.deliver(options)				
 				print "Delivery \n"				
 			
 			when 2		# Pickup
-				asset.pickup({:time => scan_time, :location => scan_location, :correction => check_correction})
+				asset.pickup(options)				
 				print "Pickup \n"
 			
 			when 3		# Add
-				asset.add({:time => scan_time, :location => scan_location, :correction => check_correction})
+				asset.add(options)				
 				print "Add \n"
 			
 			when 4		# Fill
-				asset.fill({:time => scan_time, :location => scan_location, :product => scan_product, :correction => check_correction})
+				asset.fill(options)				
 				print "Fill \n"
 			
 			when 5		# Move
-				asset.move({:time => scan_time, :location => scan_location, :correction => check_correction})
+				asset.move(options)				
 				print "Move \n"
 			
 			when 6		# RFNet
-				asset.rfnet({:time => scan_time, :location => scan_location, :correction => check_correction})
+				asset.rfnet(options)				
 				print "RFNet \n"			
 			when 7		# Audit
-				process_audit
+				asset.process_audit
 				print "Audit \n"			
 			else
 				print "HC Error \n"
 			end
-			asset.save
-	
+			asset.save	
+
 			@scan_snap_shot = {
 				:Network => asset.network_description,
 				:Fill => asset.fill_count,
@@ -436,6 +439,7 @@ class Asset
 		@scan_snap_shot 
 		#return scan_snap_shot
 	end
+=end
 
 	before_save :sync_descriptions	
 	def sync_descriptions
@@ -480,3 +484,6 @@ class Asset
 	index({ product_id: 1 }, { name: "product_index" })
 	index({ entity_id: 1 }, { name: "entity_index" })	
 end
+
+
+
