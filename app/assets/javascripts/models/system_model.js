@@ -6,9 +6,9 @@ var system = {};
 system.background = {};
 system.background.intervals = {};	// Not sure what this is for...?
 
-system.table_height = '650px'
-system.simple_grid_height = '500px'
-system.simple_grid_width = '950px'
+system.table_height = '650px';
+system.simple_grid_height = '500px';
+system.simple_grid_width = '950px';
 /*
 function(){
 	var height = $(window).height() * .50;
