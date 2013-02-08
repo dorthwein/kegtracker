@@ -1,3 +1,4 @@
+=begin
 class ChartBuilder < ApplicationController
 	def initialize user
 		# Gatherer Params
@@ -473,5 +474,6 @@ class ChartBuilder < ApplicationController
 		}
 		return chart
 	end
-=end
+
 end
+=end

@@ -1,4 +1,4 @@
-
+=begin
 class ScanProcess
 	attr_accessor :scan_snap_shots
 	def initialize scan
@@ -182,3 +182,4 @@ class ScanProcess
 		}
 	end
 end
+=end

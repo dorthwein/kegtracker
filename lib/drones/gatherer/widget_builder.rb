@@ -1,3 +1,4 @@
+=begin
 class WidgetBuilder < ApplicationController
 	def initialize user, fact_time_start = Time.new.beginning_of_day, fact_time_end = Time.new.end_of_day
 		# Gatherer Params
@@ -71,3 +72,4 @@ class WidgetBuilder < ApplicationController
 		
 	end
 end
+=end
