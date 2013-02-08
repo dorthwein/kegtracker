@@ -132,7 +132,7 @@ class Scanner
 		
 		when 6		# RFNet
 			obj[:asset].rfnet(obj)				
-			print "RFNet \n"			
+			print "RFNet \n" + obj[:asset].location_network.description.to_s
 		when 7		# Audit
 			obj[:asset].process_audit
 			print "Audit \n"			
