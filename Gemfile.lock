@@ -93,6 +93,8 @@ GEM
     jquery-ui-rails (4.0.1)
       jquery-rails
       railties (>= 3.1.0)
+    jquery_mobile_rails (1.2.0)
+      rails (>= 3.1.0)
     json (1.7.6)
     launchy (2.2.0)
       addressable (~> 2.3)
@@ -100,7 +102,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.20.1)
+    mime-types (1.21)
     mongoid (3.0.21)
       activemodel (~> 3.1)
       moped (~> 1.2)
@@ -109,7 +111,7 @@ GEM
     mongoid_auto_increment (0.1.0)
       mongoid
       mongoid_auto_increment
-    moped (1.4.0)
+    moped (1.4.2)
     multi_json (1.5.0)
     netrc (0.7.7)
     nokogiri (1.5.6)
@@ -196,6 +198,7 @@ DEPENDENCIES
   jquery-datatables-rails!
   jquery-rails
   jquery-ui-rails
+  jquery_mobile_rails
   mongoid
   mongoid_auto_increment
   nokogiri

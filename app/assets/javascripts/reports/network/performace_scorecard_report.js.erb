@@ -1,7 +1,7 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$( '#_reports_network_performance_scorecard_report' ).live('pageshow', function(event){
+$(document).on('pageshow', '#_reports_network_performance_scorecard_report', function(event){		
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme

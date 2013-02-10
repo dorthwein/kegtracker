@@ -1,7 +1,9 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$( '#_maintenance_users' ).live('pageshow', function(event){
+
+$(document).on('pageshow', '#_maintenance_users', function(event){	
+
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme

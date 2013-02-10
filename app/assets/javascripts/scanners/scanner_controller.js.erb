@@ -6,7 +6,7 @@
 	4 = Fill
 	5 = Move	
 */
-$( '#_scanners_barcode' ).live( 'pageshow',function(event){      
+$(document).on('pageshow', '#_scanners_barcode', function(event){		
     var theme = settings.theme;
 	$(".scanner.dropdown").jqxDropDownList({
 		displayMember: "html", 

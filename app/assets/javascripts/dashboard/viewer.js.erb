@@ -1,9 +1,10 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$( '#_dashboard_viewer' ).live('pageshow', function(event){
+
+$(document).on('pageshow', '#_dashboard_viewer', function(event){
+    $.mobile.loading('show');
 	// prepare the data    
-	$.mobile.loading('show');
 	var theme =  settings.theme // settings.theme
 	url = system.server + $('.ui-page-active').attr('data-url');
     // LEFT OFF HERE!! BUILDING AJAX JSON CALLBACK TO PAGE FOR FILTER DATA
@@ -353,5 +354,5 @@ $( '#_dashboard_viewer' ).live('pageshow', function(event){
     });
 
     loadFilters();
-	$.mobile.loading('hide');       
+    $.mobile.loading('hide');    
 });
