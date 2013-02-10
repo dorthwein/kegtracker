@@ -4,6 +4,7 @@ gem  'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+# gem 'jquery_mobile_rails'
 gem 'heroku'
 gem 'nokogiri'
 gem "mongoid"
@@ -12,7 +13,6 @@ gem "devise"
 gem 'thin'
 gem 'prawn'
 gem 'jquery-rails'
-# gem 'jquery_mobile_rails'
 gem 'jquery-ui-rails'
 gem 'cancan'
 gem 'mongoid_auto_increment'
