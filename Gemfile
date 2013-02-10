@@ -16,9 +16,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'cancan'
 gem 'mongoid_auto_increment'
-gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 gem 'axlsx'
-gem 'crossfilter_rails'
 gem 'delayed_job_mongoid'
 
 # Gems used only for assets and not required
