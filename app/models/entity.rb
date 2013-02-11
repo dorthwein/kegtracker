@@ -129,7 +129,7 @@ class Entity
 		return networks
 	end
 
-	def all_visible_networks
+	def visible_networks
 		networks = []
 		networks = networks + self.networks        
 		networks = networks + self.partner_networks

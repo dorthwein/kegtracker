@@ -8,7 +8,7 @@ task :ten_minute_build => :environment do
 end
 
 task :build_asset_summaries => :environment do
-	start = Time.new(2012,"dec", 1)
+	start = Time.new(2012,"oct", 1)
 	last = Time.new() # + 86400
 	current = start
 
