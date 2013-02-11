@@ -38,6 +38,7 @@ class System::RfidReadsController < ApplicationController
 				scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
 				scan['processing']['T'] = Time.now.to_i
 
+				scan['processing']['auto_mode'] = 1
 
 				if !rfid_antennas[tag_antenna].product.nil?
 					scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
@@ -88,7 +89,7 @@ class System::RfidReadsController < ApplicationController
 					scan['processing'] = Hash.new
 					scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
 					scan['processing']['T'] = Time.now.to_i
-	
+					scan['processing']['auto_mode'] = 1
 	
 					if !rfid_antennas[tag_antenna].product.nil?
 						scan['processing']['P'] = rfid_antennas[tag_antenna].product._id

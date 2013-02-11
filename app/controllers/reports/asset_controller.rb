@@ -117,6 +117,7 @@ class Reports::AssetController < ApplicationController
 		    		start_date = DateTime.parse(params['date']['0'])
 		    		end_date = DateTime.parse(params['date']['1'])
 		    	end
+
 				response = AssetSummaryFact.where(:report_entity => current_user.entity).between(fact_time: start_date..end_date).desc(:fact_time).map { |asset_summary_fact| {
 																						:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
 																						:location_network => asset_summary_fact.location_network_description,
@@ -132,6 +133,7 @@ class Reports::AssetController < ApplicationController
 																						:total_quantity => asset_summary_fact.total_quantity
 																					}
 																				}
+
 		    	render json: response
 			}			
 		end			
@@ -170,8 +172,4 @@ class Reports::AssetController < ApplicationController
 		end			
 	end	
 end
-
-
-
-
 
