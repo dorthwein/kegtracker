@@ -1,99 +1,80 @@
 <div id="simple_container" class="scanner" userName="<%= current_user.email %>">
+
+	<div class="scanner input_toggle_group left">	
+		<h5> Auto Mode	</h5>
+		<div id="toggle_auto_mode" class="flip_switch scanner">
+		</div>
+	</div>
+
+	<div class="scanner input_toggle_group left">	
+		<h5> Add to Invoice	</h5>
+		<div id="toggle_invoice" class="flip_switch scanner">
+		</div>
+	</div>
+
+	<div class="scanner input_toggle_group left">	
+		<h5> Asset Type	</h5>
+		<div id="toggle_asset_type" class="flip_switch scanner">
+		</div>
+	</div>
+
+	<div class="scanner input_toggle_group left">	
+		<h5> Correction	</h5>
+		<div id="toggle_correction" class="flip_switch scanner">
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div id="scan_light" class="right">
+		<span style="font-size:30px;">
+			Ready
+		</span>							
+	</div>
 	
+	<div class="left">
 		<div class="scanner input_group left">
-			<h5> Auto Mode	</h5>
-			<div id="toggle_auto_mode" class="flip_switch scanner">
-			</div>
-		</div>
-
-		<div class="scanner input_group left">	
-			<h5> Asset Type	</h5>
-			<div id="toggle_asset_type" class="flip_switch scanner">
+			<h2> Action </h2>
+			<div id="handle_code" class="scanner dropdown">
 			</div>
 		</div>
 
 		<div class="scanner input_group left">
-			<h5> Correction	</h5>
-			<div id="toggle_correction" class="flip_switch scanner">
+			<h2> Network </h2>
+			<div id="location_network_id" class="scanner dropdown">
+			</div>
+		</div>
+
+		<div class="scanner input_group left">
+			<h2> Location </h2>
+			<div id="location_id" class="scanner dropdown">
 			</div>
 		</div>
 		<div class="clear"></div>
-		<div id="scan_light" class="right" style="">					
-			<span style="font-size:30px;">
-				Ready
-			</span>							
-		</div>
-		
-		<div class="left">
-			<div class="scanner input_group left">
-				<h2> Action </h2>
-				<div id="handle_code" class="scanner dropdown">
-				</div>
-			</div>
-
-			<div class="scanner input_group left">
-				<h2> Network </h2>
-				<div id="location_network_id" class="scanner dropdown">
-				</div>
-			</div>
-
-			<div class="scanner input_group left">
-				<h2> Location </h2>
-				<div id="location_id" class="scanner dropdown">
-				</div>
-			</div>
-			<div class="clear"></div>
-			<div class="scanner input_group left">
-				<h2> Asset Type </h2>
-				<div id="asset_type_id" class="scanner dropdown">
-				</div>
-			</div>
-			<div class="scanner input_group left">
-				<h2> Product </h2>
-				<div id="product_id" class="scanner dropdown">
-				</div>
+		<div class="scanner input_group left">
+			<h2> Asset Type </h2>
+			<div id="asset_type_id" class="scanner dropdown">
 			</div>
 		</div>
-		
-
-		<div class="scanner left" style="margin:30px 0 10px 30px; width:100%;">
-			<span style="float:left"> Connect barcode scanner to begin scanning. </span> <br />
-			<%= text_field_tag :scan_input, '', {'data-role' => 'none'} %>
-		</div>
-	</form>
-	<div id="docking" class="hidden">
-		<div style="width:50%">
-			<div id="slot_1">
-				<div>	</div>
-				<div class="scanner dock_window">	
-				</div>
-
+		<div class="scanner input_group left">
+			<h2> Product </h2>
+			<div id="product_id" class="scanner dropdown">
 			</div>
-
-			<div id="slot_2">
-				<div>	</div>
-				<div class="scanner dock_window">	
-					Success/Fail/Alerts
-				</div>
-			
-			</div>
-
-		</div>
-		<div style="width:50%">
-			<div id="slot_3">
-				<div>	</div>
-				<div>	
-					Details
-				</div>
-			</div>
-			<div id="slot_4">
-				<div>	</div>
-				<div>	
-					Life Cycle
-				</div>
-
-			</div>
-
 		</div>
 	</div>
+
+	<div id="scan_invoice" class="scanner">
+		<input type="hidden" id="invoice_id" />
+	   	<input type="button" value="Export to Excel" id="excelExport" data-role="none" style="margin:0 0 0 0px;" class="scanner left hidden" />	   	
+
+	   	<input type="button" value="Find/Create" id="find_invoice" data-role="none" style="margin:0 0 0 10px;" class="scanner right" />	   	
+			<input type="text" id="number" data-role="none" class="scanner right" />       							
+       	
+		<div id="jqxgrid" class="scanner right"></div>
+	</div>
+
+	<div class="scanner left" style="margin:30px 0 10px 30px; width:100%;">
+		<span style="float:left"> Connect barcode scanner to begin scanning. </span> <br />
+		<%= text_field_tag :scan_input, '', {'data-role' => 'none'} %>
+	</div>
+
+	<div class="clear"></div>	
 </div>

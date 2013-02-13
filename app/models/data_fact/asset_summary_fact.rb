@@ -29,6 +29,7 @@ class AssetSummaryFact
 	field :total_quantity, type: Integer				  	
 	field :fact_time, :type => Time
 
+=begin
 	def self.grid_facts options = {}  	
 
     	if options[:start_date].nil? || options[:end_date].nil?
@@ -63,7 +64,7 @@ class AssetSummaryFact
 		return response
 
 	end
-
+=end
 	  
 	def asset_status_description
 		case self.asset_status.to_i

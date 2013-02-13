@@ -71,6 +71,9 @@ Cobalt::Application.routes.draw do
 		match 'float/life_cycle_summary_report' => 'float#life_cycle_summary_report', :via => [:get, :post]	
 		match 'float/activity_summary_report_simple' => 'float#activity_summary_report_simple', :via => [:get, :post]
 		match 'float/activity_summary_report_advanced' => 'float#activity_summary_report_advanced', :via => [:get, :post]
+
+		# Invoice
+		match 'invoice/lookup' => 'invoice#lookup', :via => [:get, :post]
 	end
 	
 	namespace :system do
@@ -94,7 +97,7 @@ Cobalt::Application.routes.draw do
 
 		match 'barcode' => 'barcode#index', :via => [:get, :post]
 		
-		match 'barcode/scanTable' => 'barcode#scanTable', :via => [:get, :post]	  
+		match 'barcode/find_invoice' => 'barcode#find_invoice', :via => [:get, :post]	  
 		match 'barcode/scan' => 'barcode#scan', :via => [:get, :post]  
 		
 	end

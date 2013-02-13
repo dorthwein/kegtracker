@@ -1,5 +1,3 @@
-
-
 #simple_container {
 	width:960px;
 	min-height: 600px;
@@ -11,8 +9,11 @@
 	
 }
 
-.simple.input {
-	margin:5px 5px 5px 5px;
+.simple.input.right {
+	margin:5px 5px 0px 5px;
+}
+.simple.input.left {
+	margin:5px 0px 5px 5px;
 }
 #grid_title.simple {
 	margin:10px 0 0px 0;
@@ -24,7 +25,7 @@
 	margin:0px 5px 5px 5px;
 	text-align: center;
 }
-#grid_title.simple h5{
+#grid_title.simple h5 {
 	margin:5px 5px 5px 5px;
 
 

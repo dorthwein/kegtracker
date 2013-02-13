@@ -1,0 +1,37 @@
+    <div id="simple_container">
+        <div id="grid_title" class="simple">
+            <h2>
+                <%= current_user.entity.description %> Invoice Lookup
+            </h2>
+
+            <h5>
+                <span class="simple left"> 
+                    Invoice #:  
+                    <span id="displayInvoiceNumber"> </span>
+                </span>
+                
+
+                <span class="simple right hidden"> 
+                    Date: <br />
+                    <span id="displayDate"> </span>
+                </span>
+            </h3>            
+        </div>
+
+        <div class="simple toolbar">
+            <div style="display:none">
+	            <%= link_to 'Advanced View', :reports_asset_sku_summary_report_advanced, :id => :advancedView, :class => 'simple input right' %>
+    	        <%= link_to 'Simple View', :reports_asset_sku_summary_report_simple, :id => :simpleView, :class => 'simple input right' %>
+    	    </div>
+
+            <input type="text" id="number" class="simple input left" style="" data-role="none" />    	    
+            <input type="button" class="simple input left" value="Find Records" id='findRecord' data-role="none"/>
+
+            <input type="button" class="simple input left" value="Export to Excel" id='excelExport' data-role="none"/>
+
+        </div>
+
+        <div id="jqxgrid" class="simple">
+        </div>
+    </div>
+

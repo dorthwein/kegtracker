@@ -36,18 +36,24 @@
 							<li> <%= link_to 'Dashboard', :dashboard_viewer %> </li>
 							<li> <%= current_user.email %> </li>								 
 							<li> <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %> </li>
-						</ul>
-					
-					</li>
-					
+						</ul>					
+					</li>					
 					<li> 
 						Reporting 
 						<ul>
 							<li> 	
+								Invoices
+								<ul>
+									<li> 
+										<%= link_to 'Lookup', :reports_invoice_lookup %>  
+									</li>
+								</ul>
+							</li>
+							<li> 	
 								Assets
 								<ul>
 									<li>
-										<%= link_to 'Browse', :reports_asset_browse %> 									
+										<%= link_to 'Browse', :reports_asset_browse %> 	
 									</li>
 									<li>
 										<%= link_to 'Inventory Report', :reports_asset_sku_summary_report_simple %> 									
@@ -93,7 +99,7 @@
 								<!-- Broad float wide reporting --> 
 								<ul>
 									<li>
-											<%= link_to 'Life Cycle', :reports_float_life_cycle_summary_report %> 							
+										<%= link_to 'Life Cycle', :reports_float_life_cycle_summary_report %> 							
 									</li>
 									<li>
 										<%= link_to 'Asset Activity', :reports_float_activity_summary_report_simple %> 									

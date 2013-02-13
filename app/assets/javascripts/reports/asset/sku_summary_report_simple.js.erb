@@ -118,8 +118,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 	$("#simpleView").jqxButton({ theme: theme });
 	
 	$("#findRecord").jqxButton({ theme: theme });	
-	$("#findRecord").click(function () {
-		
+	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
 //		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
 	});

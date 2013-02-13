@@ -20,15 +20,14 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # GET /locations/1.json
   def show
   	entity_partnership = EntityPartnership.find(params[:_id])
-	distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
+	  production_entities = JqxConverter.jqxDropDownList(Entity.production_entities)
     if current_user.system_admin == 1
-      partners = JqxConverter.jqxDropDownList(Entity.production_entities)
-      print partners
+      contractee = JqxConverter.jqxDropDownList(Entity.production_entities)    
     else
-      partners = JqxConverter.jqxDropDownList([current_user.entity])
+      contractee = JqxConverter.jqxDropDownList([current_user.entity])
     end
 
-    response = {:partners => partners, :entities => distributors, :entity_partnership => entity_partnership }    
+    response = {:partners => production_entities, :entities => contractee, :entity_partnership => entity_partnership }    
     respond_to do |format|
       format.json { render json: response }
     end
@@ -37,7 +36,7 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.json
   def new
-	production_entities = JqxConverter.jqxDropDownList(Entity.production_entities)
+	  production_entities = JqxConverter.jqxDropDownList(Entity.production_entities)
     if current_user.system_admin == 1
       contractee = JqxConverter.jqxDropDownList(Entity.production_entities)    
     else

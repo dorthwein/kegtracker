@@ -90,14 +90,7 @@ class AssetActivityFact
     end
 
     self.prev_asset_activity_fact = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first    
-
     
     # If nil, use current network
-    if prev_asset_activity_fact.nil?
-      self.prev_location_network = nil # self.location_network    
-    # else use previous activity fact
-    else
-      self.prev_location_network = prev_asset_activity_fact.location_network
-    end
 	end  
 end

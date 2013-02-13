@@ -2,8 +2,9 @@ $(document).on("mobileinit", function(){
 	$.mobile.defaultPageTransition  = 'none';
 }); 
 
-$(document).bind('pagebeforehide', function(event){
-
+$(document).on('pagebeforehide', function(event){
+	$(window).unbind('keydown');
+	console.log('unboud');
 });
 $(document).on('pageshow', function(event){
 	// Load jqX Menu at startup	
@@ -16,5 +17,12 @@ $(document).on('pageshow', function(event){
 								animationShowDelay: 0 
 
 							});	
+//		// Unbinding incase previously bound to prevent multiple sends
+	$(window).keydown(function(event) {				
+		if(event.keyCode == '13'){
+			$(':focus').blur()
+		}
+	});	
+
 //	$("#jqxMenu").show();
 });

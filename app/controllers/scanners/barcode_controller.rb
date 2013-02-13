@@ -64,9 +64,8 @@ class Scanners::BarcodeController < ApplicationController
         response[:asset_types] = JqxConverter.jqxDropDownList(AssetType.all)
 
         response[:products] = JqxConverter.jqxDropDownList(current_user.entity.production_products)        
-        render :json => response
+        render json: response
       }
-
     end
   end
   
@@ -81,7 +80,7 @@ class Scanners::BarcodeController < ApplicationController
 #  scan_snapshot = []  
  # scan_snapshot.push(scan)  	
     respond_to do |format|
-		    format.json { render :json => scan_snapshot} #scan_drone.processed_scans }
+		    format.json { render json: scan_snapshot} #scan_drone.processed_scans }
     end
   end
 
@@ -89,6 +88,23 @@ class Scanners::BarcodeController < ApplicationController
     respond_to do |format|
     end
   end
+
+  def find_invoice
+    respond_to do |format|
+        format.json {  
+
+          if !params[:invoice].nil?            
+            invoice = Invoice.find_or_create_by(:invoice_entity => current_user.entity, :number => params[:invoice][:number].to_s)        
+            invoice_details = JqxConverter.jqxGrid(invoice.invoice_details)          
+
+            render json: {:invoice => invoice, :invoice_details => invoice_details}
+          else
+            render json: {:invoice => nil}
+          end          
+        }
+    end
+  end
+
 # Scan Table 
 =begin
   def scanTable

@@ -14,7 +14,8 @@ $(document).on('pageshow', '#_maintenance_networks', function(event){
 		datafields: [
 			{ name: 'netid' },
 			{ name: 'description' },
-			{ name: 'entity' },
+			{ name: 'entity_id' },
+			{ name: 'entity_description' },
 			{ name: 'network_type_description' },		
 			{ name: 'smart_mode_product_description' },					
 			{ name: 'smart_mode_in_location_description' },					
@@ -60,7 +61,7 @@ $(document).on('pageshow', '#_maintenance_networks', function(event){
 			{ text: 'NetID', datafield: 'netid' },
 			{ text: 'Network', datafield: 'description' },
 			{ text: 'Network Type', datafield: 'network_type_description', filtertype: 'checkedlist' },
-			{ text: 'Entity', datafield: 'entity', filtertype: 'checkedlist' },
+			{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist' },
 			{ text: 'Auto Fill Product', datafield: 'smart_mode_product_description' },			
 			{ text: 'In Bound Location', datafield: 'smart_mode_in_location_description' },		
 			{ text: 'Out Bound Location', datafield: 'smart_mode_out_location_description' },					
@@ -264,33 +265,33 @@ $(document).on('pageshow', '#_maintenance_networks', function(event){
     $("#updateSaveButton").bind('click', function () {
 		$.mobile.loading('show');
     	if($('#form_validator').jqxValidator('validate')){
-	        var params = {}
-	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-	        params['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;              	        
+	        var params = {'network': {}}
+	        params['network']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        params['network']['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;              	        
 
 	        
 			
 			if( $("#smart_mode_in_location_id").jqxDropDownList('getSelectedItem') != null){
-		        params['smart_mode_in_location_id'] = $("#smart_mode_in_location_id").jqxDropDownList('getSelectedItem').value;              	        
+		        params['network']['smart_mode_in_location_id'] = $("#smart_mode_in_location_id").jqxDropDownList('getSelectedItem').value;              	        
 			}
 
 			if( $("#smart_mode_out_location_id").jqxDropDownList('getSelectedItem') != null){
-				params['smart_mode_out_location_id'] = $("#smart_mode_out_location_id").jqxDropDownList('getSelectedItem').value;              	        		        
+				params['network']['smart_mode_out_location_id'] = $("#smart_mode_out_location_id").jqxDropDownList('getSelectedItem').value;              	        		        
 			}
 
 			if( $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null){			
-				params['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getSelectedItem').value;              	        
+				params['network']['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getSelectedItem').value;              	        
 			}
 
 
 
 
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['network'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['network'][obj.id] = $(obj).val();
 	        });        
 
 			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
@@ -318,22 +319,22 @@ $(document).on('pageshow', '#_maintenance_networks', function(event){
 		$.mobile.loading('show');
 
     	if($('#form_validator').jqxValidator('validate')){	
-	        var params = {}
-	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-			params['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;
+	        var params = {'network': {}}
+	        params['network']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+			params['network']['network_type'] = $("#network_type").jqxDropDownList('getSelectedItem').value;
 
 			if( $("#smart_mode_product_id").jqxDropDownList('getSelectedItem') != null){
-				params['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getselectedrowindexetSelectedItem').value;
+				params['network']['smart_mode_product_id'] = $("#smart_mode_product_id").jqxDropDownList('getselectedrowindexetSelectedItem').value;
 			}
 
 
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['network'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
 	        	if(obj != undefined){
-		        	params[obj.id] = $(obj).val();
+		        	params['network'][obj.id] = $(obj).val();
 		        }
 	        });
 

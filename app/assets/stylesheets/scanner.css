@@ -3,10 +3,10 @@
 	min-height: 300px;
 
 }
-.scanner.dock_window {
-	height:300px;
-
+.scanner.input_toggle_group h5{
+	margin:20px 0px 0px 0;
 }
+
 .scanner.input_group h2{
 	margin:20px 0px 0px 0;
 }
@@ -15,22 +15,47 @@
 }
 
 .scanner.input_group {
-	width:225px;
+	width:200px;
 	margin:0px 20px 0px 0px;
-
-
+}
+.scanner.input_toggle_group {
+	width:150px;
+	margin:0px 20px 0px 0px;
 }
 #scan_input {
 	width:900px;
+	display: inline-block;
 	
+}
+#scan_invoice {
+	height: 400px;
+	clear:both;
+	margin:50px 0px 0 0;
+	width:100%;
+	display: inline-block;
 
 }
 #scan_light {
+	margin:0;
 	border:1px solid #CCC; 
 	height:100px; 
 	width:190px; 
-	margin:10px 10px 0px 5px;
+	
 	background:#FFFF00;
 	text-align:center; 
 	padding-top:50px;	
+}
+
+#jqxgrid.scanner {
+	margin:10px 0 0 0;
+}
+#date.scanner {
+	margin:10px 0 0 0;
+}
+table.scanner {
+	width:100%;	
+}
+table.scanner td, h3 {
+	padding:0px;
+	margin:0px;
 }

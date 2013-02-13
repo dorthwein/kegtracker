@@ -26,6 +26,8 @@ class Network
   field :smart_mode_in_location_description, type: String
   field :smart_mode_out_location_description, type: String
 
+  field :entity_description, type: String
+  field :network_type_description, type: String
 
 # has_one :entity
   has_many :barcode_makers
@@ -33,6 +35,7 @@ class Network
   
   has_many :network_memberships 
   has_many :locations
+
 
   def partner_locations
     self.locations.where(:location_type => 5)
@@ -46,7 +49,7 @@ class Network
     return network_types
   end
 
-  def network_type_description
+  def get_network_type_description
     case self.network_type.to_i
     when 1
       return 'Brewery' 
@@ -64,6 +67,9 @@ class Network
     self.smart_mode_in_location_description = self.smart_mode_in_location.description
     self.smart_mode_out_location_description = self.smart_mode_out_location.description
 
+    self.entity_description = self.entity.description
+    self.network_type_description = self.get_network_type_description
+
     if self.locations.count == 0
       location = Location.create(:description => self.description + " Default Location", :network => self)
       self.smart_mode_in_location = location
@@ -74,7 +80,7 @@ class Network
     end
 
 	end	
-
+=begin
   def self.visible_networks options = {}
     networks = []
     networks = networks + options[:entity].networks        
@@ -84,6 +90,7 @@ class Network
     end
     return networks
   end
+=end
 
   def on_create  
     location = Location.create(:description => self.description + " Default Location", :network => self)

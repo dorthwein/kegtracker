@@ -4,13 +4,18 @@ class Scanner
 		scans = options[:scans]
 		processed_scans = []
 		scans.each do |scan|
-			obj = Scanner.parse_scan(scan)	# Parse Scan			
+			obj = Scanner.parse_scan(scan)	# Parse Scan
 			obj = Scanner.find_asset(obj)	# Find/Create Asset						
+
+			obj = Scanner.check_correction(obj)
+
+			if obj[:correction] == 1
+				obj = Scanner.rollback_scan(obj)
+			end
+
 			obj = Scanner.preprocess_asset(obj)
 			
-			obj = Scanner.check_correction(obj)					
-
-			if obj[:auto_mode] == 1 && obj[:correction] == 0 && obj[:from_network] != obj[:to_network]
+			if obj[:auto_mode] == 1 && obj[:from_network] != obj[:to_network]
 				obj = Scanner.auto_mode_process(obj)
 			end
 
@@ -20,7 +25,37 @@ class Scanner
 		end
 		return processed_scans
 	end	
+	def self.rollback_scan obj
+		prev_asset_activity_fact = obj[:asset].asset_activity_fact.prev_asset_activity_fact rescue nil	
+	
+		print 'roll back'
+		fill_asset_activity_fact = asset_activity_fact.fill_asset_activity_fact rescue nil
+			
+	# Roll Back Asset Details to Prev Asset Activity Fact		
+		asset_rollback_hash = {
+			:asset_activity_fact => (prev_asset_activity_fact rescue nil),
+			:asset_type => (prev_asset_activity_fact.asset_type rescue nil),
+			:entity => (prev_asset_activity_fact.entity rescue nil),
+			:product => (prev_asset_activity_fact.product rescue nil),
+			:asset_status => (prev_asset_activity_fact.asset_status rescue nil),
+			:location => (prev_asset_activity_fact.location rescue nil),
+			:location_network => (prev_asset_activity_fact.location_network rescue nil),
+			:handle_code => (prev_asset_activity_fact.handle_code rescue nil),
+			:user => (prev_asset_activity_fact.user rescue nil),
+			:last_action_time => (prev_asset_activity_fact.fact_time rescue nil),
+			:fill_count => (prev_asset_activity_fact.fill_count rescue 0),
+			:fill_time => (fill_asset_activity_fact.fact_time rescue nil),
+			:fill_location => (fill_asset_activity_fact.location rescue nil)
+		}
+		obj[:asset].update_attributes(asset_rollback_hash)	
+		
+		# Check for invoice - roll back invoice
+		obj[:asset].invoice_detail.destroy rescue nil
 
+		# Remove Asset Activity Fact			
+		obj[:asset].asset_activity_fact.destroy rescue nil
+		return obj
+	end
 	def self.snap_shot obj
 		scan_snap_shot = {
 			:Network => obj[:asset].network_description,
@@ -62,7 +97,7 @@ class Scanner
 		return obj
 	end
 	def self.auto_mode_to_brewery obj
-		if obj[:to_network].network_type == 1
+		if obj[:to_network].network_type == 1 && obj[:handle_code] != 4
 			obj[:handle_code] = 2
 =begin
 			if obj[:asset].asset_status != 0
@@ -74,8 +109,8 @@ class Scanner
 				})
 			end
 =end
-		end
 
+		end
 		return obj
 	end	
 
@@ -146,19 +181,18 @@ class Scanner
 	def self.check_correction obj
 	################################
 	####### Check Correction #######				
-		if obj[:asset].location_id == obj[:location_id] && obj[:asset].handle_code.to_i == obj[:handle_code] && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)
-			print "Standard Correction \n"
-			obj[:correction] = 1
+		if obj[:correction] == 1
+			print "Correction Toggled On \n"
 		end
 
 		# Same Location within 15 minutes but not a fill
 		if obj[:asset].location == obj[:location_id] && obj[:handle_code].to_i != 4 && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 900)			
-			print "Same Location within 15 minutes \n"
+			print "Same Location within 15 minutes Correction \n"
 			obj[:correction] = 1	
 		end
 				
-		# Fill action within last day
-		if obj[:handle_code].to_i == 4 && obj[:asset].fill_time.to_i > (obj[:time].to_i - 86400)
+		# Fill action within last day & asset current full
+		if obj[:handle_code].to_i == 4 && obj[:asset].asset_status.to_i == 1 && obj[:asset].fill_time.to_i > (obj[:time].to_i - 86400)
 			print "Fill Correction \n"
 			obj[:correction] = 1			
 		end
@@ -192,13 +226,14 @@ class Scanner
 	def self.preprocess_asset obj
 		obj[:asset].user = User.where(:email => obj[:email]).first		
 
-	# Asset Type Override			
+	# Asset Type Override				
 		if !obj[:asset_type_id].nil?
-			obj[:asset].asset_type = AssetType.find(scan_asset_type)
+			obj[:asset].asset_type = AssetType.find(obj[:asset_type_id])
+			print obj[:asset].asset_type.to_json
 		end
 
 		obj[:to_network] = Location.find(obj[:location_id]).network
-		obj[:from_network] = obj[:asset].location.network
+		obj[:from_network] = obj[:asset].location.network || obj[:to_network]
 		
 		return obj
 	end
@@ -211,6 +246,8 @@ class Scanner
 		scan_params[:handle_code] = scan['processing']['HC'].to_i 
 		scan_params[:correction] = scan['processing']['correction'].to_i
 		scan_params[:auto_mode] = scan['processing']['auto_mode'].to_i	
+
+		scan_params[:invoice_id] = scan['invoice_id']
 		scan_params[:time] = Time.at(scan['processing']['T'].to_i)
 
 		scan['processing']['P'] ? scan_params[:product_id] = scan['processing']['P'] : nil

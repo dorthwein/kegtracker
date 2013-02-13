@@ -1,9 +1,0 @@
-<div data-type="horizontal" data-role="controlgroup" style="text-align:center">
-	<% @authorized_handle_codes.each do |handle_code| %>
-		<% if handle_code.id == params[:handle_code].to_i %>
-			<%= link_to handle_code.description, scanners_path(:handle_code => handle_code.id), :method => :get, 'data-role' => :button, :class => 'ui-btn-active' %>			
-		<% else %>
-			<%= link_to handle_code.description, scanners_path(:handle_code => handle_code.id), :method => :get, 'data-role' => :button %>
-		<% end %>	
-	<% end %>
-</div>

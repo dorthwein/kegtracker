@@ -14,22 +14,9 @@ class Maintenance::NetworksController < ApplicationController
           gatherer = Gatherer.new current_user.entity
           networks = gatherer.get_networks
         end
-        
-      	response = networks.map { |network| {	
-      							:netid => network.netid,	
-      							:description => network.description, 
-      							:entity => network.entity.description, 							
-                    :network_type_description => network.network_type_description,
-
-                    :smart_mode_product_description => network.smart_mode_product_description,
-                    :smart_mode_in_location_description => network.smart_mode_in_location_description,
-                    :smart_mode_out_location_description => network.smart_mode_out_location_description,
-
-                    :auto_mode => network.auto_mode,
-      							:_id => network._id
-      							} 
-      						}
-          render json: response                   
+    
+        response = JqxConverter.jqxGrid(networks)
+        render json: response                   
       }
     end
   end
@@ -40,14 +27,14 @@ class Maintenance::NetworksController < ApplicationController
   def show
     network = Network.find(params[:id])	
     if current_user.system_admin == 1
-      entities = Entity.all.map{|x| {:html => x.description, :value => x._id}}
-      products = Product.all.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}    
+      entities = JqxConverter.jqxDropDownList(Entity.all) #.map{|x| {:html => x.description, :value => x._id}}
+      products = JqxConverter.jqxDropDownList(Product.all) # .map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}    
     else
       entities = [{:html => current_user.entity.description, :value => current_user.entity._id }] #current_user.entity.map{|x| { :html => x.description, :value => x._id }}
-      products = current_user.entity.products.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}      
+      products = JqxConverter.jqxDropDownList(current_user.entity.products) #.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}      
     end
-    locations = network.locations.map{|x| {:html => x.description, :value => x._id}}
-    network_types = Network.network_types.map{|x| {:html => x[:description], :value => x[:_id]}}        
+    locations = JqxConverter.jqxDropDownList(network.locations) #.map{|x| {:html => x.description, :value => x._id}}
+    network_types = JqxConverter.jqxDropDownList(Network.network_types) #.map{|x| {:html => x[:description], :value => x[:_id]}}        
     
     response = {:network => network, :network_types => network_types, :entities => entities, :products => products, :locations => locations}
     respond_to do |format|
@@ -59,19 +46,15 @@ class Maintenance::NetworksController < ApplicationController
   # GET /networks/new.json
   def new
     if current_user.system_admin == 1
-      entities = Entity.all.map{|x| {:html => x.description, :value => x._id}}
-      products = Product.all.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}
+      entities = JqxConverter.jqxDropDownList(Entity.all) #.map{|x| {:html => x.description, :value => x._id}}
+      products = JqxConverter.jqxDropDownList(Product.all) # .map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}    
     else
       entities = [{:html => current_user.entity.description, :value => current_user.entity._id }] #current_user.entity.map{|x| { :html => x.description, :value => x._id }}
-      products = current_user.entity.products.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}
-    end  
-    locations = []
-    current_user.entity.networks.each do |y|
-      locations = locations + y.locations.map{|x| {:html => x.description, :value => x._id}}    
+      products = JqxConverter.jqxDropDownList(current_user.entity.products) #.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}      
     end
-network_types = Network.network_types.map{|x| {:html => x[:description], :value => x[:_id]}}        
+    network_types = JqxConverter.jqxDropDownList(Network.network_types) #.map{|x| {:html => x[:description], :value => x[:_id]}}        
 
-    response = {:entities => entities, :network_types => network_types, :products => products, :locations => locations }
+    response = {:entities => entities, :network_types => network_types, :products => products }
     respond_to do |format|
       format.json { render json: response }
     end
@@ -88,7 +71,7 @@ network_types = Network.network_types.map{|x| {:html => x[:description], :value 
   def create
     respond_to do |format|          
       format.json { 
-        network = Network.new(params)
+        network = Network.new(params[:network])
         
         if network.save
           render json: network
@@ -105,7 +88,7 @@ network_types = Network.network_types.map{|x| {:html => x[:description], :value 
     respond_to do |format|
       format.json {
         network = Network.find(params[:id])
-        if network.update_attributes(params)
+        if network.update_attributes(params[:network])
           render json: {:sucess => true}
         else
           render json: {:sucess => false, :message => 'Network update error, please contact support'}

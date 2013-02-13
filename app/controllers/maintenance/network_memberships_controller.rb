@@ -1,4 +1,5 @@
 class Maintenance::NetworkMembershipsController < ApplicationController
+=begin
   before_filter :authenticate_user!
   load_and_authorize_resource
   # GET /network_memberships
@@ -120,6 +121,7 @@ class Maintenance::NetworkMembershipsController < ApplicationController
 #		@network_membership = NetworkMembership
 	end	
 =end 
+=begin
   end
 
   # PUT /network_memberships/1
@@ -179,5 +181,6 @@ class Maintenance::NetworkMembershipsController < ApplicationController
       format.html {render :layout => false}
     end
   end
+=end
 end
 

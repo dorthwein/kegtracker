@@ -20,6 +20,11 @@ class Asset
 	field :entity_description, type: String			
 	
 # Variable Details
+	belongs_to :invoice
+	belongs_to :invoice_detail
+
+	field :invoice_number, type: String
+
 	belongs_to :product	
 	field :product_description, type: String		
 	field :product_entity_description, type: String # AKA Brewery
@@ -55,18 +60,22 @@ class Asset
 	belongs_to :fill_network, :class_name => 'Network'
 	field :fill_network_description, type: String	
 
+# Not active
+
 	field :delivery_time, :type => Time
 	belongs_to :delivery_location, :class_name => 'Location'
 	field :delivery_location_description, type: String	
 	belongs_to :delivery_network, :class_name => 'Network'	
 	field :delivery_network_description, type: String	
 
-
+# Not active
 	field :pickup_time, :type => Time
 	belongs_to :pickup_location, :class_name => 'Location'
+
 	field :pickup_location_description, type: String	
 	belongs_to :pickup_network, :class_name => 'Network'	
 	field :pickup_network_description, type: String	
+
 
 	# Set before all actions to detect if the asset should have "Smart Actions" applied to it.
 =begin
@@ -127,8 +136,23 @@ class Asset
 		self.save
 	end
 =end	
+	def add_to_invoice options
+		print options[:invoice_id]
+		if !options[:invoice_id].nil?	
+			print "\n \n"	
+			print 'Adding to Invoice'
+			print "\n \n"
+			invoice = Invoice.find(options[:invoice_id])			
+			
+			print invoice.to_json
+			print "\n \n"
+		
+			self.invoice_detail = invoice.add_invoice_asset_detail({:asset => self, :asset_activity_fact => self.asset_activity_fact})
+		end
+	end
+
 	def deliver options
-		# Options: time, location, correction		
+		# Options: time, location, correction, invoice
 		self.handle_code = 1
 		self.asset_status = 2
 		print options[:time].to_s + "<--- \n" 
@@ -138,11 +162,14 @@ class Asset
 		
 		self.delivery_time = options[:time]
 		self.delivery_location_id = options[:location_id]				
-		self.create_asset_activity_fact(:correction => options[:correction])
+		self.create_asset_activity_fact
+
+		self.add_to_invoice(options)
+
 	end	
 
 	def pickup options
-		# Options: time, location, correction
+		# Options: time, location, correction, invoice
 		self.handle_code = 2
 		self.asset_status = 0		
 		self.last_action_time = options[:time]
@@ -151,7 +178,9 @@ class Asset
 		
 		self.pickup_time = options[:time]
 		self.pickup_location_id = options[:location_id]
-		self.create_asset_activity_fact(:correction => options[:correction])
+		self.create_asset_activity_fact
+
+		self.add_to_invoice(options)
 	end
 
 	def add	options
@@ -161,7 +190,9 @@ class Asset
 		self.last_action_time = options[:time]
 
 		self.location_id = options[:location_id]
-		self.create_asset_activity_fact(:correction => options[:correction])
+
+		self.create_asset_activity_fact
+		self.add_to_invoice(options)
 	end
 	
 	def fill options
@@ -177,11 +208,10 @@ class Asset
 		self.fill_time = options[:time]
 		self.fill_location_id = options[:location_id]
 		
-		# If not correction
-		if options[:correction] == 0
-			self.fill_count = self.fill_count.to_i + 1
-		end
-		self.create_asset_activity_fact(:correction => options[:correction])
+
+		self.fill_count = self.fill_count.to_i + 1
+		self.create_asset_activity_fact
+		self.add_to_invoice(options)
 	end
 
 	def move options
@@ -189,7 +219,9 @@ class Asset
 		self.handle_code = 5
 		self.last_action_time = options[:time]
 		self.location_id = options[:location_id]
-		self.create_asset_activity_fact(:correction => options[:correction])
+
+		self.create_asset_activity_fact
+		self.add_to_invoice(options)
 	end
 
 	def rfnet options
@@ -198,7 +230,9 @@ class Asset
 			self.handle_code = 5	# Records as a move
 			self.last_action_time = options[:time]
 			self.location_id = options[:location_id]
-			self.create_asset_activity_fact(:correction => options[:correction])
+
+			self.create_asset_activity_fact
+			self.add_to_invoice(options)
 		end
 	end	
 
@@ -206,7 +240,7 @@ class Asset
 		# HC = 7
 	end
 
-	def create_asset_activity_fact options
+	def create_asset_activity_fact options = {}
 		# Options: correction
 		asset_activity_fact_details = {
 									:asset_id => self._id,
@@ -228,20 +262,19 @@ class Asset
 									:user => self.user,
 #									:fill_time => asset.fill_time,								
 								}
-		fact = AssetActivityFact.where(:_id => self.asset_activity_fact._id).first
-		if options[:correction] == 1 && !fact.nil?		
-			fact.update_attributes(asset_activity_fact_details)
-			print " \n \n"	
-			print fact.to_json
-			print " \n \n"	
-			print "Fact Change \n \n"	
-		else	
+#		fact = AssetActivityFact.where(:_id => self.asset_activity_fact._id).first
+#		if options[:correction] == 1 && !fact.nil?		
+#			fact.update_attributes(asset_activity_fact_details)
+#			print " \n \n"	
+#			print fact.to_json
+#			print " \n \n"	
+#			print "Fact Change \n \n"	
+#		else	
 			asset_activity_fact = AssetActivityFact.create(asset_activity_fact_details)
-
-			self.asset_activity_fact = asset_activity_fact						
-			self.save
-			print "  New Fact \n \n"	
-		end		
+			self.asset_activity_fact = asset_activity_fact
+			self.save			
+#			print "  New Fact \n \n"	
+#		end		
 	end	
 
 	def asset_status_description
@@ -459,7 +492,11 @@ class Asset
 			self.move(opt)
 
 		end
+		self.invoice = self.invoice_detail.invoice rescue nil
+		self.invoice_number = self.invoice.number rescue nil
+		
 		self.location_network = self.location.network		
+		self.fill_network = self.fill_location.network		
 
 		# Check Descriptions
 		self.network_description = self.network.description

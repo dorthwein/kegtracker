@@ -84,6 +84,14 @@ class Entity
 			products = products + x.entity.products
 		end
 		return products
+	end	
+
+	def production_partnerships_shared_networks
+		networks = []
+		self.production_partnerships_as_entity.each do |x|
+			networks = networks + x.partner.networks.where(:network_type => 1)
+		end
+		return networks
 	end
 
 #############################
@@ -121,6 +129,7 @@ class Entity
 		return self.products.map{|x| x}
 	end
 
+
 	def partner_networks
 		networks = []
 		self.network_memberships.each do |x|
@@ -132,7 +141,9 @@ class Entity
 	def visible_networks
 		networks = []
 		networks = networks + self.networks        
-		networks = networks + self.partner_networks
+		networks = networks + self.distribution_partnerships_shared_networks
+		networks = networks + self.production_partnerships_shared_networks		
+		
 		return networks
 	end
 end

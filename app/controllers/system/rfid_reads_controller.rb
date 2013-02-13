@@ -15,6 +15,10 @@ class System::RfidReadsController < ApplicationController
 	# CREATE SCANS ARRAY
 	scans_array = Array.new
 
+	# THINGS IN SCANS BUT NOT RIFD
+		# (1) AUTO MODE SELECTION
+		# (2) INVOICEING
+
 	# FOR EACH TAG 
 	if !params[:Alien_RFID_Reader_Auto_Notification]['Alien_RFID_Tag_List']['Alien_RFID_Tag'].nil?
 		params[:Alien_RFID_Reader_Auto_Notification]['Alien_RFID_Tag_List'].each do |tag| 	
