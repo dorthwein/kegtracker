@@ -12,25 +12,19 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 		datatype : "json",
 		type: 'GET',	
 		datafields: [	
-			{ name: 'entity' },
+			{ name: 'entity_description'},
 			{ name: 'description' },
 			{ name: 'external_id' },
-			{ name: 'product_type' },
+			{ name: 'product_type_description' },
 			{ name: 'upc' },
 			{ name: '_id' }
 		],
-		url: url,
-		updaterow: function (rowid, rowdata, commit) {
-			// synchronize with the server - send update command
-			// call commit with parameter true if the synchronization with the server is successful 
-			// and with parameter false if the synchronization failder.		
-			commit(true);
-		}
-		
+		url: url,		
 	};
 
 	var dataAdapter = new $.jqx.dataAdapter(source, {
-		loadComplete: function (data) { },
+		beforeSend: function(jqXHR, settings){$.mobile.loading('show')},
+		loadComplete: function (data) {$.mobile.loading('hide');},
 		loadError: function (xhr, status, error) { }      
 	});
 
@@ -51,10 +45,10 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 		columnsresize: true,
 		altrows: true,	
 		columns: [
-			{ text: 'Brewer', datafield: 'entity', filtertype: 'checkedlist' },
+			{ text: 'Brewer', datafield: 'entity_description', filtertype: 'checkedlist' },
 			{ text: 'Product', datafield: 'description' },
 			{ text: 'Brewer ID', datafield: 'external_id' }, 
-			{ text: 'Varietal', datafield: 'product_type', filtertype: 'checkedlist'},
+			{ text: 'Varietal', datafield: 'product_type_description', filtertype: 'checkedlist'},
 //			{ text: 'UPC', datafield: 'upc' },
 		]
 	});
@@ -70,9 +64,9 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 			data: rowdata,
 		}).done(function( data ) {				
 			// Entity List
-			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
-			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['product']['entity_id']);
-			$("#entity_id").jqxDropDownList('selectItem', item );
+//			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+//			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['product']['entity_id']);
+//			$("#entity_id").jqxDropDownList('selectItem', item );
 
 			$("#product_type_id").jqxDropDownList({ source: data['product_types'], disabled: false });
 			var item = $("#product_type_id").jqxDropDownList('getItemByValue', data['product']['product_type_id']);
@@ -106,7 +100,7 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' ),
 
 	// Inputs
-	$("#entity_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
+//	$("#entity_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
 	$("#product_type_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: true });
 	
 	$(".form_input").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: true });
@@ -130,13 +124,6 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 	 	rules: [
 	 		// Email Rules
 	        { input: '#description', message: 'Product Name is required!', action: 'keyup, blur', rule: 'required' },
-	        { input: '#entity_id', message: 'Brewer Required!', action: 'keyup, blur',rule: function(input, commit){
-		            if (  $("#entity_id").jqxDropDownList('getSelectedItem') != null) {
-		                return true;		                
-		            }
-		           	return false;		           
-	        	}
-	        },
 	        { input: '#product_type_id', message: 'Varietal Required!', action: 'keyup, blur',rule: function(input, commit){
 		            if (  $("#product_type_id").jqxDropDownList('getSelectedItem') != null) {
 		                return true;		                
@@ -150,17 +137,17 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 
 	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#updateSaveButton").bind('click', function () {
-        var params = {}
-        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;
-        params['product_type_id'] = $("#product_type_id").jqxDropDownList('getSelectedItem').value;
+        var params = {product:{}}
+//        params['product']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;
+        params['product']['product_type_id'] = $("#product_type_id").jqxDropDownList('getSelectedItem').value;
 
 
         $('.toggle_switch').each(function(key, obj) {        
-        	params[obj.id] = $(obj).val();
+        	params['product'][obj.id] = $(obj).val();
         });
 
         $('.form_input').each(function(key, obj) {        
-        	params[obj.id] = $(obj).val();
+        	params['product'][obj.id] = $(obj).val();
         });        
 
 		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
@@ -182,14 +169,14 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
     $("#newCancelButton").jqxButton({disabled: true, theme: theme, width: '100%'});
 	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#newSaveButton").bind('click', function () {
-        var params = {}
-        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+        var params = {product:{}}
+//        params['product']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
         $('.toggle_switch').each(function(key, obj) {        
-        	params[obj.id] = $(obj).val();
+        	params['product'][obj.id] = $(obj).val();
         });
 
         $('.form_input').each(function(key, obj) {        
-        	params[obj.id] = $(obj).val();
+        	params['product'][obj.id] = $(obj).val();
         });        
 		
 		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
@@ -204,7 +191,7 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 			}
 			dataAdapter.dataBind();
 			
-			$("#entity_id").jqxDropDownList('clearSelection' ); 
+//			$("#entity_id").jqxDropDownList('clearSelection' ); 
 			$("#product_type_id").jqxDropDownList('clearSelection' ); 			
 			
 			$(".toggle_switch").html('Off');
@@ -228,8 +215,8 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 			url: system.server + $('.ui-page-active').attr('data-url') + '/new',
 			data: { },
 		}).done(function( data ) {						
-			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
-			$("#entity_id").jqxDropDownList('clearSelection' ); 
+//			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+//			$("#entity_id").jqxDropDownList('clearSelection' ); 
 
 			$("#product_type_id").jqxDropDownList({ source: data['product_types'], disabled: false });
 			$("#product_type_id").jqxDropDownList('clearSelection' ); 			
@@ -278,5 +265,4 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 	$.mobile.loading('hide');					
-
 });

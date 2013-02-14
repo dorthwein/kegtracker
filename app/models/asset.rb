@@ -43,6 +43,7 @@ class Asset
 	belongs_to :location_network, :class_name => 'Network'				
 	
 	field :handle_code, type: Integer
+	field :handle_code_description, type: String
 
 	field :user_email_description, type: String				
 	belongs_to :user
@@ -137,12 +138,13 @@ class Asset
 	end
 =end	
 	def add_to_invoice options
-		print options[:invoice_id]
-		if !options[:invoice_id].nil?	
+		print '->' 
+		invoice = Invoice.where(:_id => options[:invoice_id]).first
+		if !invoice.nil?	
 			print "\n \n"	
 			print 'Adding to Invoice'
 			print "\n \n"
-			invoice = Invoice.find(options[:invoice_id])			
+			invoice = Invoice.find(options[:invoice_id]) 
 			
 			print invoice.to_json
 			print "\n \n"
@@ -277,7 +279,7 @@ class Asset
 #		end		
 	end	
 
-	def asset_status_description
+	def get_asset_status_description
 		case self.asset_status.to_i
 		when 0
 			return 'Empty'	
@@ -294,7 +296,7 @@ class Asset
 		end
 	end
 
-	def handle_code_description
+	def get_handle_code_description
 		case self.handle_code.to_i
 		when 1
 			return 'Delivery'	
@@ -506,9 +508,9 @@ class Asset
 		self.product_entity_description = self.product.nil? ? ' ' : self.product.entity.description	
 
 		self.asset_type_description = self.asset_type.description	
-#		self.asset_state_description = self.asset_state.description	
-		
-		
+		self.asset_status_description = self.get_asset_status_description		
+		self.handle_code_description = self.get_handle_code_description
+
 		self.location_description = self.location.description	
 		self.location_network_description = self.location_network.description	
 		

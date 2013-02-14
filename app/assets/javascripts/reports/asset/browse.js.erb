@@ -7,27 +7,28 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 	theme = settings.theme;
 
 	// Grid data source
-	var grid_source = {
+	grid_source = {
 		datatype : "json",
 		type: 'GET',
+		url: system.server + $('.ui-page-active').attr('data-url') + '.json',
 		datafields: [
-			{ name: 'entity' },
-			{ name: 'brewery'},
+			{ name: 'entity_description' },
+			{ name: 'product_entity_description'},
 			{ name: 'tag_value' },
-			{ name: 'asset_type' },
-			{ name: 'asset_status' },
-			{ name: 'product' },
-			{ name: 'location' },
-			{ name: 'location_network' },
+			{ name: 'asset_type_description' },
+			{ name: 'asset_status_description' },
+			{ name: 'product_description' },
+			{ name: 'location_description' },
+			{ name: 'location_network_description' },
 			{ name: '_id' },
 			{ name: 'fill_time' },
 			{ name: 'last_action_time' },			
 		],
-		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
+		
 	};
-	var grid_data_adapter = new $.jqx.dataAdapter(grid_source, {
-
-		loadComplete: function (data) {},
+	grid_data_adapter = new $.jqx.dataAdapter(grid_source, {
+		beforeSend: function() {$.mobile.loading('show');},
+		loadComplete: function (data) {$.mobile.loading('hide');},
 		loadError: function (xhr, status, error) { }      
 	});
 		
@@ -46,15 +47,15 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 		columnsresize: true,
 		altrows: true,				
 		columns: [
-			{ text: 'Owner', datafield: 'entity', filtertype: 'checkedlist' },			
-			{ text: 'Product', datafield: 'product', filtertype: 'checkedlist' },			
-			{ text: 'Size', datafield: 'asset_type', filtertype: 'checkedlist' },
-			{ text: 'Brewery', datafield: 'brewery', filtertype: 'checkedlist' },			
+			{ text: 'Owner', datafield: 'entity_description', filtertype: 'checkedlist' },			
+			{ text: 'Product', datafield: 'product_description', filtertype: 'checkedlist' },			
+			{ text: 'Size', datafield: 'asset_type_description', filtertype: 'checkedlist' },
+			{ text: 'Brewery', datafield: 'product_entity_description', filtertype: 'checkedlist' },			
 			{ text: 'Fill Date', datafield: 'fill_time', filtertype: 'date', cellsformat: 'd'  },
 			{ text: 'Tag Value', datafield: 'tag_value' },
-			{ text: 'Status', datafield: 'asset_status', filtertype: 'checkedlist' },			
-			{ text: 'Location', datafield: 'location', filtertype: 'checkedlist' },
-			{ text: 'Location Network', datafield: 'location_network', filtertype: 'checkedlist' },
+			{ text: 'Status', datafield: 'asset_status_description', filtertype: 'checkedlist' },			
+			{ text: 'Location', datafield: 'location_description', filtertype: 'checkedlist' },
+			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist' },
 
 			{ text: 'Last Scene', datafield: 'last_action_time', filtertype: 'date', cellsformat: 'd'  },																	
 /*

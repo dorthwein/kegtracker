@@ -19,6 +19,7 @@ class User
          :token_authenticatable
 
 	belongs_to :entity
+  field :entity_description, type: String
 
 	# User Details
 	field :first_name, :type => String
@@ -46,9 +47,10 @@ class User
 	field :user_maintenance, :type => Integer, :default => 0	
 	field :location_maintenance, :type => Integer, :default => 0	
 	field :product_maintenance, :type => Integer, :default => 0	
-	field :production_maintenance, :type => Integer, :default => 0	
-	field :network_maintenance, :type => Integer, :default => 0		
+# 	field :production_maintenance, :type => Integer, :default => 0	
+# 	field :network_maintenance, :type => Integer, :default => 0		
 	field :barcode_maker_maintenance, :type => Integer, :default => 0
+
 	field :system_admin, :type => Integer, :default => 0
 	# embeds_many :authorizations	
 
@@ -83,7 +85,12 @@ class User
 
   ## Token authenticatable
 	field :authentication_token, :type => String
-
+  
+  before_save :sync_descriptions  
+  def sync_descriptions
+    self.entity_description = self.entity.description
+  end
+  
   def scanner_data
       reponse = {}
       permissions = self.scan_permissions
@@ -116,9 +123,7 @@ class User
         response[:handle_codes_auto_mode_off].push({:html => 'Add', :value => 4})            
       end
       networks = current_user.entity.visible_networks
-      response[:networks] = networks.map{|x| {:html => x.description, :value => x._id}}
-      
-
+      response[:networks] = networks.map{|x| {:html => x.description, :value => x._id}}      
 
   end
 

@@ -6,16 +6,22 @@ var system = {};
 system.background = {};
 system.background.intervals = {};	// Not sure what this is for...?
 
-system.table_height = '650px';
-system.simple_grid_height = '500px';
-system.simple_grid_width = '950px';
-/*
-function(){
-	var height = $(window).height() * .50;
-	return height;
+
+
+x = function(){
+	var height = $(window).height() - 150;
+	return height	
 }
+$(window).resize(function() {  
+//	$("#jqxgrid").jqxGrid({height:x()});
+});
+
+system.table_height = '625px'
+system.simple_grid_height = '800px';
+system.simple_grid_width = '950px';
+
 // window.location.protocol = "http"
-*/
+
 
 system.server = 'http://' + window.location.host;
 // system.server = 'http://www.craft-net.com/';

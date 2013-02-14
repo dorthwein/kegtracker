@@ -4,17 +4,27 @@ class BuildReport
 	def initialize(report_date = Time.now)
 		@date = report_date #.beginning_of_day
 	end
+
 # **************************************
 # Asset Summary Report Build
 # **************************************
+	def self.build options
+		options[:date].nil? ? options[:date] = Time.new() : options[:date]		
+
+		# Clear existing day reports
+		AssetSummaryFact.between(fact_time: options[:date].beginning_of_day..options[:date].end_of_day).where(:report_entity => options[:entity]).delete_all
+		asset_activity_facts = options[:entity].visible_asset_activity_facts.lte(fact_time: options[:date]).desc(:fact_time)
+
+		x = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
+		print x.to_json
+
+		# Entity, Date
+	end
+
 	def asset_summary_fact
 		first_date = @date.end_of_day - (86400 * 365)
 		last_date = @date.end_of_day
 		
-		print @date.beginning_of_day.to_s + " <-- Start of Day \n"
-		print @date.end_of_day.to_s + " <-- End of Day \n"
-		print @date.to_s + " <-- Report Date \n\n"
-
 		Entity.all.each do |entity|
 			AssetSummaryFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete
 

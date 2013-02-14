@@ -1,3 +1,4 @@
+=begin
 class Api::V1::LocationsController < ApplicationController
 	skip_before_filter :verify_authenticity_token
 	before_filter :authenticate_user!
@@ -9,3 +10,4 @@ class Api::V1::LocationsController < ApplicationController
 	end
   end
 end
+=end

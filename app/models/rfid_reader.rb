@@ -1,6 +1,13 @@
 class RfidReader
   include Mongoid::Document  
   belongs_to :network
+  field :network_description, type: String
+
+  belongs_to :entity
+  field :entity_description, type: String  
+
+  field :antenna_count, type: Integer    
+
   has_many :rfid_antennas
   #  accepts_nested_attributes_for :rfid_antennas
   field :mac_address, type: String
@@ -12,8 +19,12 @@ class RfidReader
   field :command_port, type: Integer
   field :reader_type, type: String
 
-#  def mac_address     
- #   mac_address = self.mac_address_1 + ':' + self.mac_address_2 + ':' + self.mac_address_3 + ':' + self.mac_address_4 + ':' + self.mac_address_5 + ':' + self.mac_address_6
-  #  return mac_address
-#  end
+  before_save :sync_descriptions    
+  def sync_descriptions
+    self.network_description = self.network.description
+    self.entity = self.network.entity
+    self.entity_description = self.entity.description
+
+    self.antenna_count = self.rfid_antennas.count
+  end
 end

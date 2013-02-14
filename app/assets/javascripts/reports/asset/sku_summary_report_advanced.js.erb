@@ -4,22 +4,21 @@
 $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', function(event){	
 	// prepare the data
 	$.mobile.loading('show');
-	var theme = settings.theme
+	var theme = settings.theme;
 	var source = {
 		datatype : "json",
 		type: 'POST',
 		datafields: [
-			{ name: 'date' },																	
-			{ name: 'location_network' },
-			{ name: 'sku' },
-			{ name: 'product' },
-			{ name: 'product_entity' },			
-			{ name: 'asset_type' },
+			{ name: 'fact_time' },																	
+			{ name: 'location_network_description' },
+			{ name: 'sku_description' },
+			{ name: 'product_description' },
+			{ name: 'product_entity_description' },			
+			{ name: 'asset_type_description' },
 			{ name: 'empty_quantity' },
 			{ name: 'market_quantity' },
 			{ name: 'full_quantity' },
 			{ name: 'sku_id' },
-			{ name: 'date_id' },
 			{ name: '_id' }
 		],
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
@@ -27,6 +26,9 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 
 	};
 	var dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function() {$.mobile.loading('show');},
+		loadComplete: function (data) {$.mobile.loading('hide');},
+
 		formatData: function(){
 		    var params = {}
 		    var filterinfo = $("#jqxgrid").jqxGrid('getfilterinformation');		    		    
@@ -65,35 +67,21 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 
 		},                			
 		columns: [																						
-			{ text: 'Date', datafield: 'date', filtertype: 'date', cellsformat: 'd'  },
-			{ text: 'Location Network', datafield: 'location_network', filtertype: 'checkedlist' },
-			{ text: 'SKU', width:'350px', datafield: 'sku', filtertype: 'checkedlist'  },
-			{ text: 'Product', width:'250px', datafield: 'product', filtertype: 'checkedlist'  },
-			{ text: 'Brewery',  datafield: 'product_entity', filtertype: 'checkedlist'  },
-			{ text: 'Asset Type',  datafield: 'asset_type', filtertype: 'checkedlist' },		
+			{ text: 'Date', datafield: 'fact_time', filtertype: 'date', cellsformat: 'd'  },
+			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist' },
+			{ text: 'SKU', width:'350px', datafield: 'sku_description', filtertype: 'checkedlist'  },
+			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },
+			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },		
 			{ text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
 			{ text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
 			{ text: 'Full', width:'75px', datafield: 'full_quantity', filtertype: 'number' }			
 
 		],
-        groups: ['date','location_network']
+        groups: ['fact_time','location_network_description']
 	});
-	
 
-    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
-    $('#docking').jqxDocking('disableWindowResize', 'window1');
-    $('#docking').jqxDocking('disableWindowResize', 'window2');
-    $('#docking').jqxDocking('disableWindowResize', 'window3');
-	$('#docking').jqxDocking('pinWindow', 'window1');
-	$('#docking').jqxDocking('pinWindow', 'window2');
-	$('#docking').jqxDocking('pinWindow', 'window3');
-	$('#docking').jqxDocking('hideAllCloseButtons');
-    
-	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' );
-	$('#docking').jqxDocking('setWindowProperty','window2', 'keyboardCloseKey', 'none' );	
-	$('#docking').jqxDocking('setWindowProperty','window3', 'keyboardCloseKey', 'none' );	
-
-	// Style Buttons
+// Style Buttons
 	$("#excelExport").jqxButton({ theme: theme });
 	$("#csvExport").jqxButton({ theme: theme });
 	
@@ -112,6 +100,23 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 	});	
 	$.mobile.loading('hide');				
 
+/*	
+
+    $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
+    $('#docking').jqxDocking('disableWindowResize', 'window1');
+    $('#docking').jqxDocking('disableWindowResize', 'window2');
+    $('#docking').jqxDocking('disableWindowResize', 'window3');
+	$('#docking').jqxDocking('pinWindow', 'window1');
+	$('#docking').jqxDocking('pinWindow', 'window2');
+	$('#docking').jqxDocking('pinWindow', 'window3');
+	$('#docking').jqxDocking('hideAllCloseButtons');
+    
+	$('#docking').jqxDocking('setWindowProperty','window1', 'keyboardCloseKey', 'none' );
+	$('#docking').jqxDocking('setWindowProperty','window2', 'keyboardCloseKey', 'none' );	
+	$('#docking').jqxDocking('setWindowProperty','window3', 'keyboardCloseKey', 'none' );	
+*/
+	
+/*
 // ***********************
 // Charts
 // ***********************	
@@ -126,13 +131,13 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 		if(grid_rows != ''){
 			$.each(grid_rows, function(key, row){	
 	//			alert(JSON.stringify(row));		    		    	
-	    		if(data_set[row['date_id']] == undefined){
-	    			data_set[row['date_id']] = {};
-	    			series = {dataField: row['date_id'], displayText: row['date']}
+	    		if(data_set[row['fact_time']] == undefined){
+	    			data_set[row['fact_time']] = {};
+	    			series = {dataField: row['fact_time'], displayText: row['date']}
 	    			day_limit_counter = day_limit_counter + 1
 	    		}
-	    		if(data_set[row['date_id']][row['sku_id']] == undefined){
-	    			data_set[row['date_id']][row['sku_id']] = {};
+	    		if(data_set[row['fact_time']][row['sku_id']] == undefined){
+	    			data_set[row['fact_time']][row['sku_id']] = {};
 					
 					if(	$.inArray(row['sku_id'], sku_ids) == -1){	
 
@@ -142,10 +147,10 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 					}
 	    		}
 
-				data_set[row['date_id']][row['sku_id']]['displayText'] = 	row['sku'];
-	    		data_set[row['date_id']][row['sku_id']]['full'] = 			row['full_quantity'];
-	    		data_set[row['date_id']][row['sku_id']]['empty'] = 			row['empty_quantity'];
-	    		data_set[row['date_id']][row['sku_id']]['market'] = 		row['market_quantity'];    		
+				data_set[row['fact_time']][row['sku_id']]['displayText'] = 	row['sku'];
+	    		data_set[row['fact_time']][row['sku_id']]['full'] = 			row['full_quantity'];
+	    		data_set[row['fact_time']][row['sku_id']]['empty'] = 			row['empty_quantity'];
+	    		data_set[row['fact_time']][row['sku_id']]['market'] = 		row['market_quantity'];    		
 
 	    		if((row['full_quantity'] + unit_interval_max) > unit_interval_max){
 	    			unit_interval_max = unit_interval_max + row['full_quantity']
@@ -166,9 +171,9 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 			market_asset_data_set = [];
 
 			// Date Record
-			$.each(data_set, function(date_id, date_record){
+			$.each(data_set, function(fact_time, date_record){
 				// Ske Record
-				date = new Date(date_id * 1000).toLocaleDateString();
+				date = new Date(fact_time * 1000).toLocaleDateString();
 				var full_fact_record = { date: date };
 				var empty_fact_record = { date: date };
 				var market_fact_record = { date: date };
@@ -267,6 +272,6 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 		load_chart();
 	});                       
 
-
-	$.mobile.loading('hide');
+*/
+	
 });

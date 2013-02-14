@@ -7,8 +7,8 @@ task :ten_minute_build => :environment do
 
 end
 
-task :build_asset_summaries => :environment do
-	start = Time.new(2012,"oct", 1)
+task :thirty_day_build => :environment do
+	start = Time.new() - 2592000 
 	last = Time.new() # + 86400
 	current = start
 
@@ -22,18 +22,38 @@ task :build_asset_summaries => :environment do
 	end	
 end
 
-task :build_asset_activity_summaries => :environment do
-	start = Time.new(2012,"oct", 1)
-	last = Time.new() # - 86400
-	current = start
-
-	while current < last
-		current = current + 86400
-		print current.to_s + "\n"		
-		a = BuildReport.new(current)	
-		a.asset_activity_summary_fact 
-	end	
+task :build_test => :environment do
+	options = {}
+	options[:date] = Time.new(2013, 'feb', 30)
+	options[:entity] = Entity.all.first
+	
+	BuildReport.build(options)
 end
+
+task :save_locations => :environment do
+	Location.all.each do |x|
+		if x.save!
+			print "Location Saved \n"
+		end
+	end
+end
+task :save_networks => :environment do
+	Network.all.each do |x|
+		if x.save!
+			print "Network Saved \n"
+		end
+	end
+end
+
+
+task :save_asset_summary_facts => :environment do
+	AssetSummaryFact.all.each do |x|
+		if x.save!
+			print "Asset Summary Fact Saved \n"
+		end
+	end
+end
+
 
 task :save_asset_activity_facts => :environment do
 	AssetActivityFact.all.each do |x|

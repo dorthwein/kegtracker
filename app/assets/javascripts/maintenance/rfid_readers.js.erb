@@ -12,8 +12,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 		datatype: "json",
 		datafields: [
 			{ name: 'reader_name' },
-			{ name: 'network'},
-			{ name: 'entity'},
+			{ name: 'network_description'},
+			{ name: 'entity_description'},
 			{ name: 'antenna_count' },
 			{ name: 'reader_type'},
 			{ name: 'mac_address' }, 
@@ -55,8 +55,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 		altrows: true,				
 		columns: [
 			{ text: 'Reader Name', datafield: 'reader_name', filtertype: 'checkedlist' },
-			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist'},
-			{ text: 'Entity', datafield: 'entity', filtertype: 'checkedlist'},
+			{ text: 'Network', datafield: 'network_description', filtertype: 'checkedlist'},
+			{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist'},
 			{ text: '# Antenna', datafield: 'antenna_count', filtertype: 'number' },
 			{ text: 'Reader Type', datafield: 'reader_type', filtertype: 'checkedlist'},
 			{ text: 'Mac Address', datafield: 'mac_address' }, 

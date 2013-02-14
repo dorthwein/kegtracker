@@ -6,17 +6,9 @@ class Maintenance::NetworksController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-      	
-        if current_user.system_admin == 1
-          networks = Network.all
-        else
-          gatherer = Gatherer.new current_user.entity
-          networks = gatherer.get_networks
-        end
-    
-        response = JqxConverter.jqxGrid(networks)
-        render json: response                   
+      format.json {       	
+        networks = JqxConverter.jqxGrid(current_user.entity.networks)
+        render json: networks                   
       }
     end
   end
@@ -26,15 +18,10 @@ class Maintenance::NetworksController < ApplicationController
   # GET /networks/1.json
   def show
     network = Network.find(params[:id])	
-    if current_user.system_admin == 1
-      entities = JqxConverter.jqxDropDownList(Entity.all) #.map{|x| {:html => x.description, :value => x._id}}
-      products = JqxConverter.jqxDropDownList(Product.all) # .map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}    
-    else
-      entities = [{:html => current_user.entity.description, :value => current_user.entity._id }] #current_user.entity.map{|x| { :html => x.description, :value => x._id }}
-      products = JqxConverter.jqxDropDownList(current_user.entity.products) #.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}      
-    end
-    locations = JqxConverter.jqxDropDownList(network.locations) #.map{|x| {:html => x.description, :value => x._id}}
-    network_types = JqxConverter.jqxDropDownList(Network.network_types) #.map{|x| {:html => x[:description], :value => x[:_id]}}        
+    entities = JqxConverter.jqxDropDownList([current_user.entity])      
+    products = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
+    locations = JqxConverter.jqxDropDownList(network.locations) 
+    network_types = JqxConverter.jqxDropDownList(Network.network_types)
     
     response = {:network => network, :network_types => network_types, :entities => entities, :products => products, :locations => locations}
     respond_to do |format|
@@ -45,14 +32,9 @@ class Maintenance::NetworksController < ApplicationController
   # GET /networks/new
   # GET /networks/new.json
   def new
-    if current_user.system_admin == 1
-      entities = JqxConverter.jqxDropDownList(Entity.all) #.map{|x| {:html => x.description, :value => x._id}}
-      products = JqxConverter.jqxDropDownList(Product.all) # .map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}    
-    else
-      entities = [{:html => current_user.entity.description, :value => current_user.entity._id }] #current_user.entity.map{|x| { :html => x.description, :value => x._id }}
-      products = JqxConverter.jqxDropDownList(current_user.entity.products) #.map{|x| {:html => x.description + " (#{x.entity.description})", :value => x._id}}      
-    end
-    network_types = JqxConverter.jqxDropDownList(Network.network_types) #.map{|x| {:html => x[:description], :value => x[:_id]}}        
+    entities = JqxConverter.jqxDropDownList([current_user.entity])      
+    products = JqxConverter.jqxDropDownList(current_user.entity.production_products)
+    network_types = JqxConverter.jqxDropDownList(Network.network_types) 
 
     response = {:entities => entities, :network_types => network_types, :products => products }
     respond_to do |format|
@@ -62,7 +44,6 @@ class Maintenance::NetworksController < ApplicationController
 
   # GET /networks/1/edit
   def edit
-
   end
 
 
@@ -71,8 +52,7 @@ class Maintenance::NetworksController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-        network = Network.new(params[:network])
-        
+        network = Network.new(params[:network])        
         if network.save
           render json: network
         else
@@ -102,7 +82,6 @@ class Maintenance::NetworksController < ApplicationController
   def destroy
     network = Network.find(params[:id])
     network.destroy
-
     respond_to do |format|
       format.json { head :no_content }
     end

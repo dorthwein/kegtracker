@@ -1,3 +1,4 @@
+=begin
 class Api::ChartsController < ApplicationController
 	before_filter :authenticate_user!	
 	def filter_tree_widget
@@ -60,3 +61,4 @@ class Api::ChartsController < ApplicationController
 		end
 	end
 end
+=end

@@ -101,8 +101,26 @@ class Entity
 		products = self.products + self.production_partnerships_shared_products
 	end
 
+#############################
+# Assets 					#
+#############################
+	def visible_assets
+		# A product I produce, a keg I own, or a network I controll		
+		Asset.any_of( 
+				{ :location_network.in => self.networks.map{|x| x._id} },
+			  	{ :product.in => self.production_products }, 
+			  	{ :entity => self }
+		   	)
 
 
+	end
+	def visible_asset_activity_facts
+		AssetActivityFact.any_of( 
+				{ :location_network.in => self.networks.map{|x| x._id} },
+			  	{ :product.in => self.production_products }, 
+			  	{ :entity => self }
+		   	)
+	end
 
 ###########################
 # Entity Networks by Type #
@@ -129,14 +147,6 @@ class Entity
 		return self.products.map{|x| x}
 	end
 
-
-	def partner_networks
-		networks = []
-		self.network_memberships.each do |x|
-		  networks.push(x.network)
-		end
-		return networks
-	end
 
 	def visible_networks
 		networks = []

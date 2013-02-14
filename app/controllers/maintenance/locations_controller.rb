@@ -8,34 +8,10 @@ class Maintenance::LocationsController < ApplicationController
   def index    		
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-      		gatherer = Gatherer.new current_user.entity
-    			response = gatherer.get_locations.map { |location| {
-														:external_id => location.externalID,
-														:description => location.description,
-														:network => location.network_description,
-
-														:name => location.name,
-														:street => location.street,
-														:city => location.city,
-														:state => location.state,
-														:zip => location.zip,
-
-                            :location_type_description => location.location_type_description,
-                            :location_type => location.location_type,
-
-#														:on_premise => location.on_premise,
-#														:off_premise => location.off_premise,
-#														:empty => location.empty,
-#														:inventory => location.inventory,
-#														:production => location.production,
-#														:partner_entity => location.partner_entity,
-														:_id => location._id
-													}
-										}		    	
-      		render json: response 
-      	
-      	}
+      format.json {                 
+          locations = JqxConverter.jqxGrid(current_user.entity.locations)
+          render json: locations
+      }
     end
 
   end
@@ -43,38 +19,35 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
-    location = Location.find(params[:id])
-    if current_user.system_admin == 1
-      networks = JqxConverter.jqxDropDownList(Network.all)
-    else
-      networks = JqxConverter.jqxDropDownList(current_user.entity.networks)
-    end
-    location_types = JqxConverter.jqxDropDownList(Location.location_types)
-
-
-    response = {:location => location, :networks => networks, :location_types => location_types }
     respond_to do |format|
-      format.json { render json: response }
+      format.json { 
+        location = Location.find(params[:id])
+        networks = JqxConverter.jqxDropDownList(current_user.entity.networks)
+        location_types = JqxConverter.jqxDropDownList(Location.location_types)
+
+        response = {:location => location, :networks => networks, :location_types => location_types }
+
+        render json: response 
+      }
     end
   end
 
   # GET /locations/new
   # GET /locations/new.json
   def new
-    if current_user.system_admin == 1
-      networks = Network.all.map{|x| {:html => x.description, :value => x._id}}
-    else
-      networks = current_user.entity.networks.map{|x| { :html => x.description, :value => x._id }}
-    end
-    response = {:location => location, :networks => networks }
     respond_to do |format|
-      format.json { render json: response }
+      format.json { 
+        networks = JqxConverter.jqxDropDownList(current_user.entity.networks)        
+        location_types = JqxConverter.jqxDropDownList(Location.location_types)        
+        
+        response = {:networks => networks, :location_types => location_types }
+        render json: response 
+      }
     end
   end
 
   # GET /locations/1/edit
   def edit
-
   end
 
   # POST /locations
@@ -82,7 +55,7 @@ class Maintenance::LocationsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-        location = Location.new(params)
+        location = Location.new(params[:location])
         
         if location.save
           render json: location
@@ -99,8 +72,8 @@ class Maintenance::LocationsController < ApplicationController
     respond_to do |format|
       format.json {
         location = Location.find(params[:id])
-        if location.update_attributes(params)
-          render json: {:sucess => true}
+        if location.update_attributes(params[:location])
+          render json: location
         else
           render json: {:sucess => false, :message => 'Location update error, please contact support'}
         end

@@ -1,4 +1,3 @@
-
 class Location
   include Mongoid::Document
   include Mongoid::Timestamps  
@@ -20,6 +19,7 @@ class Location
 #  field :partner_entity, type: Integer
 
   field :location_type, type: Integer, :default => 6
+  field :location_type_description, type: String
 
   has_many :assets
   
@@ -43,7 +43,7 @@ class Location
     return response
   end
 
-  def location_type_description
+  def get_location_type_description
     case self.location_type.to_i
     when 1
       return 'Inventory' 
@@ -65,9 +65,9 @@ class Location
     self.entity = self.network.entity
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description		
+    self.location_type_description = self.get_location_type_description
 	end
 
   index({ entity_id: 1 }, { name: "entity_index" })          
   index({ network_id: 1 }, { name: "network_index" })  
-
 end

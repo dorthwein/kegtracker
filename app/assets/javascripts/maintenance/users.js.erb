@@ -1,7 +1,5 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
-
-
 $(document).on('pageshow', '#_maintenance_users', function(event){	
 
 	// prepare the data
@@ -15,7 +13,7 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 		datatype : "json",
 		type: 'GET',
 		datafields: [
-			{ name: 'entity' },
+			{ name: 'entity_description' },
 			{ name: 'first_name' },
 			{ name: 'last_name' },
 			{ name: 'email' },
@@ -46,7 +44,8 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 	};
 
 	var dataAdapter = new $.jqx.dataAdapter(source, {
-		loadComplete: function (data) { },
+		beforeSend: function(jqXHR, settings){$.mobile.loading('show')},
+		loadComplete: function (data) {$.mobile.loading('hide');},
 		loadError: function (xhr, status, error) { }      
 	});
 	// Initialize Grid
@@ -69,7 +68,7 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 			{ text: 'First', datafield: 'first_name' },
 			{ text: 'Last', datafield: 'last_name' },
 			{ text: 'Email', datafield: 'email' }, 
-			{ text: 'Entity', datafield: 'entity', filtertype: 'checkedlist' },
+			{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist' },
 			{ text: 'Cell', datafield: 'cell_phone' },
 			{ text: 'Office', datafield: 'office_phone' },
 
@@ -159,9 +158,9 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 			data: rowdata,
 		}).done(function( data ) {				
 			// Entity List
-			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
-			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['user']['entity_id']);
-			$("#entity_id").jqxDropDownList('selectItem', item ); 			
+//			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+//			var item = $("#entity_id").jqxDropDownList('getItemByValue', data['user']['entity_id']);
+//			$("#entity_id").jqxDropDownList('selectItem', item ); 			
 
 			// Enable Inputs
 			$(".form_input").jqxInput({disabled: false });
@@ -259,16 +258,9 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 					return true;
 	        	}
 	        },
-	        { input: '#password_confirmation', message: 'Passwords doesn\'t match!', action: 'keyup, focus', rule: function(input, commit){
+	        { input: '#password_confirmation', message: 'Password doesn\'t match!', action: 'keyup, focus', rule: function(input, commit){
 		            if (input.val() === $('#password').val())  {
 		                return true;
-		            }
-		           	return false;		           
-	        	}
-	        },
-	        { input: '#entity_id', message: 'Entity Required!', action: 'keyup, blur',rule: function(input, commit){
-		            if (  $("#entity_id").jqxDropDownList('getSelectedItem') != null) {
-		                return true;		                
 		            }
 		           	return false;		           
 	        	}
@@ -282,14 +274,14 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#updateSaveButton").bind('click', function () {
     	if($('#form_validator').jqxValidator('validate', element)){	
-	        var params = {}
-	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        var params = {user:{}}
+//	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['user'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['user'][obj.id] = $(obj).val();
 	        });        
 
 
@@ -300,11 +292,11 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 				url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
 				type: "PUT",
 				dataType : "JSON",
-				data: {user: params},
+				data: params,
 			}).done(function( data ) {	
 				if(data['success'] == false){
 					alert(data['message'])
-				}
+				}			
 				dataAdapter.dataBind();
 			})
 		}
@@ -315,14 +307,14 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#newSaveButton").bind('click', function () {
     	if($('#form_validator').jqxValidator('validate', element)){	
-	        var params = {}
-	        params['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        var params = {user:{}}
+	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['user'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['user'][obj.id] = $(obj).val();
 	        });        
 
 			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		

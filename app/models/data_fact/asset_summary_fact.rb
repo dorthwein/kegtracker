@@ -23,6 +23,9 @@ class AssetSummaryFact
 	
 	field :asset_type_description, type: String
 
+	field :sku_description, type: String
+	field :sku_id, type: String
+
 	field :empty_quantity, type: Integer
 	field :full_quantity, type: Integer
 	field :market_quantity, type: Integer				  	
@@ -83,18 +86,23 @@ class AssetSummaryFact
 		end
 	end
 
-	def sku_id
+	def get_sku_id
 		return 'prod_' + self.product_id.to_s + '_type_' + self.asset_type_id.to_s
 	end
 
-	def sku_description
+	def get_sku_description
 		return self.product_description.to_s + ' - ' + self.asset_type_description
 	end
+	
 
 	before_save :sync_descriptions	
 	def sync_descriptions
 		# Check Descriptions
 		self.asset_type_description = self.asset_type.description			
+
+		self.sku_description = self.get_sku_description
+		self.sku_id = self.get_sku_id
+
 		
 		self.product_description = self.product.description	
 		self.product_entity = self.product.entity		

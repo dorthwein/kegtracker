@@ -1,3 +1,4 @@
+=begin
 class Api::V1::SessionsController < Devise::SessionsController
   prepend_before_filter :require_no_authentication, :only => [:new, :create] 
   def new
@@ -13,3 +14,4 @@ class Api::V1::SessionsController < Devise::SessionsController
     end
   end
 end
+=end

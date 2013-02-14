@@ -6,33 +6,28 @@ class Reports::FloatController < ApplicationController
 	def activity_summary_report_simple
 		respond_to do |format|
 			format.html 
-		    format.json { 
+
+		    format.json {
 		    	options = {:entity => current_user.entity}
-		    	if !params['date'].nil?
-					date = DateTime.parse(params['date'])
-
-		    		options[:start_date] = date
-		    		options[:end_date] = date
-
-		    	end
+				date = DateTime.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
+    			
+    			start_date = date.beginning_of_day
+    			end_date = date.end_of_day
 
 				visible_networks = current_user.entity.visible_networks
-		    	location_network_list = []		    	
-		    	location_network_list = visible_networks.map {|x| 
-					{:html => x.description, :value => x._id}		    	
-		    	}
+		    	location_network_list = JqxConverter.jqxDropDownList(visible_networks)
 
 				if params['location_network_id'].nil?
-					options[:location_network] = visible_networks[0]
+					default_network = visible_networks[0]
 				else
-					options[:location_network] = Network.find(params['location_network_id'])					
+					default_network = Network.find(params['location_network_id'])					
 				end
-
-				facts = AssetActivitySummaryFact.grid_facts(options)		    	
+				
+				facts = AssetActivitySummaryFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity, :location_network => default_network)				
 		    	response = {:grid => facts, :location_networks => location_network_list}
 		    	 
-		    	render json: response
-			}
+		    render json: response
+		}
 		end				
 	end	
 	def activity_summary_report_advanced

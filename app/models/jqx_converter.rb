@@ -4,6 +4,7 @@ class JqxConverter
 	end
 
 	def self.jqxGrid array, options = {}
-		array.map{|x| x.attributes	}			
+		return array
+		# array.map{|x| x.attributes}			
 	end
 end

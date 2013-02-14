@@ -12,9 +12,9 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 	{
 		datatype: "json",
 		datafields: [
-			{ name: 'external_id' },
+			{ name: 'externalID' },
 			{ name: 'description' },
-			{ name: 'network' }, 
+			{ name: 'network_description' }, 
 
 			{ name: 'name' },
 			{ name: 'street' },
@@ -23,12 +23,6 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 			{ name: 'zip' },                	
 
 			{ name: 'location_type_description'},
-			{ name: 'on_premise' },                	                	
-			{ name: 'off_premise' },                	                	                	
-			{ name: 'empty' },                	                	
-			{ name: 'inventory' },                	                	
-			{ name: 'production' },                	                											                
-			{ name: 'partner_entity' },
 			{ name: '_id'}
 		], 
 		url: url,
@@ -42,7 +36,12 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 	};
 
 	var dataAdapter = new $.jqx.dataAdapter(source, {
-		loadComplete: function (data) { },
+		beforeSend: function(jqXHR, settings){
+			$.mobile.loading('show');	
+		},
+		loadComplete: function (data) { 
+			$.mobile.loading('hide');
+		},
 		loadError: function (xhr, status, error) { }      
 	});
 
@@ -63,9 +62,9 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 		columnsresize: true,
 		altrows: true,		
 		columns: [
-			{ text: 'Act #', datafield: 'external_id' },
+			{ text: 'Act #', datafield: 'externalID' },
 			{ text: 'Location', datafield: 'description' },
-			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' }, 
+			{ text: 'Network', datafield: 'network_description', filtertype: 'checkedlist' }, 
 
 			{ text: 'Name', datafield: 'name' },
 			{ text: 'Address', datafield: 'street' },
@@ -73,56 +72,6 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' }, 
 			{ text: 'Zip', datafield: 'zip' },                	
 			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },    
-/*
-			{ text: 'On Premise', datafield: 'on_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Off Premise', datafield: 'off_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Empties', datafield: 'empty', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Inventory', datafield: 'inventory', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Production', datafield: 'production', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Partner', datafield: 'partner_entity', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-*/			
 		]
 	});
 	$('#jqxgrid').bind('rowselect', function (event){	    
@@ -238,16 +187,16 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#updateSaveButton").bind('click', function () {
     	if($('#form_validator').jqxValidator('validate', element)){
-	        var params = {}
-	        params['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
-			params['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
+	        var params = {location: {}}
+	        params['location']['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
+			params['location']['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
 
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['location'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['location'][obj.id] = $(obj).val();
 	        });        
 
 			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
@@ -259,10 +208,7 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 				type: "PUT",
 				dataType : "JSON",
 				data: params,
-			}).done(function( data ) {	
-				if(data['success'] == false){
-					alert(data['message'])
-				}
+			}).done(function( data ) {			
 				dataAdapter.dataBind();
 			})
 		}
@@ -272,16 +218,16 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#newSaveButton").bind('click', function () {
     	if($('#form_validator').jqxValidator('validate', element)){	
-	        var params = {}
-	        params['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
-			params['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
+	        var params = {location: {}}
+	        params['location']['network_id'] = $("#network_id").jqxDropDownList('getSelectedItem').value;              
+			params['location']['location_type'] = $("#location_type").jqxDropDownList('getSelectedItem').value;              
 	        
 	        $('.toggle_switch').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['location'][obj.id] = $(obj).val();
 	        });
 
 	        $('.form_input').each(function(key, obj) {        
-	        	params[obj.id] = $(obj).val();
+	        	params['location'][obj.id] = $(obj).val();
 	        });        
 
 			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
@@ -291,9 +237,6 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 				type: "POST",
 				data: params,
 			}).done(function( data ) {	
-				if(data['success'] == false){
-					alert(data['message'])
-				}
 				dataAdapter.dataBind();
 
 				$("#network_id").jqxDropDownList({ source: data['networks'], disabled: false });

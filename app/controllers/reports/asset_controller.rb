@@ -1,4 +1,4 @@
-class Reports::AssetController < ApplicationController
+class Reports::AssetController < ApplicationController	
 	before_filter :authenticate_user!	
 # **********************************
 # Asset Reports
@@ -6,28 +6,8 @@ class Reports::AssetController < ApplicationController
 	def browse    
 		respond_to do |format|		
 		  	format.html # index.html.erb
-		  	format.json { 		  		
-			 	gatherer = Gatherer.new current_user.entity
-				if current_user.system_admin == 1
-					assets = Asset.all
-				else
-					assets = gatherer.get_assets
-				end
-				assets = assets.map { |asset| {	
-									:entity => asset.entity_description, 
-								    :brewery => asset.product_entity_description,
-									:tag_value => asset.tag_value, 
-									:asset_type => asset.asset_type_description, 
-									:asset_status => asset.asset_status_description,
-									:product => asset.product_description,
-									:location => asset.location_description,
-									:location_network => asset.location_network_description,
-									:_id => asset._id,
-									:last_action_time => (asset.last_action_time.nil? ? ' ' : asset.last_action_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")), 
-									:fill_time => (asset.fill_time.nil? ? ' ' : asset.fill_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y") )
-								} 
-						}     
-				render json: assets 			
+		  	format.json { 		  						
+				render json: current_user.entity.visible_assets 			
 			}
 		end
 	end  
@@ -117,22 +97,9 @@ class Reports::AssetController < ApplicationController
 		    		start_date = DateTime.parse(params['date']['0'])
 		    		end_date = DateTime.parse(params['date']['1'])
 		    	end
-
-				response = AssetSummaryFact.where(:report_entity => current_user.entity).between(fact_time: start_date..end_date).desc(:fact_time).map { |asset_summary_fact| {
-																						:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
-																						:location_network => asset_summary_fact.location_network_description,
-																						:asset_type => asset_summary_fact.asset_type_description,
-																						:sku => asset_summary_fact.sku_description,		
-																						:sku_id => asset_summary_fact.sku_id,
-																						:date_id => asset_summary_fact.fact_time.to_i,
-																						:product => asset_summary_fact.product_description,
-																						:product_entity => asset_summary_fact.product_entity_description,
-																						:empty_quantity => asset_summary_fact.empty_quantity,
-																						:full_quantity => asset_summary_fact.full_quantity,
-																						:market_quantity => asset_summary_fact.market_quantity,
-																						:total_quantity => asset_summary_fact.total_quantity
-																					}
-																				}
+				
+				asset_summary_facts = AssetSummaryFact.where(:report_entity => current_user.entity).between(fact_time: start_date..end_date).desc(:fact_time)
+				response = asset_summary_facts
 
 		    	render json: response
 			}			
@@ -157,6 +124,7 @@ class Reports::AssetController < ApplicationController
 				else
 					default_network = Network.find(params['location_network_id'])					
 				end
+				
 				facts = AssetSummaryFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity, :location_network => default_network)				
 		    	response = {:grid => facts, :location_networks => location_network_list}
 		    	 

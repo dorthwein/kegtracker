@@ -1,4 +1,5 @@
 class Maintenance::RfidAntennasController < ApplicationController
+=begin
   before_filter :authenticate_user!
   load_and_authorize_resource
 
@@ -83,4 +84,5 @@ class Maintenance::RfidAntennasController < ApplicationController
   	  
   	
   end
+=end
 end
