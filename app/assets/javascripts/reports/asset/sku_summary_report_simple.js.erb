@@ -11,12 +11,12 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 		datatype : "json",
 		type: 'POST',
 		datafields: [
-			{ name: 'date' },																	
-			{ name: 'location_network' },
-			{ name: 'sku' },
-			{ name: 'product' },
-			{ name: 'product_entity' },			
-			{ name: 'asset_type' },
+//			{ name: 'date' },																	
+//			{ name: 'location_network' },
+//			{ name: 'sku' },
+			{ name: 'product_description' },
+			{ name: 'product_entity_description' },			
+			{ name: 'asset_type_description' },
 			{ name: 'empty_quantity' },
 			{ name: 'market_quantity' },
 			{ name: 'full_quantity' },
@@ -75,10 +75,11 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 		ready: function() {
 
 		},
+
 		columns: [																						
-			{ text: 'Product', width:'250px', datafield: 'product', filtertype: 'checkedlist'  },			
-			{ text: 'Brewery',  datafield: 'product_entity', filtertype: 'checkedlist'  },
-			{ text: 'Asset Type',  datafield: 'asset_type', filtertype: 'checkedlist' },				
+			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
+			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
 
 			{ text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
 			{ text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
