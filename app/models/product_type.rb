@@ -25,7 +25,6 @@ class ProductType
 	end
 
 	field :notes, type: String    
-
 	def get_style_description
 		case self.style
 		when 1
@@ -37,5 +36,4 @@ class ProductType
 			return 'Hybrid/Mixed'
 		end
 	end
-	def 
 end
