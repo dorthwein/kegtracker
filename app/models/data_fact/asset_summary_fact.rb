@@ -10,12 +10,8 @@ class AssetSummaryFact
 	
 	belongs_to :location_network, :class_name => 'Network'	
 	belongs_to :product
-	belongs_to :product_entity, :class_name => 'Entity'
-	
-	belongs_to :asset_type  
-	
-	field :asset_status, type: Integer
-
+	belongs_to :product_entity, :class_name => 'Entity'	
+	belongs_to :asset_type  	
 #DE-NORMALIZED
 	field :location_network_description, type: String
 	field :product_description, type: String
@@ -31,60 +27,6 @@ class AssetSummaryFact
 	field :market_quantity, type: Integer				  	
 	field :total_quantity, type: Integer				  	
 	field :fact_time, :type => Time
-
-=begin
-	def self.grid_facts options = {}  	
-
-    	if options[:start_date].nil? || options[:end_date].nil?
-    		start_date = Time.new().in_time_zone("Central Time (US & Canada)").beginning_of_day
-    		end_date = Time.new().in_time_zone("Central Time (US & Canada)").end_of_day
-    	else
-    		start_date = options[:start_date].beginning_of_day
-    		end_date = options[:end_date].end_of_day
-    	end
-
-    	params = {:report_entity => options[:entity]}
-    	if !options[:location_network].nil?
-    		params[:location_network] = options[:location_network]
-    	end
-
-		response = AssetSummaryFact.where(params).between(fact_time: start_date..end_date).desc(:fact_time).map { |asset_summary_fact| {
-																				:date => asset_summary_fact.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y"),
-																				:location_network => asset_summary_fact.location_network_description,
-																				:location_network_id => asset_summary_fact.location_network_id,
-																				:asset_type => asset_summary_fact.asset_type_description,
-																				:sku => asset_summary_fact.sku_description,		
-																				:sku_id => asset_summary_fact.sku_id,
-																				:date_id => asset_summary_fact.fact_time.to_i,
-																				:product => asset_summary_fact.product_description,
-																				:product_entity => asset_summary_fact.product_entity_description,
-																				:empty_quantity => asset_summary_fact.empty_quantity,
-																				:full_quantity => asset_summary_fact.full_quantity,
-																				:market_quantity => asset_summary_fact.market_quantity,
-																				:total_quantity => asset_summary_fact.total_quantity
-																			}
-																		}
-		return response
-
-	end
-=end
-	  
-	def asset_status_description
-		case self.asset_status.to_i
-		when 0
-		  return 'Empty'  
-		when 1
-		  return 'Full' 
-		when 2
-		  return 'Market' 
-		when 3
-		  return 'Damaged'  
-		when 4
-		  return 'Lost' 
-		else
-		  return 'Unknown' 
-		end
-	end
 
 	def get_sku_id
 		return 'prod_' + self.product_id.to_s + '_type_' + self.asset_type_id.to_s
@@ -113,6 +55,10 @@ class AssetSummaryFact
 		self.total_quantity = self.empty_quantity + self.full_quantity + self.market_quantity
 
 	end	
+
+	def self.build options
+
+	end
 
 	# Indexes
 	index({ report_entity_id: 1 }, { name: "report_entity_index" })

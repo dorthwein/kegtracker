@@ -13,6 +13,7 @@ class AssetActivityFact
 
 # Asset Details
   belongs_to :asset
+  
   belongs_to :entity      # Asset Owner
   belongs_to :product
   belongs_to :asset_type

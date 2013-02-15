@@ -8,22 +8,22 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
 	$('#date').bind('valuechanged', function (event) {  
 		
-	//	var jsDate = event.args.date; 		
 	}); 
 	var theme = settings.theme
 	var source = {
-		datatype : "json",
+		datatype : "JSON",
 		type: 'POST',
 		datafields: [
-			{ name: 'date' },																	
-			{ name: 'location_network' },
-			{ name: 'sku' },
-			{ name: 'product' },
-			{ name: 'handle_code_description' },
-			{ name: 'product_entity' },			
-			{ name: 'asset_type' },
-			{ name: 'quantity' },
-			{ name: 'sku_id' },
+			{ name: 'fact_time' },																	
+			{ name: 'location_network_description' },
+			{ name: 'sku_description' },
+			{ name: 'product_description' },
+			{ name: 'product_entity_description' },			
+			{ name: 'asset_type_description' },
+			{ name: 'fill_quantity' },
+			{ name: 'delivery_quantity' },
+			{ name: 'pickup_quantity' },
+			{ name: 'move_quantity' },
 			{ name: 'date_id' },
 			{ name: '_id' }
 		],
@@ -78,12 +78,15 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 
 		},
 		columns: [																						
-			{ text: 'Product', width:'250px', datafield: 'product', filtertype: 'checkedlist'  },			
-			{ text: 'Brewery',  datafield: 'product_entity', filtertype: 'checkedlist'  },
-			{ text: 'Asset Type',  datafield: 'asset_type', filtertype: 'checkedlist' },				
-			{ text: 'Location Network', datafield: 'location_network', filtertype: 'number' },
-			{ text: 'Activity', width:'100px', datafield: 'handle_code_description', filtertype: 'number' },
-			{ text: 'Total', width:'100px', datafield: 'quantity', filtertype: 'number' }						
+			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
+			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
+			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'number' },
+
+			{ text: 'Fill', width:'75px', datafield: 'fill_quantity', filtertype: 'number' },
+			{ text: 'Delivery', width:'75px', datafield: 'delivery_quantity', filtertype: 'number' },
+			{ text: 'Pickup', width:'75px', datafield: 'pickup_quantity', filtertype: 'number' },
+			{ text: 'Move', width:'75px', datafield: 'move_quantity', filtertype: 'number' },
 
 		],
         groups: ['date','location_network']

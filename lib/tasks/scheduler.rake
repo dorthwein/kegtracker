@@ -1,6 +1,8 @@
 desc "Schedule Tasks"
 task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.new)
+#	build_report.asset_summary_fact	
+
 	build_report.asset_summary_fact
 	build_report.asset_location_network_in_out_report
 	build_report.asset_activity_summary_fact
@@ -25,9 +27,9 @@ end
 task :build_test => :environment do
 	options = {}
 	options[:date] = Time.new(2013, 'feb', 30)
-	options[:entity] = Entity.all.first
-	
-	BuildReport.build(options)
+
+	a = BuildReport.new
+	a.asset_activity_summary_fact
 end
 
 task :save_locations => :environment do

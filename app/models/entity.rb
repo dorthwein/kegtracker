@@ -147,7 +147,6 @@ class Entity
 		return self.products.map{|x| x}
 	end
 
-
 	def visible_networks
 		networks = []
 		networks = networks + self.networks        
@@ -156,4 +155,7 @@ class Entity
 		
 		return networks
 	end
+###########################
+# Entity Reports		  #
+###########################
 end

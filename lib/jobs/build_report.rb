@@ -1,6 +1,5 @@
 class BuildReport
-	attr_accessor :date
-	
+	attr_accessor :date	
 	def initialize(report_date = Time.now)
 		@date = report_date #.beginning_of_day
 	end
@@ -8,93 +7,49 @@ class BuildReport
 # **************************************
 # Asset Summary Report Build
 # **************************************
-	def self.build options
-		options[:date].nil? ? options[:date] = Time.new() : options[:date]		
-
-		# Clear existing day reports
-		AssetSummaryFact.between(fact_time: options[:date].beginning_of_day..options[:date].end_of_day).where(:report_entity => options[:entity]).delete_all
-		asset_activity_facts = options[:entity].visible_asset_activity_facts.lte(fact_time: options[:date]).desc(:fact_time)
-
-		x = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
-		print x.to_json
-
-		# Entity, Date
-	end
-
-	def asset_summary_fact
-		first_date = @date.end_of_day - (86400 * 365)
-		last_date = @date.end_of_day
-		
+	def asset_summary_fact options = {}		
+		options[:date] = @date
 		Entity.all.each do |entity|
-			AssetSummaryFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete
-
-#			gatherer = Gatherer.new(entity)			
-
-#			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
 			
-			# AssetActivityFact.between(fact_time: last_date..first_date).any_of(location_network, product, asset_entity ).desc(:fact_time)
+			options[:date].nil? ? options[:date] = Time.new().end_of_day : options[:date].end_of_day
 
-			facts = entity.asset_activity_facts.between(fact_time: first_date..last_date).desc(:fact_time)
+			# Clear existing day reports
+			AssetSummaryFact.between(fact_time: options[:date].beginning_of_day..options[:date].end_of_day).where(:report_entity => entity).delete_all
+			asset_activity_facts = entity.visible_asset_activity_facts.lte(fact_time: options[:date]).desc(:fact_time)
+			
+			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
+			by_network = assets.group_by{|x| x.location_network}
+			by_network.each do |y|
 
-			facts.group_by {|asset_activity_fact| asset_activity_fact.asset_id }.each do |asset_activity_fact_by_asset|
-				asset_activity_fact = asset_activity_fact_by_asset[1].first
-				# Asset Summary Fact
-				if !asset_activity_fact.nil?						
-					# Find existing Asset Summary Fact
-					asset_summary_fact = AssetSummaryFact.where(	
-												:report_entity => entity,												
-												:location_network => asset_activity_fact.location_network,
-												:product => asset_activity_fact.product,
-												:asset_type => asset_activity_fact.asset_type
-											).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
+				by_product = y[1].group_by{|x| x.product}	
+				by_product.each do |z|							
 
-					# If found - add to fact
-					if !asset_summary_fact.nil?
-						
-						case asset_activity_fact.asset_status.to_i
-						when 0 # Empty
-							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity.to_i + 1
-						when 1 # Full
-							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity.to_i + 1
+					by_asset_type = z[1].group_by{|a| a.asset_type}
+					by_asset_type.each do |b|
+						q = [0,0,0]
 
-						when 2 # Market
-							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity.to_i + 1
+						by_asset_status = b[1].group_by{|c| c.asset_status }					
+						by_asset_status.each do |d|
+							q[d[0]] = d[1].length
+						end
 
-						end						
-						asset_summary_fact.save!
-						
-					
-					# Else, create new one
-					else
-						asset_summary_fact = AssetSummaryFact.new(	
-												:report_entity => entity,
-												:fact_time => @date,
-												:location_network => asset_activity_fact.location_network,
-												:product => asset_activity_fact.product,
-												:asset_type => asset_activity_fact.asset_type,
-												:empty_quantity => 0,	
-												:full_quantity => 0,
-												:market_quantity => 0
-											)
-
-						case asset_activity_fact.asset_status.to_i
-						when 0 # Empty
-							asset_summary_fact.empty_quantity = asset_summary_fact.empty_quantity.to_i + 1
-
-						when 1 # Full
-							asset_summary_fact.full_quantity = asset_summary_fact.full_quantity.to_i + 1
-
-						when 2 # Market
-							asset_summary_fact.market_quantity = asset_summary_fact.market_quantity.to_i + 1
-
-						end						
-						asset_summary_fact.save!
-					end					
+						asset_summary_fact = AssetSummaryFact.create(	
+													:report_entity => entity,
+													:fact_time => options[:date],
+													:location_network => y[0],
+													:product => z[0],
+													:asset_type => b[0],
+													:empty_quantity => q[0],	
+													:full_quantity => q[1],
+													:market_quantity => q[2]
+												)			
+						print "Asset Summary Fact Created \n"
+					end
 				end
-			end				
+			end
 		end	
 	end
-	handle_asynchronously :asset_summary_fact	
+	handle_asynchronously :asset_summary_fact					
 
 # **************************************
 # Asset Activity Summary Report Build
@@ -112,35 +67,38 @@ class BuildReport
 			
 #			gatherer = Gatherer.new entity
 #			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
-			
-			facts = entity.asset_activity_facts.between(fact_time: first_date..last_date).desc(:fact_time)
-			# AssetActivityFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).any_of( location_network, product, asset_entity )
-			facts.each do |asset_activity_fact|
-				asset_activity_summary_fact = AssetActivitySummaryFact.where(	
-											:report_entity => entity,
-											:location_network => asset_activity_fact.location_network,
-											:product => asset_activity_fact.product,
-											:asset_type => asset_activity_fact.asset_type,
-#											:asset_status => asset_activity_fact.asset_status,
-											:handle_code => asset_activity_fact.handle_code
-										).between(fact_time: @date.beginning_of_day..@date.end_of_day).first
+			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: first_date..last_date).desc(:fact_time)
+			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
+			by_network = assets.group_by{|x| x.location_network}
+			by_network.each do |y|
 
-				if !asset_activity_summary_fact.nil?
-					asset_activity_summary_fact.quantity = asset_activity_summary_fact.quantity + 1
-					asset_activity_summary_fact.save!
-				else
-					AssetActivitySummaryFact.create(
-											:report_entity => entity,
-											:fact_time => @date,
-											:location_network => asset_activity_fact.location_network,
-											:product => asset_activity_fact.product,
-											:asset_type => asset_activity_fact.asset_type,
-#											:asset_status => asset_activity_fact.asset_status,
-											:handle_code => asset_activity_fact.handle_code,
-											:quantity => 1
-										)
-				end										
-			end
+				by_product = y[1].group_by{|x| x.product}	
+				by_product.each do |z|							
+
+					by_asset_type = z[1].group_by{|a| a.asset_type}
+					by_asset_type.each do |b|
+						q = [0,0,0,0,0,0]
+
+						by_handle_code = b[1].group_by{|c| c.handle_code }					
+						by_handle_code.each do |d|
+							q[d[0]] = d[1].length
+						end
+
+						asset_summary_fact = AssetActivitySummaryFact.create(	
+													:report_entity => entity,
+													:fact_time => @date,
+													:location_network => y[0],
+													:product => z[0],
+													:asset_type => b[0],
+													:fill_quantity => q[4],	
+													:delivery_quantity => q[1],	
+													:pickup_quantity => q[2],
+													:move_quantity => q[5]
+												)			
+						print "Asset Activity Summary Fact Created \n"
+					end
+				end
+			end	
 		end
 	end		
 	handle_asynchronously :asset_activity_summary_fact					

@@ -4,7 +4,20 @@ class JqxConverter
 	end
 
 	def self.jqxGrid array, options = {}
-		return array
-		# array.map{|x| x.attributes}			
+		a = []
+		array.each do |x|
+			z = {}
+			x.attributes.each do |k,v|
+			 	if v.instance_of?(Time)
+			 		z[k] = v.strftime("%b %d, %Y")  
+			 		print z[k]
+			 		print "\n"
+			 	else
+			 		z[k] = v
+			 	end			 	
+			end
+			a.push(z)
+		end
+		return a
 	end
 end
