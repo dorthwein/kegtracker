@@ -25,7 +25,7 @@ class AssetActivityFact
 # Life Cycle
 # field :fill_time, :type => Time
   field :fill_count, type: Integer
-  field :asset_status, type: Integer 
+  field :asset_status, type: Integer, :default => 0
 
 # Networks  
 # belongs_to :network    # Possibly Depricated  

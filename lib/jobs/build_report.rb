@@ -109,13 +109,53 @@ class BuildReport
 
 		print @date.beginning_of_day.to_s + " <-- Start of Day \n"
 		print @date.end_of_day.to_s + " <-- End of Day \n"
-		print @date.to_s + " <-- Report Date \n\n"
-		
+		print @date.to_s + " <-- Report Date \n\n"		
+
 		a = []
-		AssetActivityFact.all.map {|x| [x.prev_location_network.description, x.location_network.description]}.each do |b|			
-			a.push(b)
-		end
+#		AssetActivityFact.all.map {|x| [x.prev_location_network.description, x.location_network.description]}.each do |b|
+#			a.push(b)
+#		end
+	
 		Entity.all.each do |entity|
+=begin
+			AssetLocationNetworkInOutSummaryFact.between(fact_time: first_date..last_date).where(:report_entity => entity).delete
+			
+#			gatherer = Gatherer.new entity
+#			location_network, product, asset_entity = gatherer.asset_activity_fact_criteria
+			asset_activity_facts = entity.visible_asset_activity_facts.lte(fact_time: options[:date]).desc(:fact_time)			
+			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
+			by_network = assets.group_by{|x| x.location_network}
+			by_network.each do |y|
+
+				by_product = y[1].group_by{|x| x.product}	
+				by_product.each do |z|							
+
+					by_asset_type = z[1].group_by{|a| a.asset_type}
+					by_asset_type.each do |b|
+						q = [0,0,0,0,0,0]
+
+						by_handle_code = b[1].group_by{|c| c.handle_code }					
+						by_handle_code.each do |d|
+							q[d[0]] = d[1].length
+						end
+
+						asset_summary_fact = AssetLocationNetworkInOutSummaryFact.create(	
+													:report_entity => entity,
+													:fact_time => @date,
+													:location_network => y[0],
+													:product => z[0],
+													:asset_type => b[0],
+													:fill_quantity => q[4],	
+													:delivery_quantity => q[1],	
+													:pickup_quantity => q[2],
+													:move_quantity => q[5]
+												)			
+						print "Asset Activity Summary Fact Created \n"
+					end
+				end
+			end	
+
+=begin
 			AssetLocationNetworkInOutSummaryFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete
 
 			gatherer = Gatherer.new(entity)			
@@ -184,6 +224,8 @@ class BuildReport
 				end
 
 
+
+
 			# Get Asset Activity Facts for given day & Group By location_network FOR OUT BOUND
 			asset_activity_facts = AssetActivityFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).any_of({:prev_location_network.in => gatherer.get_networks}, product, asset_entity ).desc(:fact_time)
 			asset_activity_facts.group_by { |asset_activity_fact| asset_activity_fact.location_network_id }
@@ -239,7 +281,8 @@ class BuildReport
 						end											 	
 					 end
 				end
-			end					
+			end	
+=end							
 		end			
 	end
 	handle_asynchronously :asset_location_network_in_out_report
