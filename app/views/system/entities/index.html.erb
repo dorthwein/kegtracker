@@ -1,45 +1,119 @@
-<li class="toolbar">
-	<div data-role="controlgroup" data-type="horizontal" data-mini="true">					
-		<%= link_to "New Entity", new_system_entity_path, :class => "toolbar-action", 'data-role' => :button, 'data-icon' => :plus %>		
-	</div>
-</li>
-<li class="li-table">
-	<table class="dt">
-		<thead>
-		  <tr>
-			<th>Description</th>
-			<th>Name</th>
-			<th>Street</th>
-			<th>City</th>
-			<th>State</th>
-			<th>Zip</th>
-			<th>Distributor</th>
-			<th>Brewer</th>			
-			<th>		</th>
-		  </tr>
-		</thead>
-		<tbody>
-			<% @entity.each do |entity| %>
-			  <tr>
-			  	<td> <%= entity.description %> </td>
-				<!-- Address Info -->
-			  	<td> <%= entity.name %> </td>
-			  	<td> <%= entity.street %> </td>			  	
-			  	<td> <%= entity.city %> </td>			  				  	
-			  	<td> <%= entity.state %> </td>			  				  	
-			  	<td> <%= entity.zip %> </td>			  				  				  	
-			  	<td> <%= entity.distributor == true ? "√" : "X" %> </td>
-				<td> <%= entity.brewery == true ? "√" : "X" %> </td>
-				<td>	
-					<%=	 link_to 'Show', [:system, entity] %>
-					<%=	 link_to 'Edit', edit_system_entity_path(entity) %>
-					<%=	 link_to 'Destroy', [:system, entity], confirm: 'Are you sure?', method: :delete %>								
-				</td>
-			  </tr>
-			<% end %>
-		</tbody>
-	</table>
-</li>		
-<li>
+    <input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
+    
+    <input type="button" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload' data-role="none"/>
 
-</li>
+	<input type="button" style="float:left; margin:5px;" value="Upload Breweries" id='brewery_upload' data-role="none"/>
+
+
+    <div id="jqxgrid">
+    </div>
+
+
+    <div id="docking" class="">
+        <div style="width:50%;">
+            <div id="window1" class="report_dock_window">
+            	<div>	Entity Details</div>
+	            <div>
+	            	<form id="form_validator">
+		            	<table style="width:100%;">
+		            		<thead>
+		            			<tr>
+		            				<th>
+					            		<h2> Entity Details </h2>	           	
+		            				</th>
+		            				<th> </th>
+		            				<th> </th><th> </th>
+		            				<th colspan="3">
+					            		<h2>  </h2>	           		            					
+		            				</th>	
+		            			</tr>
+							</thead>
+		            		<tbody>
+		            			<tr>
+		            				<td style="width:10%" colspan="1">  
+										<h3 >Display Name </h3>
+										 <input type="text" id="description" class="form_input" data-role="none" />
+		            				</td>
+
+		            				<td style="width:10%" colspan="1">  
+						                <h3> Admin User </h3>
+						              	<div id="admin_user_id">						              		
+						              	</div>
+
+		            				</td>
+		            				<td style="width:10%" colspan="1"> 
+
+		            				</td>
+
+		            				<td style="width:10%" colspan="1"> 
+						            </td>
+
+		            			</tr>
+
+		            			<tr>
+		            				<td style="width:10%" colspan="1">  
+										<h3> Address Name </h3>
+										<input type="text" id="name" class="form_input" data-role="none" />
+
+		            				</td>
+		            				<td style="width:10%" colspan="1">  	
+										<h3> Street </h3>
+										<input type="text" id="street" class="form_input" data-role="none" />
+		            				</td>
+
+		            				<td style="width:10%" colspan="1">  	
+										 <h3> City </h3>
+										<input type="text" id="city" class="form_input" data-role="none" />	
+		            				</td>
+
+
+		            				<td style="width:10%" colspan="1"> 
+
+									</td>
+									<td style="width:10%" colspan="1"> 
+						            </td>
+
+		            			</tr>
+
+		            			<tr>
+		            				<td style="width:10%" colspan="1">  	
+										<h3> State </h3>
+										<input type="text" class="form_input" id="state" data-role="none" />
+		            					
+
+		            				</td>
+		            				<td style="width:10%" colspan="1">  	
+										<h3> Zip </h3>
+										<input type="text" id="zip" class="form_input" data-role="none" />
+		            				</td>
+		            				<td style="width:10%" colspan="1">  	
+
+		            				</td>
+		            				<td> </td>
+		            				<td> </td>
+		            				<td> 
+
+		            					<input type="button" style="width:100%; margin:5px auto 0 auto; float:right; min-width:200px;" value="Cancel" id='newCancelButton' data-role="none"/>
+		            					
+		            				</td>
+
+									<td> 	            				
+		            					<input type="button" style="width:100%; min-width:200px; display:none; margin:5px auto 0 auto; float:right;" value="Save" id='updateSaveButton' data-role="none"/>
+
+		            					<input type="button" style="width:100%; margin:5px auto 0 auto; float:right; min-width:200px;" value="Create" id='newSaveButton' data-role="none"/>
+		            				</td>	           				
+		            			</tr>	            				
+				
+		            		</tbody>
+		            	</table>
+		            </form>
+	            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="popupWindow" style="display:none">
+        <div> Daily Asset Summary </div>
+        <div>   </div>
+    </div>

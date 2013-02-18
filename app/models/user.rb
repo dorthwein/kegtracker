@@ -18,8 +18,9 @@ class User
          :recoverable, :rememberable, :trackable, :validatable, 
          :token_authenticatable
 
-	belongs_to :entity
+	belongs_to :entity, :inverse_of => 'Entity'
   field :entity_description, type: String
+
 
 	# User Details
 	field :first_name, :type => String

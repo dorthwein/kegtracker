@@ -10,11 +10,13 @@ class Entity
 	has_many :network_memberships
 	
 	has_many :entity_partnerships_as_partner, :class_name => 'EntityPartnership', :inverse_of => :partner
-	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity
+	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
+	belongs_to :admin_user, :class_name => 'User', :inverse_of => :user
 #	has_many :entity_partnerships_as_entity, as: :entity_partnerships_as_entity
 #	has_one :network
 
 # Fields
+	field :admin_user_email, type: String    
 	field :description, type: String    
 	field :name, type: String
 	field :street, type: String
@@ -23,14 +25,18 @@ class Entity
 	field :zip, type: String
 
 # Entity Types
-	field :distributor, type: Integer, :default => 0
-	field :brewery, type: Integer, :default => 0
-	field :lease, type: Integer, :default => 0
-	field :account, type: Integer, :default => 0
+#	field :distributor, type: Integer, :default => 0
+#	field :brewery, type: Integer, :default => 0
+#	field :lease, type: Integer, :default => 0
+#	field :account, type: Integer, :default => 0
 
 # Entity Mode
 	# 0 = Deactivated, 1 = Activated, 2 = Automated
-	field :mode, type: Integer, :default => 0	
+	field :mode, type: Integer, :default => 2	 # Active?
+
+	field :distribution_network_count, type: Integer, :default => 0
+	field :production_network_count, type: Integer, :default => 0
+	field :market_network_count, type: Integer, :default => 0
 
 ##################
 # Class Methods  #
@@ -162,4 +168,14 @@ class Entity
 ###########################
 # Entity Reports		  #
 ###########################
+
+
+  before_save :sync_descriptions  
+  def sync_descriptions
+  	self.admin_user_email = self.admin_user.email rescue nil	
+
+	self.production_network_count = self.networks.where(:network_type => 1).count
+	self.distribution_network_count = self.networks.where(:network_type => 2).count
+	self.market_network_count = self.networks.where(:network_type => 3).count
+  end
 end
