@@ -49,7 +49,7 @@ class BuildReport
 			end
 		end	
 	end
-	handle_asynchronously :asset_summary_fact					
+#	handle_asynchronously :asset_summary_fact					
 
 # **************************************
 # Asset Activity Summary Report Build
@@ -100,7 +100,7 @@ class BuildReport
 			end	
 		end
 	end		
-	handle_asynchronously :asset_activity_summary_fact					
+#	handle_asynchronously :asset_activity_summary_fact					
 
 	def asset_fill_to_fill_cycle_fact_by_fill_network
 		first_date = @date.end_of_day - (86400 * 30)
