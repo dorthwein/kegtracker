@@ -80,6 +80,34 @@ task :save_assets => :environment do
 	end
 end
 
+task :save_all => :environment do 
+	Location.all.each do |x|
+		if x.save!
+			print "Location Saved \n"
+		end
+	end
+
+	Network.all.each do |x|
+		if x.save!
+			print "Network Saved \n"
+		end
+	end
+	Asset.all.each do |x|
+		if x.save!
+			print "Asset Saved \n"
+		end
+	end
+	AssetActivityFact.all.each do |x|
+		if x.save!
+			print "Asset Activity Fact Saved \n"
+		end
+	end
+	AssetSummaryFact.all.each do |x|
+		if x.save!
+			print "Asset Summary Fact Saved \n"
+		end
+	end
+end
 
 
 task :convert_handle_code_relation_to_handle_code_field => :environment do

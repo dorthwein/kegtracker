@@ -10,10 +10,8 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 	var source = {
 		datatype : "json",
 		type: 'POST',
-		datafields: [
-//			{ name: 'date' },																	
-//			{ name: 'location_network' },
-//			{ name: 'sku' },
+		datafields: [											
+			{ name: 'location_network_description' },
 			{ name: 'product_description' },
 			{ name: 'product_entity_description' },			
 			{ name: 'asset_type_description' },
@@ -35,18 +33,18 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 		    
 		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
 		    params['date'] = jsDate;
-
+/*
 			var item = $("#location_network_id").jqxDropDownList('getSelectedItem');
 			if(item != undefined){
 				params['location_network_id'] = item.value				
 			}			
-			
+*/			
 		    return params	    
 		},
 		downloadComplete: function(edata, textStatus, jqXHR){		
 		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
 		    params['date'] = jsDate;
-			
+/*			
 			$("#location_network_id").jqxDropDownList({ source: edata['location_networks']});
 			
 			if($("#location_network_id").jqxDropDownList('getSelectedItem') == null){								
@@ -55,40 +53,44 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 			}
 			var item = $("#location_network_id").jqxDropDownList('getSelectedItem')
 			$('#displayNetwork').html(item.html);
+*/			
 			$('#displayDate').html(jsDate.toDateString());
 		}
 	});
 
 	// Initialize Grid	
 	$("#jqxgrid").jqxGrid({		
-		groupable: false,
+		groupable: true,
+		closeablegroups: false,
+    	groupsrenderer: default_groupsrenderer,		
 		sortable: true,
 		filterable: false,
         showfilterrow: false,		
 		autoshowfiltericon: false,		
 		theme: theme,
 		width: system.simple_grid_width,
-		groupsexpandedbydefault: false,
+		groupsexpandedbydefault: true,
 		height: system.simple_grid_height,
 		source: dataAdapter,
 		columnsresize: true,
 		altrows: true,	
 		ready: function() {
 
-		},
+	},
 
 		columns: [																						
-			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
+			{ text: 'Location Network', width:'150px', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
+			{ text: 'Product', datafield: 'product_description', filtertype: 'checkedlist'  },			
 			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
 			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
-
+			
 			{ text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
 			{ text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
 			{ text: 'Full', width:'75px', datafield: 'full_quantity', filtertype: 'number' },
 			{ text: 'Total', width:'75px', datafield: 'total_quantity', filtertype: 'number' }						
 
 		],
-        groups: ['date','location_network']
+        groups: ['location_network_description', 'asset_type_description']
 	});
 
 
@@ -98,7 +100,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 	//	var jsDate = event.args.date; 		
 	}); 
 
-	$("#location_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
+//	$("#location_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
 /*
 	$('#location_network_id').bind('select', function (event) {
 	    var args = event.args;
