@@ -35,6 +35,7 @@ class AssetLocationNetworkInOutSummaryFact
 	def get_sku_description
 		return self.product_description.to_s + ' - ' + self.asset_type_description
 	end
+
 	def location_network_asset_type_id
 		return 'net_' + self.location_network_id.to_s + '_type_' + self.asset_type_id.to_s
 	end

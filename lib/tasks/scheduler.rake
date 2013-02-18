@@ -6,6 +6,9 @@ task :ten_minute_build => :environment do
 	build_report.asset_summary_fact
 	build_report.asset_location_network_in_out_report
 	build_report.asset_activity_summary_fact
+	build_report.asset_fill_to_fill_cycle_fact_by_delivery_network
+	build_report.asset_fill_to_fill_cycle_fact_by_fill_network	
+
 
 end
 
@@ -21,6 +24,9 @@ task :thirty_day_build => :environment do
 		a.asset_summary_fact 
 		a.asset_location_network_in_out_report
 		a.asset_activity_summary_fact
+		a.asset_fill_to_fill_cycle_fact_by_delivery_network
+		a.asset_fill_to_fill_cycle_fact_by_fill_network	
+
 	end	
 end
 
@@ -29,7 +35,8 @@ task :build_test => :environment do
 	options[:date] = Time.new(2013, 'feb', 30)
 
 	a = BuildReport.new
-	a.asset_activity_summary_fact
+	a.asset_fill_to_fill_cycle_fact_by_delivery_network
+	a.asset_fill_to_fill_cycle_fact_by_fill_network	
 end
 
 task :save_locations => :environment do

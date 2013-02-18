@@ -68,7 +68,7 @@ Cobalt::Application.routes.draw do
 		match 'network/performance_scorecard_report' => 'network#performance_scorecard_report', :via => [:get, :post]
 		
 		# Float
-		match 'float/life_cycle_summary_report' => 'float#life_cycle_summary_report', :via => [:get, :post]	
+		match 'float/asset_fill_to_fill_cycle_fact_by_fill_network' => 'float#asset_fill_to_fill_cycle_fact_by_fill_network', :via => [:get, :post]	
 		match 'float/activity_summary_report_simple' => 'float#activity_summary_report_simple', :via => [:get, :post]
 		match 'float/activity_summary_report_advanced' => 'float#activity_summary_report_advanced', :via => [:get, :post]
 

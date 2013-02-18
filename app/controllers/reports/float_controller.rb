@@ -39,12 +39,31 @@ class Reports::FloatController < ApplicationController
 		end				
 	end	
 
-	def life_cycle_summary_report
+	def asset_fill_to_fill_cycle_fact_by_fill_network
 		respond_to do |format|  
 			format.html
-		    format.json { 
-		    	render json: @response 
-			}			
+		    format.json {
+		    	options = {:entity => current_user.entity}
+				date = DateTime.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
+    			
+    			start_date = date.beginning_of_day
+    			end_date = date.end_of_day
+
+				visible_networks = current_user.entity.production_networks
+		    	fill_network_list = JqxConverter.jqxDropDownList(visible_networks)
+		    	
+				if params['fill_network_id'].nil?
+					default_network = visible_networks[0]
+				else
+					default_network = Network.find(params['fill_network_id'])					
+				end
+				
+				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity, :fill_network => default_network)				
+		    	print facts.to_json
+		    	response = {:grid => facts, :fill_networks => fill_network_list}
+		    	 
+		    	render json: response		
+		    }
 		end			
 	end	
 end

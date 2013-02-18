@@ -10,8 +10,6 @@ class JqxConverter
 			x.attributes.each do |k,v|
 			 	if v.instance_of?(Time)
 			 		z[k] = v.strftime("%b %d, %Y")  
-			 		print z[k]
-			 		print "\n"
 			 	else
 			 		z[k] = v
 			 	end			 	

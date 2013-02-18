@@ -1,5 +1,6 @@
 class Reports::AssetController < ApplicationController	
 	before_filter :authenticate_user!	
+	load_and_authorize_resource
 # **********************************
 # Asset Reports
 # **********************************
@@ -14,11 +15,10 @@ class Reports::AssetController < ApplicationController
 	def browse_row_select
 		respond_to do |format|
 			format.json {
-				gatherer = Gatherer.new(current_user.entity)
-				location, product, entity = gatherer.asset_activity_fact_criteria				
-				response = []
-				AssetActivityFact.where(:asset => params[:_id], :handle_code => 4).any_of(location, product, entity).desc(:fact_time).each do |x|
-					
+				response = []				
+				asset = Asset.find(params[:_id]);
+				asset.fill_life_cycles({:entity => current_user.entity}).each do |x|
+				#current_user.entity.visible_asset_activity_facts.where(:asset => params[:_id], :handle_code => 4).desc(:fact_time).each do |x|					
 					date = 	"<td class='life_cycle_select'><b> Fill Date: </b> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
 					product = 	"<td class='life_cycle_select'> <b> Product: </b> #{x.product.description} </td>"
 					brewery = 	"<td class='life_cycle_select'> <b> Brewery: </b> #{x.product.entity.description} </td>"

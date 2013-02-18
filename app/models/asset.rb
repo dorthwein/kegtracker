@@ -264,20 +264,30 @@ class Asset
 									:user => self.user,
 #									:fill_time => asset.fill_time,								
 								}
-#		fact = AssetActivityFact.where(:_id => self.asset_activity_fact._id).first
-#		if options[:correction] == 1 && !fact.nil?		
-#			fact.update_attributes(asset_activity_fact_details)
-#			print " \n \n"	
-#			print fact.to_json
-#			print " \n \n"	
-#			print "Fact Change \n \n"	
-#		else	
 			asset_activity_fact = AssetActivityFact.create(asset_activity_fact_details)
 			self.asset_activity_fact = asset_activity_fact
 			self.save			
-#			print "  New Fact \n \n"	
-#		end		
 	end	
+
+	def fill_life_cycles options
+		if !options[:entity].nil? 
+			options[:entity].visible_asset_activity_facts.where(:asset => self, :handle_code => 4).desc(:fact_time)		
+		end		
+	end
+
+	def pickup_life_cycles options
+		if !options[:entity].nil? 
+			options[:entity].visible_asset_activity_facts.where(:asset => self, :handle_code => 2).desc(:fact_time)
+		end		
+	end
+
+	# Fill to Fill
+	def completed_life_cycles options
+		if !options[:entity].nil? 			
+			a = options[:entity].visible_asset_activity_facts.where(:asset => self, :handle_code => 4).desc(:fact_time).to_a.shift
+		end		
+	end
+
 
 	def get_asset_status_description
 		case self.asset_status.to_i
@@ -314,167 +324,6 @@ class Asset
 			return 'Audit'
 		end
 	end
-=begin
-	def self.process_scans options
-		# expects HASH with key :scans => [Array of Scans]
-		scans = options[:scans]
-		scans.each do |scan|
-			scan = JSON.parse(scan)	
-
-		############################
-		####### Scan Parsing #######		
-			scan_params = {}
-
-			scan_params[:email] = scan['user']['N']
-			scan_params[:password] = scan['user']['P']
-			scan_params[:handle_code] = scan['processing']['HC'].to_i 
-			scan_params[:correction] = scan['processing']['correction'].to_i
-			scan_params[:auto_mode] = scan['processing']['auto_mode'].to_i	
-			scan_params[:time] = Time.at(scan['processing']['T'].to_i)
-
-			scan['processing']['P'] ? scan_params[:product_id] = scan['processing']['P'] : nil
-			scan['processing']['AT'] ? scan_params[:asset_type_id] = scan['processing']['AT'] : nil
-
-			scan_params[:location_id] = scan['location']
-			scan_params[:tag] = {}
-			# TAG
-			if !scan['tag'][0].nil? 								# If array [0] nil, then must be hash
-				if scan['tag'].kind_of?(Array)						# If array, assume tag version in [0]
-					scan_params[:tag][:version] = scan['tag'][0].capitalize	
-
-					if scan_params[:tag][:version] == 'T1'
-						scan_params[:tag][:value] = scan['tag'][1]
-						scan_params[:tag][:netid] = scan['tag'][2]
-						scan_params[:tag][:key] = scan['tag'][3]
-					end						
-				end
-			else
-			# Default to T0			
-				scan_params[:tag][:version] = 'T0'	# scan['tag'][0].capitalize
-				scan_params[:tag][:value] = scan['tag']['V']
-				
-			# Check for Network
-				if !scan['tag']['N'].nil?	
-					scan_params[:tag][:netid] = scan['tag']['N']
-				end
-				
-			# Default - Check for Key
-				if scan['tag']['K'].nil?
-					scan_params[:tag][:key] = 0
-				else
-					scan_params[:tag][:key] = scan['tag']['K']
-				end
-			end
-
-
-
-		##############################
-		####### Pre Processing #######			
-			user = User.where(:email => scan_params[:email]).first			
-			if scan_params[:tag][:netid].nil?			
-				tag_network = user.entity.networks.first
-			else
-				tag_network = Network.where(:netid => scan_params[:tag][:netid]).first		
-			end
-
-			asset = Asset.where(
-							:netid => tag_network.netid,
-							:tag_value => scan_params[:tag][:value]
-							).first || 
-						Asset.new(
-							:network_id => tag_network._id, 
-							:location_id => scan_params[:location_id],
-#							:location_network => location.network, 
-							:asset_status => 0, 
-							:tag_value => scan_params[:tag][:value],
-							:netid => tag_network.netid,
-							:tag_key => scan_params[:tag][:key],
-							:entity_id => tag_network.entity._id
-						)
-
-			asset.user = User.where(:email => scan_params[:email]).first		
-			
-			if !scan_params[:asset_type_id].nil?
-				asset.asset_type = AssetType.find(scan_params[:asset_type_id])
-			end
-
-		################################
-		####### Check Correction #######						
-			if asset.location_id == scan_params[:location_id] && asset.handle_code.to_i == scan_params[:handle_code] && asset.last_action_time.to_i > (scan_params[:time].to_i - 86400)
-				print "Standard Correction \n"
-				scan_params[:correction] = 1
-			end
-
-			# Same Location within 15 minutes but not a fill
-			if asset.location == scan_params[:location_id] && scan_params[:handle_code].to_i != 4 && asset.last_action_time.to_i > (scan_params[:time].to_i - 900)			
-				print "Same Location within 15 minutes \n"
-				scan_params[:correction] = 1	
-			end
-					
-			# Fill action within last day
-			if scan_params[:handle_code].to_i == 4 && asset.fill_time.to_i > (scan_params[:time].to_i - 86400)
-				print "Fill Correction \n"
-				scan_params[:correction] = 1			
-			end
-			asset.save!
-
-		################################
-		####### Asset Processing #######				
-			asset.smart_network_processing({:time => scan_params[:time], :to_location => scan_params[:location_id], :correction => scan_params[:correction]})
-
-			case scan_params[:handle_code].to_i
-			when 1 		# Delivery
-				asset.deliver(options)				
-				print "Delivery \n"				
-			
-			when 2		# Pickup
-				asset.pickup(options)				
-				print "Pickup \n"
-			
-			when 3		# Add
-				asset.add(options)				
-				print "Add \n"
-			
-			when 4		# Fill
-				asset.fill(options)				
-				print "Fill \n"
-			
-			when 5		# Move
-				asset.move(options)				
-				print "Move \n"
-			
-			when 6		# RFNet
-				asset.rfnet(options)				
-				print "RFNet \n"			
-			when 7		# Audit
-				asset.process_audit
-				print "Audit \n"			
-			else
-				print "HC Error \n"
-			end
-			asset.save	
-
-			@scan_snap_shot = {
-				:Network => asset.network_description,
-				:Fill => asset.fill_count,
-				:Value => asset.tag_value, 
-				:Location => asset.location_description,
-				:Brewery => asset.product_entity_description,
-				:Product => asset.product_description,
-				:Size => asset.asset_type_description,
-				:Action => asset.handle_code_description,
-				:State => asset.asset_status_description,
-				:Time => asset.last_action_time
-			}
-#			asset.save!
-			
-#			scan = ScanProcess.new(scan_obj)		
-#			scan_snap_shot.to_json
-		end
-		@scan_snap_shot 
-		#return scan_snap_shot
-	end
-=end
 
 	before_save :sync_descriptions	
 	def sync_descriptions

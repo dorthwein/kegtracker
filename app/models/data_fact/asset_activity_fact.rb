@@ -7,7 +7,7 @@ class AssetActivityFact
 
 # Fact Details 
   field :fact_time, :type => Time
-  field :handle_code, type: Integer
+  field :handle_code, type: Integer, :default => 5
 
   belongs_to :location
 
@@ -18,8 +18,12 @@ class AssetActivityFact
   belongs_to :product
   belongs_to :asset_type
   
-  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact'  
-  belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact'
+  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+  belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+  belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+
+
+  belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
 
 # Variable Details 
 # Life Cycle
@@ -32,7 +36,9 @@ class AssetActivityFact
   belongs_to :prev_location_network, :class_name => 'Network'
   belongs_to :location_network, :class_name => 'Network'
   belongs_to :user  
-#  belongs_to :fill_network, :class_name => 'Network'
+  belongs_to :fill_network, :class_name => 'Network'
+  belongs_to :delivery_network, :class_name => 'Network'
+  belongs_to :pickup_network, :class_name => 'Network'
 
 # Activity
 
@@ -75,22 +81,33 @@ class AssetActivityFact
 
 
 	before_save :sync
-	def sync	
+	def sync	    
     self.location_network = self.location.network
     # Find & Set Previous asset_activity_fact     
     # self.asset_status_description = nil
     if self.handle_code != 4
-      self.fill_asset_activity_fact = AssetActivityFact.where(:asset => self.asset, :handle_code => 4).lte(fact_time: self.fact_time).desc(:fact_time).first
+      self.fill_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset, :handle_code => 4).lte(fact_time: self.fact_time).desc(:fact_time).first._id
       if self.fill_asset_activity_fact.nil?
         fill_asset_activity_fact = self._id
       end
-
-
     else
       self.fill_asset_activity_fact_id = self._id
+      self.fill_network = self.fill_asset_activity_fact.location_network
     end
 
-    self.prev_asset_activity_fact = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first    
+    if self.handle_code == 2
+      self.pickup_asset_activity_fact_id = self._id
+      self.pickup_network = self.pickup_asset_activity_fact.location_network
+
+      AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:pickup_network_id => self.location_network._id, :pickup_asset_activity_fact_id => self._id)
+    end
+    if self.handle_code == 1
+      self.delivery_asset_activity_fact_id = self._id
+      self.delivery_network = self.location_network
+      AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:delivery_network_id => self.location_network._id, :delivery_asset_activity_fact_id => self._id)
+    end
+
+    self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     
     # If nil, use current network
 	end  

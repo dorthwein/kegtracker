@@ -121,12 +121,16 @@ class Entity
 			  	{ :entity => self }
 		   	)
 	end
+	def visible_fill_activity_facts
+		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
+	end	
+
 
 ###########################
 # Entity Networks by Type #
 ###########################
 	def production_networks
-		self.networks.where(:network_type => 1)
+		networks = self.production_partnerships_shared_networks + self.networks.where(:network_type => 1)
 	end
 
 	def distribution_networks
