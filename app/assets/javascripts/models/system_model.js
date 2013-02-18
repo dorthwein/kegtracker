@@ -16,6 +16,14 @@ $(window).resize(function() {
 //	$("#jqxgrid").jqxGrid({height:x()});
 });
 
+toThemeProperty = function (className) {
+    return className + " " + className + "-" + settings.theme;
+}
+default_groupsrenderer = function (text, group, expanded, data) {
+	return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span> </div>';
+}
+
+
 system.table_height = '625px'
 system.simple_grid_height = '800px';
 system.simple_grid_width = '950px';

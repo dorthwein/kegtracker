@@ -1,17 +1,16 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
 
 $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', function(event){	
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
-	$('#date').bind('valuechanged', function (event) {  
-		
-	}); 
+
 	var theme = settings.theme
 	var source = {
-		datatype : "JSON",
+		datatype : "json",
 		type: 'POST',
 		datafields: [
 			{ name: 'fact_time' },																	
@@ -26,7 +25,7 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 			{ name: 'move_quantity' },
 			{ name: 'date_id' },
 			{ name: '_id' }
-		],
+		],		
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
 		root: 'grid',
 	};
@@ -38,38 +37,30 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
 		    params['date'] = jsDate;
 
-			var item = $("#location_network_id").jqxDropDownList('getSelectedItem');
-			if(item != undefined){
-				params['location_network_id'] = item.value				
-			}			
 		    return params	    
 		},
 		downloadComplete: function(edata, textStatus, jqXHR){		
 		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
 		    params['date'] = jsDate;
-			
-			$("#location_network_id").jqxDropDownList({ source: edata['location_networks']});
-			
-			if($("#location_network_id").jqxDropDownList('getSelectedItem') == null){								
-				var x = $("#location_network_id").jqxDropDownList('getItemByValue', edata['location_networks'][0].value);
-				$("#location_network_id").jqxDropDownList('selectItem', x );				
-			}
-			var item = $("#location_network_id").jqxDropDownList('getSelectedItem')
-			$('#displayNetwork').html(item.html);
+
 			$('#displayDate').html(jsDate.toDateString());
 		}
 	});
 
+
+
 	// Initialize Grid	
 	$("#jqxgrid").jqxGrid({		
-		groupable: false,
+		groupable: true,
+		closeablegroups: false,
+    	groupsrenderer: default_groupsrenderer,		
 		sortable: true,
 		filterable: false,
         showfilterrow: false,		
 		autoshowfiltericon: false,		
 		theme: theme,
 		width: system.simple_grid_width,
-		groupsexpandedbydefault: false,
+		groupsexpandedbydefault: true,
 		height: system.simple_grid_height,
 		source: dataAdapter,
 		columnsresize: true,
@@ -78,10 +69,11 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 
 		},
 		columns: [																						
+			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
 			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
 			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
 			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
-			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'number' },
+
 
 			{ text: 'Fill', width:'75px', datafield: 'fill_quantity', filtertype: 'number' },
 			{ text: 'Delivery', width:'75px', datafield: 'delivery_quantity', filtertype: 'number' },
@@ -89,48 +81,31 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 			{ text: 'Move', width:'75px', datafield: 'move_quantity', filtertype: 'number' },
 
 		],
-        groups: ['date','location_network']
+        groups: ['location_network_description', 'asset_type_description']
 	});
 
 
-
-	$("#location_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
-/*
-	$('#location_network_id').bind('select', function (event) {
-	    var args = event.args;
-	    if (args) {
-	        // index represents the item's index.                
-	        var index = args.index;
-	        var item = args.item;
-	        // get item's label and value.
-	        var label = item.label;
-	        var value = item.value;
-	    
-	    }
-	});
-*/
-
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
+		
+	//	var jsDate = event.args.date; 		
+	}); 
 
 	$("#excelExport").jqxButton({ theme: theme });	
 	$("#advancedView").jqxButton({ theme: theme });
 	$("#simpleView").jqxButton({ theme: theme });
 	
 	$("#findRecord").jqxButton({ theme: theme });	
-	$("#findRecord").click(function () {
-		
+	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
 	});
-
 	
 	// NEW BUTTON
-
-
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
 		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 
 	$.mobile.loading('hide');
 });
+

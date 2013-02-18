@@ -21,6 +21,8 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
             return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span>' + '<span  style="margin-right:10px; float:right;" class="' + toThemeProperty('jqx-grid-groups-row-details') + '">' + data.subItems.length + '</span></div>';
         }
     }
+   
+
 	$('#scan_invoice').hide()
 	$("#jqxgrid").jqxGrid({
 		groupable: true,

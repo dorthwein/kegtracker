@@ -9,8 +9,7 @@ class BuildReport
 # **************************************
 	def asset_summary_fact options = {}		
 		options[:date] = @date
-		Entity.all.each do |entity|
-			
+		Entity.all.each do |entity|			
 			options[:date].nil? ? options[:date] = Time.new().end_of_day : options[:date].end_of_day
 
 			# Clear existing day reports
@@ -42,7 +41,7 @@ class BuildReport
 													:empty_quantity => q[0],	
 													:full_quantity => q[1],
 													:market_quantity => q[2]
-												)			
+												)
 						print "Asset Summary Fact Created \n"
 					end
 				end
@@ -150,7 +149,7 @@ class BuildReport
 						minmax[0] = (t.min / 86400).ceil
 						minmax[1] = (t.max / 86400).ceil
 						
-						fact = AssetFillToFillCycleFactByFillNetwork.create(
+						AssetFillToFillCycleFactByFillNetwork.create(
 							:report_entity => entity,
 							:fact_time => @date,
 							:fill_network_id => y[0],
@@ -160,8 +159,6 @@ class BuildReport
 							:min_time => minmax[0].to_i,
 							:max_time => minmax[1].to_i
 						)	
-						print fact.fact_time
-						print "\n"							
 					end
 				end
 			end			
@@ -208,10 +205,11 @@ class BuildReport
 							t.push(c[:cycle_time])
 						end			
 						avg = t.inject{ |sum, el| sum + el }.to_f / t.size
+						minmax = []						
 						
-						minmax = []
-						minmax[0] = t.min
-						minmax[1] = t.max
+						avg = (avg / 86400).ceil
+						minmax[0] = (t.min / 86400).ceil
+						minmax[1] = (t.max / 86400).ceil
 
 						print minmax[0].to_s + ' - ' + minmax[1].to_s + ' - '  + avg.to_i.to_s
 						fact = AssetFillToFillCycleFactByDeliveryNetwork.create(
@@ -223,7 +221,10 @@ class BuildReport
 							:avg_time => avg.to_i,
 							:min_time => minmax[0].to_i,
 							:max_time => minmax[1].to_i
-						)								
+						)		
+						print fact.fact_time
+						print "\n"							
+
 					end
 				end
 			end			

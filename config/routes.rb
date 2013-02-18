@@ -69,6 +69,8 @@ Cobalt::Application.routes.draw do
 		
 		# Float
 		match 'float/asset_fill_to_fill_cycle_fact_by_fill_network' => 'float#asset_fill_to_fill_cycle_fact_by_fill_network', :via => [:get, :post]	
+		match 'float/asset_fill_to_fill_cycle_fact_by_delivery_network' => 'float#asset_fill_to_fill_cycle_fact_by_delivery_network', :via => [:get, :post]	
+
 		match 'float/activity_summary_report_simple' => 'float#activity_summary_report_simple', :via => [:get, :post]
 		match 'float/activity_summary_report_advanced' => 'float#activity_summary_report_advanced', :via => [:get, :post]
 

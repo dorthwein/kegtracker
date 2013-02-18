@@ -134,7 +134,7 @@ class Entity
 	end
 
 	def distribution_networks
-		self.networks.where(:network_type => 2)
+		networks = distribution_partnerships_shared_networks + self.networks.where(:network_type => 2)
 	end
 
 	def market_networks
