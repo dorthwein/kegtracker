@@ -74,7 +74,7 @@ end
 
 task :save_assets => :environment do
 	Asset.all.each do |x|
-		if x.save!
+		if xac.save!
 			print "Asset Saved \n"
 		end
 	end

@@ -110,23 +110,23 @@ class Reports::AssetController < ApplicationController
 		respond_to do |format|  
 			format.html
 		    format.json {
-				date = Time.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
+    			if params['date'].nil?
+					date = Time.new().in_time_zone("Central Time (US & Canada)")
+    			else
+					date = DateTime.parse(params['date'])
+    			end
+
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
     			
-
-				visible_networks = current_user.entity.visible_networks
-		    	location_network_list = JqxConverter.jqxDropDownList(visible_networks)
-
-				if params['location_network_id'].nil?
-					default_network = visible_networks[0]
-				else
-					default_network = Network.find(params['location_network_id'])
-				end				
+#				if params['location_network_id'].nil?
+#					default_network = visible_networks[0]
+#				else
+#					default_network = Network.find(params['location_network_id'])
+#				end				
 								
-				facts = AssetSummaryFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity, :location_network => default_network)
-		    	print facts.to_json
-		    	response = {:grid => facts, :location_networks => location_network_list}
+				facts = AssetSummaryFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :location_network => default_network)
+		    	response = {:grid => facts} #, :location_networks => location_network_list}
  	 
 		    render json: response
 		}

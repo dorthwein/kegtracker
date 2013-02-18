@@ -9,7 +9,12 @@ class Reports::FloatController < ApplicationController
 
 		    format.json {
 		    	options = {:entity => current_user.entity}
-				date = DateTime.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
+    			if params['date'].nil?
+					date = Time.new().in_time_zone("Central Time (US & Canada)")
+    			else
+					date = DateTime.parse(params['date'])
+    			end
+
     			
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
@@ -46,7 +51,12 @@ class Reports::FloatController < ApplicationController
 			format.html
 		    format.json {
 		    	options = {:entity => current_user.entity}
-				date = DateTime.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
+    			if params['date'].nil?
+					date = Time.new().in_time_zone("Central Time (US & Canada)")
+    			else
+					date = DateTime.parse(params['date'])
+    			end
+
     			
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
@@ -73,8 +83,14 @@ class Reports::FloatController < ApplicationController
 			format.html
 		    format.json {
 		    	options = {:entity => current_user.entity}
-				date = DateTime.parse(params['date']) rescue Time.new().in_time_zone("Central Time (US & Canada)")
-    			
+								 
+    			if params['date'].nil?
+					date = Time.new().in_time_zone("Central Time (US & Canada)")
+    			else
+					date = DateTime.parse(params['date'])
+    			end
+
+
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 
