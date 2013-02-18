@@ -29,7 +29,7 @@ class System::RfidReadsController < ApplicationController
 				
 				arr = tag_id.split('')
 				arr.in_groups_of(2){|c| new_str << ("#{c[0]}#{c[1]}".hex.chr) }
-				new_str = JSON.parse(new_str)  || nil
+				new_str = JSON.parse(new_str) rescue break
 				
 				scan = Hash.new
 				scan['version'] = 'S1'
