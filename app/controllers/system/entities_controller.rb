@@ -96,7 +96,10 @@ class System::EntitiesController < System::ApplicationController
   def distributor_upload
     file_data = params[:distributor_csv]
     print file_data.class.to_s + 'fuck'
-    render :nothing => true
-  
+    respond_to do |format|    
+      format.json { 
+        render json: {:success => true }
+      }
+    end  
   end
 end

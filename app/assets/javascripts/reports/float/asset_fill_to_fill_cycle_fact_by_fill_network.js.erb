@@ -18,6 +18,7 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_fil
 			{ name: 'avg_time' },
 			{ name: 'min_time' },
 			{ name: 'max_time' },
+			{ name: 'completed_cycles' },
 			{ name: '_id' }
 		],
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
@@ -77,13 +78,14 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_fil
 
 
 		columns: [																						
-			{ text: 'Production Network', width:'250px', datafield: 'fill_network_description', filtertype: 'checkedlist'  },
+			{ text: 'Production Network', width:'150px', datafield: 'fill_network_description', filtertype: 'checkedlist'  },
 			{ text: 'Product',  datafield: 'product_description', filtertype: 'checkedlist'  },
 			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
 			{ text: 'Asset Type',  datafield: 'asset_type_description', filtertype: 'checkedlist' },
-			{ text: 'Min (Days)', width:'100px', datafield: 'min_time', filtertype: 'number'  },
-			{ text: 'Avg. (Days)', width:'100px', datafield: 'avg_time', filtertype: 'number' },			
-			{ text: 'Max (Days)', width:'100px', datafield: 'max_time', filtertype: 'number' },
+			{ text: 'Min (Days)', width:'90px', datafield: 'min_time', filtertype: 'number'  },
+			{ text: 'Avg. (Days)', width:'90px', datafield: 'avg_time', filtertype: 'number' },			
+			{ text: 'Max (Days)', width:'90px', datafield: 'max_time', filtertype: 'number' },
+			{ text: '# Cycles', width:'90px', datafield: 'completed_cycles', filtertype: 'number' },			
 
 		],
         groups: ['fill_network_description', 'asset_type_description']

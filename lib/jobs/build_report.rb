@@ -157,7 +157,8 @@ class BuildReport
 							:product_id => z[0],
 							:avg_time => avg.to_i,
 							:min_time => minmax[0].to_i,
-							:max_time => minmax[1].to_i
+							:max_time => minmax[1].to_i,
+							:completed_cycles => g[1].length.to_i
 						)	
 					end
 				end
@@ -200,7 +201,7 @@ class BuildReport
 					by_asset_type = z[1].group_by{|x| x[:asset_type_id]}
 					by_asset_type.each do |g|											
 							
-						t = []						
+						t = []
 						g[1].each do |c|							
 							t.push(c[:cycle_time])
 						end			
@@ -219,7 +220,9 @@ class BuildReport
 							:product_id => z[0],
 							:avg_time => avg.to_i,
 							:min_time => minmax[0].to_i,
-							:max_time => minmax[1].to_i
+							:max_time => minmax[1].to_i,
+							:completed_cycles => g[1].length.to_i
+
 						)		
 						print fact.fact_time
 						print "\n"							

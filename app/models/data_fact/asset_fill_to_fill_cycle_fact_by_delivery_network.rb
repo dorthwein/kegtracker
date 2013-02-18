@@ -24,7 +24,8 @@ class AssetFillToFillCycleFactByDeliveryNetwork
 	field :avg_time, :type => Integer
 	field :min_time, :type => Integer
 
-
+	field :completed_cycles, :type => Integer
+	
 	def get_sku_id
 		return 'prod_' + self.product_id.to_s + '_type_' + self.asset_type_id.to_s
 	end

@@ -1,17 +1,11 @@
     <input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
     
-	<%= form_tag(:controller => "entities", :action => "distributor_upload", :method => "post") do %>
-	 	<%= submit_tag("Distributor Upload", 'data-role' => :none) %>
-	 	<%= file_field_tag 'distributor_csv', 'data-role' => :none %>
-	 	
-	    
+    <input type="button" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
+
+    <input id="fileupload" type="file" name="files[]" data-url="<%= request.fullpath %>/distributor_upload" multiple data-role="none">
 	
-	<% end %>
+	<div id="progress" class="bar"> </div>	
 	
-    
-
-
-
     <div id="jqxgrid">
     </div>
 
