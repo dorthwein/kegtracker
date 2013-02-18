@@ -103,11 +103,13 @@ class BuildReport
 	handle_asynchronously :asset_activity_summary_fact					
 
 	def asset_fill_to_fill_cycle_fact_by_fill_network
-		first_date = @date.end_of_day - (86400 * 90)
+		first_date = @date.end_of_day - (86400 * 30)
 		last_date = @date.end_of_day
 
 		Entity.all.each do |entity|		
 			AssetFillToFillCycleFactByFillNetwork.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:report_entity => entity).delete						
+
+			# Basis
 			asset_activity_facts = entity.visible_fill_activity_facts.between(fact_time: first_date..last_date)									
 			t = []
 			by_asset = asset_activity_facts.group_by{|x| x.asset}						
@@ -167,7 +169,7 @@ class BuildReport
 	end
 
 	def asset_fill_to_fill_cycle_fact_by_delivery_network
-		first_date = @date.end_of_day - (86400 * 90)
+		first_date = @date.end_of_day - (86400 * 30)
 		last_date = @date.end_of_day
 
 		Entity.all.each do |entity|					

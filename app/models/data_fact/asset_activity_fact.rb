@@ -97,7 +97,7 @@ class AssetActivityFact
 
     if self.handle_code == 2
       self.pickup_asset_activity_fact_id = self._id
-      self.pickup_network = self.pickup_asset_activity_fact.location_network
+      self.pickup_network = self.location_network
 
       AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:pickup_network_id => self.location_network._id, :pickup_asset_activity_fact_id => self._id)
     end
