@@ -92,7 +92,7 @@ class AssetActivityFact
       end
     else
       self.fill_asset_activity_fact_id = self._id
-      self.fill_network = self.fill_asset_activity_fact.location_network
+      self.fill_network = self.location_network
     end
 
     if self.handle_code == 2
