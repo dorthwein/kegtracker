@@ -29,31 +29,33 @@ class System::RfidReadsController < ApplicationController
 				
 				arr = tag_id.split('')
 				arr.in_groups_of(2){|c| new_str << ("#{c[0]}#{c[1]}".hex.chr) }
-				new_str = JSON.parse(new_str) rescue break
-				
-				scan = Hash.new
-				scan['version'] = 'S1'
+				new_str = JSON.parse(new_str) rescue nil
+				if !new_str.nil?
+					scan = Hash.new
+					scan['version'] = 'S1'
 
-				scan['user'] = Hash.new
-				scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
-				scan['user']['P'] = 'system_rfid_pass'
+					scan['user'] = Hash.new
+					scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
+					scan['user']['P'] = 'system_rfid_pass'
 
-				scan['processing'] = Hash.new
-				scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
-				scan['processing']['T'] = Time.now.to_i
+					scan['processing'] = Hash.new
+					scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
+					scan['processing']['T'] = Time.now.to_i
 
-				scan['processing']['auto_mode'] = 1
+					scan['processing']['auto_mode'] = 1
 
-				if !rfid_antennas[tag_antenna].product.nil?
-					scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
+					if !rfid_antennas[tag_antenna].product.nil?
+						scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
+					end
+					if !rfid_antennas[tag_antenna].asset_type.nil?
+						scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
+					end
+					
+					scan['location'] = rfid_antennas[tag_antenna].location._id
+					scan['tag'] = new_str
+				else
+					print 'bad tag found'
 				end
-				if !rfid_antennas[tag_antenna].asset_type.nil?
-					scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
-				end
-				
-				scan['location'] = rfid_antennas[tag_antenna].location._id
-				scan['tag'] = new_str
-				
 =begin				
 				scan = { 
 					:version => 'S1',
@@ -81,49 +83,52 @@ class System::RfidReadsController < ApplicationController
 					
 					arr = tag_id.split('')
 					arr.in_groups_of(2){|c| new_str << ("#{c[0]}#{c[1]}".hex.chr) }
-					new_str = JSON.parse(new_str) rescue break
-					
-					scan = Hash.new
-					scan['version'] = 'S1'
-	
-					scan['user'] = Hash.new
-					scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
-					scan['user']['P'] = 'system_rfid_pass'
-	
-					scan['processing'] = Hash.new
-					scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
-					scan['processing']['T'] = Time.now.to_i
-					scan['processing']['auto_mode'] = 1
-	
-					if !rfid_antennas[tag_antenna].product.nil?
-						scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
-					end
-					if !rfid_antennas[tag_antenna].asset_type.nil?
-						scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
-					end
-					
-					scan['location'] = rfid_antennas[tag_antenna].location._id
-					scan['tag'] = new_str
+					new_str = JSON.parse(new_str) rescue nil
+					if !new_str.nil?
+						scan = Hash.new
+						scan['version'] = 'S1'
+		
+						scan['user'] = Hash.new
+						scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
+						scan['user']['P'] = 'system_rfid_pass'
+		
+						scan['processing'] = Hash.new
+						scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
+						scan['processing']['T'] = Time.now.to_i
+						scan['processing']['auto_mode'] = 1
+		
+						if !rfid_antennas[tag_antenna].product.nil?
+							scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
+						end
+						if !rfid_antennas[tag_antenna].asset_type.nil?
+							scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
+						end
+						
+						scan['location'] = rfid_antennas[tag_antenna].location._id
+						scan['tag'] = new_str
 
 
 =begin					
-					scan = { 
-						:version => 'S1',
-						:user => {
-							:N => 'd.orthwein@lipmanbrothers.com',
-							:P => 'system_rfid_pass'
-						},
-						:processing => {
-							:HC => rfid_antennas[tag_antenna].handle_code.code,
-							:T => Time.now.to_i,
-							:P => rfid_antennas[tag_antenna].product._id,
-							:AT => rfid_antennas[tag_antenna].asset_type._id,
-						},
-						:location => rfid_antennas[tag_antenna].location._id,
-						:tag => new_str # tag['TagID']
-					}
+						scan = { 
+							:version => 'S1',
+							:user => {
+								:N => 'd.orthwein@lipmanbrothers.com',
+								:P => 'system_rfid_pass'
+							},
+							:processing => {
+								:HC => rfid_antennas[tag_antenna].handle_code.code,
+								:T => Time.now.to_i,
+								:P => rfid_antennas[tag_antenna].product._id,
+								:AT => rfid_antennas[tag_antenna].asset_type._id,
+							},
+							:location => rfid_antennas[tag_antenna].location._id,
+							:tag => new_str # tag['TagID']
+						}
 =end				
-					scans_array.push(scan.to_json)
+						scans_array.push(scan.to_json)
+					else
+						print 'Bad Tag Found'
+					end
 				end				
 			end			
 		end

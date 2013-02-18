@@ -206,12 +206,11 @@ class BuildReport
 						end			
 						avg = t.inject{ |sum, el| sum + el }.to_f / t.size
 						minmax = []						
-						
+
 						avg = (avg / 86400).ceil
 						minmax[0] = (t.min / 86400).ceil
 						minmax[1] = (t.max / 86400).ceil
 
-						print minmax[0].to_s + ' - ' + minmax[1].to_s + ' - '  + avg.to_i.to_s
 						fact = AssetFillToFillCycleFactByDeliveryNetwork.create(
 							:report_entity => entity,
 							:fact_time => @date,
