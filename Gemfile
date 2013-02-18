@@ -18,6 +18,7 @@ gem 'cancan'
 gem 'mongoid_auto_increment'
 gem 'axlsx'
 gem 'delayed_job_mongoid'
+gem "jquery-fileupload-rails"
 
 # Gems used only for assets and not required
 # in production environments by default.

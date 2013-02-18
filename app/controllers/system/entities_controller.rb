@@ -92,4 +92,11 @@ class System::EntitiesController < System::ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def distributor_upload
+    file_data = params[:distributor_csv]
+    print file_data.class.to_s + 'fuck'
+    render :nothing => true
+  
+  end
 end

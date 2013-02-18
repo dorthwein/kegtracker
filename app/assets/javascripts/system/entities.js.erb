@@ -305,14 +305,16 @@ $(document).on('pageshow', '#_system_entities', function(event){
 		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
-	$("#brewery_upload").jqxButton({ theme: theme,});                        
-	$("#brewery_upload").click(function () {
+	$("#brewery_upload_button").jqxButton({ theme: theme,});                        
+	$("#brewery_upload_button").click(function () {
 		alert('Not Enabled/Developed');
 	});
 
-	$("#distributor_upload").jqxButton({ theme: theme,});                        
-	$("#distributor_upload").click(function () {
-		alert('Not Enabled/Developed');
+	$("#distributor_upload_button").jqxButton({ theme: theme,});                        
+	$("#distributor_upload_button").click(function () {
+
+		alert($('#distributor_upload').val());
+		alert('test');
 	});
 
 

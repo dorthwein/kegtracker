@@ -87,7 +87,10 @@ Cobalt::Application.routes.draw do
 		resources :asset_states
 		resources :measurement_units
 
+
+
 		match 'rfid_reads' => 'rfid_reads#read', :via => [:get, :post] 						
+		match 'entities/distributor_upload' => 'entities#distributor_upload', :via => [:get, :post] 						
 	end
 
 	namespace :scanners do 
