@@ -4,7 +4,7 @@ task :ten_minute_build => :environment do
 #	build_report.asset_summary_fact	
 
 	build_report.asset_summary_fact
-	build_report.asset_location_network_in_out_report
+#	build_report.asset_location_network_in_out_report
 	build_report.asset_activity_summary_fact
 	build_report.asset_fill_to_fill_cycle_fact_by_delivery_network
 	build_report.asset_fill_to_fill_cycle_fact_by_fill_network	
@@ -22,7 +22,7 @@ task :thirty_day_build => :environment do
 		print current.to_s + "\n"		
 		a = BuildReport.new(current)	
 		a.asset_summary_fact 
-		a.asset_location_network_in_out_report
+#		a.asset_location_network_in_out_report
 		a.asset_activity_summary_fact
 		a.asset_fill_to_fill_cycle_fact_by_delivery_network
 		a.asset_fill_to_fill_cycle_fact_by_fill_network	
