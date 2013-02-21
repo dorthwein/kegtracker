@@ -48,7 +48,7 @@ class NetworkFact
 	field :out_full_quantity, 						type: Integer, :default => 0				  
 	field :out_market_quantity, 					type: Integer, :default => 0				  
 	field :out_empty_quantity, 						type: Integer, :default => 0				  
-	field :out_total_quantity, 						type: Integer, :default => 0				  
+	field :out_total_quantity, 						type: Integer, :default	 => 0				  
 
 
 	def get_sku_id

@@ -3,12 +3,12 @@ task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.new)
 #	build_report.asset_summary_fact	
 
-	build_report.asset_summary_fact
+#	build_report.asset_summary_fact
 #	build_report.asset_location_network_in_out_report
-	build_report.asset_activity_summary_fact
-	build_report.asset_fill_to_fill_cycle_fact_by_delivery_network
-	build_report.asset_fill_to_fill_cycle_fact_by_fill_network	
-
+#	build_report.asset_activity_summary_fact
+#	build_report.asset_fill_to_fill_cycle_fact_by_delivery_network
+#	build_report.asset_fill_to_fill_cycle_fact_by_fill_network	
+	build_report.network_facts
 
 end
 
@@ -21,9 +21,9 @@ task :thirty_day_build => :environment do
 		current = current + 86400
 		print current.to_s + "\n"		
 		a = BuildReport.new(current)	
-		a.asset_summary_fact 
+#		a.asset_summary_fact 
 #		a.asset_location_network_in_out_report
-		a.asset_activity_summary_fact
+#		a.asset_activity_summary_fact
 #		a.asset_fill_to_fill_cycle_fact_by_delivery_network
 #		a.asset_fill_to_fill_cycle_fact_by_fill_network	
 		a.network_facts
