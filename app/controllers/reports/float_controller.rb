@@ -69,8 +69,8 @@ class Reports::FloatController < ApplicationController
 #				else
 #					default_network = Network.find(params['fill_network_id'])					
 #				end
-				
-				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :fill_network => default_network)				
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 1)
+#				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :fill_network => default_network)				
 		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}
 		    	 
@@ -104,7 +104,9 @@ class Reports::FloatController < ApplicationController
 #					default_network = Network.find(params['delivery_network_id'])					
 #				end
 				
-				facts = AssetFillToFillCycleFactByDeliveryNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 2)
+				
+#				facts = NetworkFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
 		    	
 		    	response = {:grid => facts}
 		    	#response = {:grid => facts, :delivery_networks => delivery_network_list}
