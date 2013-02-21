@@ -106,7 +106,7 @@ class AssetActivityFact
       self.fill_network = self.location_network
     end
 
-    self.cycle_time = self.fill_asset_activity_fact.fact_time.to_i - self.fact_time.to_i
+    self.cycle_time = ((self.fill_asset_activity_fact.fact_time.to_i - self.fact_time.to_i) rescue 0)
 
     if self.handle_code == 2
       self.pickup_asset_activity_fact_id = self._id
