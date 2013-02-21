@@ -24,9 +24,9 @@ task :thirty_day_build => :environment do
 		a.asset_summary_fact 
 #		a.asset_location_network_in_out_report
 		a.asset_activity_summary_fact
-		a.asset_fill_to_fill_cycle_fact_by_delivery_network
-		a.asset_fill_to_fill_cycle_fact_by_fill_network	
-
+#		a.asset_fill_to_fill_cycle_fact_by_delivery_network
+#		a.asset_fill_to_fill_cycle_fact_by_fill_network	
+		a.network_facts
 	end	
 end
 
