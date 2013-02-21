@@ -77,7 +77,7 @@ task :save_asset_summary_facts => :environment do
 end
 
 task :save_asset_activity_facts => :environment do
-	AssetActivityFact.all.each do |x|
+	AssetActivityFact.all.asc(:fact_time).each do |x|
 		if x.save!
 			print "Asset Activity Fact Saved \n"
 		end
