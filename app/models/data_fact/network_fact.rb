@@ -72,7 +72,7 @@ class NetworkFact
 		self.product_entity = self.product.entity		
 		self.product_entity_description = self.product.nil? ? 'Unknown' : self.product_entity.description	
 
-		self.location_network_type = self.location_network.network_type
-		self.location_network_type_description = self.location_network.get_network_type_description
+		self.location_network_type = self.location_network.network_type rescue nil
+		self.location_network_type_description = self.location_network.get_network_type_description rescue nil
 	end	
 end
