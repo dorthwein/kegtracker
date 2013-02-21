@@ -93,6 +93,7 @@ class BuildReport
 			asset_activity_facts.each do |a|
 				if !a.nil?
 					x = { 
+						:fill_asset_activity_fact => a.fill_asset_activity_fact,
 						:cycle_time => a.completed_cycle_time,
 						:asset_type_id => a.asset_type_id,
 						:product_id => a.product_id,
