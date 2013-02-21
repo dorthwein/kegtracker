@@ -98,7 +98,7 @@ class AssetActivityFact
     else
       if !self.prev_asset_activity_fact.nil?
         prev_fill_fact = self.prev_asset_activity_fact.fill_asset_activity_fact
-        prev_cycle_time = self.fact_time.to_i - prev_fill_fact.fact_time.to_i
+        prev_cycle_time = self.fact_time.to_i - (prev_fill_fact.fact_time.to_i rescue 0)
         AssetActivityFact.where(:fill_asset_activity_fact => prev_fill_fact).update_all(:completed_cycle_time => prev_cycle_time)
       end
 

@@ -262,7 +262,6 @@ class Scanner
 		scan_params[:tag] = {}
 
 		# TAG
-		print 'fuck'
 		print scan['tag']
 		# Check T2 - T2-8983-1-43DDF-RF & convert to array
 		if scan['tag'].count('-') == 4			
