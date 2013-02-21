@@ -94,8 +94,28 @@ class System::EntitiesController < System::ApplicationController
   end
 
   def distributor_upload
-    file_data = params[:distributor_csv]
-    print file_data.class.to_s + 'fuck'
+    file = params[:files][0].tempfile
+    
+    # 0 = FULL, 
+    # 1 = DESCRIPTION, 
+    # 2 = City,
+    # 3 = State,
+    CSV.foreach(file) do |row|
+        entity = Entity.where(:description => row[1]).first
+        print entity.to_s + "fuck"
+        if entity.nil?
+          # If Nil - Add to DB
+          Entity.create(
+            :description => row[1],
+            :city => row[2],
+            :state => row[3],
+            :mode => 4
+          )          
+          print "New Entity \n"
+        end
+        print row.to_s + "\n"
+    end
+
     respond_to do |format|    
       format.json { 
         render json: {:success => true }
@@ -103,3 +123,4 @@ class System::EntitiesController < System::ApplicationController
     end  
   end
 end
+

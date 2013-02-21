@@ -4,6 +4,7 @@ class AssetFillToFillCycleFactByDeliveryNetwork
 
 	belongs_to :report_entity, :class_name => 'Entity' 				# Who owns the report	
 	belongs_to :delivery_network, :class_name => 'Network'	
+	
 	belongs_to :product
 	belongs_to :asset_type  
 	field :fact_time, :type => Time
@@ -50,5 +51,4 @@ class AssetFillToFillCycleFactByDeliveryNetwork
 
 		self.delivery_network_description = self.delivery_network.description	
 	end	
-
 end

@@ -281,40 +281,51 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 					return false;
 				}
 				return true;
-			}
-			if( IsJsonString(obj) ){
-				 var tag = jQuery.parseJSON(obj);
-				 console.log('Valid JSON: ' + tag);         
-			} else if(
-				((obj.split("{").length - 1) > 0 && (obj.split("}").length - 1) == 0 ) ||
-				((obj.split("}").length - 1) > 0 && (obj.split("{").length - 1) == 0 ) ||				
-				((obj.split("[").length - 1) > 0 && (obj.split("]").length - 1) == 0 ) ||				
-				((obj.split("]").length - 1) > 0 && (obj.split("[").length - 1) == 0 ) || 
-				((obj.split("]").length - 1) >= 1 && (obj.split("[").length - 1) >= 1 ) || 				
-				((obj.split("}").length - 1) >= 1 && (obj.split("{").length - 1) >= 1 ) 
-			) {
-				$('#scan_input').val("");							
-				$('#scan_light').css('background', '#FF0000');
-				$('#scan_light span').html('FAIL');
-				
-				<% beep = asset_path 'beep-3.mp3' %>
-				$('#content-alert').html('<audio autoplay="autoplay"> <source src="<%= beep %>" type="audio/mp3" /> </audio>');
-				
-				$('#slot_1').html('');
-				$('#slot_2').html('');
-				$('#slot_3').html('');
-				$('#slot_4').html('');
-				
-				return false
-			} else {				
-				console.log('scan not valid json: ' + obj);                     
-				var tag = {};
-				tag.N;
-				tag.V = obj;
-				tag.K = 0;
-				tag.M = 3;			
-			}
+			}			
+			// VALIDATE
 			if( $('#simple_container').jqxValidator('validate')	){
+
+				// Check if T2 Format
+				if((obj.split("-").length - 1) == 4 ){
+					obj = JSON.stringify(obj.split("-"))
+//					alert(obj);
+				// Check if JSON
+				}
+				if( IsJsonString(obj) ){
+					 var tag = jQuery.parseJSON(obj);					 
+					 console.log('Valid JSON: ' + tag);         
+				// Check if Double Scan
+				} else if(
+					((obj.split("{").length - 1) > 0 && (obj.split("}").length - 1) == 0 ) ||
+					((obj.split("}").length - 1) > 0 && (obj.split("{").length - 1) == 0 ) ||				
+					((obj.split("[").length - 1) > 0 && (obj.split("]").length - 1) == 0 ) ||				
+					((obj.split("]").length - 1) > 0 && (obj.split("[").length - 1) == 0 ) || 
+					((obj.split("]").length - 1) >= 1 && (obj.split("[").length - 1) >= 1 ) || 				
+					((obj.split("}").length - 1) >= 1 && (obj.split("{").length - 1) >= 1 ) 
+				) {
+					// DOUBLE SCAN FOUND - FAIL
+					$('#scan_input').val("");							
+					$('#scan_light').css('background', '#FF0000');
+					$('#scan_light span').html('FAIL');
+					
+					<% beep = asset_path 'beep-3.mp3' %>
+					$('#content-alert').html('<audio autoplay="autoplay"> <source src="<%= beep %>" type="audio/mp3" /> </audio>');
+					
+					$('#slot_1').html('');
+					$('#slot_2').html('');
+					$('#slot_3').html('');
+					$('#slot_4').html('');
+					
+					return false
+					// STRING SCAN - PIECE TAG TOGETHER
+				} else {				
+					console.log('scan not valid json: ' + obj);                     
+					var tag = {};
+					tag.N;
+					tag.V = obj;
+					tag.K = 0;
+					tag.M = 3;			
+				}			
 				scan.tag = tag;
 				scan.user = {};
 				var N = $('#simple_container').attr('userName');

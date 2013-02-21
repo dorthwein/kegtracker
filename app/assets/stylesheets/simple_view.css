@@ -36,7 +36,7 @@
 	display:inline-block;
 
 }
-#jqxgrid.simple {
+#jqxgrid.simple, .grid.simple {
 	margin:5px 5px 5px 5px;
 	width:450px;
 	font-weight: 20px;

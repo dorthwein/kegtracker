@@ -31,6 +31,9 @@ class AssetActivityFact
   field :fill_count, type: Integer
   field :asset_status, type: Integer, :default => 0
 
+  field :cycle_time, type: Integer, :default => 0
+  field :completed_cycle_time, type: Integer, :default => 0
+
 # Networks  
 # belongs_to :network    # Possibly Depricated  
   belongs_to :prev_location_network, :class_name => 'Network'
@@ -83,17 +86,27 @@ class AssetActivityFact
 	before_save :sync
 	def sync	    
     self.location_network = self.location.network
+    self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     # Find & Set Previous asset_activity_fact     
     # self.asset_status_description = nil
     if self.handle_code != 4
       self.fill_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset, :handle_code => 4).lte(fact_time: self.fact_time).desc(:fact_time).first._id
+      
       if self.fill_asset_activity_fact.nil?
-        fill_asset_activity_fact = self._id
+        self.fill_asset_activity_fact_id = self._id
       end
     else
+      if !self.prev_asset_activity_fact.nil?
+        prev_fill_fact = self.prev_asset_activity_fact.fill_asset_activity_fact
+        prev_cycle_time = self.fact_time.to_i - prev_fill_fact.fact_time.to_i
+        AssetActivityFact.where(:fill_asset_activity_fact => prev_fill_fact).update_all(:completed_cycle_time => prev_cycle_time)
+      end
+
       self.fill_asset_activity_fact_id = self._id
       self.fill_network = self.location_network
     end
+
+    self.cycle_time = self.fill_asset_activity_fact.fact_time.to_i - self.fact_time.to_i
 
     if self.handle_code == 2
       self.pickup_asset_activity_fact_id = self._id
@@ -107,7 +120,7 @@ class AssetActivityFact
       AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:delivery_network_id => self.location_network._id, :delivery_asset_activity_fact_id => self._id)
     end
 
-    self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
+    
     
     # If nil, use current network
 	end  

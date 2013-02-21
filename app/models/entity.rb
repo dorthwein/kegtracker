@@ -8,10 +8,13 @@ class Entity
 	has_many :networks
 	has_many :assets
 	has_many :network_memberships
+
+	has_many :network_facts, :inverse_of => :report_entity
 	
 	has_many :entity_partnerships_as_partner, :class_name => 'EntityPartnership', :inverse_of => :partner
 	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
 	belongs_to :admin_user, :class_name => 'User', :inverse_of => :user
+
 #	has_many :entity_partnerships_as_entity, as: :entity_partnerships_as_entity
 #	has_one :network
 
@@ -24,6 +27,7 @@ class Entity
 	field :state, type: String
 	field :zip, type: String
 
+
 # Entity Types
 #	field :distributor, type: Integer, :default => 0
 #	field :brewery, type: Integer, :default => 0
@@ -31,8 +35,8 @@ class Entity
 #	field :account, type: Integer, :default => 0
 
 # Entity Mode
-	# 0 = Deactivated, 1 = Activated, 2 = Automated
-	field :mode, type: Integer, :default => 2	 # Active?
+	# 0 = Deactivated, 1 = Activated Brewery, 2 = Automated Brewery, 3 = Activated Distributor, 4 = Auto Distributor
+	field :mode, type: Integer, :default => 0
 
 	field :distribution_network_count, type: Integer, :default => 0
 	field :production_network_count, type: Integer, :default => 0
@@ -41,13 +45,12 @@ class Entity
 ##################
 # Class Methods  #
 ##################
-
 	def self.distribution_entities
 		# Entities /w at least 1 distribution network
-		 return Network.where(:network_type => 2).group_by{|x| x.entity}.map{|x| x[0]}	
+		 return Network.where(:network_type => 2).asc(:description).group_by{|x| x.entity}.map{|x| x[0]}	
 	end
 	def self.production_entities	
-		return Network.where(:network_type => 1).group_by{|x| x.entity}.map{|x| x[0]}	
+		return Network.where(:network_type => 1).asc(:description).group_by{|x| x.entity}.map{|x| x[0]}	
 	end
 	
 #############################
@@ -55,12 +58,12 @@ class Entity
 #############################
 	def distribution_partnerships_as_partner
 		# Where current user is partner
-		self.entity_partnerships_as_partner.where(:distribution_partnership => 1)
+		self.entity_partnerships_as_partner.where(:distribution_partnership => 1).asc(:description)
 
 	end
 	def distribution_partnerships_as_entity
 		# Where current user is entity
-		self.entity_partnerships_as_entity.where(:distribution_partnership => 1)
+		self.entity_partnerships_as_entity.where(:distribution_partnership => 1).asc(:description)
 
 	end
 	def distribution_partnerships_shared_networks
@@ -120,6 +123,7 @@ class Entity
 
 
 	end
+
 	def visible_asset_activity_facts
 		AssetActivityFact.any_of( 
 				{ :location_network.in => self.networks.map{|x| x._id} },
@@ -129,8 +133,7 @@ class Entity
 	end
 	def visible_fill_activity_facts
 		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
-	end	
-
+	end
 
 ###########################
 # Entity Networks by Type #
@@ -168,6 +171,9 @@ class Entity
 ###########################
 # Entity Reports		  #
 ###########################
+	def network_score_card
+		
+	end
 
 
   before_save :sync_descriptions  
@@ -177,5 +183,15 @@ class Entity
 	self.production_network_count = self.networks.where(:network_type => 1).count
 	self.distribution_network_count = self.networks.where(:network_type => 2).count
 	self.market_network_count = self.networks.where(:network_type => 3).count
+  end
+  after_create :on_create  
+  def on_create
+  	if self.mode == 4
+          Network.create(
+            :description => self.description.to_s + " Network",
+            :network_type => 2,
+            :entity => self,
+          )
+    end
   end
 end

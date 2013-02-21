@@ -68,11 +68,11 @@ $(document).on('pageshow', '#_system_entities', function(event){
 			{ text: 'Admin', datafield: 'admin_user_email'},
 			
 			{ text: 'Address Name', datafield: 'name', filtertype: 'checkedlist' },			
-			{ text: 'Street', datafield: 'asset_type_description', filtertype: 'checkedlist' },
-			{ text: 'City', datafield: 'product_entity_description', filtertype: 'checkedlist' },			
-			{ text: 'State', datafield: 'fill_time', filtertype: 'checkedlist' },
-			{ text: 'Zip', datafield: 'tag_value' },
-			{ text: 'Mode', datafield: 'asset_status_description', filtertype: 'checkedlist' },			
+			{ text: 'Street', datafield: 'street', filtertype: 'checkedlist' },
+			{ text: 'City', datafield: 'city', filtertype: 'checkedlist' },			
+			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },
+			{ text: 'Zip', datafield: 'zip' },
+			{ text: 'Mode', datafield: 'mode', filtertype: 'checkedlist' },			
 
 			{ text: 'Dist. Networks', width:100, datafield: 'distribution_network_count', filtertype: 'number' },			
 			{ text: 'Prod. Networks', width:100, datafield: 'production_network_count', filtertype: 'number' },			
@@ -309,10 +309,19 @@ $(document).on('pageshow', '#_system_entities', function(event){
 	$("#brewery_upload_button").click(function () {
 		alert('Not Enabled/Developed');
 	});
-
+	$(function () {
+	    $('#fileupload').fileupload({
+	        dataType: 'json',
+	        done: function (e, data) {
+	        	alert('uploaded');
+//		            $.each(data.result.files, function (index, file) {
+//		                $('<p/>').text(file.name).appendTo(document.body);
+//		            });
+	        }
+	    });
+	});
 	$("#distributor_upload_button").jqxButton({ theme: theme,});                        
 	$("#distributor_upload_button").click(function () {		
-
 
 	});
 

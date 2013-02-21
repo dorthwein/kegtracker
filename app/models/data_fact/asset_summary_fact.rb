@@ -36,7 +36,6 @@ class AssetSummaryFact
 		return self.product_description.to_s + ' - ' + self.asset_type_description
 	end
 	
-
 	before_save :sync_descriptions	
 	def sync_descriptions
 		# Check Descriptions
@@ -45,7 +44,6 @@ class AssetSummaryFact
 		self.sku_description = self.get_sku_description
 		self.sku_id = self.get_sku_id
 
-		
 		self.product_description = self.product.description	
 		self.product_entity = self.product.entity		
 		self.product_entity_description = self.product.nil? ? 'Unknown' : self.product_entity.description	
@@ -53,7 +51,6 @@ class AssetSummaryFact
 		self.location_network_description = self.location_network.description	
 
 		self.total_quantity = self.empty_quantity + self.full_quantity + self.market_quantity
-
 	end	
 
 	def self.build options

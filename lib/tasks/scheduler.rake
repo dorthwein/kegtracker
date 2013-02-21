@@ -31,12 +31,25 @@ task :thirty_day_build => :environment do
 end
 
 task :build_test => :environment do
-	options = {}
-	options[:date] = Time.new(2013, 'feb', 30)
+# 30 Days
+	start = Time.new() - (86400 * 7)
+	last = Time.new() # + 86400
+	current = start
 
-	a = BuildReport.new
-	a.asset_fill_to_fill_cycle_fact_by_delivery_network
-	a.asset_fill_to_fill_cycle_fact_by_fill_network	
+	while current < last
+		current = current + 86400
+		print current.to_s + "\n"		
+		a = BuildReport.new(current)	
+		a.network_facts
+	end	
+end
+
+task :save_entities => :environment do
+	Entity.all.each do |x|
+		if x.save!
+			print "Entity Saved \n"
+		end
+	end
 end
 
 task :save_locations => :environment do
@@ -46,6 +59,7 @@ task :save_locations => :environment do
 		end
 	end
 end
+
 task :save_networks => :environment do
 	Network.all.each do |x|
 		if x.save!
@@ -54,7 +68,6 @@ task :save_networks => :environment do
 	end
 end
 
-
 task :save_asset_summary_facts => :environment do
 	AssetSummaryFact.all.each do |x|
 		if x.save!
@@ -62,7 +75,6 @@ task :save_asset_summary_facts => :environment do
 		end
 	end
 end
-
 
 task :save_asset_activity_facts => :environment do
 	AssetActivityFact.all.each do |x|
@@ -81,6 +93,12 @@ task :save_assets => :environment do
 end
 
 task :save_all => :environment do 
+	Entity.all.each do |x|
+		if x.save!
+			print "Entity Saved \n"
+		end
+	end
+	
 	Location.all.each do |x|
 		if x.save!
 			print "Location Saved \n"

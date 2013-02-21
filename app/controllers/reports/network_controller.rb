@@ -62,8 +62,11 @@ class Reports::NetworkController < ApplicationController
 		respond_to do |format|  
 			format.html
 		    format.json { 
-		    	render json: @response 
-			}			
-		end			
-	end	
+		    	networks = JqxConverter.jqxDropDownList(current_user.entity.visible_networks)
+		    	facts = JqxConverter.jqxGrid(current_user.entity.network_facts)
+		    	response = {:grid => facts, :networks => networks}
+		    	render json: response
+			}
+		end
+	end
 end

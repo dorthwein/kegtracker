@@ -1,16 +1,35 @@
-    
-			<input type="button" style="float:left; margin:5px 5px 5px 0;" value="New" id='addrowbutton' data-role="none"/>
-			<input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
-			<input type="button" style="float:left; margin:5px;" value="Export to CSV" id='csvExport' data-role="none"/>
-	        <div id="jqxgrid"></div>
-	
-	        <div style="text-align:center">
-                <h1> Report coming soon </h1>
-	        </div>
 
-	<div id="popupWindow" style="display:none">
-		<div> Daily Asset Summary </div>
-		<div>	</div>
-	</div>
+    <div id="simple_container">
+        <div id="grid_title" class="simple">
+            <h2>
+                Network Score Card
+            </h2>
+            <h5>
+                <span class="simple left hidden"> 
+                    Network: <br />                    
+                    <span id="displayNetwork"> </span>
+                </span>
+                
+                <span class="simple left"> 
+                    Date: <br />
+                    <span id="displayDate"> </span>
+                </span>
+            </h3>            
+        </div>
 
+        <div class="simple toolbar">
+            <div id='date' class="simple input left">
+            </div>
 
+            <div id='network_id' class="simple input left">
+            </div>
+
+            <input type="button" class="simple input left" value="Find Records" id='findRecord' data-role="none"/>
+        </div>
+
+        <div class="simple">
+			<h3 style="padding:10px;" > Life Cycles </h3> 	
+			<div id="lifecyles"> </div>
+        	
+        </div>
+    </div>

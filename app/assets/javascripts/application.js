@@ -16,4 +16,7 @@
 //= require plugins/jquery.mobile-1.3.0-rc.1.min.js
 //= require plugins/jqx-all.js
 //= require plugins/jquery.global.js
+//= require plugins/jquery.ui.widget.js
+//= require plugins/jquery.iframe-transport.js
+//= require plugins/jquery.fileupload.js
 //= require_tree .

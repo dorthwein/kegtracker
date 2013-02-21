@@ -15,7 +15,7 @@ class Network
   field :production, type: Integer, :default => 0
 
  # field :smart_mode, type: Integer, :default => 0   # When assets move in/out things occur to them  
-  field :auto_mode, type: Integer, :default => 1   # To be implemented for non-active networks/auto joins etc...
+  field :auto_mode, type: Integer, :default => 1   
 
   belongs_to :smart_mode_product, :class_name => 'Product'
   belongs_to :smart_mode_in_location, :class_name => 'Location'
@@ -71,14 +71,13 @@ class Network
     self.network_type_description = self.get_network_type_description
 
     if self.locations.count == 0
-      location = Location.create(:description => self.description + " Default Location", :network => self)
+      location = Location.create(:description => self.description + " General Area", :network => self)
       self.smart_mode_in_location = location
       self.smart_mode_out_location = location
 
       self.smart_mode_in_location_description = self.smart_mode_in_location.description
       self.smart_mode_out_location_description = self.smart_mode_out_location.description    
     end
-
 	end	
 =begin
   def self.visible_networks options = {}
@@ -92,8 +91,14 @@ class Network
   end
 =end
 
-  def on_create  
-    location = Location.create(:description => self.description + " Default Location", :network => self)
+  def on_create
+    if self.network_type == 1
+      Location.create(:description => self.entity.description + " General Area", :network => self, :location_type => 6)
+      Location.create(:description => "Keg Room", :network => self, :location_type => 1)
+      location = Location.create(:description => "Empty Keg Area", :network => self, :location_type => 2)
+    elsif self.network_type == 2
+      location = Location.create(:description => self.entity.description + " General Area", :network => self, :location_type => 5)
+    end  
     self.smart_mode_in_location = location
     self.smart_mode_out_location = location
 

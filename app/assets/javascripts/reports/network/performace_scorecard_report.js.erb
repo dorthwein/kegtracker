@@ -1,168 +1,185 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$(document).on('pageshow', '#_reports_network_performance_scorecard_report', function(event){		
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+$(document).on('pageshow', '#_reports_network_performance_scorecard_report', function(event){	
+
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme
 
-	var source =
-	{
+	var theme = settings.theme
+	var source = {
 		datatype : "json",
-		type: 'GET',
+		type: 'POST',
 		datafields: [
-
-			{ name: 'date' },				
-
-													
-			{ name: 'location_network' },
-			{ name: 'asset_type' },
-			{ name: 'asset_state' },			
-			{ name: 'product' },
-			{ name: 'handle_code' },
-
-			{ name: 'quantity' },
-			
+			{name: 'location_network_description'},
+			{name: 'product_entity_description'}, 	
+			{name: 'product_description'},			
+			{name: 'fact_time'}, 					
+			{name: 'asset_type_description'}, 		
+			{name: 'sku_description'}, 			
+			{name: 'sku_id'}, 						
+			{name: 'fill_quantity'},				
+			{name: 'delivery_quantity'}, 			
+			{name: 'pickup_quantity'}, 			
+			{name: 'move_quantity'}, 				
+			{name: 'empty_quantity'}, 				
+			{name: 'full_quantity'}, 				
+			{name: 'market_quantity'}, 			
+			{name: 'total_quantity'}, 				
+			{name: 'life_cycle_cycle_max_time'}, 	
+			{name: 'life_cycle_cycle_avg_time'}, 	
+			{name: 'life_cycle_cycle_min_time'}, 	
+			{name: 'life_cycle_completed_cycles'}, 
+			{name: 'in_full_quantity'}, 			
+			{name: 'in_market_quantity'}, 			
+			{name: 'in_empty_quantity'}, 			
+			{name: 'in_total_quantity'}, 			
+			{name: 'out_full_quantity'}, 			
+			{name: 'out_market_quantity'}, 		
+			{name: 'out_empty_quantity'}, 			
+			{name: 'out_total_quantity'}, 			
 		],
-		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
+		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
+		root: 'grid',
 	};
 
 	var dataAdapter = new $.jqx.dataAdapter(source, {
-		loadComplete: function (data) { },
-		loadError: function (xhr, status, error) { }      
+		formatData: function(){
+		    var params = {}			
+		    
+		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
+		    params['date'] = jsDate;
+
+			var item = $("#network_id").jqxDropDownList('getSelectedItem');
+			if(item != undefined){
+				params['network_id'] = item.value				
+			}			
+		    return params	    
+		},
+		downloadComplete: function(edata, textStatus, jqXHR){		
+		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
+		    params['date'] = jsDate;
+			
+			$("#network_id").jqxDropDownList({ source: edata['networks']});
+			
+			if($("#network_id").jqxDropDownList('getSelectedItem') == null){								
+				var x = $("#network_id").jqxDropDownList('getItemByValue', edata['networks'][0].value);
+				$("#network_id").jqxDropDownList('selectItem', x );				
+			}
+			var item = $("#network_id").jqxDropDownList('getSelectedItem')
+//			$('#displayNetwork').html(item.html);
+			$('#displayDate').html(jsDate.toDateString());
+		}
 	});
-	// Initialize Grid
-	$("#jqxgrid").jqxGrid(
-	{
+
+	// Initialize Grid	
+	$("#lifecyles").jqxGrid({		
 		groupable: true,
 		sortable: true,
 		filterable: true,
-        showfilterrow: true,
-		autoshowfiltericon: true,		
+        showfilterrow: true,		
+		autoshowfiltericon: false,		
 		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height: system.table_height,
-
+		width: 1200,// system.simple_grid_width,
+		groupsexpandedbydefault: false,
+		height: 300,
 		source: dataAdapter,
 		columnsresize: true,
-		altrows: true,				
-		ready: function () {
+		altrows: true,	
+		root: 'grid',
+		ready: function() {
+// 41 45 24 - If u dont know what this is delete ~DFO~
+		},
+		columns: [	
+			{text: 'Location Network', datafield: 'location_network_description'}, 																								{name: 'location_network_description'},
+			{text: 'Brewery', datafield: 'product_entity_description'}, 	
+			{text: 'Product', datafield: 'product_description'},			
+			{text: 'Date', datafield: 'fact_time'}, 					
+			{text: 'Asset Type', datafield: 'asset_type_description'}, 		
+/*
+			{text: 'SKU', datafield: 'sku_description'}, 			
+			{text: ' ', datafield: 'sku_id'}, 						
+			{text: 'Fill Qty', datafield: 'fill_quantity'},				
+			{text: 'Delivery Qty', datafield: 'delivery_quantity'}, 			
+			{text: 'Pickup Qty', datafield: 'pickup_quantity'}, 			
+			{text: 'Move Qty', datafield: 'move_quantity'}, 				
+			{text: 'Empty Qty', datafield: 'empty_quantity'}, 				
+			{text: 'Full Qty', datafield: 'full_quantity'}, 				
+			{text: 'Market Qty', datafield: 'market_quantity'}, 			
+			{text: 'Total Qty', datafield: 'total_quantity'}, 				
+			{text: 'Max Cycle', datafield: 'life_cycle_cycle_max_time'}, 	
+			{text: 'Avg Cycle', datafield: 'life_cycle_cycle_avg_time'}, 	
+			{text: 'Min Cycle', datafield: 'life_cycle_cycle_min_time'}, 	
+			{text: '# Cycles', datafield: 'life_cycle_completed_cycles'}, 
+*/
+/*
+			{text: '', datafield: 'in_full_quantity'}, 			
+			{text: '', datafield: 'in_market_quantity'}, 			
+			{text: '', datafield: 'in_empty_quantity'}, 			
+			{text: '', datafield: 'in_total_quantity'}, 			
+			{text: '', datafield: 'out_full_quantity'}, 			
+			{text: '', datafield: 'out_market_quantity'}, 		
+			{text: '', datafield: 'out_empty_quantity'}, 			
+			{text: '', datafield: 'out_total_quantity'}, 	
 
-		},                			
-		columns: [
-																					
-			{ text: 'Date', datafield: 'date' },				
-													
-			{ text: 'Location Network', datafield: 'location_network' },
-			{ text: 'Asset Type', datafield: 'asset_type' },
-//			{ text: 'Asset State', datafield: 'asset_state' },			
-			{ text: 'Product', datafield: 'product' },
-			{ text: 'Action', datafield: 'handle_code' },			
-
-			{ text: 'Quantity', datafield: 'quantity' }, 	            	
+			{ text: 'Product', 		width:'250px', datafield: 'product', filtertype: 'checkedlist'  },
+			{ text: 'Brewery',		datafield: 'product_entity', filtertype: 'checkedlist'  },
+			{ text: 'Asset Type', datafield: 'asset_type', filtertype: 'checkedlist' },		
+//			{ text: 'In - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'in_full_quantity' },			
+//			{ text: 'In - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },			
+//			{ text: 'In - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'in_empty_quantity' },						
+			{ text: 'In Bound',			cellsalign: 'center',	width:'100px',	datafield: 'in_total_quantity' },
+//			{ text: 'Out - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'out_full_quantity' },			
+//			{ text: 'Out - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },
+//			{ text: 'Out - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'out_empty_quantity' },						
+			{ text: 'Out Bound', 			cellsalign: 'center',	width:'100px',	datafield: 'out_total_quantity' }
+*/
 		],
-        groups: ['date','location_network','asset_type','handle_code']
+        
+	});
+
+
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
 		
-	});
-	var listSource = [
-			{ label: 'Date', value: 'date', checked: true },
-			{ label: 'Network', value: 'network', checked: true },
-			{ label: 'Asset Type', value: 'asset_type', checked: true }, 
-			{ label: 'Product', value: 'product', checked: true },
-			
-//			{ label: 'Asset State', value: 'asset_state', checked: true },
-			{ label: 'Action', value: 'handle_code', checked: true },
-			{ label: 'Quantity', value: 'quantity', checked: true },
-			
-	];
-	$("#jqxlistbox").jqxListBox({ source: listSource, width: '100%', height: 300, theme: theme, checkboxes: true });
-	$("#jqxlistbox").bind('checkChange', function (event) {
-		if (event.args.checked) {
-			$("#jqxgrid").jqxGrid('showcolumn', event.args.value);
-		}
-		else {
-			$("#jqxgrid").jqxGrid('hidecolumn', event.args.value);
-		}
-	});
-	// Style Buttons
-	$("#addrowbutton").jqxButton({ theme: theme });            
-	$("#excelExport").jqxButton({ theme: theme });
-	$("#csvExport").jqxButton({ theme: theme });
+	//	var jsDate = event.args.date; 		
+	}); 
 
-	// Button Processing/Action
+	$("#network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
+
+	$('#network_id').bind('select', function (event) {
+	    var args = event.args;
+	    if (args) {
+	        // index represents the item's index.                
+	        var index = args.index;
+	        var item = args.item;
+	        // get item's label and value.
+	        var label = item.label;
+	        var value = item.value;
+	    
+	    }
+	});
 	
+	$("#excelExport").jqxButton({ theme: theme });	
+	$("#advancedView").jqxButton({ theme: theme });
+	$("#simpleView").jqxButton({ theme: theme });
+	
+	$("#findRecord").jqxButton({ theme: theme });	
+	$("#findRecord").click(function () {
+		
+		dataAdapter.dataBind();
+//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
+	});
+
 	// NEW BUTTON
-	$("#addrowbutton").click(function () {
-		$.mobile.loading('show');
-		url = system.server + $('.ui-page-active').attr('data-url') + '/new'
-		$.ajax({
-			url: url,
-			type: "GET",
-			success: function( data ){ 
-				var offset = $("#jqxgrid").offset();
-
-				$("#popupWindow").jqxWindow({
-					content: data, 
-					position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60}, 
-					width: 650, 
-					resizable: true, 
-					theme: theme, 
-					autoOpen: true, 
-					cancelButton: $("#Cancel") 
-				});
-
-			// open the popup window when the user clicks a button.						
-				$("#popupWindow").jqxWindow('show');												
-				// initialize the popup window and buttons.
-				$("#Cancel").jqxButton({ theme: theme });
-				$("#Cancel").click(function () {
-					$("#popupWindow").jqxWindow('hide');
-				});
-
-				$("#Save").jqxButton({ theme: theme });
-				// update the edited row when the user clicks the 'Save' button.
-
-				$("#Save").click(function () {
-					// send edit to server
-					var values = {};
-					$.each($(this).closest('form').serializeArray(), function(i, field) {
-						values[field.name] = field.value;
-					});
-
-					$.ajax({
-						url: $(this).closest('form').attr('action'),
-						type: "POST",
-						data: values,										
-						dataType: 'json',
-						success: function( data ){ 
-							$("#jqxgrid").jqxGrid('addrow', null, data);
-							$("#popupWindow").jqxWindow('hide');												
-						},
-						error: function (data) {
-							alert('fail')
-							$("#popupWindow").jqxWindow('hide');																							
-						}
-					});
-
-				});
-				
-				$.mobile.loading('hide');								
-			},
-			error: function (data) {
-				alert('Failed to load ' + url);
-				$.mobile.loading('hide');									
-			}
-		});
-	
-	});
-
 	$("#excelExport").click(function () {
+//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
 		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
-	$("#csvExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
-	});
-	$.mobile.loading('hide');				
-
+	$.mobile.loading('hide');
 });
+
+

@@ -4,6 +4,7 @@ class AssetActivitySummaryFact
 
 	belongs_to :report_entity, :class_name => 'Entity' 		# Who owns the report	
 	belongs_to :location_network, :class_name => 'Network'	
+
 	belongs_to :product  
 	belongs_to :asset_type 
 	belongs_to :product_entity, :class_name => 'Entity'	

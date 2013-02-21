@@ -4,28 +4,18 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {      	
-	    if current_user.system_admin == 1
-	      entity_partnerships = JqxConverter.jqxGrid(EntityPartnership.where(:distribution_partnership => 1))
-	    else
 	      entity_partnerships = JqxConverter.jqxGrid(current_user.entity.distribution_partnerships_as_partner)
-	    end
-      	render json: entity_partnerships
+	     	render json: entity_partnerships
       }
     end
-
   end
 
   # GET /locations/1
   # GET /locations/1.json
   def show
   	entity_partnership = EntityPartnership.find(params[:_id])
-	distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-    if current_user.system_admin == 1
-      partners = JqxConverter.jqxDropDownList(Entity.production_entities)
-      print partners
-    else
-      partners = JqxConverter.jqxDropDownList([current_user.entity])
-    end
+  	distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
+    partners = JqxConverter.jqxDropDownList([current_user.entity])
 
     response = {:partners => partners, :entities => distributors, :entity_partnership => entity_partnership }    
     respond_to do |format|
@@ -36,13 +26,8 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.json
   def new
-	distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-    if current_user.system_admin == 1
-      partners = JqxConverter.jqxDropDownList(Entity.production_entities)
-      print partners
-    else
-      partners = JqxConverter.jqxDropDownList([current_user.entity])
-    end
+	  distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
+    partners = JqxConverter.jqxDropDownList([current_user.entity])
 
     response = {:partners => partners, :entities => distributors }
     respond_to do |format|

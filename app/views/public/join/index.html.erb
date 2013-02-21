@@ -1,3 +1,113 @@
-<div>
-	Public Join
+<div id="public_content">
+	<div class="public_text_frame left">
+		<div class="left">
+			<h4> Beta Registration </h4>
+			<table id="form_validator">
+				<tbody>
+					<tr>
+						<td> 	<label class="left" style="clear:both"> Brewery Name </label>						</td>
+						<td>	<input type="text" id="brewery_name"		data-role="none" 	 class="left input" />	</td>
+					</tr>
+					<tr>
+						<td> 	<label class="left" style="clear:both"> Contact Name </label>						</td>
+						<td>	<input type="text" id="contact_name"		data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>	
+						<td>	<label class="left" style="clear:both"> E-mail </label>    							</td>
+						<td>	<input type="text" id="contact_email"		data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> Phone </label>    							</td>
+						<td>	<input type="text" id="contact_phone"		data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> Street </label>   						 	</td>
+						<td>	<input type="text" id="street"				data-role="none" 	 class="left input" />	</td>
+					</tr>	
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> City </label>    							</td>
+						<td>	<input type="text" id="city"				data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> State </label>    							</td>
+						<td>	<input type="text" id="state"				data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>	
+						<td>	<label class="left" style="clear:both"> Zip </label>    							</td>
+						<td>	<input type="number" id="zip"					data-role="none" 	 class="left input" />	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> Interested in RFID </label>   			 	</td>
+						<td>	<div id="rfid_interest" class="left dropdown"> </div>	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> Number of Distributors </label>  		  	</td>
+						<td>	<input type="number" id="distributor_count"	data-role="none"  	 class="left input" />	</td>
+					</tr>
+
+					<tr>
+						<td>	<label class="left" style="clear:both"> Number of Asssets </label>    				</td>
+						<td>	<input type="number" id="asset_count"			data-role="none" 	 class="left input">    	</td>
+					</tr>
+
+					<tr>	
+						<td>	<label class="left" style="clear:both"> Additional Information </label>  							</td>
+						<td>	<textarea id="notes"	data-role="none" 	 class="left input"> </textarea>	</td>
+					</tr>					
+					<tr>
+						<td>	<label class="left" style="clear:both"> Do you agree to Terms of Use? </label>   			 	</td>
+						<td>	<div id="terms_of_use" class="left dropdown"> 				</div>
+								<br />
+								<span style="font-size:12px"> <%= link_to('View Terms of Use', public_terms_of_use_path) %> </span>
+
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+			<button id="submit_registration" class="input	" data-role="none"> Register </button>
+			
+		</div>
+	</div>	
+	<div class="public_text_frame right">
+		<div class="left">
+			<h4> About the Beta </h4>
+			<p>
+				The CraftNet system is currently accepting Beta Testers to test and use the CraftNet system free of charge. 
+				What this means is that we think the system will provide you with a great value, but it isn't quite ready enough that we feel comfortable charging you for it.
+			</p>
+
+			<br />
+			<h4> Since its beta, does it work? </h4>
+			<p>
+				The system does work and its core features are fully functional, however we expect there to be a few bugs here and there as we put the final touches on.
+			</p>
+
+			<br />
+			<h4> Once I've signed up, whats next? </h4>
+			<p>
+				Once your registered we'll be giving you call to prorperally set-up your account.  This will be a 5 - 10 minute phone call to get to know you and your business.  
+			</p>
+			<h4> What kind of support does the beta have? </h4>
+			<p>
+				Beta testers will recieve full support free of charge via phone and e-mail.  
+			</p>	
+			<br />		
+			<h4> Are there any costs associted with the Beta Test? </h4>
+			<p>
+				Yes.  To use the system you will need a 2D barcode scanner, internet connection, computer, and CraftNet Barcode Stickers.  <br /> <br />
+				You may order the barecode stickers directly through us or we can send you a file free of charge with all the information you need to have them locally printed.
+			</p>			
+		</div>
+	</div>	
+	<div style="clear:both">	</div>
 </div>

@@ -238,8 +238,13 @@ class Scanner
 		return obj
 	end
 	def self.parse_scan obj		
+
+
 		scan = JSON.parse(obj)	
 		scan_params = {}
+
+# 		
+# 		
 
 		scan_params[:email] = scan['user']['N']
 		scan_params[:password] = scan['user']['P']
@@ -255,18 +260,30 @@ class Scanner
 
 		scan_params[:location_id] = scan['location']
 		scan_params[:tag] = {}
+
 		# TAG
+		print 'fuck'
+		print scan['tag']
+		# Check T2 - T2-8983-1-43DDF-RF & convert to array
+		if scan['tag'].count('-') == 4			
+			scan['tag'] = scan['tag'].split('-')
+
+		end
+
 		if !scan['tag'][0].nil? 								# If array [0] nil, then must be hash
+
+
+			# Check T1 - ["T1", 854,1,"43ddf","RF"]											
 			if scan['tag'].kind_of?(Array)						# If array, assume tag version in [0]
 				scan_params[:tag][:version] = scan['tag'][0].capitalize	
-
-				if scan_params[:tag][:version] == 'T1'
+				if scan_params[:tag][:version] == 'T1' || scan_params[:tag][:version] == 'T2'
 					scan_params[:tag][:value] = scan['tag'][1]
 					scan_params[:tag][:netid] = scan['tag'][2]
 					scan_params[:tag][:key] = scan['tag'][3]
 				end						
-			end
+			end	
 		else
+			
 		# Default to T0			
 			scan_params[:tag][:version] = 'T0'	# scan['tag'][0].capitalize
 			scan_params[:tag][:value] = scan['tag']['V']
