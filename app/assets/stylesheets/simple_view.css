@@ -4,9 +4,7 @@
 	border:1px solid #CCC;
 	
 	margin:auto;
-	background-color: #FFF;
-
-	
+	background-color: #FFF;	
 }
 
 .simple.input.right {
@@ -34,11 +32,5 @@
 	margin:25px 0 0 0;
 	width:100%;
 	display:inline-block;
-
-}
-#jqxgrid.simple, .grid.simple {
-	margin:5px 5px 5px 5px;
-	width:450px;
-	font-weight: 20px;
 
 }

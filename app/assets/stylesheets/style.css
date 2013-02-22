@@ -15,7 +15,12 @@ Max Width Override
         margin: 0px;
         padding: 0px;
 
-    }    
+    }   
+.jqxExpander {	
+	border-bottom: 1px solid #CCC;
+
+}
+
 .hidden {
 	display:none;
 }
@@ -32,17 +37,11 @@ div.ui-slider-switch {
 }
 .clear{
 	clear:both;
-
-}
-.jqx-grid-cell-metro div{
-
-
 }
 li {
 	margin:0px;
 	padding:0px;
 }
-
 /*
 ul.main_nav  {
 	display: inline; 
@@ -448,8 +447,8 @@ table.report td {
 	margin:10px 0 0 0;
 
 }
-.jqx-grid-metro {
-	border:1px solid #CCC;
+.jqx-grid-clean {
+	
 
 }
 .report_chart {

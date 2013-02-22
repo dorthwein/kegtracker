@@ -125,7 +125,7 @@ class Reports::AssetController < ApplicationController
 #					default_network = Network.find(params['location_network_id'])
 #				end				
 								
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date) #.where(:report_entity => current_user.entity) #, :location_network => default_network)
+				facts = JqxConverter.jqxGrid(current_user.entity.network_facts.between(fact_time: start_date..end_date))
 		    	response = {:grid => facts} #, :location_networks => location_network_list}
  	 
 		    render json: response

@@ -29,14 +29,14 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 			{name: 'full_quantity'}, 				
 			{name: 'market_quantity'}, 			
 			{name: 'total_quantity'}, 				
-			{name: 'life_cycle_cycle_max_time'}, 	
-			{name: 'life_cycle_cycle_avg_time'}, 	
-			{name: 'life_cycle_cycle_min_time'}, 	
+			{name: 'life_cycle_max_time'}, 	
+			{name: 'life_cycle_avg_time'}, 	
+			{name: 'life_cycle_min_time'}, 	
 			{name: 'life_cycle_completed_cycles'}, 
 			{name: 'in_full_quantity'}, 			
 			{name: 'in_market_quantity'}, 			
 			{name: 'in_empty_quantity'}, 			
-			{name: 'in_total_quantity'}, 			
+			{name: 'in_total_quantity'}, 				
 			{name: 'out_full_quantity'}, 			
 			{name: 'out_market_quantity'}, 		
 			{name: 'out_empty_quantity'}, 			
@@ -76,29 +76,37 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 	});
 
 	// Initialize Grid	
-	$("#lifecyles").jqxGrid({		
+	$("#lifecyles").jqxGrid({	
+		showgroupsheader: false,
 		groupable: true,
+		closeablegroups: false,
+    	groupsrenderer: default_groupsrenderer,		
 		sortable: true,
-		filterable: true,
-        showfilterrow: true,		
+		filterable: false,
+        showfilterrow: false,		
 		autoshowfiltericon: false,		
 		theme: theme,
-		width: 1200,// system.simple_grid_width,
+		width: 958, // system.simple_grid_width,
 		groupsexpandedbydefault: false,
-		height: 300,
+		height: 400,
 		source: dataAdapter,
 		columnsresize: true,
 		altrows: true,	
 		root: 'grid',
 		ready: function() {
-// 41 45 24 - If u dont know what this is delete ~DFO~
 		},
 		columns: [	
-			{text: 'Location Network', datafield: 'location_network_description'}, 																								{name: 'location_network_description'},
-			{text: 'Brewery', datafield: 'product_entity_description'}, 	
 			{text: 'Product', datafield: 'product_description'},			
-			{text: 'Date', datafield: 'fact_time'}, 					
-			{text: 'Asset Type', datafield: 'asset_type_description'}, 		
+			{text: 'Asset Type', datafield: 'asset_type_description'}, 				
+			{text: 'Max', datafield: 'life_cycle_max_time'}, 	
+			{text: 'Avg', datafield: 'life_cycle_avg_time'}, 	
+			{text: 'Min', datafield: 'life_cycle_min_time'}, 	
+			{text: 'Cycles', datafield: 'life_cycle_completed_cycles'}, 
+			{text: 'First', datafield: 'life_cycle_completed_cycles'}, 
+			{text: 'Rank', datafield: 'life_cycle_completed_cycles'}, 
+			
+			{text: 'Last', datafield: 'life_cycle_completed_cycles'}, 
+			
 /*
 			{text: 'SKU', datafield: 'sku_description'}, 			
 			{text: ' ', datafield: 'sku_id'}, 						
@@ -138,6 +146,7 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 			{ text: 'Out Bound', 			cellsalign: 'center',	width:'100px',	datafield: 'out_total_quantity' }
 */
 		],
+        groups: ['asset_type_description']
         
 	});
 
@@ -162,7 +171,7 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 	    
 	    }
 	});
-	
+	$(".jqxExpander").jqxExpander({theme: theme, expanded: false });	
 	$("#excelExport").jqxButton({ theme: theme });	
 	$("#advancedView").jqxButton({ theme: theme });
 	$("#simpleView").jqxButton({ theme: theme });

@@ -1,0 +1,240 @@
+﻿.jqx-rc-tl-clean
+{
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.jqx-rc-tr-clean
+{
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.jqx-rc-bl-clean
+{
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.jqx-rc-br-clean
+{
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+/*top rounded Corners*/
+.jqx-rc-t-clean
+{
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+/*bottom rounded Corners*/
+.jqx-rc-b-clean
+{
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+/*right rounded Corners*/
+.jqx-rc-r-clean
+{
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+/*left rounded Corners*/
+.jqx-rc-l-clean
+{
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+/*all rounded Corners*/
+.jqx-rc-all-clean
+{
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+.jqx-widget-clean {
+    font-size: 12px;
+    font-family: 'segoe ui', arial, sans-serif;
+}
+.jqx-widget-content-clean{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color: #e5e5e5; color: #767676; background-color: #fff;}
+.jqx-widget-header-clean{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; color: #767676; border-color:#e5e5e5; background-color:#f4f4f4;}
+.jqx-fill-state-normal-clean{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color: #e5e5e5; color: #767676; background: #ffffff;}
+.jqx-button-clean {border-color: #cdcdcd;}
+.jqx-fill-state-hover-clean{border-color:#dedede; color: #000; background-color:#dedede;
+
+}
+.jqx-fill-state-focus-clean { border-color: #cdcdcd; }
+.jqx-fill-state-pressed-clean{border-color:#1faeff; color: #fff; background-color:#1faeff;
+
+}
+.jqx-input-clean {
+    border-color: #e5e5e5;
+}
+.jqx-scrollbar-state-normal-clean, .jqx-grid-bottomright-clean, .jqx-panel-bottomright-clean, .jqx-listbox-bottomright-clean{background-color:#f0f0f0;}
+.jqx-widget-clean .jqx-grid-column-header-clean, .jqx-grid-cell-clean, .jqx-widget-clean .jqx-grid-cell-clean, .jqx-widget-clean .jqx-grid-group-cell-clean, .jqx-grid-group-cell-clean{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color:#f4f4f4;}
+.jqx-tabs-title-selected-bottom-clean, .jqx-widget-clean .jqx-grid-group-cell-clean.jqx-grid-cell-pinned-clean, .jqx-tabs-selection-tracker-bottom-clean, .jqx-tabs-title-selected-top-clean, .jqx-tabs-selection-tracker-top-clean{color: #767676; border-color:#f4f4f4; border-bottom:1px solid #fff; background:#f4f4f4}
+.jqx-grid-cell-sort-alt-clean, .jqx-grid-cell-filter-clean, .jqx-grid-cell-filter-alt-clean, .jqx-grid-cell-alt-clean, .jqx-grid-cell-sort-clean{ background-color:#FFF; color: #000;}
+.jqx-menu-vertical-clean{background: #fff; border-color: #e5e5e5;}
+.jqx-widget-clean .jqx-grid-cell-clean, .jqx-widget-clean, .jqx-widget-clean .jqx-grid-group-cell-clean {color: #000; border-color: #FFF;}
+.jqx-widget-clean, .jqx-widget-clean, .jqx-widget-clean {color: #000; border-color: #CCC;}
+
+.jqx-widget-clean .jqx-grid-column-menubutton-clean, .jqx-widget-clean .jqx-grid-column-sortascbutton-clean, .jqx-widget-clean .jqx-grid-column-sortdescbutton-clean, .jqx-widget-clean .jqx-grid-column-filterbutton-clean {
+    background-color: transparent;
+    border-color: #FFF;
+}
+.jqx-window-header-clean, .jqx-input-button-header-clean, .jqx-calendar-title-header-clean, .jqx-grid-clean .jqx-widget-header-clean, .jqx-grid-header-clean, .jqx-grid-column-header-clean {font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color: #e5e5e5; color: #767676; background: #f4f4f4;}
+.jqx-grid-column-menubutton {
+    background-image: url('images/clean-icon-down.png');
+ }
+.jqx-widget-clean .jqx-grid-cell-selected-clean, .jqx-grid-cell-selected-clean{ background-color:#1faeff; border-color: #FFF; font-size: 13px;  color:#fff}
+.jqx-grid-cell-hover-clean{ background-color:#dedede;}
+ /*applied to the column's sort button when the sort order is ascending.*/
+ .jqx-grid-column-sortascbutton {
+    background-image: url('images/clean-icon-up.png');
+ }
+.jqx-grid-column-sortdescbutton {
+    background-image: url('images/clean-icon-down.png');
+}
+.jqx-checkbox-hover-clean {
+    background-color: #fff;
+}
+.jqx-radiobutton-hover-clean {
+    background-color: #fff;
+}
+.jqx-scrollbar-thumb-state-normal-horizontal-clean, .jqx-scrollbar-thumb-state-normal-clean {
+    background: #cdcdcd; border-color: #cdcdcd;
+}
+.jqx-scrollbar-thumb-state-hover-horizontal-clean, .jqx-scrollbar-thumb-state-hover-clean {
+    background: #a6a6a6; border-color: #a6a6a6;
+}
+.jqx-scrollbar-thumb-state-pressed-horizontal-clean, .jqx-scrollbar-thumb-state-pressed-clean {
+    background: #606060; border-color: #606060;
+}
+.jqx-scrollbar-button-state-normal-clean
+{
+    border: 1px solid #f0f0f0; 
+    background: #f0f0f0;
+}
+/*applied to the scrollbar buttons in hovered state.*/
+.jqx-scrollbar-button-state-hover-clean
+{
+    border: 1px solid #dadada;
+    background: #dadada;
+}
+/*applied to the scrollbar buttons in pressed state.*/
+.jqx-scrollbar-button-state-pressed-clean
+{
+    border: 1px solid #606060;
+    background: #606060;
+}
+
+/*icons*/
+.jqx-window-collapse-button-clean
+{
+    background-image: url(images/clean-icon-up.png);
+}
+.jqx-window-collapse-button-collapsed-clean {
+  background-image: url(images/clean-icon-down.png);
+}
+.icon-arrow-up-clean, .jqx-expander-arrow-bottom-clean, .jqx-menu-item-arrow-up-clean
+{
+    background-image: url('images/clean-icon-up.png');
+}
+.icon-arrow-down-clean, .jqx-expander-arrow-top-clean, .jqx-tree-item-arrow-expand-clean, .jqx-tree-item-arrow-expand-hover-clean, .jqx-menu-item-arrow-down-clean
+{
+    background-image: url('images/clean-icon-down.png');
+}
+.icon-arrow-left-clean, .jqx-menu-item-arrow-left-clean
+{
+    background-image: url('images/clean-icon-left.png');
+}
+.icon-arrow-right-clean, .jqx-menu-item-arrow-right-clean, .jqx-tree-item-arrow-collapse-clean, .jqx-tree-item-arrow-collapse-hover-clean
+{
+    background-image: url('images/clean-icon-right.png');
+}
+.jqx-tabs-arrow-left-clean, .jqx-tree-item-arrow-collapse-rtl-clean, .jqx-tree-item-arrow-collapse-hover-rtl-clean
+{
+    background-image: url('images/clean-icon-left.png');
+}
+.jqx-tabs-arrow-right-clean
+{
+    background-image: url('images/clean-icon-right.png');
+}
+.jqx-menu-item-arrow-up-selected-clean, .icon-arrow-up-selected-clean{background-image:url('images/clean-icon-up-white.png');background-repeat:no-repeat;background-position:center;}
+.jqx-menu-item-arrow-down-selected-clean, .icon-arrow-down-selected-clean{background-image:url('images/clean-icon-down-white.png');background-repeat:no-repeat;background-position:center;}
+.jqx-menu-item-arrow-left-selected-clean, .icon-arrow-left-selected-clean{background-image:url('images/clean-icon-left-white.png');background-repeat:no-repeat;background-position:center;}
+.jqx-menu-item-arrow-right-selected-clean, .icon-arrow-right-selected-clean{background-image:url('images/clean-icon-right-white.png');background-repeat:no-repeat;background-position:center;}
+.jqx-tabs-close-button-clean{background-image:url(images/close.png);  background-repeat:no-repeat;  background-position:center;}
+.jqx-tabs-close-button-selected-clean{background-image:url(images/close.png);  background-repeat:no-repeat;  background-position:center;}
+.jqx-tabs-close-button-hover-clean{background-image:url(images/close.png);  background-repeat:no-repeat;  background-position:center;}
+.jqx-scrollbar-clean .icon-arrow-up-selected-clean{background-image:url('images/clean-icon-up-white.png'); background-repeat:no-repeat; background-position:center;}
+.jqx-scrollbar-clean .icon-arrow-down-selected-clean{background-image:url('images/clean-icon-down-white.png'); background-repeat:no-repeat; background-position:center;}
+.jqx-scrollbar-clean .icon-arrow-left-selected-clean{background-image:url('images/clean-icon-left-white.png'); background-repeat:no-repeat; background-position:center;}
+.jqx-scrollbar-clean .icon-arrow-right-selected-clean{background-image:url('images/clean-icon-right-white.png');background-repeat:no-repeat; background-position:center;}
+.jqx-slider-slider-clean
+{
+    border-color:#cdcdcd;
+}
+.jqx-slider-button-clean
+{
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    border-color: #cdcdcd;
+}
+.jqx-input-button-content-clean
+{  
+    font-size: 10px;
+}
+.jqx-dropdownlist-state-normal-clean, .jqx-dropdownlist-state-hover-clean, .jqx-dropdownlist-state-selected-clean,
+.jqx-scrollbar-button-state-hover-clean, .jqx-scrollbar-button-state-normal-clean, .jqx-scrollbar-button-state-pressed-clean,
+.jqx-scrollbar-thumb-state-normal-horizontal-clean, .jqx-scrollbar-thumb-state-hover-horizontal-clean, .jqx-scrollbar-thumb-state-pressed-horizontal-clean,
+.jqx-scrollbar-thumb-state-normal-clean, .jqx-scrollbar-thumb-state-pressed-clean, .jqx-button-clean, .jqx-tree-item-hover-clean, .jqx-tree-item-selected-clean,
+.jqx-tree-item-clean, .jqx-menu-item-clean, .jqx-menu-item-hover-clean, .jqx-menu-item-selected-clean, .jqx-menu-item-top-clean, .jqx-menu-item-top-hover-clean, 
+.jqx-menu-item-top-selected-clean, .jqx-slider-button-clean, .jqx-slider-slider-clean
+ {
+    -webkit-transition: background-color 100ms linear;
+     -moz-transition: background-color 100ms linear;
+     -o-transition: background-color 100ms linear;
+     -ms-transition: background-color 100ms linear;
+     transition: background-color 100ms linear;
+}
+.jqx-switchbutton-clean {
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px;
+    border: 2px solid #a6a6a6;
+}
+.jqx-switchbutton-thumb-clean {
+    width: 12px;
+    background: #000;
+    border: 1px solid #000;
+}
+.jqx-switchbutton-label-on-clean {
+    background: #1faeff;
+    color: #1faeff;
+}
+.jqx-switchbutton-label-off-clean {
+    background: #a6a6a6;
+    color: #a6a6a6;
+}
+
+.jqx-switchbutton-wrapper-clean {
+}
