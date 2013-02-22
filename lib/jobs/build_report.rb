@@ -6,6 +6,9 @@ class BuildReport
 
 	def network_facts		
 		Entity.all.each do |entity|				
+			print entity.description.to_s
+			print "\n ------------------------------------------------------ \n"
+
 		# Asset Summary Report
 			asset_activity_facts = entity.visible_asset_activity_facts.lte(fact_time: @date).desc(:fact_time)			
 			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
@@ -87,6 +90,9 @@ class BuildReport
 			last_date = @date.end_of_day
 			
 			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).desc(:fact_time)
+#			print asset_activity_facts.to_json
+#			print "\n"
+#			print "\n"
 #			asset_activity_facts = entity.visible_fill_activity_facts.between(fact_time: first_date..last_date)
 			t = []
 
@@ -95,23 +101,26 @@ class BuildReport
 					x = { 
 						:fill_asset_activity_fact => a.fill_asset_activity_fact,
 						:cycle_time => a.completed_cycle_time,
-						:asset_type_id => a.asset_type_id,
-						:product_id => a.product_id,
-						:location_network_id => a.location_network_id,
+						:asset_type => a.asset_type,
+						:product => a.product,
+						:location_network => a.location_network,
 					}
 					t.push(x)
 				end
 			end
+			print t.length
 			t = t.uniq
-
-
-			by_network = t.group_by{|x| x[:location_network_id]}
+			print "\n"
+			print t.length
+			print "\n"
+			print "\n"
+			by_network = t.group_by{|x| x[:location_network]}
 			by_network.each do |y|
 
-				by_product = y[1].group_by{|x| x[:product_id]}
+				by_product = y[1].group_by{|x| x[:product]}
 				by_product.each do |z|							
 
-					by_asset_type = z[1].group_by{|x| x[:asset_type_id]}
+					by_asset_type = z[1].group_by{|x| x[:asset_type]}
 					by_asset_type.each do |b|											
 							
 						t = []						
@@ -122,9 +131,15 @@ class BuildReport
 						minmax = []
 
 						avg = (avg / 86400).ceil
-						minmax[0] = (t.min / 86400).ceil
-						minmax[1] = (t.max / 86400).ceil
+						minmax[0] = (t.min.to_f / 86400).ceil
+						minmax[1] = (t.max.to_f / 86400).ceil
 						
+						print entity.description.to_s + ' -- ' + y[0].description.to_s + ' -- ' + z[0].description.to_s + ' -- ' + b[0].description.to_s						
+						print "\n"
+						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
+						print "\n"
+						print "\n"
+
 						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
 							.where(	:report_entity => entity,
 									:location_network => y[0],

@@ -77,66 +77,6 @@ class Asset
 	belongs_to :pickup_network, :class_name => 'Network'	
 	field :pickup_network_description, type: String	
 
-
-	# Set before all actions to detect if the asset should have "Smart Actions" applied to it.
-=begin
-	def smart_network_processing options
-		to_location = Location.find(options[:to_location])
-		to_network = to_location.network
-
-		print to_network.description + " -- " + to_location.description + " \n"
-		if self.location_network_id != to_network._id		
-			print "Smart Network Processing \n"
-		# Effects at From Network
-		### OUTBOUND ####
-		# Asset Leaving a brewery
-			if self.location_network.nil?
-				self.location_network = to_network
-			end
-			if self.location.nil?
-				self.location = to_location
-			end
-			
-			if self.location_network.network_type == 1 && self.asset_status != 1
-				# Fill Asset at Outbound Location
-				opt = {
-						:product => self.location_network.smart_mode_product,
-						:location_id => self.location_network.smart_mode_out_location._id,
-						:correction => options[:correction],
-						:time => options[:time]
-					}
-				self.fill(opt)			
-			end
-
-			# Asset leaving a distributor/market pickup at Outbound Location
-			if (self.location_network.network_type == 2 || self.location_network.network_type == 3) && to_network.network_type == 1 && self.asset_status != 0
-				opt = {
-						:location_id => self.location_network.smart_mode_out_location._id,
-						:correction => options[:correction],
-						:time => options[:time]
-					}
-				self.pickup(opt)
-
-			end
-
-			### INBOUND ###			
-			# Asset Arriving at Production Facility - Empty asset, purge other entity product
-			if to_network.network_type == 1
-				# Needs to be changed to check for Authorized products
-				if to_network.entity != self.product.entity
-					self.product = nil
-				end
-				opt = {
-						:location_id => self.location_network.smart_mode_out_location._id,
-						:correction => options[:correction],
-						:time => options[:time]
-					}
-				self.pickup(opt)
-			end
-		end
-		self.save
-	end
-=end	
 	def add_to_invoice options
 		print '->' 
 		invoice = Invoice.where(:_id => options[:invoice_id]).first

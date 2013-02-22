@@ -99,6 +99,9 @@ class Scanner
 	def self.auto_mode_to_brewery obj
 		if obj[:to_network].network_type == 1 && obj[:handle_code] != 4
 			obj[:handle_code] = 2
+			if obj[:asset].product.entity != obj[:to_network].entity
+				obj[:asset].product = nil
+			end
 =begin
 			if obj[:asset].asset_status != 0
 				# If not empty - pickup				

@@ -32,16 +32,16 @@ end
 
 task :build_test => :environment do
 # 30 Days
-	start = Time.new() - (86400 * 7)
-	last = Time.new() # + 86400
-	current = start
+#	start = Time.new() - (86400 * 7)
+#	last = Time.new() # + 86400
+#	current = start
 
-	while current < last
-		current = current + 86400
-		print current.to_s + "\n"		
-		a = BuildReport.new(current)	
+#	while current < last
+#		current = current + 86400
+#		print current.to_s + "\n"		
+		a = BuildReport.new()	
 		a.network_facts
-	end	
+#	end	
 end
 
 task :save_entities => :environment do
@@ -139,8 +139,6 @@ task :convert_asset_state_to_asset_status => :environment do
 #	full_asset_state =  '5069db72a682140200000002' # AssetState.where(:description => 'Full').first
 #	empty_asset_state = '5069db6ca682140200000001'	# AssetState.where(:description => 'Empty').first
 #	market_asset_state = '5087079c4976f70200000009' # AssetState.where(:description => 'Market').first
-
-
         
 	AssetActivityFact.where(asset_state_id: {"$oid" => "5069db72a682140200000002"}).set(:asset_status, 1)
 	AssetActivityFact.where(asset_state_id: {"$oid" => "5069db6ca682140200000001"}).set(:asset_status, 0)
