@@ -87,7 +87,7 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 		autoshowfiltericon: false,		
 		theme: theme,
 		width: 958, // system.simple_grid_width,
-		groupsexpandedbydefault: false,
+		groupsexpandedbydefault: true,
 		height: 400,
 		source: dataAdapter,
 		columnsresize: true,
@@ -96,16 +96,16 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 		ready: function() {
 		},
 		columns: [	
-			{text: 'Product', datafield: 'product_description'},			
-			{text: 'Asset Type', datafield: 'asset_type_description'}, 				
-			{text: 'Max', datafield: 'life_cycle_max_time'}, 	
-			{text: 'Avg', datafield: 'life_cycle_avg_time'}, 	
-			{text: 'Min', datafield: 'life_cycle_min_time'}, 	
-			{text: 'Cycles', datafield: 'life_cycle_completed_cycles'}, 
-			{text: 'First', datafield: 'life_cycle_completed_cycles'}, 
-			{text: 'Rank', datafield: 'life_cycle_completed_cycles'}, 
-			
-			{text: 'Last', datafield: 'life_cycle_completed_cycles'}, 
+			{text: 'Product', 		datafield: 'product_description'},			
+			{text: 'Container', 	datafield: 'asset_type_description'}, 				
+			{text: 'Min (Days)', 	width:85, datafield: 'life_cycle_min_time'}, 	
+			{text: 'Avg (Days)', 	width:85, datafield: 'life_cycle_avg_time'}, 	
+			{text: 'Max (Days)', 	width:85, datafield: 'life_cycle_max_time'}, 							
+			{text: 'Cycles', 		width:85, datafield: 'life_cycle_completed_cycles'}, 
+
+//			{text: 'First', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Rank', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Last', datafield: 'life_cycle_completed_cycles'}, 
 			
 /*
 			{text: 'SKU', datafield: 'sku_description'}, 			
@@ -135,7 +135,7 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 
 			{ text: 'Product', 		width:'250px', datafield: 'product', filtertype: 'checkedlist'  },
 			{ text: 'Brewery',		datafield: 'product_entity', filtertype: 'checkedlist'  },
-			{ text: 'Asset Type', datafield: 'asset_type', filtertype: 'checkedlist' },		
+			{ text: 'Container', datafield: 'asset_type', filtertype: 'checkedlist' },		
 //			{ text: 'In - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'in_full_quantity' },			
 //			{ text: 'In - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },			
 //			{ text: 'In - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'in_empty_quantity' },						
@@ -150,6 +150,153 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
         
 	});
 
+	$("#activity_summary").jqxGrid({	
+		showgroupsheader: false,
+		groupable: true,
+		closeablegroups: false,
+    	groupsrenderer: default_groupsrenderer,		
+		sortable: true,
+		filterable: false,
+        showfilterrow: false,		
+		autoshowfiltericon: false,		
+		theme: theme,
+		width: 958, // system.simple_grid_width,
+		groupsexpandedbydefault: true,
+		height: 400,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,	
+		root: 'grid',
+		ready: function() {
+		},
+		columns: [	
+			{text: 'Product', 		datafield: 'product_description'},			
+			{text: 'Container',	datafield: 'asset_type_description'}, 				
+			{text: 'Fills', 		width:80, datafield: 'fill_quantity'},				
+			{text: 'Deliveries', 	width:80, datafield: 'delivery_quantity'}, 			
+			{text: 'Pickups', 		width:80, datafield: 'pickup_quantity'}, 			
+			{text: 'Moves', 		width:80, datafield: 'move_quantity'}, 				
+			
+//			{text: 'First', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Rank', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Last', datafield: 'life_cycle_completed_cycles'}, 
+			
+/*
+			{text: 'SKU', datafield: 'sku_description'}, 			
+			{text: ' ', datafield: 'sku_id'}, 						
+			{text: 'Fill Qty', datafield: 'fill_quantity'},				
+			{text: 'Delivery Qty', datafield: 'delivery_quantity'}, 			
+			{text: 'Pickup Qty', datafield: 'pickup_quantity'}, 			
+			{text: 'Move Qty', datafield: 'move_quantity'}, 				
+			{text: 'Empty Qty', datafield: 'empty_quantity'}, 				
+			{text: 'Full Qty', datafield: 'full_quantity'}, 				
+			{text: 'Market Qty', datafield: 'market_quantity'}, 			
+			{text: 'Total Qty', datafield: 'total_quantity'},
+			{text: 'Max Cycle', datafield: 'life_cycle_cycle_max_time'}, 	
+			{text: 'Avg Cycle', datafield: 'life_cycle_cycle_avg_time'}, 	
+			{text: 'Min Cycle', datafield: 'life_cycle_cycle_min_time'}, 	
+			{text: '# Cycles', datafield: 'life_cycle_completed_cycles'}, 
+*/
+/*
+			{text: '', datafield: 'in_full_quantity'}, 			
+			{text: '', datafield: 'in_market_quantity'}, 			
+			{text: '', datafield: 'in_empty_quantity'}, 			
+			{text: '', datafield: 'in_total_quantity'}, 			
+			{text: '', datafield: 'out_full_quantity'}, 			
+			{text: '', datafield: 'out_market_quantity'}, 		
+			{text: '', datafield: 'out_empty_quantity'}, 			
+			{text: '', datafield: 'out_total_quantity'}, 	
+
+			{ text: 'Product', 		width:'250px', datafield: 'product', filtertype: 'checkedlist'  },
+			{ text: 'Brewery',		datafield: 'product_entity', filtertype: 'checkedlist'  },
+			{ text: 'Container', datafield: 'asset_type', filtertype: 'checkedlist' },		
+//			{ text: 'In - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'in_full_quantity' },			
+//			{ text: 'In - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },			
+//			{ text: 'In - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'in_empty_quantity' },						
+			{ text: 'In Bound',			cellsalign: 'center',	width:'100px',	datafield: 'in_total_quantity' },
+//			{ text: 'Out - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'out_full_quantity' },			
+//			{ text: 'Out - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },
+//			{ text: 'Out - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'out_empty_quantity' },						
+			{ text: 'Out Bound', 			cellsalign: 'center',	width:'100px',	datafield: 'out_total_quantity' }
+*/
+		],
+        groups: ['asset_type_description']
+        
+	});
+
+	$("#sku_summary").jqxGrid({	
+		showgroupsheader: false,
+		groupable: true,
+		closeablegroups: false,
+    	groupsrenderer: default_groupsrenderer,		
+		sortable: true,
+		filterable: false,
+        showfilterrow: false,		
+		autoshowfiltericon: false,		
+		theme: theme,
+		width: 958, // system.simple_grid_width,
+		groupsexpandedbydefault: true,
+		height: 400,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,	
+		root: 'grid',
+		ready: function() {
+		},
+		columns: [	
+			{text: 'Product', 		datafield: 'product_description'},			
+			{text: 'Container', 	datafield: 'asset_type_description'}, 				
+			{text: 'Empty', 	width:80, datafield: 'empty_quantity'}, 				
+			{text: 'Full', 		width:80, datafield: 'full_quantity'}, 				
+			{text: 'Market', 	width:80, datafield: 'market_quantity'}, 			
+			{text: 'Total', 	width:80, datafield: 'total_quantity'},
+
+//			{text: 'First', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Rank', datafield: 'life_cycle_completed_cycles'}, 
+//			{text: 'Last', datafield: 'life_cycle_completed_cycles'}, 
+			
+/*
+			{text: 'SKU', datafield: 'sku_description'}, 			
+			{text: ' ', datafield: 'sku_id'}, 						
+			{text: 'Fill Qty', datafield: 'fill_quantity'},				
+			{text: 'Delivery Qty', datafield: 'delivery_quantity'}, 			
+			{text: 'Pickup Qty', datafield: 'pickup_quantity'}, 			
+			{text: 'Move Qty', datafield: 'move_quantity'}, 				
+			{text: 'Empty Qty', datafield: 'empty_quantity'}, 				
+			{text: 'Full Qty', datafield: 'full_quantity'}, 				
+			{text: 'Market Qty', datafield: 'market_quantity'}, 			
+			{text: 'Total Qty', datafield: 'total_quantity'},
+			{text: 'Max Cycle', datafield: 'life_cycle_cycle_max_time'}, 	
+			{text: 'Avg Cycle', datafield: 'life_cycle_cycle_avg_time'}, 	
+			{text: 'Min Cycle', datafield: 'life_cycle_cycle_min_time'}, 	
+			{text: '# Cycles', datafield: 'life_cycle_completed_cycles'}, 
+*/
+/*
+			{text: '', datafield: 'in_full_quantity'}, 			
+			{text: '', datafield: 'in_market_quantity'}, 			
+			{text: '', datafield: 'in_empty_quantity'}, 			
+			{text: '', datafield: 'in_total_quantity'}, 			
+			{text: '', datafield: 'out_full_quantity'}, 			
+			{text: '', datafield: 'out_market_quantity'}, 		
+			{text: '', datafield: 'out_empty_quantity'}, 			
+			{text: '', datafield: 'out_total_quantity'}, 	
+
+			{ text: 'Product', 		width:'250px', datafield: 'product', filtertype: 'checkedlist'  },
+			{ text: 'Brewery',		datafield: 'product_entity', filtertype: 'checkedlist'  },
+			{ text: 'Container', datafield: 'asset_type', filtertype: 'checkedlist' },		
+//			{ text: 'In - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'in_full_quantity' },			
+//			{ text: 'In - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },			
+//			{ text: 'In - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'in_empty_quantity' },						
+			{ text: 'In Bound',			cellsalign: 'center',	width:'100px',	datafield: 'in_total_quantity' },
+//			{ text: 'Out - Full', 			cellsalign: 'center',	width:'75px',	datafield: 'out_full_quantity' },			
+//			{ text: 'Out - Market/Empty', 	cellsalign: 'center',	width:'75px',	datafield: 'out_market_or_empty_quantity' },
+//			{ text: 'Out - Empty', 			cellsalign: 'center',	width:'75px',	datafield: 'out_empty_quantity' },						
+			{ text: 'Out Bound', 			cellsalign: 'center',	width:'100px',	datafield: 'out_total_quantity' }
+*/
+		],
+        groups: ['asset_type_description']
+        
+	});
 
 	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
 	$('#date').bind('valuechanged', function (event) {  
