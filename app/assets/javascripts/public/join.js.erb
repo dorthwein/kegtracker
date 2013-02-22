@@ -44,20 +44,9 @@ $(document).on('pageshow', '#_public_join', function(event){
 			}).done(function( data ) {				
 				if(data['success'] == true){
 					alert('Thank you for registering, we will contact you shortly');
-
-					$.each($('.input'), function(key, item){
-						element = '#' + item.id;
-						$(element).jqxInput({disabled: true});
-					});
-					
-					$.each($('.dropdown'), function(key, item){
-						element = '#' + item.id;
-						$(element).jqxDropDownList({disabled: true});
-					});
+					$('.input').jqxInput({disabled: true});				
+					$('.dropdown').jqxDropDownList({disabled: true});
 				};
-
-					
-
 			})
 		}		
 	});

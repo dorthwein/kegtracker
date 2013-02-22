@@ -80,6 +80,7 @@ Cobalt::Application.routes.draw do
 	
 	namespace :system do
 		resources :product_types
+		resources :registrations
 	  	resources :entity_types
 		resources :entities    	
 	  	resources :handle_codes

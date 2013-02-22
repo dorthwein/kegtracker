@@ -2,20 +2,17 @@ class InvoiceDetail
 	include Mongoid::Document
 
 	belongs_to :invoice
-	field :invoice_detail_type, type: Integer
-	field :invoice_detail_type_description, type: Integer
-
-	field :invoice_detail_description, type: String
-
-# Asset Type Detail 
 	belongs_to :asset
 	belongs_to :asset_activity_fact
-
 	belongs_to :asset_type
-	field :asset_type_description, type: String
-
 	belongs_to :product
+	
+	field :invoice_detail_type, type: Integer
+	field :invoice_detail_type_description, type: Integer
+	field :invoice_detail_description, type: String
+	field :asset_type_description, type: String
 	field :product_description, type: String
+	field :product_entity_description, type: String
 
 	field :asset_status, type: Integer
 	field :asset_status_description, type: String
@@ -90,6 +87,9 @@ class InvoiceDetail
 		self.invoice_detail_type_description = get_invoice_detail_type_description
 
 		self.product_description = self.product.description
+		self.product_entity_description = self.product.entity.description
+
+
 		self.asset_type_description = self.asset_type.description
 		self.asset_status_description = get_asset_status_description
 		self.invoice_detail_description = self.get_invoice_detail_description		

@@ -5,7 +5,7 @@ Items to complete before marketable
 Inside Rim Weld Start Date: January 24th, 2013
 --- SYSTEM RELATED TASKS ---
 *****************************************
-reporting - Est. Time: 3 weeks (21 days)
+Reporting - Est. Time: 3 weeks (21 days)
 *****************************************
 	1) Asset Browse Report (COMPLETE)
 		- Rework into reports structure (disolve Browse structure)
@@ -25,18 +25,20 @@ reporting - Est. Time: 3 weeks (21 days)
 	5) Product Perfomance Scorecard
 		- Design & Build
 
-	6) Float Life Cycle
+	6) Float Life Cycle (COMPLETE - May or maynot work...)
 		- Design & Build
 
-	7) Asset Activity
+	7) Asset Activity (COMPLETE)
 		- Refine existing - essentially design & build
 
-	8) Avg. Lifecycle Time
+	8) Avg. Lifecycle Time (COMPLETE)
 		- Design & Build
 
 	9) Lost Asset Report
 
 	10) Keg Register - Low Priority
+
+	11) Lookup via scan
 
 ***********************************************
 Maintenance - Est. Time: TBD minimal 2 weeks
@@ -44,7 +46,7 @@ Maintenance - Est. Time: TBD minimal 2 weeks
 	1) Users	(COMPLETE)
 		- Redo UI		
 
-	2) Partnerships
+	2) Partnerships	(COMPLETE)
 		- Redo UI
 		- Refine Mechanics
 
@@ -67,10 +69,12 @@ Maintenance - Est. Time: TBD minimal 2 weeks
 	9) Product Variatals List
 		- Define & add items to list
 
+	10) Deployment Settings (Entity Level)
+
 ***********************************************
 SmartNetworks - Est. Time: TBD minimal 1 week
 ***********************************************
-	1) Create/Determine Network Types
+	1) Create/Determine Network Types (COMPLETE)
 		- Distributor
 		- Brewery		
 
@@ -82,7 +86,7 @@ dashboard - Est. Time: TBD minimal 1 week
 *******************************************
 System Management - Est. Time:  1 week
 *******************************************
-	1) Create new entity/customer
+	1) Create new entity/customer 
 		- Build & refine process
 
 	2) Monitoring tools

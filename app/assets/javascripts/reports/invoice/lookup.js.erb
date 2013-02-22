@@ -11,7 +11,14 @@ $(document).on('pageshow', '#_reports_invoice_lookup', function(event){
 		datatype : "json",
 		type: 'POST',
 		datafields: [
-			{ name: 'invoice_detail_description' },
+			{name: 'invoice_detail_type'},
+			{name: 'invoice_detail_type_description'},
+			{name: 'invoice_detail_description'},
+			{name: 'asset_type_description'},
+			{name: 'product_description'},
+			{name: 'product_entity_description'},						
+			{name: 'asset_status'},
+			{name: 'asset_status_description'},			
 		],
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
 		root: 'invoice_details',
@@ -57,7 +64,14 @@ $(document).on('pageshow', '#_reports_invoice_lookup', function(event){
 
 		},
 		columns: [																						
-			{ text: 'Description', datafield: 'invoice_detail_description', filtertype: 'checkedlist'  },
+//			{ text: '', datafield: 'invoice_detail_type'},
+//			{ text: '', datafield: 'invoice_detail_type_description'},
+			{ text: 'Description', datafield: 'invoice_detail_description'},
+			{ text: 'Brewery', datafield: 'product_entity_description'},
+			{ text: 'User'},
+			{ text: 'Time'},			
+			{ text: 'Status', datafield: 'asset_status_description'},			
+			{ text: 'Comments'},
 		],
         groups: ['invoice_detail_description']
 	});

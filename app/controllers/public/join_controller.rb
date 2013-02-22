@@ -5,6 +5,7 @@ class Public::JoinController < ApplicationController
         	format.html
     	end
 	end
+	
 	def create
 		respond_to do |format|          
 		  format.json { 

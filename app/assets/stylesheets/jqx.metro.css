@@ -93,7 +93,7 @@
 .jqx-grid-cell-sort-alt-metro, .jqx-grid-cell-filter-metro, .jqx-grid-cell-alt-metro, .jqx-grid-cell-sort-metro{ background-color:#FFF; color: #000;}
 .jqx-menu-vertical-metro{background: #fff; border-color: #e5e5e5;}
 .jqx-widget-metro .jqx-grid-cell-metro, .jqx-widget-metro .jqx-grid-column-header-metro, .jqx-widget-metro .jqx-grid-group-cell-metro {color: #000; border-color: #FFF;}
-.jqx-grid-cell-pinned, .jqx-grid-cell-pinned-metro, .jqx-widget-metro .jqx-grid-column-menubutton-metro, .jqx-widget-metro .jqx-grid-column-sortascbutton-metro, .jqx-widget-metro .jqx-grid-column-sortdescbutton-metro, .jqx-widget-metro .jqx-grid-column-filterbutton-metro {
+.jqx-grid-cell-pinned, .jqx-grid-cell-pinned-metro,.jqx-widget-metro .jqx-grid-column-menubutton-metro, .jqx-widget-metro .jqx-grid-column-sortascbutton-metro, .jqx-widget-metro .jqx-grid-column-sortdescbutton-metro, .jqx-widget-metro .jqx-grid-column-filterbutton-metro {
     background-color: transparent;
     border-color: #e5e5e5;
 }

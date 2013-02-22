@@ -26,7 +26,7 @@ default_groupsrenderer = function (text, group, expanded, data) {
 
 system.table_height = '625px'
 system.simple_grid_height = '800px';
-system.simple_grid_width = '950px';
+system.simple_grid_width = '958px';
 
 // window.location.protocol = "http"
 
