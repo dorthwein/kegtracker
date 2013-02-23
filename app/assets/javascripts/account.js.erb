@@ -1,0 +1,213 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+$(document).on('pageshow', '#_account', function(event){	
+
+	// prepare the data
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'
+	
+	// Inputs
+	
+	$(".input").jqxInput({height: '25px', width: '285px', minLength: 1, theme: theme, disabled: false });
+
+	$("#name").jqxInput({placeHolder: 'Name'});
+	$("#address_1").jqxInput({placeHolder: 'Address 1'});
+	$("#address_2").jqxInput({placeHolder: 'Address 2'});
+	$("#city").jqxInput({placeHolder: 'City', width: '150px'});
+	$("#state").jqxInput({placeHolder: 'State', width:'60px'});
+	$("#zip").jqxInput({placeHolder: 'Zip', width:'60px'});
+
+
+
+	$("#admin_user_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '285px',  height: '25px', theme: theme});		
+	$("#admin_user_id_save").jqxButton({ theme: theme, width:100, height:20 });            
+	$("#admin_user_id_save").click(function () {
+
+	});
+
+
+	$("#address_save").jqxButton({ theme: theme, width:100, height:20 });            
+	$("#address_save").click(function () {
+
+	});	
+	$(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
+    $(".toggle_switch").bind('click', function () {        
+        if(!$(this).attr('disabled')){	        
+	        var toggled = $(this).jqxToggleButton('toggled');
+	        if (toggled) {
+	            $(this).html('On');
+	            $(this).val(1);
+	        }
+	        else {
+				$(this).html('Off');
+	            $(this).val(0);
+	        }
+	    }
+    });
+
+
+/*
+	$('#form_validator').jqxValidator({
+	 	rules: [
+	 		// Email Rules
+	        { input: '#email', message: 'Username is required!', action: 'keyup, blur', rule: 'required' },
+			{ input: '#email', message: 'Invalid e-mail!', action: 'keyup', rule: 'email' },
+
+	        // First/Last Name
+	        { input: '#first_name', message: 'First Name is required!', action: 'keyup, blur', rule: 'required' },
+	        { input: '#first_name', message: 'Your first name must contain only letters!', action: 'keyup', rule: 'notNumber' },
+
+	        { input: '#last_name', message: 'Last Name is required!', action: 'keyup, blur', rule: 'required' },
+	        { input: '#last_name', message: 'Your last name must contain only letters!', action: 'keyup', rule: 'notNumber' },
+	        { input: '#password', message: 'Password is required!', action: 'keyup, blur', rule: function (input, commit) {
+					if( $('#newSaveButton').is(':visible') && $('#password').val() == '' ){
+						return false;
+					}
+					return true;
+	        	}
+	        }, 
+
+	        { input: '#password', message: 'Your password must be greater than 4 characters!', action: 'keyup, blur', rule: function (input, commit) {
+					if( $('#newSaveButton').is(':visible') && $('#password').val().length < 4){												
+						return false;
+					}
+					return true;
+	        	}
+	        },
+	        { input: '#password_confirmation', message: 'Password doesn\'t match!', action: 'keyup, focus', rule: function(input, commit){
+		            if (input.val() === $('#password').val())  {
+		                return true;
+		            }
+		           	return false;		           
+	        	}
+	        },
+		],
+		theme: theme
+	});
+
+*/
+	// Style Buttons
+	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#updateSaveButton").bind('click', function () {
+    	if($('#form_validator').jqxValidator('validate', element)){	
+	        var params = {user:{}}
+//	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params['user'][obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params['user'][obj.id] = $(obj).val();
+	        });        
+
+
+	//		alert(JSON.stringify(params));
+			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			$.ajax({
+				url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+				type: "PUT",
+				dataType : "JSON",
+				data: params,
+			}).done(function( data ) {	
+				if(data['success'] == false){
+					alert(data['message'])
+				}			
+				dataAdapter.dataBind();
+			})
+		}
+    });
+    
+    $("#newCancelButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+
+	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
+    $("#newSaveButton").bind('click', function () {
+    	if($('#form_validator').jqxValidator('validate', element)){	
+	        var params = {user:{}}
+	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
+	        $('.toggle_switch').each(function(key, obj) {        
+	        	params['user'][obj.id] = $(obj).val();
+	        });
+
+	        $('.form_input').each(function(key, obj) {        
+	        	params['user'][obj.id] = $(obj).val();
+	        });        
+
+			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			$.ajax({
+				url: system.server + $('.ui-page-active').attr('data-url'),
+				type: "POST",
+				data: params,
+			}).done(function( data ) {	
+				if(data['success'] == false){
+					alert(data['message'])
+				}
+				dataAdapter.dataBind();
+			})
+		}
+    });	
+
+
+	$("#new").jqxButton({ theme: theme, width:100 });            
+	$("#new").click(function () {
+		$.ajax({
+			type: "GET",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/new',
+			data: { },
+		}).done(function( data ) {			
+			
+			$("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
+			$("#entity_id").jqxDropDownList('clearSelection' ); 
+			
+			$(".toggle_switch").html('Off');
+            $(".toggle_switch").val(0);
+            $(".toggle_switch").jqxToggleButton({toggled: false });
+            $(".toggle_switch").jqxToggleButton('refresh');
+
+			$(".form_input").jqxInput({disabled: false });
+			$(".form_input").val('');
+
+			$(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });
+
+			$("#newSaveButton").jqxButton({disabled: false});			
+			$("#newCancelButton").jqxButton({disabled: false});			
+
+			$("#newSaveButton").show();			
+			$("#newCancelButton").show();
+			$("#updateSaveButton").hide();
+		});		        	
+	});
+
+
+
+	$("#delete").jqxButton({ theme: theme, width:100 });            
+	$("#delete").click(function () {
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "DELETE",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+		});		        	
+	});
+	
+
+	// Button Processing/Action
+	
+	// NEW BUTTON
+	$("#excelExport").jqxButton({ theme: theme, width:100 });                        
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+	$.mobile.loading('hide');				
+});
