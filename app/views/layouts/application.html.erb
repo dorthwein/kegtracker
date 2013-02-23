@@ -34,7 +34,7 @@
 						Home
 						<ul>
 							<li> <%= link_to 'Dashboard', :dashboard_viewer %> </li>
-							<li> <%= current_user.email %> </li>								 
+							<li> <%= link_to 'Account', :account %>   </li>
 							<li> <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %> </li>
 						</ul>					
 					</li>					
@@ -171,9 +171,12 @@
 							<li> <%= link_to 'Asset State', :system_asset_states %> </li>
 							<li> <%= link_to 'Handle Codes', :system_handle_codes %> </li>
 						</ul>
-					</li>
+					</li>					
 					<% end %>
+					<div style="float:right; padding:5px 30px 5px 5px;" class="right"> <%= current_user.email %> </div>
 				</ul>
+
+				
 			</div>
 			<input data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" Quick search coming soon" />
 		

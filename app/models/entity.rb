@@ -20,9 +20,11 @@ class Entity
 
 # Fields
 	field :admin_user_email, type: String    
+
 	field :description, type: String    
 	field :name, type: String
-	field :street, type: String
+	field :address_1, type: String
+	field :address_2, type: String
 	field :city, type: String
 	field :state, type: String
 	field :zip, type: String
@@ -184,6 +186,8 @@ class Entity
 	self.distribution_network_count = self.networks.where(:network_type => 2).count
 	self.market_network_count = self.networks.where(:network_type => 3).count
   end
+
+
   after_create :on_create  
   def on_create
   	if self.mode == 4

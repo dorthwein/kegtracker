@@ -41,6 +41,8 @@ Cobalt::Application.routes.draw do
   
 #	match 'current_inventory_by_network' => 'home#current_inventory_by_network', :via => [:get, :post]
   	
+	match 'account' => 'account#index', :via => [:get, :post]  	
+  	
   	namespace :dashboard do 
 		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
   	end

@@ -17,9 +17,11 @@ $(document).on('pageshow', '#_maintenance_leasing_partnerships', function(event)
 			{ name: 'network' }, 
 
 			{ name: 'name' },
-			{ name: 'street' },
+			{ name: 'address_1' },					
+			{ name: 'address_2' },						
 			{ name: 'city' },
-			{ name: 'state' },					
+		
+			{ name: 'state' },
 			{ name: 'zip' },                	
 
 			{ name: 'location_type_description'},
@@ -67,7 +69,8 @@ $(document).on('pageshow', '#_maintenance_leasing_partnerships', function(event)
 			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' }, 
 
 			{ text: 'Name', datafield: 'name' },
-			{ text: 'Address', datafield: 'street' },
+			{ text: 'Address', datafield: 'address_1' },
+			{ text: 'Address', datafield: 'address_2' },
 			{ text: 'City', datafield: 'city' },
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' }, 
 			{ text: 'Zip', datafield: 'zip' },                	

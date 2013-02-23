@@ -17,14 +17,16 @@ $(document).on('pageshow', '#_maintenance_distribution_partnerships', function(e
 			{ name: 'partner_description' }, 
 
 			{ name: 'entity_name' },
-			{ name: 'entity_street' },
+			{ name: 'entity_address_1' },
+			{ name: 'entity_address_2' },
 			{ name: 'entity_city' },
 			{ name: 'entity_state' },					
 			{ name: 'entity_zip' },                	
 			{ name: 'entity_id'},
 
 			{ name: 'partner_name' },
-			{ name: 'partner_street' },
+			{ name: 'partner_address_1' },
+			{ name: 'partner_address_2' },
 			{ name: 'partner_city' },
 			{ name: 'partner_state' },					
 			{ name: 'partner_zip' },                	
@@ -65,68 +67,12 @@ $(document).on('pageshow', '#_maintenance_distribution_partnerships', function(e
 		columns: [
 			{ text: 'Brewery', datafield: 'partner_description', filtertype: 'checkedlist' }, 
 			{ text: 'Distributor', datafield: 'entity_description', filtertype: 'checkedlist' }, 
-/*
-			{ text: 'Brew. Address', datafield: 'partner_street' },
-			{ text: 'Brew. City', datafield: 'partner_city' },
-			{ text: 'Brew. State', datafield: 'partner_state', filtertype: 'checkedlist' },
-			{ text: 'Brew. Zip', datafield: 'partner_zip' },
-*/
-
-
-			{ text: 'Dist. Address', datafield: 'entity_street' },
+			{ text: 'Dist. Address', datafield: 'entity_address_1' },
+			{ text: 'Dist. Address', datafield: 'entity_address_2' },
 			{ text: 'Dist. City', datafield: 'entity_city' },
 			{ text: 'Dist. State', datafield: 'entity_state', filtertype: 'checkedlist' },
 			{ text: 'Dist. Zip', datafield: 'entity_zip' },
-/*
-			{ text: 'On Premise', datafield: 'on_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Off Premise', datafield: 'off_premise', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Empties', datafield: 'empty', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Inventory', datafield: 'inventory', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Production', datafield: 'production', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-			{ text: 'Partner', datafield: 'partner_entity', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-				}
-			},
-*/			
+
 		]
 	});
 
