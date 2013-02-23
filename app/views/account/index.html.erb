@@ -10,11 +10,9 @@
                     <label class="left simple" style="clear:both"> Admin </label>
                 </td>
                 <td>                                            
-                    <div id="admin_user_id" style="margin-bottom:5px;" class="left">    </div>
+                    <div id="admin_user_id" style="margin-bottom:5px;" class="left"> </div>
                     <button id="admin_user_id_save" data-role="none" class="input left">  Save  </button>
-                </td>
-
-                
+                </td>                
                 <td>    
                     <span class="simple small-font">
                         This is your admin account which controlls all billing and system configurations.
@@ -22,9 +20,6 @@
                         <br />
                         Changing this will lock you out of this screen and transfer billing responisbility to another user.  
                     </span>
-
-
-
                 </td>
             </tr>
             <tr>
@@ -62,6 +57,30 @@
                     <label class="left simple" style="clear:both"> Billing </label>
                 </td>
                 <td>                                            
+                    <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
+                        <input name="redirect_url" type="hidden" value="http://example.com/transparent_redirect_complete" />
+                        <input name="api_login" type="hidden" value="<%= ENV['SPREEDLYCORE_API_LOGIN'] %>" />
+                        
+                    
+                        <input id="credit_card_first_name" name="credit_card[first_name]" type="text" data-role="none" class="left input" />
+                    
+
+                        <input id="credit_card_last_name" name="credit_card[last_name]" type="text" data-role="none" class="left input" />
+
+
+                        <input id="credit_card_number" name="credit_card[number]" type="text" data-role="none" class="left input" />
+
+
+                        <input id="credit_card_verification_value" name="credit_card[verification_value]" data-role="none" type="text" class="left input" />
+
+                        <input id="credit_card_month" name="credit_card[month]" type="text" data-role="none" class="left input" />
+
+                        <input id="credit_card_year" name="credit_card[year]" type="text" data-role="none" class="left input" />
+
+                        <button type="submit" id="credit_card_submit" data-role="none" class="input left">  Submit Card  </button>                        
+                        
+
+                    </form>
                     
                 </td>
 

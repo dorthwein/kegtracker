@@ -20,6 +20,18 @@ $(document).on('pageshow', '#_account', function(event){
 	$("#state").jqxInput({placeHolder: 'State', width:'60px'});
 	$("#zip").jqxInput({placeHolder: 'Zip', width:'60px'});
 
+	$("#credit_card_first_name").jqxInput({placeHolder: 'First Name', width: '135px'});
+	$("#credit_card_last_name").jqxInput({placeHolder: 'Last Name', width: '142px'});
+	$("#credit_card_number").jqxInput({placeHolder: 'Card #', width: '205px'});
+	$("#credit_card_verification_value").jqxInput({placeHolder: 'CSV', width: '71px'});
+	$("#credit_card_month").jqxInput({placeHolder: 'Exp. Month', width: '75px'});
+	$("#credit_card_year").jqxInput({placeHolder: 'Exp. Year', width: '100px'});
+	$("#city").jqxInput({placeHolder: 'City', width: '150px'});
+	
+	$("#credit_card_submit").jqxButton({ theme: theme, width:100, height:20 });            
+	$("#credit_card_submit").click(function () {
+
+	});
 
 
 	$("#admin_user_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '285px',  height: '25px', theme: theme});		
