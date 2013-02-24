@@ -11,7 +11,6 @@ class Location
   field :state, type: String
   field :zip, type: String
 
-
   field :asset_count, type: Integer
 
 #  field :on_premise, type: Integer    

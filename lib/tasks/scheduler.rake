@@ -127,24 +127,47 @@ task :save_all => :environment do
 	end
 end
 
+task :correct_cross_brewer => :environment do
+	Asset.all.each do |x|
+		if x.location_network.network_type == 1
+			if x.product.entity != x.location_network.entity
+				x.product = nil
+				x.save
 
-task :convert_handle_code_relation_to_handle_code_field => :environment do
-	HandleCode.all.each do |hc_relation|
-		Asset.where(:handle_code_id => hc_relation._id ).set(:handle_code, hc_relation.code.to_i)
-		AssetActivityFact.where(:handle_code_id => hc_relation._id ).set(:handle_code, hc_relation.code.to_i)
+				print "Asset Corrected \n"
+			end
+		end
 	end
+	AssetActivityFact.all.each do |x|
+		if x.location_network.network_type == 1
+			if x.product.entity != x.location_network.entity
+				x.product = nil
+				x.save
+
+				print "Asset Activity Fact Corrected \n"
+
+
+			end
+		end
+	end	
 end
 
-task :convert_asset_state_to_asset_status => :environment do
-#	full_asset_state =  '5069db72a682140200000002' # AssetState.where(:description => 'Full').first
-#	empty_asset_state = '5069db6ca682140200000001'	# AssetState.where(:description => 'Empty').first
-#	market_asset_state = '5087079c4976f70200000009' # AssetState.where(:description => 'Market').first
-        
-	AssetActivityFact.where(asset_state_id: {"$oid" => "5069db72a682140200000002"}).set(:asset_status, 1)
-	AssetActivityFact.where(asset_state_id: {"$oid" => "5069db6ca682140200000001"}).set(:asset_status, 0)
-	AssetActivityFact.where(asset_state_id: {"$oid" => "5087079c4976f70200000009"}).set(:asset_status, 2)
 
-#	Asset.where(asset_state_description: 'Full').set(:asset_status, 1)
-#	Asset.where(asset_state_description: 'Empty').set(:asset_status, 0)
-#	Asset.where(asset_state_description: 'Market').set(:asset_status, 2)
-end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

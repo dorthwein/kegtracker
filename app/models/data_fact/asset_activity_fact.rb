@@ -27,10 +27,11 @@ class AssetActivityFact
 # Life Cycle
 # field :fill_time, :type => Time
   field :fill_count, type: Integer
-  field :asset_status, type: Integer, :default => 0
+  field :asset_status, type: Integer, :default => 0  
+  field :location_network_type, type: Integer
 
-  field :cycle_time, type: Integer, :default => 0
-  field :completed_cycle_time, type: Integer, :default => 0
+  field :cycle_length, type: Integer, :default => 0
+  field :completed_cycle_length, type: Integer, :default => 0
 
 # Networks  
 # belongs_to :network    # Possibly Depricated  
@@ -84,24 +85,27 @@ class AssetActivityFact
 	before_save :sync
 	def sync	    
     self.location_network = self.location.network
+    self.location_network_type = self.location_network.network_type
+    
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     # Find & Set Previous asset_activity_fact     
     # self.asset_status_description = nil
     if self.handle_code != 4
       self.fill_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset, :handle_code => 4).lte(fact_time: self.fact_time).desc(:fact_time).first._id
       if !self.fill_asset_activity_fact_id.nil?
-        self.cycle_time = self.fact_time.to_i - self.fill_asset_activity_fact.fact_time.to_i
+        self.cycle_length = self.fact_time.to_i - self.fill_asset_activity_fact.fact_time.to_i
       end
       
 #      if self.fill_asset_activity_fact.nil?
 #        self.fill_asset_activity_fact_id = self._id
 #      end
     else
+      # If filled, updated previous cycle to complete
       if !self.prev_asset_activity_fact.nil?
         prev_fill_fact = self.prev_asset_activity_fact.fill_asset_activity_fact rescue nil        
         if !prev_fill_fact.nil?
-          prev_cycle_time = self.fact_time.to_i - prev_fill_fact.fact_time.to_i        
-          AssetActivityFact.where(:fill_asset_activity_fact => prev_fill_fact).update_all(:completed_cycle_time => prev_cycle_time)
+          prev_cycle_length = self.fact_time.to_i - prev_fill_fact.fact_time.to_i        
+          AssetActivityFact.where(:fill_asset_activity_fact => prev_fill_fact).update_all(:completed_cycle_length => prev_cycle_length)
         end
       end      
       self.fill_asset_activity_fact_id = self._id
@@ -118,10 +122,7 @@ class AssetActivityFact
       self.delivery_asset_activity_fact_id = self._id
       self.delivery_network = self.location_network
       AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:delivery_network_id => self.location_network._id, :delivery_asset_activity_fact_id => self._id)
-    end
-
-    
-    
+    end    
     # If nil, use current network
 	end  
 end

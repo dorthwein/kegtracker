@@ -98,7 +98,7 @@ class Reports::FloatController < ApplicationController
 #					default_network = Network.find(params['delivery_network_id'])					
 #				end
 				
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 2)
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).or({location_network_type: 2}, {location_network_type: 3})
 				
 #				facts = NetworkFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
 		    	

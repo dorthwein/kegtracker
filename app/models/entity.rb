@@ -90,6 +90,7 @@ class Entity
 		self.entity_partnerships_as_entity.where(:production_partnership => 1)
 
 	end
+
 	def production_partnerships_shared_products
 		products = []
 		self.production_partnerships_as_partner.each do |x|
