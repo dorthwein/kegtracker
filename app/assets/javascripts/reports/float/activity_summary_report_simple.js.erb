@@ -8,7 +8,12 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 	$.mobile.loading('show');
 	var theme = settings.theme
 
-	var theme = settings.theme
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
+		
+	//	var jsDate = event.args.date; 		
+	}); 
+
 	var source = {
 		datatype : "json",
 		type: 'POST',
@@ -84,12 +89,6 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
         groups: ['location_network_description', 'asset_type_description']
 	});
 
-
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
-	$('#date').bind('valuechanged', function (event) {  
-		
-	//	var jsDate = event.args.date; 		
-	}); 
 
 	$("#excelExport").jqxButton({ theme: theme });	
 	$("#advancedView").jqxButton({ theme: theme });

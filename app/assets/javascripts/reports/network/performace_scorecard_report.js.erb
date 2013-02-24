@@ -7,9 +7,14 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 
 	// prepare the data
 	$.mobile.loading('show');
-	var theme = settings.theme
 
 	var theme = settings.theme
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
+		
+	//	var jsDate = event.args.date; 		
+	}); 
+
 	var source = {
 		datatype : "json",
 		type: 'POST',
@@ -299,11 +304,6 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
         
 	});
 
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
-	$('#date').bind('valuechanged', function (event) {  
-		
-	//	var jsDate = event.args.date; 		
-	}); 
 
 	$("#network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
 
