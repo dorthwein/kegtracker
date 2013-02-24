@@ -12,6 +12,25 @@ task :ten_minute_build => :environment do
 
 end
 
+task :process_payments => :environment do
+
+	Entity.all.each do |x|
+		if !x.payment_token.nil?			
+			payment_method = SpreedlyCore::PaymentMethod.find(x.payment_token.to_s)
+
+			if payment_method.valid?
+				purchase_transaction = payment_method.purchase(550)
+				print purchase_transaction.succeeded? # true
+			 	print 'fuck'
+			else
+			  print "Woops!\n" + payment_method.errors.join("\n")
+			end
+		end
+	end
+end
+
+
+
 task :thirty_day_build => :environment do
 	start = Time.new() - 2592000 
 	last = Time.new() # + 86400

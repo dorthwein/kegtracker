@@ -20,12 +20,9 @@ class Scanners::BarcodeController < ApplicationController
       format.json {
         response = {}
 
-
         response[:toggle_options] = {}
         response[:handle_codes_auto_mode_on] = []
-        response[:handle_codes_auto_mode_off] = []
-                    
-# current_user.entity.partner_locations
+        response[:handle_codes_auto_mode_off] = []                    
         
         # Scanner 
         if current_user.scanner_delivery_pickup == 1
@@ -35,6 +32,7 @@ class Scanners::BarcodeController < ApplicationController
           response[:handle_codes_auto_mode_off].push({:html => 'Pickup', :value => 2})
           response[:handle_codes_auto_mode_off].push({:html => 'Move', :value => 5})
         end
+
         if current_user.scanner_fill == 1
           response[:handle_codes_auto_mode_on].push({:html => 'Fill', :value => 4})
           response[:handle_codes_auto_mode_off].push({:html => 'Fill', :value => 4})            
