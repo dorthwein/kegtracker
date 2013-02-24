@@ -85,7 +85,7 @@ class AssetActivityFact
 	before_save :sync
 	def sync	    
     self.location_network = self.location.network
-    self.location_network_type = self.location_network.network_type
+    self.location_network_type = self.location_network.network_type rescue nil
     
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     # Find & Set Previous asset_activity_fact     

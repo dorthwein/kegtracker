@@ -316,6 +316,3 @@ class Asset
 	index({ product_id: 1 }, { name: "product_index" })
 	index({ entity_id: 1 }, { name: "entity_index" })	
 end
-
-
-

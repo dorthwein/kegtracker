@@ -7,15 +7,6 @@ Inside Rim Weld Start Date: January 24th, 2013
 *****************************************
 Reporting - Est. Time: 3 weeks (21 days)
 *****************************************
-	1) Asset Browse Report (COMPLETE)
-		- Rework into reports structure (disolve Browse structure)
-		- Add on select show details at bottom.
-
-	2) Location Browse Report (COMPLETE)
-		- Design & Build		
-		- Included features - look at location, see locations /w my assets etc...
-			- Shows current asset lifecycle (i.e. how it got there)
-
 	3) Product Browse
 		- Design & Build
 
