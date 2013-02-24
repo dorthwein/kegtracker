@@ -10,9 +10,8 @@ class BuildReport
 			print "\n ------------------------------------------------------ \n"
 
 		# Asset Summary Report
-			start = Time.new(2013,2,14)
 
-			asset_activity_facts = entity.visible_asset_activity_facts.gte.(fact_time: start).lte(fact_time: @date).desc(:fact_time)			
+			asset_activity_facts = entity.visible_asset_activity_facts.lte(fact_time: @date).desc(:fact_time)			
 			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }
 			by_network = assets.group_by{|x| x.location_network}
 			by_network.each do |y|
@@ -92,8 +91,8 @@ class BuildReport
 			last_date = @date.end_of_day
 
 			# Distribution Channels
-			Time.new()
-			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
+			start = Time.new(2013,2,14)			
+			asset_activity_facts = entity.visible_asset_activity_facts.gte(fact_time: start).between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
 			by_network = asset_activity_facts.group_by{|x| x.location_network}
 			by_network.each do |y|
 
