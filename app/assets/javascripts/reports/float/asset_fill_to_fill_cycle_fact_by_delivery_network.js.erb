@@ -6,6 +6,13 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_del
 	$.mobile.loading('show');
 	var theme = settings.theme
 
+
+	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$('#date').bind('valuechanged', function (event) {  
+		
+	//	var jsDate = event.args.date; 		
+	}); 
+
 	var theme = settings.theme
 	var source = {
 		datatype : "json",
@@ -29,7 +36,7 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_del
 		formatData: function(){
 		    var params = {}			
 		    
-		    var jsDate = $('#date').jqxDateTimeInput('getDate'); 
+		    var jsDate = $('#date').jqxDateTimeInput('getDate')
 		    params['date'] = jsDate;
 /*
 			var item = $("#delivery_network_id").jqxDropDownList('getSelectedItem');
@@ -94,12 +101,6 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_del
         groups: ['location_network_description', 'asset_type_description']
 	});
 
-
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
-	$('#date').bind('valuechanged', function (event) {  
-		
-	//	var jsDate = event.args.date; 		
-	}); 
 
 //	$("#delivery_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
 /*

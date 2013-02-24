@@ -21,8 +21,6 @@ class AssetActivityFact
   belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
   belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
   belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
-
-
   belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
 
 # Variable Details 

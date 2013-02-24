@@ -26,7 +26,7 @@ class Scanner
 		return processed_scans
 	end	
 	def self.rollback_scan obj
-		prev_asset_activity_fact = obj[:asset].asset_activity_fact.prev_asset_activity_fact rescue nil	
+		prev_asset_activity_fact = obj[:asset].asset_activity_fact.prev_asset_activity_fact rescue nil
 	
 		print 'roll back'
 		fill_asset_activity_fact = asset_activity_fact.fill_asset_activity_fact rescue nil

@@ -110,6 +110,7 @@ class BuildReport
 			end
 			print t.length
 			t = t.uniq
+			
 			print "\n"
 			print t.length
 			print "\n"
