@@ -14,6 +14,20 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 		
 	//	var jsDate = event.args.date; 		
 	}); 
+	$("#network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
+	$('#network_id').bind('select', function (event) {
+	    var args = event.args;
+	    if (args) {
+	        // index represents the item's index.                
+	        var index = args.index;
+	        var item = args.item;
+	        // get item's label and value.
+	        var label = item.label;
+	        var value = item.value;
+	    
+	    }
+	});
+	
 
 	var source = {
 		datatype : "json",
@@ -305,20 +319,6 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 	});
 
 
-	$("#network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
-
-	$('#network_id').bind('select', function (event) {
-	    var args = event.args;
-	    if (args) {
-	        // index represents the item's index.                
-	        var index = args.index;
-	        var item = args.item;
-	        // get item's label and value.
-	        var label = item.label;
-	        var value = item.value;
-	    
-	    }
-	});
 	$(".jqxExpander").jqxExpander({theme: theme, expanded: false });	
 	$("#excelExport").jqxButton({ theme: theme });	
 	$("#advancedView").jqxButton({ theme: theme });

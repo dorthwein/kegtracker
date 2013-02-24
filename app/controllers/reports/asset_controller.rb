@@ -110,11 +110,8 @@ class Reports::AssetController < ApplicationController
 		respond_to do |format|  
 			format.html
 		    format.json {
-    			if params['date'].nil?
-					date = Time.new().in_time_zone("Central Time (US & Canada)")
-    			else
-					date = DateTime.parse(params['date'])
-    			end
+				
+				date = DateTime.parse(params['date'])
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day

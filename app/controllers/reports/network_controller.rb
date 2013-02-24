@@ -62,22 +62,17 @@ class Reports::NetworkController < ApplicationController
 		respond_to do |format|  
 			format.html
 		    format.json { 
-    			if params['date'].nil?
-					date = Time.new().in_time_zone("Central Time (US & Canada)")
-    			else
-					date = DateTime.parse(params['date'])
-    			end
+
+				date = DateTime.parse(params['date'])
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
     			
 				if params['network_id'].nil?
-					default_network = current_user.entity.visible_networks.first
-				else
-					default_network = Network.find(params['network_id'])
-				end		
-
-
+					params['network_id'] = current_user.entity.visible_networks.first._id
+				end
+				
+				default_network = Network.find(params['network_id'])
 				networks = JqxConverter.jqxDropDownList(current_user.entity.visible_networks)
 
 				facts = JqxConverter.jqxGrid(current_user.entity.network_facts.where(:location_network => default_network).between(fact_time: start_date..end_date))

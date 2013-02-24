@@ -86,7 +86,7 @@ class BuildReport
 
 
 		# Full Cycle Times
-			first_date = @date.beginning_of_day - (86400 * 90)
+			first_date = @date.beginning_of_day - (86400 * 7)
 			last_date = @date.end_of_day
 			
 			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).desc(:fact_time)
@@ -110,7 +110,7 @@ class BuildReport
 			end
 			print t.length
 			t = t.uniq
-			
+
 			print "\n"
 			print t.length
 			print "\n"
