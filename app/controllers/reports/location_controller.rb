@@ -11,7 +11,6 @@ class Reports::LocationController < ApplicationController
 				# Locations /w my assets
 #				location_id_array = assets.map { |asset| asset.location }
 #				location_id_array = location_id_array + gatherer.get_locations
-
 =begin
 				locations = Location.where(:_id.in => location_id_array)
 				locations = locations.map { |location| {
@@ -43,7 +42,7 @@ class Reports::LocationController < ApplicationController
 				gatherer = Gatherer.new(current_user.entity)
 				location, product, entity = gatherer.asset_activity_fact_criteria
 				response = []
-				Asset.where(:location => params[:_id]).any_of(product, entity).each do |x|
+				Asset.where(:location_id => params[:_id]).any_of(product, entity).each do |x|
 					fill_time = 		"<div> <b> Fill Date: 			</b>	 #{ x.fill_time ? x.fill_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y") : ''} </div>"
 					last_scene_time = 	"<div> <b> Last Scene: 			</b>	 #{x.last_action_time ? x.last_action_time.in_time_zone("Central Time (US & Canada)").strftime("%l:%M %p, %Z - %b %d, %Y") : ''} </div>"
 					product = 			"<div> <b> Product: 			</b>	 #{x.product_description}			</div>"
