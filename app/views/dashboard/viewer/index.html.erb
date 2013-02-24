@@ -1,96 +1,56 @@
-<div class="dashboard_filter">				
-	<h5> Select Date </h5>
-	<div id="date_filter">	</div>
-</div>
+<div id="simple_container" class="dashboard content">
+	<h1> <%= current_user.entity.description %> </h1>
+	<div class="dashboard button-group">					
+		<h2> Scanning </h2>
+		<%= link_to '<h3> Barcode Scanner </h3>'.html_safe, :scanners_barcode, :class => "dashboard button left" %> 
 
-<div id="docking">
-	<!-- COLUMN 1 -->
-	<div style="width:33%">			
-		<div id="dashboard_slot_1">
-			<div> 
-				Quick Links
-			</div>
-			<div id='dashboard_slot_1_content' class="dashboard content" style="overflow:hidden">	
-				<div class="dashboard button-group">
-					<h2> Reports</h2>
+		<%= link_to '<h3> RFID Reader </h3>'.html_safe, :scanners_rfid_readers, :class => "dashboard button left" %> 
 
-					<%= link_to '<h3> Activity Report </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
-					<%= link_to '<h3> In/Out Report </h3>'.html_safe, :reports_network_in_out_asset_report_simple, :class => "dashboard button left" %> 
-					
-					<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_asset_sku_summary_report_simple, :class => "dashboard button left" %> 
-
-
-				</div>
-
-				<div class="dashboard button-group">
-					<h2> Scanning </h2>
-					<%= link_to '<h3> Barcode Scanner </h3>'.html_safe, :scanners_barcode, :class => "dashboard button left" %> 
-
-					<%= link_to '<h3> RFID Reader </h3>'.html_safe, :scanners_rfid_readers, :class => "dashboard button left" %> 
-				</div>
-
-				<div class="dashboard button-group">
-					<h2> Maintenance </h2>
-					<%= link_to '<h3> Locations </h3>'.html_safe, :maintenance_locations, :class => "dashboard button left" %> 
-						
-					<%= link_to '<h3> Networks </h3>'.html_safe, :maintenance_networks, :class => "dashboard button left" %> 
-						
-					<%= link_to '<h3> Distributors </h3>'.html_safe, :maintenance_network_memberships, :class => "dashboard button left" %> 					
-
-					<%= link_to '<h3> Users </h3>'.html_safe, :maintenance_users, :class => "dashboard button left" %> 
-					<%= link_to '<h3> Products </h3>'.html_safe, :maintenance_products, :class => "dashboard button left" %> 
-					
-				</div>
-			</div>
-		</div>
-		<div id="dashboard_slot_2">
-			<div> 	
-				Full Assets by Network
-			</div>
-			<div id='dashboard_slot_2_content' class="dashboard chart" style="overflow:hidden">						
-			</div>
-		</div>
+		<a href="#" class="dashboard button left"> <h3> Order Barcodes <h3> <h4> (Comming Soon) </h4></a>
 	</div>
-
-	<!-- COLUMN 2 -->
-	<div style="width:33%">							
-
-		<div id="dashboard_slot_3">
-			<div> 
-				Alerts
-			</div>
-			<div id='dashboard_slot_3_content' class="dashboard chart" style="overflow:hidden; text-align: center;">	
-				<h1> Alerts Comming Soon </h1>
-			</div>						
-
-		</div>				
-
-		<div id="dashboard_slot_4">
-			<div> 
-				In Market Assets by Network
-			</div>
-			<div id='dashboard_slot_4_content' class="dashboard chart" style="overflow:hidden">	
-			</div>
-		</div>
-	</div>
-
-	<!-- COLUMN 3 -->
-	<div style="width:33%">							
-		<div id="dashboard_slot_5">
-			<div> 
-				Recent Activity
-			</div>
-			<div id='dashboard_slot_5_content' class="dashboard chart" style="overflow: scroll;">								
-			</div>
 		
-		</div>				
+	<div class="dashboard button-group">
+		<h2> Reports</h2>	
+		<%= link_to '<h3> Asset Cycles </h3> <h4> by Distribution Channel</h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Asset Cycles</h3><h4> by Production Channel </h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network, :class => "dashboard button left" %> 
 
-		<div id="dashboard_slot_6">
-			<div> 
-				Empty Assets by Network
-			</div>
-			<div id='dashboard_slot_6_content' class="dashboard chart" style="overflow:hidden">	
-			</div>
+		<%= link_to '<h3> Activity </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
+
+		<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button left" %> 
+		
+		<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_asset_sku_summary_report_simple, :class => "dashboard button left" %> 
+	</div>
+	<div class="dashboard button-group">
+		<h2> Browse / Lookup</h2>	
+		<%= link_to '<h3> Invoice Lookup </h3>'.html_safe, :reports_invoice_lookup, :class => "dashboard button left" %> 
+
+		<%= link_to '<h3> Assets </h3>'.html_safe, :reports_asset_browse, :class => "dashboard button left" %> 
+		<%= link_to '<h3> My Locations </h3>'.html_safe, :reports_location_browse, :class => "dashboard button left" %> 	
+	</div>
+
+
+	<div class="dashboard button-group">
+		<h2> Maintenance </h2>
+		<%= link_to '<h3> Locations </h3>'.html_safe, :maintenance_locations, :class => "dashboard button left" %> 
+			
+		<%= link_to '<h3> Networks </h3>'.html_safe, :maintenance_networks, :class => "dashboard button left" %> 
+			
+		<%= link_to '<h3> Distributors </h3>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network, :class => "dashboard button left" %> 					
+
+		<%= link_to '<h3> Users </h3>'.html_safe, :maintenance_users, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Products </h3>'.html_safe, :maintenance_products, :class => "dashboard button left" %> 		
+
+		<%= link_to '<h3> Contracted Breweries </h3>'.html_safe, :maintenance_production_partnerships, :class => "dashboard button left" %> 		
+
+
+	</div>				
+
+	<div id="dashboard_slot_2" class="hidden">
+		<div> 
+			Recent Activity
 		</div>
-	</div>			
+		<div id='dashboard_slot_2_content'>								
+		</div>
+	
+	</div>				
 </div>

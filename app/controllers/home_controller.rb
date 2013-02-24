@@ -1,3 +1,4 @@
+
 class HomeController < ApplicationController	
   def index	
     respond_to do |format|
@@ -10,3 +11,4 @@ class HomeController < ApplicationController
     end
   end
 end
+

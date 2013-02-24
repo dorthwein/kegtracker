@@ -1,2 +1,2 @@
 # config/initializers/spreedly.rb
-SpreedlyCore.configure
+# SpreedlyCore.configure

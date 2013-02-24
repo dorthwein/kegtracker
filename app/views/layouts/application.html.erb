@@ -15,8 +15,7 @@
 			<% if !user_signed_in? %>			
             <div id="jqxMenu">
                 <ul>                				
-					<li> <%= link_to 'Home', root_path %> </li>							
-					
+					<li> <%= link_to 'Home', root_path %> </li>			
 					<li style="display:none"> <%= link_to 'About Us', public_about_path %> </li>
 					<li style="display:none"> <%= link_to 'Contact', public_contact_path %> </li>		
 					<li style="display:none"> <%= link_to 'Pricing', public_pricing_path %> </li>
@@ -73,9 +72,6 @@
 							<li> 	
 								Network
 								<ul>
-									<li>
-										<%= link_to 'In-bound/Out-bound', :reports_network_in_out_asset_report_simple %> 																		
-									</li>
 									<li>
 										<%= link_to 'Performance Scorecard', :reports_network_performance_scorecard_report %> 																		
 									</li>

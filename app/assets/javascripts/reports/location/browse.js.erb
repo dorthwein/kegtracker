@@ -11,9 +11,9 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 		datatype : "json",
 		type: 'GET',		
 		datafields: [
-			{ name: 'external_id' },
+			{ name: 'externalID' },
 			{ name: 'description' },
-			{ name: 'network' }, 
+			{ name: 'network_description' }, 
 
 			{ name: 'name' },
 			{ name: 'street' },
@@ -22,7 +22,8 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 			{ name: 'zip' },                	
 			{ name: 'location_type' },                	
 			{ name: 'location_type_description' },                	
-			{ name: '_id'}
+			{ name: '_id'},
+			{ name: 'asset_count'}
 		], 
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json'
 	};
@@ -48,9 +49,9 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 		columnsresize: true,
 		altrows: true,				
 		columns: [		
-			{ text: 'Act #', datafield: 'external_id' },
+			{ text: 'Act #', datafield: 'externalID' },
 			{ text: 'Location', datafield: 'description' },
-			{ text: 'Network', datafield: 'network', filtertype: 'checkedlist' },
+			{ text: 'Network', datafield: 'network_description', filtertype: 'checkedlist' },
 
 			{ text: 'Name', datafield: 'name' },
 			{ text: 'Address', datafield: 'street' },
@@ -58,6 +59,7 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },			
 			{ text: 'Zip', datafield: 'zip' },
 			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },			
+			{ text: '# Assets', width:75, datafield: 'asset_count', filtertype: 'checkedlist' },			
 
 /*
 			{ text: 'On Premise', datafield: 'on_premise', filterable: false,  width: '75px', cellsrenderer: function (row, column, value) {
@@ -110,7 +112,7 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 			},	
 		*/
 		],
-        groups: ['network']		
+        groups: ['network_description']		
 	});
 
 									

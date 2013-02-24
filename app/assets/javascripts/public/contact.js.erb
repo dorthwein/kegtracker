@@ -1,0 +1,74 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$(document).on('pageshow', '#_public_contact', function(event){	
+	// prepare the data
+	$.mobile.loading('show');
+	theme = settings.theme;
+	
+	$('#brewery_name').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#contact_name').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#contact_email').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$("#contact_phone").jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#street').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#city').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#state').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#zip').jqxInput({ width: '250px', height: '25px', theme: theme })
+
+	var source = [{html: 'Yes', value: '1' }, {html: 'No', value: '0'}]
+	$("#rfid_interest").jqxDropDownList({ source: source, selectedIndex: 1, width: '250', height: '25', theme: theme });
+	$("#terms_of_use").jqxDropDownList({ source: source, selectedIndex: 1, width: '250', height: '25', theme: theme });
+
+	$('#distributor_count').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#asset_count').jqxInput({ width: '250px', height: '25px', theme: theme })
+	$('#notes').jqxInput({ width: '250px', height: '100px', theme: theme })			
+
+	$("#submit_registration").jqxButton({ width: '100%', height:'25px', theme: theme });
+	$("#submit_registration").bind('click', function () {        
+		if($('#form_validator').jqxValidator('validate') == true){			
+			params = {registration: {}}
+			$.each($('.input'), function(key, item){
+				params['registration'][item.id] = item.value
+				// alert(item.id + ' -- ' + item.value);
+			})
+			$.each($('.dropdown'), function(key, item){
+				element = '#' + item.id
+				value = $(element).jqxDropDownList('getSelectedItem').value
+				params['registration'][item.id] = value				
+			})
+			$.ajax({
+				url: system.server + $('.ui-page-active').attr('data-url'),
+				type: "POST",
+				dataType : "JSON",
+				data: params,
+			}).done(function( data ) {				
+				if(data['success'] == true){
+					alert('Thank you for registering, we will contact you shortly');
+					$('.input').jqxInput({disabled: true});				
+					$('.dropdown').jqxDropDownList({disabled: true});
+				};
+			})
+		}		
+	});
+
+
+	$('#form_validator').jqxValidator({
+	 	rules: [	 	
+	        { input: '#brewery_name', message: 'Name is required!', action: 'keyup, blur', rule: 'required' },
+            { input: '#contact_name', message: 'E-mail is required!', action: 'keyup, blur', rule: 'required' },
+            { input: '#contact_email', message: 'E-mail is required!', action: 'keyup, blur', rule: 'required' },
+            { input: '#contact_email', message: 'Invalid e-mail!', action: 'keyup', rule: 'email' },
+            { input: '#contact_phone', message: 'Phone is required!', action: 'keyup', rule: 'required' },
+            { input: '#street', message: 'Street is required!', action: 'keyup', rule: 'required' },
+            { input: '#city', message: 'City is required!', action: 'keyup', rule: 'required' },
+            { input: '#state', message: 'State is required!', action: 'keyup', rule: 'required' },
+            { input: '#zip', message: 'Zip is required!', action: 'keyup', rule: 'required' },
+            { input: '#distributor_count', message: 'Distributor count is required!', action: 'required', rule: 'required' },
+            { input: '#asset_count', message: 'Asset count is required!', action: 'keyup', rule: 'required' },
+		],
+		theme: theme
+	});
+
+
+	$.mobile.loading('hide');		
+});

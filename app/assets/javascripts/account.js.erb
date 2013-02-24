@@ -7,8 +7,7 @@ $(document).on('pageshow', '#_account', function(event){
 	var theme = settings.theme
 
 
-	url = system.server + $('.ui-page-active').attr('data-url') + '.json'
-	
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	// Inputs
 	
 	$(".input").jqxInput({height: '25px', width: '285px', minLength: 1, theme: theme, disabled: false });

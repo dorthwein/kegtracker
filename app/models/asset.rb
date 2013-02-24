@@ -307,6 +307,10 @@ class Asset
 		self.pickup_network_description = self.pickup_network.description
 	end	
 
+	after_save :after_save
+	def after_save
+		self.location.save
+	end
 	# Indexes
 	index({ location_network_id: 1 }, { name: "location_network_index" })
 	index({ product_id: 1 }, { name: "product_index" })

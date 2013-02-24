@@ -11,6 +11,9 @@ class Location
   field :state, type: String
   field :zip, type: String
 
+
+  field :asset_count, type: Integer
+
 #  field :on_premise, type: Integer    
 #  field :off_premise, type: Integer
 #  field :empty, type: Integer
@@ -66,6 +69,8 @@ class Location
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description		
     self.location_type_description = self.get_location_type_description
+
+    self.asset_count = Asset.where(:location => self).count
 	end
 
   index({ entity_id: 1 }, { name: "entity_index" })          

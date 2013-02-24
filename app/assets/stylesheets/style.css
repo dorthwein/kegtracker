@@ -1,15 +1,5 @@
 @CHARSET "UTF-8";
-/*
-Max Width Override 
-.ui-dialog .ui-header, 
-.ui-dialog .ui-content, 
-.ui-dialog .ui-footer { 
-	max-width: 100%; 
-	margin: 10% auto 15px auto; 
-}
-*/
- html, body 
-    {
+ html, body {
         height: 100%;
         width: 100%;
         margin: 0px;
@@ -18,7 +8,6 @@ Max Width Override
     }   
 .jqxExpander {	
 	border-bottom: 1px solid #CCC;
-
 }
 
 .hidden {
@@ -42,6 +31,7 @@ li {
 	margin:0px;
 	padding:0px;
 }
+
 /*
 ul.main_nav  {
 	display: inline; 
@@ -146,27 +136,6 @@ table.ft tr > td
 
 }
 
-.ui-grid-a #menu.ui-block-a {
-	width:13%;
-}
-.ui-grid-a #content.ui-block-b {
-	width:87%;	
-	
-}
-
-.ui-grid-a #menu.ui-block-a .ui-listview {
-	margin:-15px 0px -15px -15px;
-}
-/*
-.ui-li-heading, .ui-collapsible-content {
-	margin:0px;
-}
-*/
-.ui-grid-a #content.ui-block-b .ui-listview {
-
-}
-
-
 #devise-form {
 	width: 300px;
 }
@@ -178,50 +147,8 @@ table.ft tr > td
 	clear:both;
 }
 
-.dt {
-	border-spacing:0px;	
-	padding:0px;
-	margin:0px;
-/*
-	border-left:1px solid #ccc;
-	border-right:1px solid #ccc;	
-*/
-}
-/*************************
-Data Tables
-*************************/
-/*
-.dt th {
-	font-size:12px;
-}
-.dt td {
-	font-size:12px;
-	font-weight:normal;
-}
-.dt table {
-	margin:0px 0px 30px 0px;
-}
-#content .li-table.ui-li-static {
-	padding:0px 0px 0px 0px; 
-}
-
-.li-table h1 {
-	padding: 0px 0px 0px 10px;
-}
 
 
-th {
-	text-align:center;
-}
-
-td {
-	padding:0px 0px 0px 0px;
-	text-align:center;
-}
-*/
-#content {
-
-}
 #jqxMenu {
  background:#F8F8F8;
 }
@@ -234,23 +161,6 @@ td {
 	width:100%;
 	border:none;
 }
-.ui-li.ui-li-static {
-	
-}
-div.li-content {
-	padding:0 25px 25px 25px;	
-	background-color:#F9F9F9;
-}
-.ui-li.ui-li-static.li-content {
-	padding:0px;
-	background-color:#F9F9F9;	
-}
-.ui-li.ui-li-static {
-	background-color:#F9F9F9;	
-}
-/*************************
-Scanner
-*************************/
 
 #scanner {
 
@@ -451,12 +361,12 @@ table.report td {
 	
 
 }
+
 .report_chart {
 	width:95%;	
 	height:300px;
-	
-
 }
+
 .report_dock_window {
 	min-height: 300px;
 	max-height: 400px;
@@ -475,21 +385,24 @@ table.report td {
 	width:100%;
 	text-align: left;
 }
+
 .report_dock_window th, td {
 	text-align: left;
 	padding:5px;
 }
+
 .life_cycle_select {
 	width:30%;
 	margin: 0px;
 	padding:0px;
 	float:left;
 }
+
 .life_cycle_transaction_select {
 	width: 20%;
 	float:left;
 }
+
 #asset_transactions td, th {
 	width:20%;
 }
-

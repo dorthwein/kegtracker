@@ -1,14 +1,18 @@
 class Reports::LocationController < ApplicationController
+  	before_filter :authenticate_user!
+  	load_and_authorize_resource
+
 	def browse    
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json { 
-			  	gatherer = Gatherer.new current_user.entity
-				assets = gatherer.get_assets
+#			  	gatherer = Gatherer.new current_user.entity
+#				assets = gatherer.get_assets
 				# Locations /w my assets
-				location_id_array = assets.map { |asset| asset.location }
-				location_id_array = location_id_array + gatherer.get_locations
+#				location_id_array = assets.map { |asset| asset.location }
+#				location_id_array = location_id_array + gatherer.get_locations
 
+=begin
 				locations = Location.where(:_id.in => location_id_array)
 				locations = locations.map { |location| {
 						:external_id => location.externalID,
@@ -24,9 +28,10 @@ class Reports::LocationController < ApplicationController
                         :location_type => location.location_type,
 
 						:_id => location._id
-					}
+					}			
 				}
-			
+=end					
+				locations = JqxConverter.jqxGrid(current_user.entity.locations)
 				render json: locations 			
 		  	}
 		end
