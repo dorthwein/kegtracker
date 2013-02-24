@@ -309,7 +309,7 @@ class Asset
 
 	after_save :after_save
 	def after_save
-		self.location.save
+		self.location.save rescue nil
 	end
 	# Indexes
 	index({ location_network_id: 1 }, { name: "location_network_index" })

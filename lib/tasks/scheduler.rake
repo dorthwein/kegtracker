@@ -85,9 +85,11 @@ task :save_asset_activity_facts => :environment do
 end
 
 task :save_assets => :environment do
+	i = 0
 	Asset.all.each do |x|
-		if xac.save!
-			print "Asset Saved \n"
+		if x.save!
+			i = i + 1
+			print "Asset Saved #{i} \n"
 		end
 	end
 end
@@ -132,7 +134,7 @@ task :correct_cross_brewer => :environment do
 		if x.location_network.network_type == 1
 			if x.product.entity != x.location_network.entity
 				x.product = nil
-				x.save
+				x.save!
 
 				print "Asset Corrected \n"
 			end
@@ -142,11 +144,8 @@ task :correct_cross_brewer => :environment do
 		if x.location_network.network_type == 1
 			if x.product.entity != x.location_network.entity
 				x.product = nil
-				x.save
-
+				x.save!
 				print "Asset Activity Fact Corrected \n"
-
-
 			end
 		end
 	end	
