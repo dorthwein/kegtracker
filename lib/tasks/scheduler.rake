@@ -122,15 +122,10 @@ task :save_all => :environment do
 			print "Asset Activity Fact Saved \n"
 		end
 	end
-	AssetSummaryFact.all.each do |x|
-		if x.save!
-			print "Asset Summary Fact Saved \n"
-		end
-	end
 end
 
 task :correct_cross_brewer => :environment do
-	Asset.all.each do |x|
+	Asset.all.excludes(:location_network => nil).each do |x|
 		if x.location_network.network_type == 1
 			if x.product.entity != x.location_network.entity
 				x.product = nil
@@ -140,7 +135,7 @@ task :correct_cross_brewer => :environment do
 			end
 		end
 	end
-	AssetActivityFact.all.each do |x|
+	AssetActivityFact.all.excludes(:location_network => nil).each do |x|
 		if x.location_network.network_type == 1
 			if x.product.entity != x.location_network.entity
 				x.product = nil

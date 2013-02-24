@@ -16,15 +16,6 @@ Reporting - Est. Time: 3 weeks (21 days)
 	5) Product Perfomance Scorecard
 		- Design & Build
 
-	6) Float Life Cycle (COMPLETE - May or maynot work...)
-		- Design & Build
-
-	7) Asset Activity (COMPLETE)
-		- Refine existing - essentially design & build
-
-	8) Avg. Lifecycle Time (COMPLETE)
-		- Design & Build
-
 	9) Lost Asset Report
 
 	10) Keg Register - Low Priority
@@ -34,45 +25,17 @@ Reporting - Est. Time: 3 weeks (21 days)
 ***********************************************
 Maintenance - Est. Time: TBD minimal 2 weeks
 ***********************************************
-	1) Users	(COMPLETE)
-		- Redo UI		
-
-	2) Partnerships	(COMPLETE)
-		- Redo UI
-		- Refine Mechanics
-
-	3) Networks (COMPLETE)
-		- Redo UI		
-
-	4) Locations (COMPLETE)
-		- Redo UI
-
-	5) Products (COMPLETE)
-		- Redo UI
 
 	6) Barcode Maker
 		- Redo UI
 
-	7) RFID (COMPLETE)
-
 	8) Verify/define user permissions/roles	
 	
-	9) Product Variatals List
+	9) Product Variatals List - May not do?
 		- Define & add items to list
 
+
 	10) Deployment Settings (Entity Level)
-
-***********************************************
-SmartNetworks - Est. Time: TBD minimal 1 week
-***********************************************
-	1) Create/Determine Network Types (COMPLETE)
-		- Distributor
-		- Brewery		
-
-*******************************************
-dashboard - Est. Time: TBD minimal 1 week
-*******************************************
-	(COMPLETE)
 
 *******************************************
 System Management - Est. Time:  1 week
@@ -84,39 +47,4 @@ System Management - Est. Time:  1 week
 
 	3) RFID Management (COMPLETE)
 
---- CONSUMER/BUSINESS RELATED ---
-*******************************************
-seo/google ads - 1 week
-*******************************************
-	TBD
-	
-*******************************************
-payment proccess - Est. Time: 1 week
-*******************************************
-	TBD
-
-*******************************************
-Public facing site - Est. Time 6 weeks
-*******************************************
-	1) General Design
-		- Refine/style header bar
-		- develop craft beer centric theme	
-
-	2) home page
-		- Slide Show
-		- Quick Start Trial Image
-
-	3) pricing
-		- image
-
-	4) about page
-		- design & build
-
-	5) contact page
-		- design & build
-
-	6) order page
-		- design & build
-
-	7) members (maybe removed)
-		- design & build
+	4) Payment System
