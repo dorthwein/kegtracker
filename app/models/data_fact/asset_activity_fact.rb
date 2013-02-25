@@ -25,7 +25,7 @@ class AssetActivityFact
 
 # Variable Details 
 # Life Cycle
-# field :fill_time, :type => Time
+  field :fill_time, :type => Time
   field :fill_count, type: Integer
   field :asset_status, type: Integer, :default => 0  
   field :location_network_type, type: Integer
@@ -93,7 +93,7 @@ class AssetActivityFact
     if self.handle_code != 4
       self.fill_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset, :handle_code => 4).lte(fact_time: self.fact_time).desc(:fact_time).first._id
       if !self.fill_asset_activity_fact_id.nil?
-        self.cycle_length = self.fact_time.to_i - self.fill_asset_activity_fact.fact_time.to_i
+        self.cycle_length = self.fact_time.to_i - self.fill_asset_activity_fact.fact_time.to_i        
       end
       
 #      if self.fill_asset_activity_fact.nil?
@@ -123,6 +123,6 @@ class AssetActivityFact
       self.delivery_network = self.location_network
       AssetActivityFact.where(:fill_asset_activity_fact => self.fill_asset_activity_fact).update_all(:delivery_network_id => self.location_network._id, :delivery_asset_activity_fact_id => self._id)
     end    
-    # If nil, use current network
+    self.fill_time = self.fill_asset_activity_fact.fact_time rescue nil
 	end  
 end

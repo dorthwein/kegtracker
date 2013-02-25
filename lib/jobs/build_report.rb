@@ -91,8 +91,10 @@ class BuildReport
 			last_date = @date.end_of_day
 
 			# Distribution Channels
-			start = Time.new(2013,2,14)			
-			asset_activity_facts = entity.visible_asset_activity_facts.gte(fact_time: start).between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
+			start = Time.new(2013,2,14)
+			
+			asset_activity_facts = entity.visible_asset_activity_facts.gte(fill_time: start).between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
+			print asset_activity_facts.to_json
 			by_network = asset_activity_facts.group_by{|x| x.location_network}
 			by_network.each do |y|
 

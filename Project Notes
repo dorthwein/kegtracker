@@ -22,6 +22,16 @@ Reporting - Est. Time: 3 weeks (21 days)
 
 	11) Lookup via scan
 
+	12) Redo Invoicing
+		
+		- Invoice
+			- Invoice Detail
+				* Contains total qty, price, taxes etc...
+
+			- Attached Assets
+				* 
+
+		
 ***********************************************
 Maintenance - Est. Time: TBD minimal 2 weeks
 ***********************************************

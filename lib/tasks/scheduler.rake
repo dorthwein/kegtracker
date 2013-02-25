@@ -13,7 +13,6 @@ task :ten_minute_build => :environment do
 end
 
 task :process_payments => :environment do
-
 	Entity.all.each do |x|
 		if !x.payment_token.nil?			
 			payment_method = SpreedlyCore::PaymentMethod.find(x.payment_token.to_s)
@@ -164,23 +163,4 @@ task :correct_cross_brewer => :environment do
 		end
 	end	
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
