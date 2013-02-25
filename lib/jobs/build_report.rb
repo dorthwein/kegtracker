@@ -136,7 +136,7 @@ class BuildReport
 							:life_cycle_avg_time => avg.to_i,
 							:life_cycle_min_time => minmax[0].to_i,
 							:life_cycle_max_time => minmax[1].to_i,
-							:life_cycle_completed_cycles => by_fill.length.to_i,
+							:life_cycle_completed_cycles => t.length.to_i,
 							:fact_time => @date
 						)
 						print "Cycle Fact Created/Updated \n"						
