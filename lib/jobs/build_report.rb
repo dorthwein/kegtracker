@@ -94,7 +94,6 @@ class BuildReport
 			start = Time.new(2013,2,14)
 			
 			asset_activity_facts = entity.visible_asset_activity_facts.gte(fill_time: start).between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
-			print asset_activity_facts.to_json
 			by_network = asset_activity_facts.group_by{|x| x.location_network}
 			by_network.each do |y|
 
@@ -137,7 +136,7 @@ class BuildReport
 							:life_cycle_avg_time => avg.to_i,
 							:life_cycle_min_time => minmax[0].to_i,
 							:life_cycle_max_time => minmax[1].to_i,
-							:life_cycle_completed_cycles => b[1].length.to_i,
+							:life_cycle_completed_cycles => by_fill.length.to_i,
 							:fact_time => @date
 						)
 						print "Cycle Fact Created/Updated \n"						
