@@ -20,12 +20,15 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/1.json
   def show
     respond_to do |format|
-      format.json { 
-        location = Location.find(params[:id])
-        networks = JqxConverter.jqxDropDownList(current_user.entity.networks)
-        location_types = JqxConverter.jqxDropDownList(Location.location_types)
-
-        response = {:location => location, :networks => networks, :location_types => location_types }
+      format.html {render :layout => 'popup'}      
+      format.json {          
+        
+        record = Location.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
+        response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
 
         render json: response 
       }
@@ -36,11 +39,16 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/new.json
   def new
     respond_to do |format|
-      format.json { 
-        networks = JqxConverter.jqxDropDownList(current_user.entity.networks)        
-        location_types = JqxConverter.jqxDropDownList(Location.location_types)        
+      format.html {render :layout => 'popup'}      
+      format.json {          
         
-        response = {:networks => networks, :location_types => location_types }
+        record = Location.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
+        response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
+
         render json: response 
       }
     end
@@ -53,30 +61,28 @@ class Maintenance::LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    respond_to do |format|          
-      format.json { 
-        location = Location.new(params[:location])
-        
-        if location.save
-          render json: location
-        else
-          render json: {:success => false, :message => 'Location creation error, please contact support'}
-        end
-      }        
+    record = Location.new(params[:record])
+    respond_to do |format|
+      if record.save
+        format.html 
+        format.json {  render json: {} }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
     end
   end
 
   # PUT /locations/1
   # PUT /locations/1.json
-  def update	
+  def update    
+    record = Location.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
+      format.html
       format.json {
-        location = Location.find(params[:id])
-        if location.update_attributes(params[:location])
-          render json: location
-        else
-          render json: {:sucess => false, :message => 'Location update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end

@@ -4,54 +4,66 @@ class System::AssetTypesController < System::ApplicationController
 
   # GET /asset_types
   # GET /asset_types.json
-  def index
-    @asset_types = AssetType.all
-
+  def index 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @asset_types }
+      format.json { 
+        asset_types = AssetType.all
+        render json: asset_types 
+      }
     end
   end
 
   # GET /asset_types/1
   # GET /asset_types/1.json
-  def show
-    @asset_type = AssetType.find(params[:id])
-
+  def show    
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @asset_type }
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = AssetType.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:measurement_unit_id] = JqxConverter.jqxDropDownList(MeasurementUnit.all)
+
+        render json: response 
+      }
     end
   end
 
   # GET /asset_types/new
   # GET /asset_types/new.json
-  def new
-    @asset_type = AssetType.new
-#	@networks = get_networks.map { |network| [(!network.description.nil? ? network.description : network.entity.description), network.id] }	    
-#	@measurement_units = MeasurementUnit.all.map { |measurement_unit| [(!measurement_unit.description.nil? ? measurement_unit.description : measurement_unit.description), measurement_unit.id] }	    
-	@measurement_units = MeasurementUnit.all.map { |measurement_unit| [measurement_unit.description, measurement_unit.id] }
+  def new    
     respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @asset_type }
+      format.html {render :layout => 'popup'}
+      format.json { 
+        record = AssetType.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:measurement_unit_id] = JqxConverter.jqxDropDownList(MeasurementUnit.all)
+
+        render json: response 
+      }
     end
   end
 
   # GET /asset_types/1/edit
   def edit
-    @asset_type = AssetType.find(params[:id])
-	@measurement_units = MeasurementUnit.all.map { |measurement_unit| [(!measurement_unit.description.nil? ? measurement_unit.description : measurement_unit.description), measurement_unit.id] }	    
   end
 
   # POST /asset_types
   # POST /asset_types.json
   def create
-    @asset_type = AssetType.new(params[:asset_type])
+    record = AssetType.new(params[:record])
     respond_to do |format|
-      if @asset_type.save
-        format.html { redirect_to system_asset_types_path, notice: 'Asset type was successfully created.' }
+      if record.save        
+        format.html 
+        format.json {  render json: {} }
       else
         format.html { render action: "new" }
+        format.json {  render json: {} }
       end
     end
   end
@@ -59,24 +71,22 @@ class System::AssetTypesController < System::ApplicationController
   # PUT /asset_types/1
   # PUT /asset_types/1.json
   def update  	
-    @asset_type = AssetType.find(params[:id])
-
+    record = AssetType.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
-      if @asset_type.update_attributes(params[:asset_type])
-        format.html { redirect_to system_asset_types_path, notice: 'Asset type was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @asset_type.errors, status: :unprocessable_entity }
-      end
+      format.html
+      format.json {
+        render json: {}
+      }
     end
   end
 
   # DELETE /asset_types/1
   # DELETE /asset_types/1.json
   def destroy
-    @asset_type = AssetType.find(params[:id])
-    @asset_type.destroy
+    asset_type = AssetType.find(params[:id])
+    asset_type.destroy
 
     respond_to do |format|
       format.html { redirect_to asset_types_url }

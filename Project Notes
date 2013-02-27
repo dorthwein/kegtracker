@@ -7,9 +7,6 @@ Inside Rim Weld Start Date: January 24th, 2013
 *****************************************
 Reporting - Est. Time: 3 weeks (21 days)
 *****************************************
-	3) Product Browse
-		- Design & Build
-
 	4) Network Performance Scorecard
 		- Design & Build
 
@@ -22,8 +19,12 @@ Reporting - Est. Time: 3 weeks (21 days)
 
 	11) Lookup via scan
 
-	12) Redo Invoicing
-		
+	12) Pricing Rules
+		- Pricing Rules
+			* Tax Rule
+			* 
+	
+	13) Redo Invoicing			
 		- Invoice
 			- Invoice Detail
 				* Contains total qty, price, taxes etc...
@@ -56,3 +57,5 @@ System Management - Est. Time:  1 week
 	3) RFID Management (COMPLETE)
 
 	4) Payment System
+
+

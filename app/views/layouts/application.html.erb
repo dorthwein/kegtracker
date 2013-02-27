@@ -4,14 +4,12 @@
   <title>CraftNet</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-
-  <meta name="viewport" content="width=960, user-scalable=yes" />   
-
   <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=960, user-scalable=yes" />   
 </head>
 <body> 
 	<div data-role="page" data-cache="never" id="<%= request.path.gsub('/', '_') %>" data-url="<%= request.path %>">		
-		<div data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px;" data-theme="none" >
+		<div id="page_header" data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px;" data-theme="none" >
 			<% if !user_signed_in? %>			
             <div id="jqxMenu">
                 <ul>                				
@@ -47,7 +45,7 @@
 								Invoices
 								<ul>
 									<li> 
-										<%= link_to 'Lookup', :reports_invoice_lookup %>  
+										<%= link_to 'Lookup', :accounting_invoices %>  
 									</li>
 								</ul>
 							</li>
@@ -134,8 +132,11 @@
 								</ul>
 							</li>
 							<li>
-								Production
+								Products
 								<ul>
+									<li> <%= link_to 'SKUs', :maintenance_skus %> 
+									</li>		
+
 									<li> <%= link_to 'Products', :maintenance_products %> </li>
 									<li> 
 										<%= link_to 'Contract Breweries', :maintenance_production_partnerships %> 
@@ -173,11 +174,9 @@
 					</li>					
 					<% end %>
 					<div style="float:right; padding:5px 30px 5px 5px;" class="right"> <%= current_user.email %> </div>
-				</ul>
-
-				
+				</ul>				
 			</div>
-			<input data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" Quick search coming soon" />
+			<input id="quick_search" data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" Quick search coming soon" />
 		
 			<% end %>							
             
@@ -185,11 +184,9 @@
 		</div>
 		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:10px;">			
 		<!-- Main Content -->	
-
-					<%= yield %>																		
-
+			<%= yield %>																
 		</div>
-		<div data-role="footer" data-position="fixed" style="position:fixed; bottom:0px">
+		<div id="page_footer" data-role="footer" data-position="fixed" style="position:fixed; bottom:0px">
 			<div id="content-alert" style="display:none">	</div>								
 			<span style="float:left; padding:0px 0px 0px 10px"> Black Stag Solutions, LLC </span>
 			<span style="float:right; padding: 0px 10px 0px 0px"> Cobalt </span>

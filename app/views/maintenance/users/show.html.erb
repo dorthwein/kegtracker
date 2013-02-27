@@ -1,6 +1,8 @@
-<li class="li-content">
-<%= toolbar({:scanners_menu => true, :edit => true, :reports_menu => true, :browse_menu => true, :index => true, :maintenance_menu => true}) %>
-	<div class="li-content" </div>
-		Coming Soon...
-	</div>
-</li>
+<div class="popup_title">	
+	<h3 class="left"> View User	</h3>
+	<% if can? :edit, :user %>
+  		<button id="edit" class="right jqxButton" data-role="none"> Edit </button>
+	<% end %>
+	<div style="clear:both">	</div>
+</div>
+<%= render 'form' %>

@@ -61,7 +61,7 @@ $(document).on('pageshow', '#_account', function(event){
 
 
 /*
-	$('#form_validator').jqxValidator({
+	$('.jqxValidator').jqxValidator({
 	 	rules: [
 	 		// Email Rules
 	        { input: '#email', message: 'Username is required!', action: 'keyup, blur', rule: 'required' },
@@ -103,7 +103,7 @@ $(document).on('pageshow', '#_account', function(event){
 	// Style Buttons
 	$("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#updateSaveButton").bind('click', function () {
-    	if($('#form_validator').jqxValidator('validate', element)){	
+    	if($('.jqxValidator').jqxValidator('validate', element)){	
 	        var params = {user:{}}
 //	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
 	        $('.toggle_switch').each(function(key, obj) {        
@@ -136,7 +136,7 @@ $(document).on('pageshow', '#_account', function(event){
 
 	$("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
     $("#newSaveButton").bind('click', function () {
-    	if($('#form_validator').jqxValidator('validate', element)){	
+    	if($('.jqxValidator').jqxValidator('validate', element)){	
 	        var params = {user:{}}
 	        params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
 	        $('.toggle_switch').each(function(key, obj) {        

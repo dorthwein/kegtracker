@@ -17,29 +17,44 @@ class Maintenance::NetworksController < ApplicationController
   # GET /networks/1
   # GET /networks/1.json
   def show
-    network = Network.find(params[:id])	
-    entities = JqxConverter.jqxDropDownList([current_user.entity])      
-    products = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
-    locations = JqxConverter.jqxDropDownList(network.locations) 
-    network_types = JqxConverter.jqxDropDownList(Network.network_types)
-    
-    response = {:network => network, :network_types => network_types, :entities => entities, :products => products, :locations => locations}
     respond_to do |format|
-      format.json { render json: response }
-    end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = Network.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])      
+        response[:jqxDropDownLists][:smart_mode_product_id] = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
+        response[:jqxDropDownLists][:smart_mode_in_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+        response[:jqxDropDownLists][:smart_mode_out_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+        response[:jqxDropDownLists][:network_type] = JqxConverter.jqxDropDownList(Network.network_types)
+
+        render json: response 
+      }
+    end    
   end
 
   # GET /networks/new
   # GET /networks/new.json
   def new
-    entities = JqxConverter.jqxDropDownList([current_user.entity])      
-    products = JqxConverter.jqxDropDownList(current_user.entity.production_products)
-    network_types = JqxConverter.jqxDropDownList(Network.network_types) 
-
-    response = {:entities => entities, :network_types => network_types, :products => products }
     respond_to do |format|
-      format.json { render json: response }
-    end
+      format.html {render :layout => 'popup'}
+      format.json {         
+        record = Network.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])      
+        response[:jqxDropDownLists][:smart_mode_product_id] = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
+        response[:jqxDropDownLists][:smart_mode_in_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+        response[:jqxDropDownLists][:smart_mode_out_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+        response[:jqxDropDownLists][:network_type] = JqxConverter.jqxDropDownList(Network.network_types)
+
+        render json: response 
+      }
+    end    
   end
 
   # GET /networks/1/edit
@@ -50,29 +65,28 @@ class Maintenance::NetworksController < ApplicationController
   # POST /networks
   # POST /networks.json
   def create
-    respond_to do |format|          
-      format.json { 
-        network = Network.new(params[:network])        
-        if network.save
-          render json: network
-        else
-          render json: {:success => false, :message => 'Network creation error, please contact support'}
-        end
-      }        
+    record = Network.new(params[:record])
+    respond_to do |format|
+      if record.save
+        format.html 
+        format.json {  render json: {} }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
     end
   end
 
   # PUT /networks/1
   # PUT /networks/1.json
   def update
+    record = Network.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
+      format.html
       format.json {
-        network = Network.find(params[:id])
-        if network.update_attributes(params[:network])
-          render json: {:sucess => true}
-        else
-          render json: {:sucess => false, :message => 'Network update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end

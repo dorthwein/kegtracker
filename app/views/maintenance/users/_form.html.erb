@@ -1,120 +1,164 @@
-<div class="li-content" style="overflow: hidden;">
-	<%= form_for([:maintenance, @user]) do |f| %> 	
-		<table class="ft">
-			<thead>
-				<tr>
-					<th ></th>
-					<th > </th>										
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="2"><br /><h1> Account </h1>	</td>
-				</tr>
-				<tr>				
-					<td>
-						<%= f.label(:entity_id, 'Entity:') %>
-					</td>
-					<td>
-						<%= f.select(:entity_id, options_for_select(@entities, (@user.entity.nil? ? @entities.first : @user.entity.id)))  %>
-					</td>
-				</tr>
-				<tr>
-					<td> <%= f.label :email, 'E-Mail/Username:' %> 	</td>
-					<td> <%= f.text_field :email, 'class' => 'input textfield' %>	</td>							
-				</tr>
-				<tr>
-					<td> <%= f.label :password, 'Password:' %> 	</td>
-					<td> <%= f.password_field :password, 'class' => 'input textfield' %>	</td>							
-				</tr>
-				<tr>
-					<td> <%= f.label :password_confirmation, 'Confirm Password:' %> 	</td>
-					<td> <%= f.password_field :password_confirmation, 'class' => 'input textfield' %>	</td>							
-				</tr>
+<table class="popup jqxValidator">
+	<thead>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+	</thead>
+	<tbody>
+		<tr>
+			<th style="border-bottom:1px solid #CCC;" colspan="4"> <h3> Login </h3> </th>			
+		</tr>
 
+		<tr>
+			<td>
+				<b> Email/Login </b>
+			</td>
+			<td>
+				<input type="text" id="email" class="jqxInput required" data-role="none" />
+			</td>
+			<td>	
+				<b> Entity </b>
+			</td>
+			<td>	
+				<div id="entity_id" class="jqxDropDownList required ">		
+              	</div>
+			</td>
 
-				<tr>
-					<td colspan="2"><br /><h1> Contact </h1>	</td>
-				</tr>
+		</tr>
+		<tr>
+			<td>
+				<b> Change Password </b>
+			</td>
+			<td>
+				<input type="password" class="jqxInput" id="password" data-role="none" />
+			</td>
+			<td>
+	            <b> Confirm Password </b>
+	        </td>
+	        <td>
+				<input type="password" id="password_confirmation" class="jqxInput" data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<th style="border-bottom:1px solid #CCC;" colspan="4"> <h3> User Details </h3> </th>			
+		</tr>
+		<tr>
+			<td>
+				<b > First Name </b>
+			</td>
+		 	<td>
+		 		<input type="text" id="first_name" class="jqxInput" data-role="none" />
+		 	</td>
+		
+			<td>
+				<b> Last Name </b>
+			</td>
+			<td>
+				<input type="text" id="last_name" class="jqxInput" data-role="none" />	            				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b> Office Phone </b>
+			</td>
+			<td>
+				<input type="text" id="office_phone" class="jqxInput" data-role="none" />	
+			</td>
+			<td>
+				<b> Cell Phone </b>
+			</td>
+			<td>
+				<input type="text" id="cell_phone" class="jqxInput" data-role="none" />
+			</td>
+		</tr>		
+		<tr>
+			<th style="border-bottom:1px solid #CCC;" colspan="4"> <h3> Scanning </h3> </th>			
+		</tr>
+		<tr>
+			<td>
+                <b> Pickup/Delivery </b>
+            </td>
+            <td>
+              	<div id="scanner_delivery_pickup" class="jqxToggle">
+              		Off
+              	</div>
+            </td>
+            <td>	            
+                <b> Fill </b>
+            </td>
+            <td>
+              	<div id="scanner_fill" class="jqxToggle">
+              		Off
+              	</div>
+            </td>
+        <tr>
+        	<td>
+                <b> Add </b>
+            </td>
+            <td>
+              	<div id="scanner_add" class="jqxToggle">
+              		Off
+              	</div>
+            </td>
+            <td>
+                <b> Move </b>
+            </td>
+            <td>
+              	<div id="scanner_move" class="jqxToggle">
+              		Off
+              	</div>
+            </td>
+        </tr>
+        <tr>
+			<th style="border-bottom:1px solid #CCC;" colspan="4"> <h3> Maintenance </h3> </th>			
 
-				<tr>
-					<td> <%= f.label :first_name, 'First Name:' %> 	</td>
-					<td> <%= f.text_field :first_name, 'class' => 'input textfield' %>	</td>							
-				</tr>
-				<tr>
-					<td> <%= f.label :last_name, 'Last Name:' %> 	</td>
-					<td> <%= f.text_field :last_name, 'class' => 'input textfield' %>	</td>							
-				</tr>								
-				<tr>
-					<td> <%= f.label :cell_phone, 'Cell Phone:' %> 	</td>
-					<td> <%= f.text_field :cell_phone, 'class' => 'input textfield' %>	</td>							
-				</tr>								
-				<tr>
-					<td> <%= f.label :office_phone, 'Office Phone:' %> 	</td>
-					<td> <%= f.text_field :office_phone, 'class' => 'input textfield' %>	</td>							
-				</tr>								
-
-
-				<tr>
-					<td colspan="2"> <br /><h1> Scanning </h1></td>
-				</tr>
-				<tr>
-					<td>	<%= f.label :scanner_delivery_pickup, 'Delivery/Pickup:'  %> </td>
-					<td>	<%= f.select(:scanner_delivery_pickup, options_for_select([['Off', 0],['On', 1]], @user.scanner_delivery_pickup), {}) %>		</td>
-				</tr>
-
-				<tr>
-					<td>	<%= f.label :scanner_add, 'Add:'  %> </td>
-					<td>	<%= f.select(:scanner_add, options_for_select([['Off', 0],['On', 1]], @user.scanner_add), {}) %>		</td>
-				</tr>
-
-				<tr>
-					<td>	<%= f.label :scanner_fill, 'Fill:'  %> </td>
-					<td>	<%= f.select(:scanner_fill, options_for_select([['Off', 0],['On', 1]], @user.scanner_fill), {}) %>		</td>
-				</tr>
-
-				<tr>
-					<td>	<%= f.label :scanner_move, 'Move:'  %> </td>
-					<td>	<%= f.select(:scanner_move, options_for_select([['Off', 0],['On', 1]], @user.scanner_move), {}) %>		</td>
-				</tr>			
-
-				<tr>
-					<td colspan="2"> <br /><h1> Maintenance </h1></td>				
-				</tr>
-				<tr>
-					<td>	<%= f.label :location_maintenance, 'Locations:'  %> </td>
-					<td>	<%= f.select(:location_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.location_maintenance), {} ) %>		</td>
-				</tr>
-				<tr>
-					<td>	<%= f.label :user_maintenance, 'Users:'  %> </td>
-					<td>	<%= f.select(:user_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.user_maintenance), {}) %>		</td>
-				</tr>
-				<tr>
-					<td>	<%= f.label :product_maintenance, 'Products/Items:'  %> </td>
-					<td>	<%= f.select(:product_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.product_maintenance), {}) %>		</td>
-				</tr>
-				<tr>
-					<td>	<%= f.label :production_maintenance, 'Production:'  %> </td>
-					<td>	<%= f.select(:production_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.production_maintenance), {}) %>		</td>
-				</tr>			
-				<tr>
-					<td>	<%= f.label :network_maintenance, 'Networks:'  %> </td>
-					<td>	<%= f.select(:network_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.network_maintenance), {}) %>		</td>
-				</tr>			
-				<tr>
-					<td>	<%= f.label :barcode_maker_maintenance, 'Barcode Maker:'  %> </td>
-					<td>	<%= f.select(:barcode_maker_maintenance, options_for_select([['Off', 0],['Edit/Admin', 1]], @user.barcode_maker_maintenance), {}) %>		</td>
-				</tr>			
-				<tr>
-					<td align="right"></td>
-					<td style="padding-top: 10px;" align="right">
-						<input style="margin-right: 5px;" type="button" data-role="none" id="Save" value="Save" />
-						<input id="Cancel" type="button" value="Cancel" data-role="none" />
-					</td>
-				</tr>
-				
-			</tbody>
-		</table>				
-		<div style="clear:both"> </div>		
-	<% end %>
-</div>
+		</tr>
+		<tr>
+			<td>
+				<b> User  </b>
+			</td>
+			<td>
+				<div id="user_maintenance" class="jqxToggle">
+					Off
+				</div>
+			</td>
+			<td>
+				<b> Network  </b>
+			</td>
+			<td>	
+				<div id="network_maintenance" class="jqxToggle">
+					Off
+				</div>
+			</td>
+		</tr>
+		<tr>		                
+			<td>
+					<b> Location  </b>	                
+			</td>
+			<td>
+				<div id="location_maintenance" class="jqxToggle">
+					Off
+				</div>
+			</td>
+			<td>
+				<b> Product </b>
+			</td>
+			<td>
+				<div id="product_maintenance" class="jqxToggle">
+              		Off
+              	</div>		
+            </td>
+        </tr>
+		<tr>
+			<td>	</td>			
+			<td>	</td>			
+			<td>	</td>
+			<td> 
+			 	<button class="popup jqxButton" id="cancel" data-role="none"> Cancel	</button>	
+				<button class="popup jqxButton" id="save" data-role="none"> Save	</button>		 	
+			</td>						
+								
+		</tr>
+	</tbody>
+</table>	

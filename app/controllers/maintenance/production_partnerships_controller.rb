@@ -14,25 +14,38 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
-  	entity_partnership = EntityPartnership.find(params[:_id])
-	  production_entities = JqxConverter.jqxDropDownList(Entity.production_entities)
-    contractee = JqxConverter.jqxDropDownList([current_user.entity])
-
-    response = {:partners => production_entities, :entities => contractee, :entity_partnership => entity_partnership }    
     respond_to do |format|
-      format.json { render json: response }
-    end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = EntityPartnership.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
+        response[:jqxDropDownLists][:measurement_unit_id] = 
+        render json: response 
+      }
+    end    
   end
 
   # GET /locations/new
   # GET /locations/new.json
   def new
-	  production_entities = JqxConverter.jqxDropDownList(Entity.production_entities)
-    contractee = JqxConverter.jqxDropDownList([current_user.entity])
-    
-    response = {:partners => production_entities, :entities => contractee }
     respond_to do |format|
-      format.json { render json: response }
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = EntityPartnership.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
+        response[:jqxDropDownLists][:measurement_unit_id] = 
+        render json: response 
+      }
     end
   end
 
@@ -45,27 +58,30 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-          entity_partnership = EntityPartnership.find_or_create_by(  :entity_id => params[:entity_partnership][:entity_id], 
-                                                :partner_id => params[:entity_partnership][:partner_id],
-                                              )
-          entity_partnership.update_attributes(:production_partnership => 1)
-          print entity_partnership.to_json
+        entity_partnership = EntityPartnership.where(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id]).first
+        if entity_partnership.nil?
+          # If nil, create
+          entity_partnership = EntityPartnership.new(  params[:record])
+          entity_partnership.production_partnership = 1
+        else
+          entity_partnership.production_partnership = 1         
+        end               
+          entity_partnership.save
           render json: entity_partnership
-      }
+      }        
     end
   end
 
   # PUT /locations/1
   # PUT /locations/1.json
   def update	
+    record = EntityPartnership.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
+      format.html
       format.json {
-        entity_partnership = EntityPartnership.find(params[:id])
-        if entity_partnership.update_attributes(params[:entity_partnership])
-          render json: entity_partnership
-        else
-          render json: {:sucess => false, :message => 'Location update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end

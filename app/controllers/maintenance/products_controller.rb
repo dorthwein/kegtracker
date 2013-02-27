@@ -4,10 +4,6 @@ class Maintenance::ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-	# Construct Product Array
-	# Current User's Entity's Products
-  #	Need to include partner Products
-  # @products = Product.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
@@ -20,26 +16,38 @@ class Maintenance::ProductsController < ApplicationController
   # GET /products/1.json
   def show
     respond_to do |format|
-      product_types = JqxConverter.jqxDropDownList(ProductType.all)
-
-      product = Product.find(params[:id])
-      response = {:product => product, :product_types => product_types }
+      format.html {render :layout => 'popup'}
       format.json { 
-          render json: response 
+        
+        record = Product.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+
+        render json: response 
       }
-    end
+    end    
   end
 
   # GET /products/new
   # GET /products/new.json
   def new
     respond_to do |format|
-      product_types = JqxConverter.jqxDropDownList(ProductType.all)
-      response = {:product_types => product_types }
+      format.html {render :layout => 'popup'}
       format.json { 
-          render json: response 
+        
+        record = Product.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+
+        render json: response 
       }
-    end
+    end    
   end
 
   # GET /products/1/edit
@@ -50,29 +58,28 @@ class Maintenance::ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    respond_to do |format|          
-      format.json { 
-        product = Product.new(params[:product])
-        if product.save
-          render json: product
-        else
-          render json: {:success => false, :message => 'Product creation error, please contact support'}
-        end
-      }        
+    record = Product.new(params[:record])
+    respond_to do |format|
+      if record.save
+        format.html 
+        format.json {  render json: {} }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
     end
   end
 
   # PUT /products/1
   # PUT /products/1.json
   def update
+    record = Product.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
+      format.html
       format.json {
-        product = Product.find(params[:id])      
-        if product.update_attributes(params[:product])
-          render json: product
-        else          
-          render json: {:sucess => false, :message => 'Product update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end

@@ -1,5 +1,7 @@
 class Maintenance::DistributionPartnershipsController < ApplicationController
   before_filter :authenticate_user!
+#  load_and_authorize_resource
+
   def index    		
     respond_to do |format|
       format.html # index.html.erb
@@ -13,25 +15,37 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
-  	entity_partnership = EntityPartnership.find(params[:_id])
-  	distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-    partners = JqxConverter.jqxDropDownList([current_user.entity])
-
-    response = {:partners => partners, :entities => distributors, :entity_partnership => entity_partnership }    
+  	record = EntityPartnership.find(params[:id])
+  	 
     respond_to do |format|
-      format.json { render json: response }
+      format.html {render :layout => 'popup'}
+      format.json { 
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList([current_user.entity])    
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
+
+        render json: response 
+      }
+
     end
   end
 
   # GET /locations/new
   # GET /locations/new.json
   def new
-	  distributors = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-    partners = JqxConverter.jqxDropDownList([current_user.entity])
-
-    response = {:partners => partners, :entities => distributors }
     respond_to do |format|
-      format.json { render json: response }
+      format.html {render :layout => 'popup'}
+      format.json { 
+        record = EntityPartnership.new        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
+        render json: response 
+      }
     end
   end
 
@@ -45,17 +59,15 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-      	entity_partnership = EntityPartnership.where(:entity_id => params[:entity_partnership][:entity_id], :partner_id => params[:entity_partnership][:partner_id]).first
+      	entity_partnership = EntityPartnership.where(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id]).first
         if entity_partnership.nil?
         	# If nil, create
-        	EntityPartnership.create(   :entity_id => params[:entity_partnership][:entity_id], 
-                                      :partner_id => params[:entity_partnership][:partner_id],
-                                      :distribution_partnership => 1
-                                  )
+        	entity_partnership = EntityPartnership.new(  params[:record])
+          entity_partnership.distribution_partnership = 1
         else
-        	entity_partnership.distribution_partnership = 1
-        	entity_partnership.save
+        	entity_partnership.distribution_partnership = 1        	
         end               
+          entity_partnership.save
           render json: entity_partnership
       }        
     end
@@ -64,16 +76,15 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # PUT /locations/1
   # PUT /locations/1.json
   def update	
+    record = EntityPartnership.find(params[:id])
+    record.update_attributes(params[:record])    
     respond_to do |format|
+      format.html
       format.json {
-        entity_partnership = EntityPartnership.find(params[:id])
-        if entity_partnership.update_attributes(params[:entity_partnership])
-          render json: {:sucess => true}
-        else
-          render json: {:sucess => false, :message => 'Location update error, please contact support'}
-        end
+        render json: {}
       }
     end
+
   end
 
   # DELETE /locations/1

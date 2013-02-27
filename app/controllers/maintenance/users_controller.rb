@@ -5,7 +5,6 @@ class Maintenance::UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-  
 #	redirect_to maintenance_users_path
     respond_to do |format|
    		format.html # index.html.erb
@@ -19,24 +18,38 @@ class Maintenance::UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    
     respond_to do |format|
-    	format.json { 
-    		user = User.find(params[:id])        		
-    		response = {:user => user}    		
-      		render json: response 
-		}
-    end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = User.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+
+
+        render json: response 
+      }
+    end    
   end
 
   # GET /users/new
   # GET /users/new.json
   def new
     respond_to do |format|
-    	format.json { 
-      		render json: {} 
-		}
-    end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        
+        record = User.new
+        response = {}
+        response[:jqxDropDownLists] = {}                
+        response[:record] = record              
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+
+        render json: response 
+      }
+    end    
   end
 
   # GET /users/1/edit
@@ -46,15 +59,15 @@ class Maintenance::UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create      
+    record = User.new(params[:record])
     respond_to do |format|
-		format.json {
-			user = User.new(params[:user])
-			if user.save
-				render json: user
-			else
-				render json: {:success => false, :message => 'E-Mail already exists - please change e-mail or contact support'}
-			end
-		}         
+      if record.save
+        format.html 
+        format.json {  render json: {} }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
     end
   end
 
@@ -63,12 +76,12 @@ class Maintenance::UsersController < ApplicationController
   def update        
     respond_to do |format|
  		format.json { 		
-			if params[:user][:password].blank?
-				params[:user].delete(:password)
-				params[:user].delete(:password_confirmation)
+			if params[:record][:password].blank?
+				params[:record].delete(:password)
+				params[:record].delete(:password_confirmation)
 			end
-			user = User.find(params[:id])			
-			if user.update_attributes(params[:user])		
+			record = User.find(params[:id])			
+			if record.update_attributes(params[:record])		
 	 	  		render json: {:success => true } 
 	 	  	else
 				render json: {:success => false, :message => 'User information invalid, please change user e-mail & password' } 
@@ -80,8 +93,8 @@ class Maintenance::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
+    user = User.find(params[:id])
+    user.destroy
 
     respond_to do |format|
       format.html { redirect_to users_url }

@@ -1,101 +1,50 @@
-<% if @rfid_reader.errors.any? %>
-	<li>
-		<div id="error_explanation">
-	      <h2><%= pluralize(@rfid_reader.errors.count, "error") %> prohibited this rfid from being saved:</h2>
-			<ul>
-		        <% @rfid_reader.errors.full_messages.each do |msg| %>
-					<li><%= msg %></li>
-				<% end %>
-			</ul>
-		</div>
-	</li>
-<% end %>
-<li class="li-content">
-	<%= form_for([:maintenance, @rfid_reader]) do |f| %>
-		<div class="li-content">
-			<table class="ft">
-				<thead>
-					<tr>
-						<th class="label"> </th>
-						<th class="input"> </th>					
-				</thead>
-				<tbody>
-					<tr>	
-						<td>
-							<%= f.label(:reader_name, 'Name') %>					
-						</td>
-						<td>
-							<%= f.text_field(:reader_name) %>					
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<%= label_tag(:antenna_count, 'Antennas') %>					
-						</td>
-						<td>
-							<%= select_tag(:antenna_count, options_for_select([[0,0],[1,1],[2,2],[3,3],[4,4]], @rfid_reader.rfid_antennas.count)) %>					
-						</td>
-					</tr>								
-					
-					<tr>
-						<td>
-							<%= label_tag(:mac_address, 'MAC Address') %>					
-						</td>
-						<td>
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 3px;"> 
-									: 
-								</span>	
-								<%= f.text_field(:mac_address_1, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 3px;">  
-									:
-								</span>	
-								<%= f.text_field(:mac_address_2, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 3px;">  
-									:
-								</span>	
-								<%= f.text_field(:mac_address_3, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 3px;"> 
-									: 
-								</span>	
-								<%= f.text_field(:mac_address_4, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 3px;"> 
-									:
-								</span>	
-								<%= f.text_field(:mac_address_5, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							<div style="float:left; margin:0 0 0 3px">
-								<span style="float:right; font-size:30px; vertical-align:middle; margin:14px 0px 0 0;"> 
-									
-								</span>	
-								<%= f.text_field(:mac_address_6, { :maxlength => 2, :style => 'width:40px; float:right'}) %> 
-							</div>
-							
-							<div style="clear:both">Example: 00:1B:5F:00:51:4A </div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<%= f.label(:network, 'Network') %>					
-						</td>
-						<td>
-							<%= f.select(:network, options_for_select(@networks, (@rfid_reader.network.nil? ? @networks.first : @rfid_reader.network._id))) %>
-						</td>
-					</tr>								
-				</tbody>
-			</table>	
-		</div>
-	<% end %>
-</li>
+<table class="popup jqxValidator">
+	<thead>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>	<b> Description </b>	</td>
+			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+		</tr>
+		<tr>
+			<td>	<b> Units pet Asset </b>	 	</td>
+			<td>	
+				<input type="number" id="measurement_unit_qty" class="jqxInput required" data-role="none" />
+			</td>		
+			<td>	<b> Measurement Unit </b>	 	</td>
+			<td>	
+				<div class="jqxDropDownList required " id="measurement_unit_id">
+			</td>		
+		</tr>
 
-
+		<tr>
+			<td>	
+				<b> Tier </b>	 	
+			</td>
+			<td>	
+				<input type="number" id="tier" class="jqxInput required" data-role="none" />	
+			</td>
+			
+			<td>	
+				<b> Returnable </b>
+			</td>
+			<td>
+				<input type="number" id="returnable" class="jqxInput required" data-role="none" />
+			</td>		
+		</tr>
+		<tr>
+			<td>	</td>			
+			<td>	</td>			
+			<td>	</td>
+			<td> 
+			 	<button class="popup jqxButton" id="cancel" data-role="none"> Cancel	</button>	
+				<button class="popup jqxButton" id="save" data-role="none"> Save	</button>		 	
+			</td>						
+								
+		</tr>
+	</tbody>
+</table>	

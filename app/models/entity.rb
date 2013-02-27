@@ -8,11 +8,15 @@ class Entity
 	has_many :networks
 	has_many :assets
 	has_many :network_memberships
+	has_many :skus
+	has_many :prices
 
 	has_many :network_facts, :inverse_of => :report_entity
 	
 	has_many :entity_partnerships_as_partner, :class_name => 'EntityPartnership', :inverse_of => :partner
 	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
+
+	has_many :invoices, :inverse_of => :invoice_entity
 	belongs_to :admin_user, :class_name => 'User', :inverse_of => :user
 
 #	has_many :entity_partnerships_as_entity, as: :entity_partnerships_as_entity
@@ -57,6 +61,17 @@ class Entity
 	end
 	def self.production_entities	
 		return Network.where(:network_type => 1).asc(:description).group_by{|x| x.entity}.map{|x| x[0]}	
+	end
+
+#############################
+# Partnerships 				#
+#############################
+	def related_entities
+		related_entities = []
+
+		related_entities = related_entities + self.entity_partnerships_as_partner.map{|x| x.entity }
+		related_entities = related_entities + self.entity_partnerships_as_entity.map{|x| x.partner }
+		return related_entities.uniq
 	end
 	
 #############################
@@ -181,7 +196,6 @@ class Entity
 	def network_score_card
 		
 	end
-
 
   before_save :sync_descriptions  
   def sync_descriptions

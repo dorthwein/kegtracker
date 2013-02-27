@@ -1,35 +1,8 @@
-<li class="li-table">
-	<%= toolbar({:scanners_menu => true, :edit => true, :reports_menu => true, :browse_menu => true, :index => true, :maintenance_menu => true}) %>
-	<div style="padding-left:20px; border-top:1px solid #ccc">Assets </div>
-	<table class="dt">
-		<thead>		
-			<tr>
-				<th>Tag		</th>
-				<th>Network	</th>				
-				<th>Product	</th>
-				<th>Brewery	</th>				
-				<th>Size	</th>
-				<th>Owner	</th>				
-				<th>Action	</th>
-				<th>Date	</th>
-				<th>User	</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% @assets.each do |asset| %>
-			<tr>
-				<td> <%= asset.tagValue %>						</td>
-				<td> <%= asset.network.description %> 				</td>
-				<td> <%= asset.product.description	%> 			</td>
-				<td> <%= asset.product.entity.description %>	</td>
-				<td> <%= asset.asset_type.description %>		</td>				
-				<td> <%= asset.entity.description %>			</td>
-				<td> <%= asset.handle_code.description %>		</td>
-				<td> <%= asset.updated_at %>					</td>
-				<td> <%= asset.user.email %>	</td>				
-			</tr>
-			<% end %>
-		</tbody>	
-	</table>
-	<div style="clear:both"></div>	
-</li>
+<div class="popup_title">	
+	<h3 class="left"> View Location</h3>
+	<% if can? :edit, :locations %>
+  		<button id="edit" class="right jqxButton" data-role="none"> Edit </button>
+	<% end %>
+	<div style="clear:both">	</div>
+</div>
+<%= render 'form' %>

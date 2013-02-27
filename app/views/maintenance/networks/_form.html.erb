@@ -1,55 +1,70 @@
-<!-- Form Entry Fields -->
-<div class="li-content" style="overflow: hidden;">
-	<%= form_for [:maintenance, @network] do |f| %>
-		<table class="ft">
-			<thead>
-				<tr>
-					<th class="label"> </th>
-					<th class="input"> </th>										
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td> <%= f.label :entity_id, 'Entity:' %> </td>						
-					<td>	 <%= f.select(:entity_id, options_for_select(@entities, (@user.entity.nil? ? @entities.first : @user.entity.id)))  %>	</td>
-				</tr>
-				<tr>
-					<td>	<%= f.label :description, 'Name:'  %> </td>
-					<td>	<%= f.text_field :description, 'class' => 'input textfield' %>	</td>							
-				</tr>
+<table class="popup jqxValidator">
+	<thead>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>	<b> Description </b>	</td>
+			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>	</td>
+			<td>	</td>
+		</tr>
+		<tr>
+			<td>	<b> Entity </b>	 	</td>
+			<td>	
+				<div id="entity_id" class="jqxDropDownList required "> </div>			
+			</td>		
+			<td>	<b> Network Type </b>	 	</td>
+			<td>	
+				<div class="jqxDropDownList required " id="network_type"> </div>
+			</td>		
+		</tr>
 
-				<tr>
-					<td>							
-						<label> Type: </label>
-					</td>
-					<td>	
-						<div style="width:100px; float:left; padding:5px">
-							<%= f.label :production, 'Production' %>
-							<br />
-							<%= f.select(:production, options_for_select([['Off', 0],['On', 1]], @network.production), {}, 'data-role' => 'slider') %>
-						</div>
-						<div style="width:100px; float:left; padding:5px">
-							<%= f.label :distribution, 'Distribution' %>				
-							<br />													
-							<%= f.select(:distribution, options_for_select([['Off', 0],['On', 1]], @network.distribution), {}, 'data-role' => 'slider') %>
-						</div>
-						<div style="width:100px; float:left; padding:5px">
-							<%= f.label :market, 'Market'  %>						<br />			
-							<%= f.select(:market, options_for_select([['Off', 0],['On', 1]], @network.market), {}, 'data-role' => 'slider') %>
-						</div>
-					</td>								
-				</tr>	
-				<tr>
-					<td align="right"></td>
-					<td style="padding-top: 10px;" align="right">
-						<input style="margin-right: 5px;" type="button" data-role="none" id="Save" value="Save" />
-						<input id="Cancel" type="button" value="Cancel" data-role="none" />
-					</td>
-				</tr>
+		<tr>
+			<td>	
+				<b> In Bound Location </b>
+			</td>
+			<td>
+				<div id="smart_mode_in_location_id" class="jqxDropDownList "> 
+
+			</td>			
+			<td>	
+				<b> Out Bound Location </b>
+			</td>
+			<td>
+				<div id="smart_mode_out_location_id" class="jqxDropDownList "> 
+				</div>										
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b> Product </b>
+			</td>
+			<td>
+				<div id="smart_mode_product_id" class="jqxDropDownList "> 
+				</div>
+			</td>
+			<td>
+                <b> Auto Mode </b>
+            </td>
+            <td>
+              	<div id="auto_mode" class="jqxToggle">
+              		Off
+              	</div>
+            </td>
+        </tr>
+		<tr>
+			<td>	</td>			
+			<td>	</td>			
+			<td>	</td>
+			<td> 
+			 	<button class="popup jqxButton" id="cancel" data-role="none"> Cancel	</button>	
+				<button class="popup jqxButton" id="save" data-role="none"> Save	</button>		 	
+			</td>						
 								
-			</tbody>
-		</table>		
-		<div style="clear:both"> </div>		
-	<% end %>
-</li>
-
+		</tr>
+	</tbody>
+</table>	

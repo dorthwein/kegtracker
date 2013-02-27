@@ -1,78 +1,88 @@
-<div style="overflow: hidden;">
-	<%= form_for [:maintenance, @location] do |f| %>
-		<table>
-			<tr>
-				<td><%= f.label :network_id, 'Network:'  %></td>
-				<td><%= f.select(:network_id, options_for_select(@networks, (@location.network.nil? ? @networks[0] : @location.network.id)), 'style' => 'width:100px')  %></td>
-			</tr>
-			<tr>
-				<td><%= f.label :description, 'Name:'  %> </td>
-				<td><%= f.text_field :description, 'data-role' => :none %>	 </td>
-			</tr>
-			<tr>
-				<td>	<%= f.label :externalID, 'Account #:'  %>	</td>
-				<td>	<%= f.text_field :externalID %>	</td>					
-			</tr>
-			<tr>
-				<td> Location Type: </td>
-				<td>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :on_premise, 'On Premise' %>	<br />
-						<%= f.select(:on_premise, options_for_select([['Off', 0],['On', 1]], @location.on_premise), {}) %>
-					</div>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :off_premise, 'Off Premise' %>			<br />														
-						<%= f.select(:off_premise, options_for_select([['Off', 0],['On', 1]], @location.off_premise), {}) %>
-					</div>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :empty, 'Empty'  %>				<br />					
-						<%= f.select(:empty, options_for_select([['Off', 0],['On', 1]], @location.empty), {}) %>
-					</div>
-					<div style="clear:both"> </div>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :inventory, 'Inventory'  %>		<br />
-						<%= f.select(:inventory, options_for_select([['Off', 0],['On', 1]], @location.inventory), {}) %>
-					</div>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :production, 'Production'  %>		<br />				
-						<%= f.select(:production, options_for_select([['Off', 0],['On', 1]], @location.production), {}) %>
-					</div>
-					<div style="width:100px; float:left; padding:5px">
-						<%= f.label :partner_entity, 'Partner'  %>	<br />				
-						<%= f.select(:partner_entity, options_for_select([['Off', 0],['On', 1]], @location.partner_entity), {}) %>
-					</div>								
-				</td>
-			</tr>			
-			<tr>
-				<td>	<%= f.label :name, 'Name:'  %>	</td>
-				<td>	<%= f.text_field :name %> 	</td>								
-			</tr>
 
+<table class="popup jqxValidator">
+	<thead>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>	<b> Description </b>	</td>
+			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>
+				<b>	Account # </b>
+			</td>
+			<td>
+				<input type="text" id="externalID" class="jqxInput" data-role="none" />	            
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b> Network </b>
+			</td>
+			<td>
+				<div id="network_id" class="jqxDropDownList required "> 
+				</div>
+			</td>
+			<td>
+            	<b> Location Type </b>
+            </td>
+            <td>
+          		<div id="location_type" class="jqxDropDownList required ">					
+          	</td>	
+		</tr>
+	
+		<tr>
+			<td>
+				<b> Address Name </b>
 
-			<tr>
-				<td>	<%= f.label :street, 'Address:'  %>	</td>
-				<td>	<%= f.text_field :street %> 	</td>								
-			</tr>
-			<tr>
-				<td>	<%= f.label :city, 'City:'  %>	</td>
-				<td>	<%= f.text_field :city %> 	</td>							
-			</tr>
-			<tr>
-				<td>	<%= f.label :state, 'State:'  %>	</td>
-				<td>	<%= f.text_field :state %> 	</td>								
-			</tr>
-			<tr>
-				<td>	<%= f.label :zip, 'Zip:'  %>	</td>
-				<td>	<%= f.text_field :zip %>	</td>				
-			</tr>
-			<tr>
-				<td align="right"></td>
-				<td style="padding-top: 10px;" align="right">
-					<input style="margin-right: 5px;" type="button" data-role="none" id="Save" value="Save" />
-					<input id="Cancel" type="button" value="Cancel" data-role="none" />
-				</td>
-			</tr>
-			
-		</table>
-	<% end %>		
-</div>
+			</td>
+			<td>
+				<input type="text" id="name" class="jqxInput" data-role="none" />
+			</td>
+			<td>	
+				<b> Street </b>
+
+			</td>
+			<td>
+				<input type="text" id="street" class="jqxInput" data-role="none" />
+			</td>
+
+		</tr>
+		<tr>
+			<td>
+				<b> City </b>
+			</td>
+			<td>
+				<input type="text" id="city" class="jqxInput" data-role="none" />	
+			</td>
+			<td>
+				<b> State </b>
+			</td>
+			<td>
+				<input type="text" class="jqxInput" id="state" data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<td>	</td>
+			<td>	</td>
+			<td>
+				<b> Zip </b>
+			</td>
+			<td>
+				<input type="text" id="zip" class="jqxInput" data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<td>	</td>			
+			<td>	</td>			
+			<td>	</td>
+			<td> 
+			 	<button class="popup jqxButton" id="cancel" data-role="none"> Cancel	</button>	
+				<button class="popup jqxButton" id="save" data-role="none"> Save	</button>		 	
+			</td>						
+								
+		</tr>
+	</tbody>
+</table>	

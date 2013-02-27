@@ -13,6 +13,7 @@ x = function(){
 	return height	
 }
 $(window).resize(function() {  
+	$('.jqxValidator').jqxValidator('updatePosition');
 //	$("#jqxgrid").jqxGrid({height:x()});
 });
 
@@ -23,10 +24,12 @@ default_groupsrenderer = function (text, group, expanded, data) {
 	return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span> </div>';
 }
 
-
+system.full_window_table_height = '800px'
 system.table_height = '625px'
 system.simple_grid_height = '800px';
 system.simple_grid_width = '958px';
+
+system.popup_settings = 'width=800,height=500, menubar=no, titlebar=no, toolbar=no, status=no';
 
 // window.location.protocol = "http"
 

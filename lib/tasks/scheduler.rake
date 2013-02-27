@@ -101,6 +101,14 @@ task :save_asset_activity_facts => :environment do
 		end
 	end
 end
+task :save_asset_types => :environment do
+	AssetType.all.each do |x|
+		if x.save!
+			print "Asset Type Saved \n"
+		end
+	end
+end
+
 
 task :save_assets => :environment do
 	i = 0
@@ -108,6 +116,13 @@ task :save_assets => :environment do
 		if x.save!
 			i = i + 1
 			print "Asset Saved #{i} \n"
+		end
+	end
+end
+task :save_invoices => :environment do
+	Invoice.all.each do |x|
+		if x.save!
+			print "Invoice Saved \n"
 		end
 	end
 end
@@ -140,6 +155,12 @@ task :save_all => :environment do
 			print "Asset Activity Fact Saved \n"
 		end
 	end
+	Invoice.all.each do |x|
+		if x.save!
+			print "Invoice Saved \n"
+		end
+	end
+	
 end
 
 task :correct_cross_brewer => :environment do

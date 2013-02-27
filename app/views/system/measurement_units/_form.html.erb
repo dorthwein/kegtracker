@@ -1,61 +1,56 @@
-<% if @measurement_unit.errors.any? %>
-	<li>
-		<div id="error_explanation">
-		  <h2><%= pluralize(@measurement_unit.errors.count, "error") %> prohibited this entity from being saved:</h2>
-		
-		  <ul>
-		  <% @measurement_unit.errors.full_messages.each do |msg| %>
-			<li><%= msg %></li>
-		  <% end %>
-		  </ul>
-		</div>
-	</li>
-<% end %>
+<table class="popup jqxValidator">
+	<thead>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+		<th>	</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>	<b> Product </b>	</td>
+			<td>	<div class="jqxDropDown" id="product_id">	</div>	</td>
+		</tr>
+		<tr>
+			<td>	<b> Item #	</b>		</td>
+			<td>	<input class="jqxInput required" type="text"  id="tier_1_qty_per_tier_2" data-role="none" />	</td>		
 
-<li class="li-content">
-	<%= form_for([:system, @measurement_unit]) do |f| %>		
-		<%= toolbar({:save => true, :scanners_menu => true, :reports_menu => true, :browse_menu => true, :cancel => true, :index => true, :maintenance_menu => true}) %>			
-		<div class="li-content">
-			<table class="ft">
-				<thead>
-					<tr>
-						<th class="label" </th>
-						<th class="input" </th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<%= f.label :description,'Description' %>
-						</td>
-						<td>
-							<%= f.text_field(:description, :required => true ) %>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<%= f.label :abbreviation,'Abbreviation' %>
-						</td>
-						<td>
-							<%= f.text_field(:abbreviation, :required => true ) %>
-						</td>
-					</tr>
+		</tr>
+		<tr>
+			<td> 					</td>
+			<td> <b> 	Container Type	</b> </td>
+			<td> <b>	Qty/parent		</b> </td>
+			<td> <b> 	UPC / Barcode	</b> </td>
+		</tr>
+		<tr>
+			<td>	<b> Unit </b>	 	</td>
+			<td>	<div class="jqxDropDown" id="tier_1_asset_type_id">	</div>	</td>
+			<td>	<input class="jqxInput required" type="number"  id="tier_1_qty_per_tier_2" data-role="none" />	</td>		
+			<td>	<input class="jqxInput required" type="text"  id="tier_1_upc" data-role="none" /> </td>		
+		</tr>
 
-					<tr>
-						<td>
-							<%= f.label :gallon_equivalent,'Gallon Equivalent' %>
-						</td>
-						<td>
-							<%= f.text_field(:gallon_equivalent, :required => true ) %>
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-			<div style="clear:both"> </div>		
-			
-		</div>
-	<% end %>
-</li>
+		<tr>
+			<td>	<b> Consumer Pack </b>	 	</td>
+			<td>	<div class="jqxDropDown" id="tier_2_asset_type_id">	</div>	</td>
+			<td>	<input class="jqxInput required" type="number"  id="tier_1_qty_per_tier_2" data-role="none" />	</td>		
+			<td>	<input class="jqxInput required" type="text"  id="tier_1_upc" data-role="none" /></td>		
+		</tr>
 
 
+		<tr>
+			<td>	<b> Case </b>	 	</td>
+			<td>	<div class="jqxDropDown" id="tier_3_asset_type_id">	</div>	</td>
+			<td>	<input class="jqxInput required" type="number"  id="tier_1_qty_per_tier_2" data-role="none" />	</td>		
+			<td>	<input class="jqxInput required" type="text"  id="tier_1_upc" data-role="none" />	</td>		
+		</tr>
+		<tr>
+			<td>	</td>			
+			<td>	</td>			
+			<td>	</td>
+			<td> 
+			 	<button class="popup jqxValidator" id="cancel" data-role="none"> Cancel	</button>	
+				<button class="popup jqxValidator" id="save" data-role="none"> Save	</button>		 	
+			</td>						
+								
+		</tr>
+	</tbody>
+</table>	

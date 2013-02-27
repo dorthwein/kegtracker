@@ -1,11 +1,13 @@
 Cobalt::Application.routes.draw do 	
   	match 'access_denied' => 'access_denied#index', :via => [:get, :post]  	
 
+	namespace :accounting do 
+		resources :invoices
+	end
 	namespace :maintenance do 
 		
 		match 'network_memberships/new_distributor_partnership' => 'network_memberships#new_distributor_partnership', :via => [:get, :post]	
 		
-
 		resources :rfid_antennas
 		resources :rfid_readers	  
 		match 'rfid_readers/reader_save' => 'rfid_readers#reader_save', :via => [:get, :post]
@@ -13,12 +15,13 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/reader_new' => 'rfid_readers#reader_new', :via => [:get, :post]
 		match 'rfid_readers/reader_select' => 'rfid_readers#reader_select', :via => [:get, :post]
 	
-
 		match 'rfid_readers/antennas' => 'rfid_readers#antennas', :via => [:get, :post]
 	  	match 'rfid_readers/antenna_select' => 'rfid_readers#antenna_select', :via => [:get, :post]
 		match 'rfid_readers/antenna_save' => 'rfid_readers#antenna_save', :via => [:get, :post]
 		match 'rfid_readers/antenna_new' => 'rfid_readers#antenna_new', :via => [:get, :post]
 		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
+
+		resources :skus
 
 	  	resources :locations 
 #		devise_for :users	  	
@@ -140,7 +143,9 @@ Cobalt::Application.routes.draw do
 
   	namespace :public do 
 		match 'home' => 'home#index', :via => [:get, :post]
-		match 'contact' => 'contact#index', :via => [:get, :post]		
+		
+		
+		resources :contact 
 		resources :join 
 
 		#match 'join' => 'join#index', :via => [:get, :post]		

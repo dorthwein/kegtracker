@@ -6,6 +6,7 @@ class NetworkFact
 	belongs_to :location_network, :class_name => 'Network'	
 
 	belongs_to :product  
+
 	belongs_to :asset_type 
 	belongs_to :product_entity, :class_name => 'Entity'	
 
@@ -14,6 +15,7 @@ class NetworkFact
 
 	field :location_network_description, 			type: String
 	field :product_entity_description, 				type: String # AKA Brewery	
+
 	field :product_description,						type: String
 	field :fact_time, 								type: Time
 	field :asset_type_description, 					type: String
