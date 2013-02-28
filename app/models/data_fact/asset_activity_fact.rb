@@ -29,14 +29,14 @@ class AssetActivityFact
 # Variable Details 
 
 # Life Cycle  
-#  field :fill_time, :type => Time   # Depricated
+  field :fill_time, :type => Time   # Depricated
   field :fill_count, type: Integer
 
   field :asset_status, type: Integer, :default => 0  
   field :location_network_type, type: Integer
 
-#  field :cycle_length, type: Integer, :default => 0
-#  field :completed_cycle_length, type: Integer, :default => 0
+  field :cycle_length, type: Integer, :default => 0
+  field :completed_cycle_length, type: Integer, :default => 0
 
 # Networks  
 # belongs_to :network    # Possibly Depricated  
@@ -130,7 +130,7 @@ class AssetActivityFact
     self.location_network = self.location.network
     self.location_network_type = self.location_network.network_type rescue nil
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
-
+=begin
     if self.handle_code == 4
       # End Previous Cycle
       self.asset_cycle_fact.end_cycle
@@ -142,6 +142,7 @@ class AssetActivityFact
 
 
     end
+=end
     # Find & Set Previous asset_activity_fact     
     # self.asset_status_description = nil
 
