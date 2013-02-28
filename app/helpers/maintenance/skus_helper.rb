@@ -1,0 +1,2 @@
+module Maintenance::SkusHelper
+end

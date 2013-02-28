@@ -1,0 +1,155 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.	
+$(document).on('pageshow', '#_maintenance_skus', function(event){	
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'item_number'},
+			{ name: 'product_description'},
+			
+			{ name: 'tier_1_upc'},			
+			{ name: 'tier_1_asset_type_description'},
+			{ name: 'tier_1_qty_per_tier_2'},
+
+			{ name: 'tier_2_upc'},
+			{ name: 'tier_2_asset_type_description'},
+			{ name: 'tier_2_qty_per_tier_3'},
+
+			{ name: 'tier_3_upc'},
+			{ name: 'tier_3_asset_type_description'},
+			{ name: 'tier_3_qty_per_tier_4'},
+
+			{ name: 'tier_4_upc'},
+			{ name: 'tier_4_asset_type_description'},
+			
+			{ name: '_id' }
+		], 
+		url: url,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}
+		
+	};
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			$.mobile.loading('show');	
+		},
+		loadComplete: function (data) { 
+			$.mobile.loading('hide');
+		},
+		loadError: function (xhr, status, error) { }      
+	});
+//	window.dataAdapter = dataAdapter
+
+	// Initialize Grid
+	$("#jqxgrid").jqxGrid(
+	{
+		// Grid Options
+		groupable: true,
+		sortable: true,
+		filterable: true,
+		showfilterrow: true,		
+        autoshowfiltericon: true,		
+		theme: theme,
+		width: '100%',
+		groupsexpandedbydefault: true,
+		height:  system.full_window_table_height,
+		source: dataAdapter,
+		columnsresize: true,
+		altrows: true,		
+		columns: [
+			{ text:'Item #', datafield: 'item_number'},
+			{ text:'Product', datafield: 'product_description', filtertype: 'checkedlist' },
+			
+			{ text:'Unit', width: '8%', datafield: 'tier_2_asset_type_description', filtertype: 'checkedlist' },
+			{ text:'UPC (Unit)', 	width: '8%', datafield: 'tier_1_upc'},
+			{ text:'Unit/pack', width: '5%', datafield: 'tier_1_qty_per_tier_2'},
+
+			{ text:'Consumer Pack', width: '8%', datafield: 'tier_2_asset_type_description', filtertype: 'checkedlist' },
+			{ text:'UPC (Consumer Pk.)', 	width: '8%', datafield: 'tier_2_upc'},
+			{ text:'Pack/Case', width: '5%', datafield: 'tier_2_qty_per_tier_3'},
+			
+			{ text:'Case', width: '8%', datafield: 'tier_3_asset_type_description', filtertype: 'checkedlist' },
+			{ text:'UPC (Case)', 	width: '8%', datafield: 'tier_3_upc'},
+			{ text:'Case/Pallet', width: '5%', datafield: 'tier_3_qty_per_tier_4'},		
+			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);			
+				return 'View'
+			}},			
+
+		]
+	});
+	$('#jqxgrid').bind('rowselect', function (event){	    
+	    var args = event.args;
+	    var row = args.rowindex;
+	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+		$.ajax({
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			type: "GET",
+			dataType : "JSON",
+			data: rowdata,
+		}).done(function( data ) {							
+			$.each($('.jqxDropDownList'), function(key, value){
+				element = $('#' + value.id)				
+				$(element).jqxDropDownList({source: data['jqxDropDownLists'][value.id]});
+				
+				item = $(element).jqxDropDownList('getItemByValue', data['record'][value.id]);
+				$(element).jqxDropDownList('selectItem', item );
+			})
+		});					
+	});
+
+	$("#jqxgrid").on("cellclick", function (event) {
+	    var column = event.args.column;	   
+	    var rowindex = event.args.rowindex;
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+
+	    var columnindex = event.args.columnindex;
+	    if(column.text == 'View'){	    	
+	    	window.open($('.ui-page-active').attr('data-url') + "/" + rowdata['_id'], "_blank", system.popup_settings);
+		}	    
+	});       
+
+	$(".jqxInput").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: false });
+	$(".jqxDropDownList").jqxDropDownList({valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: false });
+
+	$("#new").jqxButton({ theme: theme, width:100 });            
+	$("#new").click(function () {
+		window.open($('.ui-page-active').attr('data-url') + "/new", "_blank", system.popup_settings);	        	
+	});
+
+	$("#delete").jqxButton({ theme: theme, width:100 });            
+	$("#delete").click(function () {
+		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		$.ajax({
+			type: "DELETE",
+			dataType : "JSON",
+			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
+			data: { 
+				_id: rowdata['_id'],
+			},
+		}).done(function( data ) {
+			dataAdapter.dataBind();
+		});		        	
+	});
+
+	// Button Processing/Action	
+	// NEW BUTTON
+	$("#excelExport").jqxButton({ theme: theme,});                        
+	$("#excelExport").click(function () {
+		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+	});
+	$.mobile.loading('hide');					
+
+});
+

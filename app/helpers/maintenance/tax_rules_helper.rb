@@ -1,0 +1,2 @@
+module Maintenance::TaxRulesHelper
+end
