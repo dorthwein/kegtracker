@@ -7,11 +7,11 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 // require plugins/jquery.mobile-1.3.0-rc.1.min.js
-// 
+// plugins/jquery-1.8.3.min.js
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require plugins/jquery-1.8.3.min.js
+//= require jquery.js
 //= require config.js
 //= require jquery_ujs
 //= require jquery.mobile
