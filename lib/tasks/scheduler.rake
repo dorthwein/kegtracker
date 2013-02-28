@@ -61,6 +61,16 @@ task :build_test => :environment do
 		a.network_facts
 #	end	
 end
+task :asset_activity_fact_to_asset_cycle_fact => :environment do
+	facts = AssetActivityFact.all
+	count = facts.count
+	i = 0
+	facts.each do |x|
+		x.sync_to_asset_cycle_fact		
+		i = i + 1
+		print "#{i} / #{count} \n "
+	end
+end
 
 task :save_entities => :environment do
 	Entity.all.each do |x|
