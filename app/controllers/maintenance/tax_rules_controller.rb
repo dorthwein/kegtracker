@@ -25,7 +25,7 @@ class Maintenance::TaxRulesController < ApplicationController
         response[:jqxDropDownLists] = {}        
         response[:record] = record  
 	
-		response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+		response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
         response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
 
         render json: response 

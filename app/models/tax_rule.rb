@@ -14,15 +14,16 @@ class TaxRule
 		end
 	end
 
-  def self.tax_rule_types
-    response = [ 
-        {:description => 'Inventory', :_id => 1},
-        {:description => 'Empty Assets', :_id => 2},
-        {:description => 'Market', :_id => 3},
-        {:description => 'Production', :_id => 4},
-        {:description => 'Partner', :_id => 5},
-        {:description => 'General Area', :_id => 6},        
-    ]
-    return response
+  	def self.tax_rule_types
+	    response = [ 
+        	{:description => 'Inventory', :_id => 1},
+    	    {:description => 'Empty Assets', :_id => 2},
+	        {:description => 'Market', :_id => 3},
+        	{:description => 'Production', :_id => 4},
+    	    {:description => 'Partner', :_id => 5},
+	        {:description => 'General Area', :_id => 6},        
+    	]
+    	return response
+	end
 end
 
