@@ -1,5 +1,6 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.	
+
 $(document).on('pageshow', '#_maintenance_skus', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
@@ -36,7 +37,7 @@ $(document).on('pageshow', '#_maintenance_skus', function(event){
 			// and with parameter false if the synchronization failder.		
 			commit(true);
 		}
-		
+// test		
 	};
 
 	window.dataAdapter = new $.jqx.dataAdapter(source, {
