@@ -1,4 +1,3 @@
-
 $(document).on("mobileinit", function(){
 	$.mobile.defaultPageTransition  = 'none';
 }); 
@@ -27,4 +26,3 @@ $(document).on('pageshow', function(event){
 
 //	$("#jqxMenu").show();
 });
-
