@@ -91,8 +91,8 @@ class Maintenance::PricesController < ApplicationController
   # DELETE /Prices/1
   # DELETE /Prices/1.json
   def destroy
-    Price = Price.find(params[:id])
-    Price.destroy
+    record = Price.find(params[:id])
+    record.destroy
 
     respond_to do |format|    
       format.json { head :no_content }
