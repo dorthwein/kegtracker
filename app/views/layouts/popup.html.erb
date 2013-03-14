@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=960, user-scalable=yes" />   
 </head>
 <body> 
-	<div data-role="page" data-cache="never" id="<%= 'popup_' + params[:action].to_s %>" data-url="<%= request.path %>">		
-		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:10px;">			
+	<div data-role="page" data-cache="never" id="<%= params[:controller].to_s.gsub('/', '_') + '_popup'  %>" data-controller= "<%= params[:controller] %>" data-action="<%= params[:action] %>" class="<%= 'popup popup_' + params[:action].to_s %>" data-url="<%= request.path %>">		
+		<div id="content" data-role="content" style="position:relative;">			
 		<!-- Main Content -->	
 			<%= yield %>												
 		</div>

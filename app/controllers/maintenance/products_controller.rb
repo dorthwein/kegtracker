@@ -52,7 +52,23 @@ class Maintenance::ProductsController < ApplicationController
 
   # GET /products/1/edit
   def edit
-    # Not Active
+    record = Product.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /products

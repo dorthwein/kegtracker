@@ -65,7 +65,7 @@ $(document).on('pageshow', '#_reports_network_in_out_asset_report_simple', funct
 	});
 
 	// Initialize Grid	
-	$("#jqxgrid").jqxGrid({		
+	$("#jqxGrid").jqxGrid({		
 		groupable: false,
 		sortable: true,
 		filterable: false,
@@ -131,7 +131,7 @@ $(document).on('pageshow', '#_reports_network_in_out_asset_report_simple', funct
 	$("#findRecord").click(function () {
 		
 		dataAdapter.dataBind();
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));		
 	});
 
 	
@@ -139,8 +139,8 @@ $(document).on('pageshow', '#_reports_network_in_out_asset_report_simple', funct
 
 
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 

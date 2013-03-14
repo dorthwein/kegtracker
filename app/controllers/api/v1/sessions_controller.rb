@@ -1,17 +1,44 @@
-=begin
-class Api::V1::SessionsController < Devise::SessionsController
-  prepend_before_filter :require_no_authentication, :only => [:new, :create] 
-  def new
-    super
-  end
-
+class Api::V1::SessionsController < Devise::SessionsController  
   def create
-    user = warden.authenticate(:scope => :user)
-    if user
-		render :json => {:auth_token => user.authentication_token, :token_type => "persistant"}, :callback => params[:callback]
-    else
-      render :json => {:error => "invalid_grant"}, :callback => params[:callback]
+    respond_to do |format|
+#      format.html {
+#        super
+#      }
+      format.json {
+        build_resource
+        user = User.find_for_database_authentication(:email => params[:user][:email])
+        return invalid_login_attempt unless resource
+
+        if user.valid_password?(params[:user][:password])
+          render :json => { :auth_token => user.authentication_token }, success: true, status: :created
+        else
+          invalid_login_attempt
+        end
+      }
     end
   end
+
+  def destroy
+    respond_to do |format|
+#      format.html {
+#        super
+#      }
+      format.json {
+        user = User.where(:authentication_token => params[:auth_token]).first
+        print params.to_json + 'fuck'
+        if user         
+          user.reset_authentication_token!
+          render :json => { :message => 'Session deleted.' }, :success => true, :status => 204
+        else
+          render :json => { :message => 'Invalid token.' }, :status => 404
+        end
+      }
+    end
+  end
+
+  protected
+  def invalid_login_attempt
+    warden.custom_failure!
+    render json: { success: false, message: 'Error with your login or password' }, status: 401
+  end
 end
-=end

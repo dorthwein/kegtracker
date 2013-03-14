@@ -1,6 +1,7 @@
 class Location
   include Mongoid::Document
   include Mongoid::Timestamps  
+  field :record_status, type: Integer, default: 1
   
   field :description, type: String    
   field :externalID, type: String
@@ -26,8 +27,8 @@ class Location
   has_many :assets
   
   # Relations
-  belongs_to :entity
-  belongs_to :network, :inverse_of => :location
+  belongs_to :entity, index: true
+  belongs_to :network, :inverse_of => :location, index: true
   
   # De-normalized
   field :entity_description, type: String
@@ -72,6 +73,6 @@ class Location
     self.asset_count = Asset.where(:location => self).count
 	end
 
-  index({ entity_id: 1 }, { name: "entity_index" })          
-  index({ network_id: 1 }, { name: "network_index" })  
+#  index({ entity_id: 1 }, { name: "entity_index" })          
+#  index({ network_id: 1 }, { name: "network_index" })  
 end

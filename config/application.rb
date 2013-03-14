@@ -13,6 +13,7 @@ require 'net/imap.rb'
 require 'base64'
 require 'csv'
 
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -97,6 +98,6 @@ module Cobalt
     config.assets.version = '1.0'
     
     # Initiate Observers
-	config.mongoid.observers = :location_observer, :asset_type_observer, :entity_observer, :network_observer, :product_observer, :user_observer
+#	config.mongoid.observers = :location_observer, :asset_type_observer, :entity_observer, :network_observer, :product_observer, :user_observer
   end
 end

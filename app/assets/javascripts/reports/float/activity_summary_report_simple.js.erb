@@ -18,16 +18,16 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 		datatype : "json",
 		type: 'POST',
 		datafields: [
-			{ name: 'fact_time' },																	
-			{ name: 'location_network_description' },
-			{ name: 'sku_description' },
-			{ name: 'product_description' },
-			{ name: 'product_entity_description' },			
-			{ name: 'asset_type_description' },
-			{ name: 'fill_quantity' },
-			{ name: 'delivery_quantity' },
-			{ name: 'pickup_quantity' },
-			{ name: 'move_quantity' },
+			{ name: 'fact_time', type: 'date' },
+			{ name: 'location_network_description', type: 'string' },
+			{ name: 'sku_description', type: 'string' },
+			{ name: 'product_description', type: 'string' },
+			{ name: 'product_entity_description', type: 'string' },
+			{ name: 'asset_type_description', type: 'string' },
+			{ name: 'fill_quantity', type: 'number' },
+			{ name: 'delivery_quantity', type: 'number' },
+			{ name: 'pickup_quantity', type: 'number' },
+			{ name: 'move_quantity', type: 'number' },
 			{ name: 'date_id' },
 			{ name: '_id' }
 		],		
@@ -55,7 +55,7 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 
 
 	// Initialize Grid	
-	$("#jqxgrid").jqxGrid({		
+	$("#jqxGrid").jqxGrid({		
 		groupable: true,
 		closeablegroups: false,
     	groupsrenderer: default_groupsrenderer,		
@@ -101,7 +101,7 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 	
 	// NEW BUTTON
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 

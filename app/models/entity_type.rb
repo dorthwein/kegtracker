@@ -1,4 +1,5 @@
 class EntityType
-  include Mongoid::Document
-  field :description, type: String    
+ # include Mongoid::Document
+#
+#  field :description, type: String    
 end

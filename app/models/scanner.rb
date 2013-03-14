@@ -3,6 +3,7 @@ class Scanner
 		# expects HASH with key :scans => [Array of Scans]
 		scans = options[:scans]
 		processed_scans = []
+
 		scans.each do |scan|
 			obj = Scanner.parse_scan(scan)	# Parse Scan
 			obj = Scanner.find_asset(obj)	# Find/Create Asset						
@@ -20,42 +21,24 @@ class Scanner
 			end
 
 			obj = Scanner.normal_process(obj)
+			
+			if obj[:invoice_id] != '' && !obj[:invoice_id].nil?
+				Scanner.invoice_process(obj)
+			end
+
 			obj[:asset].save!
 			processed_scans.push(Scanner.snap_shot(obj))
 		end
 		return processed_scans
 	end	
-	def self.rollback_scan obj
-		prev_asset_activity_fact = obj[:asset].asset_activity_fact.prev_asset_activity_fact rescue nil
-	
-		print 'roll back'
-		fill_asset_activity_fact = asset_activity_fact.fill_asset_activity_fact rescue nil
-			
-	# Roll Back Asset Details to Prev Asset Activity Fact		
-		asset_rollback_hash = {
-			:asset_activity_fact => (prev_asset_activity_fact rescue nil),
-			:asset_type => (prev_asset_activity_fact.asset_type rescue nil),
-			:entity => (prev_asset_activity_fact.entity rescue nil),
-			:product => (prev_asset_activity_fact.product rescue nil),
-			:asset_status => (prev_asset_activity_fact.asset_status rescue nil),
-			:location => (prev_asset_activity_fact.location rescue nil),
-			:location_network => (prev_asset_activity_fact.location_network rescue nil),
-			:handle_code => (prev_asset_activity_fact.handle_code rescue nil),
-			:user => (prev_asset_activity_fact.user rescue nil),
-			:last_action_time => (prev_asset_activity_fact.fact_time rescue nil),
-			:fill_count => (prev_asset_activity_fact.fill_count rescue 0),
-			:fill_time => (fill_asset_activity_fact.fact_time rescue nil),
-			:fill_location => (fill_asset_activity_fact.location rescue nil)
-		}
-		obj[:asset].update_attributes(asset_rollback_hash)	
-		
-		# Check for invoice - roll back invoice
-		obj[:asset].invoice_detail.destroy rescue nil
 
-		# Remove Asset Activity Fact			
+	# Rollback logic needs to be moved to various models
+	def self.rollback_scan obj
+		# Check for invoice - roll back invoice		
 		obj[:asset].asset_activity_fact.destroy rescue nil
 		return obj
 	end
+
 	def self.snap_shot obj
 		scan_snap_shot = {
 			:Network => obj[:asset].network_description,
@@ -73,16 +56,18 @@ class Scanner
 		return obj 
 	end
 
+	# Logic moved to asset
 	def self.auto_mode_process obj		
 		obj = Scanner.auto_mode_from_brewery(obj)
 		obj = Scanner.auto_mode_to_brewery(obj)
 		obj = Scanner.auto_mode_to_distributor(obj)
 		obj = Scanner.auto_mode_to_market(obj)
 		obj = Scanner.auto_mode_from_market(obj)
+		obj[:asset].save!
 		return obj
 	end
 	def self.auto_mode_from_brewery obj
-		# Ensure Filled at brewery location
+		# Ensure Filled  brewery location
 		if obj[:from_network].network_type == 1
 			if obj[:asset].asset_status != 1
 				# If not full - fill				
@@ -96,6 +81,7 @@ class Scanner
 		end
 		return obj
 	end
+
 	def self.auto_mode_to_brewery obj
 		if obj[:to_network].network_type == 1 && obj[:handle_code] != 4
 			obj[:handle_code] = 2
@@ -112,7 +98,6 @@ class Scanner
 				})
 			end
 =end
-
 		end
 		return obj
 	end	
@@ -156,9 +141,9 @@ class Scanner
 			obj[:asset].pickup(obj)				
 			print "Pickup \n"
 		
-		when 3		# Add
-			obj[:asset].add(obj)				
-			print "Add \n"
+#		when 3		# Add
+#			obj[:asset].add(obj)				
+#			print "Add \n"
 		
 		when 4		# Fill
 			obj[:asset].fill(obj)				
@@ -167,19 +152,28 @@ class Scanner
 		when 5		# Move
 			obj[:asset].move(obj)				
 			print "Move \n"
-		
+
 		when 6		# RFNet
-			obj[:asset].rfnet(obj)				
-			print "RFNet \n" + obj[:asset].location_network.description.to_s
+			if obj[:asset].location_network != Location.find(obj[:location_id]).network
+				obj[:asset].move(obj)				
+
+				print "RFNet \n" + obj[:asset].location_network.description.to_s
+			end
 		when 7		# Audit
 			obj[:asset].process_audit
 			print "Audit \n"			
 		else
 			print "HC Error \n"
 		end
+		obj[:asset].save!
 		return obj
 	end
 
+	def self.invoice_process obj			
+		invoice = Invoice.find(obj[:invoice_id])
+		invoice.attach_asset(obj)
+		#return obj
+	end
 
 	def self.check_correction obj
 	################################
@@ -188,8 +182,8 @@ class Scanner
 			print "Correction Toggled On \n"
 		end
 
-		# Same Location within 15 minutes but not a fill
-		if obj[:asset].location == obj[:location_id] && obj[:handle_code].to_i != 4 && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 900)			
+		# Same Location within last day minutes but not a fill		
+		if obj[:asset].location._id.to_s == obj[:location_id] && (obj[:handle_code].to_i != 4 || obj[:handle_code].to_i != obj[:asset].handle_code.to_i) && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)			
 			print "Same Location within 15 minutes Correction \n"
 			obj[:correction] = 1	
 		end
@@ -205,14 +199,15 @@ class Scanner
 	def self.find_asset obj
 		##############################
 		####### Pre Processing #######			
-		user = User.where(:email => obj[:email]).first			
+		user = User.where(:email => obj[:email]).first				
 		if obj[:tag][:netid].nil?			
 			obj[:tag][:network] = user.entity.networks.first
 		else
 			obj[:tag][:network] = Network.where(:netid => obj[:tag][:netid]).first		
-		end
-				
-		obj[:asset] = Asset.where( :netid => obj[:tag][:network].netid, :tag_value => obj[:tag][:value]).first 
+		end	
+
+		obj[:asset] = Asset.where(netid: obj[:tag][:network].netid, tag_value: obj[:tag][:value]).first
+		
 		if obj[:asset].nil? 
 			obj[:asset] = Asset.new(
 				:location_id => obj[:location_id],				
@@ -222,8 +217,9 @@ class Scanner
 				:netid => obj[:tag][:network].netid,
 				:tag_key => obj[:tag][:key], 
 				:entity_id => obj[:tag][:network].entity._id
-			) 			
+			)		
 		end		
+		obj[:asset].save!
 		return obj
 	end
 	def self.preprocess_asset obj
@@ -237,31 +233,27 @@ class Scanner
 
 		obj[:to_network] = Location.find(obj[:location_id]).network
 		obj[:from_network] = obj[:asset].location.network || obj[:to_network]
-		
+		obj[:asset].save!
+
 		return obj
 	end
 	def self.parse_scan obj		
-
-
 		scan = JSON.parse(obj)	
 		scan_params = {}
 
-# 		
-# 		
-
-		scan_params[:email] = scan['user']['N']
-		scan_params[:password] = scan['user']['P']
-		scan_params[:handle_code] = scan['processing']['HC'].to_i 
-		scan_params[:correction] = scan['processing']['correction'].to_i
-		scan_params[:auto_mode] = scan['processing']['auto_mode'].to_i	
+		scan_params[:email] = scan['email']
+		scan_params[:password] = scan['password']
+		scan_params[:handle_code] = scan['handle_code'].to_i 
+		scan_params[:correction] = scan['correction'].to_i
+		scan_params[:auto_mode] = scan['auto_mode'].to_i	
 
 		scan_params[:invoice_id] = scan['invoice_id']
-		scan_params[:time] = Time.at(scan['processing']['T'].to_i)
+		scan_params[:time] = Time.at(scan['time'].to_i)
 
-		scan['processing']['P'] ? scan_params[:product_id] = scan['processing']['P'] : nil
-		scan['processing']['AT'] ? scan_params[:asset_type_id] = scan['processing']['AT'] : nil
+		scan['product_id'] ? scan_params[:product_id] = scan['product_id'] : nil
+		scan['asset_type_id'] ? scan_params[:asset_type_id] = scan['asset_type_id'] : nil
 
-		scan_params[:location_id] = scan['location']
+		scan_params[:location_id] = scan['location_id']
 		scan_params[:tag] = {}
 
 		# TAG
@@ -273,8 +265,6 @@ class Scanner
 		end
 
 		if !scan['tag'][0].nil? 								# If array [0] nil, then must be hash
-
-
 			# Check T1 - ["T1", 854,1,"43ddf","RF"]											
 			if scan['tag'].kind_of?(Array)						# If array, assume tag version in [0]
 				scan_params[:tag][:version] = scan['tag'][0].capitalize	

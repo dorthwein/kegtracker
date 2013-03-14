@@ -17,16 +17,15 @@ class Reports::AssetController < ApplicationController
 			format.json {
 				response = []				
 				asset = Asset.find(params[:_id]);
-				asset.fill_life_cycles({:entity => current_user.entity}).each do |x|
-				#current_user.entity.visible_asset_activity_facts.where(:asset => params[:_id], :handle_code => 4).desc(:fact_time).each do |x|					
-					date = 	"<td class='life_cycle_select'><b> Fill Date: </b> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
+				current_user.entity.visible_asset_cycle_facts.where(asset: asset).each do |x|
+
+					date = 	"<td class='life_cycle_select'><b> Start Date: </b> #{x.start_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y") rescue nil} </td>"
 					product = 	"<td class='life_cycle_select'> <b> Product: </b> #{x.product.description} </td>"
 					brewery = 	"<td class='life_cycle_select'> <b> Brewery: </b> #{x.product.entity.description} </td>"
-					location = 	"<td class='life_cycle_select'> <b> Location: </b> #{x.location.description} </td>"
-					location_network = 	"<td class='life_cycle_select'> <b> Location Network: </b> #{x.location.network_description} </td>"
+					location_network = 	"<td class='life_cycle_select'> <b> Start Network: </b> #{x.start_network.description} </td>"
 					
-					fill_asset_activity_fact = x.fill_asset_activity_fact_id
-					response.push({:value => fill_asset_activity_fact, :html => '<table><tbody><tr>' + date + product + brewery + '</tr> <tr>' + location + location_network + '</tr></tbody> </table>'})
+					asset_cycle_fact = x._id
+					response.push({:value => asset_cycle_fact, :html => '<table><tbody><tr>' + date + location_network +  '</tr> <tr>' + product + brewery + '</tr></tbody> </table>'})
 				end
 
 				render json: response
@@ -36,23 +35,22 @@ class Reports::AssetController < ApplicationController
 	def browse_life_cycle_select
 		respond_to do |format|
 			format.json {
-				gatherer = Gatherer.new(current_user.entity)
-				location, product, entity = gatherer.asset_activity_fact_criteria				
+#				gatherer = Gatherer.new(current_user.entity)
+#				location, product, entity = gatherer.asset_activity_fact_criteria				
 				transactions = 'No Fill Event Found' 
 				response = {}
+				
+				asset_cycle_fact = AssetCycleFact.find(params[:record])				
+				if !asset_cycle_fact.nil?
+		            x_product = 	"<td> <b> 	Product: 	</b> 	#{asset_cycle_fact.product.description}	 </td>"
+		            x_brewery = 	"<td> <b> 	Brewery: 	</b> 	#{asset_cycle_fact.product.entity.description} </td>"
+		            x_asset_type = 	"<td> <b> 	Asset Type: </b> 	#{asset_cycle_fact.asset_type.description} </td>"
+		            x_entity = 		"<td> <b> 	Owner: 		</b> 	#{asset_cycle_fact.entity.description} </td>"
+		            x_fill_date = 	"<td> <b> 	Start Date: 	</b> 	#{asset_cycle_fact.start_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
 
-				transaction_facts = AssetActivityFact.where(:fill_asset_activity_fact_id => params[:fill_asset_activity_fact_id]).any_of(location, product, entity).desc(:fact_time)
-				x = transaction_facts.first							
-				if !x.nil?
-		            x_product = 	"<td> <b> 	Product: 	</b> 	#{x.product.description}	 </td>"
-		            x_brewery = 	"<td> <b> 	Brewery: 	</b> 	#{x.product.entity.description} </td>"
-		            x_asset_type = 	"<td> <b> 	Asset Type: </b> 	#{x.asset_type.description} </td>"
-		            x_entity = 		"<td> <b> 	Owner: 		</b> 	#{x.entity.description} </td>"
-		            x_fill_date = 	"<td> <b> 	Fill Date: 	</b> 	#{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
-
-					x_fill_count = 	"<td> <b> 	Fill Count: </b> 	#{x.fill_count} 		</td>"
-					x_tag_value = 	"<td> <b> 	Tag Value: 	</b> 	#{x.asset.tag_value} 	</td>"
-					x_tag_key = 	"<td> <b> 	Tag Key: 	</b> 	#{x.asset.tag_key} 		</td>"
+					x_fill_count = 	"<td> <b> 	Fill Count: </b> 	#{asset_cycle_fact.fill_count} 		</td>"
+					x_tag_value = 	"<td> <b> 	Tag Value: 	</b> 	#{asset_cycle_fact.asset.tag_value} 	</td>"
+					x_tag_key = 	"<td> <b> 	Tag Key: 	</b> 	#{asset_cycle_fact.asset.tag_key} 		</td>"
 
 					# Start Table
 					transactions = "<table> <tbody> " 
@@ -69,14 +67,14 @@ class Reports::AssetController < ApplicationController
 
 
 					# For each transaction, create a row
-					transaction_facts.each do |x|					
+					asset_activity_facts = current_user.entity.visible_asset_activity_facts.where(asset_cycle_fact: asset_cycle_fact)					
+					print asset_activity_facts.to_json
+					asset_activity_facts.each do |x|					
 						action = 					"<td> #{x.handle_code_description} </td>"
 						location = 					"<td> #{x.location.description} </td>"
 						location_network = 			"<td> #{x.location.network_description} </td>"
 						date = 						"<td> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
 						transaction_entity = 		"<td> #{x.user.entity.description} </td>"
-						fill_asset_activity_fact = 	x.fill_asset_activity_fact_id
-
 						transactions = transactions + '<tr>' + action + location + location_network + date + transaction_entity +  '</tr>'
 					end
 				end

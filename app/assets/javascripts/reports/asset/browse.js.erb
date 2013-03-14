@@ -12,19 +12,18 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 		type: 'GET',
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',
 		datafields: [
-			{ name: 'entity_description' },
-			{ name: 'product_entity_description'},
-			{ name: 'tag_value' },
-			{ name: 'asset_type_description' },
-			{ name: 'asset_status_description' },
-			{ name: 'product_description' },
-			{ name: 'location_description' },
-			{ name: 'location_network_description' },
+			{ name: 'entity_description', type: 'string' },
+			{ name: 'product_entity_description', type: 'string' },
+			{ name: 'tag_value', type: 'string' },
+			{ name: 'asset_type_description', type: 'string' },
+			{ name: 'asset_status_description', type: 'string' },
+			{ name: 'product_description', type: 'string' },
+			{ name: 'location_description', type: 'string' },
+			{ name: 'location_network_description', type: 'string' },
 			{ name: '_id' },
-			{ name: 'fill_time' },
-			{ name: 'last_action_time' },			
-		],
-		
+			{ name: 'fill_time', type: 'date' },
+			{ name: 'last_action_time', type: 'date' },
+		],		
 	};
 	grid_data_adapter = new $.jqx.dataAdapter(grid_source, {
 		beforeSend: function() {$.mobile.loading('show');},
@@ -33,7 +32,7 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 	});
 		
 	// Initiate grid
-	$("#jqxgrid").jqxGrid({
+	$("#jqxGrid").jqxGrid({
 		groupable: true,
 		sortable: true,
 		filterable: true,
@@ -65,12 +64,12 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 			buttonclick: function (row) {
 				$.mobile.loading('show');
 				editrow = row;
-				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', editrow);				
+				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', editrow);				
 				$.ajax({
 					url: system.server + $('.ui-page-active').attr('data-url') + '/' + dataRecord._id,
 					type: "GET",
 					success: function( data ){ 
-						var offset = $("#jqxgrid").offset();
+						var offset = $("#jqxGrid").offset();
 
 						// Initialize Popup Window
 						$("#popupWindow").jqxWindow({
@@ -105,11 +104,11 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 	});
 
 
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 		$.mobile.loading('show');		
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/row_select',
 			type: "POST",
@@ -132,7 +131,7 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/life_cycle_select',
 			type: "POST",
-			data: {fill_asset_activity_fact_id: item.value},
+			data: {record: item.value},
 			success: function( data ){ 				
 				$.mobile.loading('hide');			
 				$('#asset_transactions').html(data.html);
@@ -146,7 +145,7 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
     $(window).resize(function() {
 //		$('#docking').jqxDocking('refresh');   		
 			
-//    	$('#jqxgrid').jqxGrid('refresh');
+//    	$('#jqxGrid').jqxGrid('refresh');
     })
 
     $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
@@ -166,15 +165,15 @@ $(document).on('pageshow', '#_reports_asset_browse', function(event){
 
 
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 	$("#csvExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+		$("#jqxGrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
 	});
 
 	$("#jsonExport").click(function () {
-		alert($("#jqxgrid").jqxGrid('exportdata', 'json' ))
+		alert($("#jqxGrid").jqxGrid('exportdata', 'json' ))
 	});
 
 	$.mobile.loading('hide');		

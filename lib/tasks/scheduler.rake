@@ -58,8 +58,13 @@ task :build_test => :environment do
 #		current = current + 86400
 #		print current.to_s + "\n"		
 		a = BuildReport.new()	
-		a.network_facts
+		a.test_build
 #	end	
+end
+task :invoice_detail_to_attached_asset => :environment do
+	Invoice.all.each do |x|
+		x.invoice_detail_to_attached_asset
+	end
 end
 task :asset_activity_fact_to_asset_cycle_fact => :environment do
 	facts = AssetActivityFact.all
@@ -67,6 +72,17 @@ task :asset_activity_fact_to_asset_cycle_fact => :environment do
 	i = 0
 	facts.each do |x|
 		x.sync_to_asset_cycle_fact		
+		i = i + 1
+		print "#{i} / #{count} \n "
+	end
+end
+
+task :save_asset_cycle_facts => :environment do
+	facts = AssetCycleFact.all
+	count = facts.count
+	i = 0
+	facts.each do |x|
+		x.save!
 		i = i + 1
 		print "#{i} / #{count} \n "
 	end

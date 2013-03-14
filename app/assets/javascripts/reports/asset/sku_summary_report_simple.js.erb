@@ -16,16 +16,16 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 		datatype : "json",
 		type: 'POST',
 		datafields: [											
-			{ name: 'location_network_description' },
-			{ name: 'product_description' },
-			{ name: 'product_entity_description' },			
-			{ name: 'asset_type_description' },
-			{ name: 'empty_quantity' },
-			{ name: 'market_quantity' },
-			{ name: 'full_quantity' },
-			{ name: 'total_quantity' },
+			{ name: 'location_network_description', type: 'string' },
+			{ name: 'product_description', type: 'string' },
+			{ name: 'product_entity_description', type: 'string' },
+			{ name: 'asset_type_description', type: 'string' },
+			{ name: 'empty_quantity', type: 'number' },
+			{ name: 'market_quantity', type: 'number' },
+			{ name: 'full_quantity', type: 'number' },
+			{ name: 'total_quantity', type: 'number' },
 			{ name: 'sku_id' },
-			{ name: 'date_id' },
+			{ name: 'date_id', type: 'date' },
 			{ name: '_id' }
 		],
 		url: system.server + $('.ui-page-active').attr('data-url') + '.json',			
@@ -64,7 +64,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 	});
 
 	// Initialize Grid	
-	$("#jqxgrid").jqxGrid({		
+	$("#jqxGrid").jqxGrid({		
 		groupable: true,
 		closeablegroups: false,
     	groupsrenderer: default_groupsrenderer,		
@@ -122,7 +122,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 	$("#findRecord").jqxButton({ theme: theme });	
 	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));		
 	});
 
 	
@@ -130,8 +130,8 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 
 
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 

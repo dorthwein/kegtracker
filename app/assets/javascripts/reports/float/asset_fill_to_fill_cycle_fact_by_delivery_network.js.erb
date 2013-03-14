@@ -66,7 +66,7 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_del
 
 
 	// Initialize Grid	
-	$("#jqxgrid").jqxGrid({		
+	$("#jqxGrid").jqxGrid({		
 		groupable: true,
 		closeablegroups: false,
     	groupsrenderer: default_groupsrenderer,		
@@ -125,13 +125,13 @@ $(document).on('pageshow', '#_reports_float_asset_fill_to_fill_cycle_fact_by_del
 	$("#findRecord").jqxButton({ theme: theme });	
 	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));		
 	});
 	
 	// NEW BUTTON
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 

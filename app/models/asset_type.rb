@@ -1,6 +1,9 @@
-
 class AssetType
   include Mongoid::Document
+  include Mongoid::Timestamps  
+
+	field :record_status, type: Integer, default: 1  
+	
   	belongs_to :measurement_unit
   	field :measurement_unit_description, type: String 
 	field :description, type: String 
@@ -18,4 +21,3 @@ class AssetType
 		self.measurement_unit_description = self.measurement_unit.description
 	end
 end
-

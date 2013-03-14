@@ -51,7 +51,23 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
 
   # GET /locations/1/edit
   def edit
+    record = EntityPartnership.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList([current_user.entity])    
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
 
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /locations
@@ -59,7 +75,7 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-      	entity_partnership = EntityPartnership.where(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id]).first
+      	entity_partnership = EntityPartnership.where(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id]).first      
         if entity_partnership.nil?
         	# If nil, create
         	entity_partnership = EntityPartnership.new(  params[:record])

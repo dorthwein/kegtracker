@@ -1,7 +1,9 @@
 class EntityPartnership
   include Mongoid::Document
-  belongs_to :entity, :inverse_of => :entity  		# Gives permissions
-  belongs_to :partner, :class_name => 'Entity', :inverse_of => :entity	# Recieves 
+	field :record_status, type: Integer, default: 1
+
+  belongs_to :entity, :inverse_of => :entity, index: true  		# Gives permissions
+  belongs_to :partner, :class_name => 'Entity', :inverse_of => :entity, index: true	# Recieves 
 
   field :entity_description, type: String
   field :partner_description, type: String

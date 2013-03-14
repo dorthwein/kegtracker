@@ -8,8 +8,8 @@ class Maintenance::SkusController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        skus = JqxConverter.jqxGrid(current_user.entity.skus)
-        render json: skus
+        records = JqxConverter.jqxGrid(current_user.entity.skus)
+        render json: records
       }
     end
   end
@@ -27,6 +27,7 @@ class Maintenance::SkusController < ApplicationController
         response[:record] = record              
         response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList(current_user.entity.products)
         response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        response[:jqxDropDownLists][:primary_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.all)
         response[:jqxDropDownLists][:tier_1_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_1 => 1))
         response[:jqxDropDownLists][:tier_2_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_2 => 1))
         response[:jqxDropDownLists][:tier_3_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_3 => 1))
@@ -50,6 +51,7 @@ class Maintenance::SkusController < ApplicationController
         response[:record] = record              
         response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList(current_user.entity.products)
         response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        response[:jqxDropDownLists][:primary_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.all)
         response[:jqxDropDownLists][:tier_1_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_1 => 1))
         response[:jqxDropDownLists][:tier_2_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_2 => 1))
         response[:jqxDropDownLists][:tier_3_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_3 => 1))
@@ -62,7 +64,28 @@ class Maintenance::SkusController < ApplicationController
 
   # GET /skus/1/edit
   def edit
-    # Not Active
+    record = Sku.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList(current_user.entity.products)
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+          response[:jqxDropDownLists][:primary_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.all)
+          response[:jqxDropDownLists][:tier_1_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_1 => 1))
+          response[:jqxDropDownLists][:tier_2_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_2 => 1))
+          response[:jqxDropDownLists][:tier_3_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_3 => 1))
+          response[:jqxDropDownLists][:tier_4_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_4 => 1))
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /skus
@@ -97,8 +120,8 @@ class Maintenance::SkusController < ApplicationController
   # DELETE /skus/1
   # DELETE /skus/1.json
   def destroy
-    sku = Sku.find(params[:id])
-    Sku.destroy
+    record = Sku.find(params[:id])
+    record.destroy
 
     respond_to do |format|    
       format.json { head :no_content }

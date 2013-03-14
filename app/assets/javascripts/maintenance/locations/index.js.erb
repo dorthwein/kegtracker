@@ -3,7 +3,8 @@
 $(document).on('pageshow', '#_maintenance_locations', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-
+	jqxIntialize()
+	
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -20,14 +21,7 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 			{ name: 'location_type_description'},
 			{ name: '_id'}
 		], 
-		url: url,
-		updaterow: function (rowid, rowdata, commit) {
-			// synchronize with the server - send update command
-			// call commit with parameter true if the synchronization with the server is successful 
-			// and with parameter false if the synchronization failder.		
-			commit(true);
-		}
-		
+		url: url,		
 	};
 
 	window.dataAdapter = new $.jqx.dataAdapter(source, {
@@ -42,7 +36,7 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 //	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$("#jqxgrid").jqxGrid(
+	$(".jqxGrid").jqxGrid(
 	{
 		// Grid Options
 		groupable: true,
@@ -53,7 +47,7 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 		theme: theme,
 		width: '100%',
 		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height,
+		height:  system.full_window_table_height(),
 		source: dataAdapter,
 		columnsresize: true,
 		altrows: true,		
@@ -67,74 +61,14 @@ $(document).on('pageshow', '#_maintenance_locations', function(event){
 			{ text: 'City', datafield: 'city' },
 			{ text: 'State', datafield: 'state', filtertype: 'checkedlist' }, 
 			{ text: 'Zip', datafield: 'zip' },                	
-			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },    			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);			
+			{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },
+			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {			
+				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
 				return 'View'
 			}},			
-
 		]
 	});
-	$('#jqxgrid').bind('rowselect', function (event){	    
-	    var args = event.args;
-	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
-		$.ajax({
-			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
-			type: "GET",
-			dataType : "JSON",
-			data: rowdata,
-		}).done(function( data ) {							
-			$.each($('.jqxDropDownList'), function(key, value){
-				element = $('#' + value.id)				
-				$(element).jqxDropDownList({source: data['jqxDropDownLists'][value.id]});
-				
-				item = $(element).jqxDropDownList('getItemByValue', data['record'][value.id]);
-				$(element).jqxDropDownList('selectItem', item );
-			})
-		});					
-	});
 
-	$("#jqxgrid").on("cellclick", function (event) {
-	    var column = event.args.column;	   
-	    var rowindex = event.args.rowindex;
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
-
-	    var columnindex = event.args.columnindex;
-	    if(column.text == 'View'){	    	
-	    	window.open($('.ui-page-active').attr('data-url') + "/" + rowdata['_id'], "_blank", system.popup_settings);
-		}	    
-	});       
-
-	$(".jqxInput").jqxInput({height: '25px', width: '100%', minLength: 1, theme: theme, disabled: false });
-	$(".jqxDropDownList").jqxDropDownList({valueMember: 'value', displayMember: 'html', width: '100%',  height: '25px', theme: theme, disabled: false });
-
-	$("#new").jqxButton({ theme: theme, width:100 });            
-	$("#new").click(function () {
-		window.open($('.ui-page-active').attr('data-url') + "/new", "_blank", system.popup_settings);	        	
-	});
-
-	$("#delete").jqxButton({ theme: theme, width:100 });            
-	$("#delete").click(function () {
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
-		$.ajax({
-			type: "DELETE",
-			dataType : "JSON",
-			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
-			data: { 
-				_id: rowdata['_id'],
-			},
-		}).done(function( data ) {
-			dataAdapter.dataBind();
-		});		        	
-	});
-
-	// Button Processing/Action	
-	// NEW BUTTON
-	$("#excelExport").jqxButton({ theme: theme,});                        
-	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
-	});
 	$.mobile.loading('hide');					
 
 });

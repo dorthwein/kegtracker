@@ -9,15 +9,15 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 		datatype : "json",
 		type: 'POST',
 		datafields: [
-			{ name: 'fact_time' },																	
-			{ name: 'location_network_description' },
-			{ name: 'sku_description' },
-			{ name: 'product_description' },
-			{ name: 'product_entity_description' },			
-			{ name: 'asset_type_description' },
-			{ name: 'empty_quantity' },
-			{ name: 'market_quantity' },
-			{ name: 'full_quantity' },
+			{ name: 'fact_time', type: 'date' },
+			{ name: 'location_network_description', type: 'string' },
+			{ name: 'sku_description', type: 'string' },
+			{ name: 'product_description', type: 'string' },
+			{ name: 'product_entity_description', type: 'string' },
+			{ name: 'asset_type_description', type: 'string' },
+			{ name: 'empty_quantity', type: 'number' },
+			{ name: 'market_quantity', type: 'number' },
+			{ name: 'full_quantity', type: 'number' },
 			{ name: 'sku_id' },
 			{ name: '_id' }
 		],
@@ -31,7 +31,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 
 		formatData: function(){
 		    var params = {}
-		    var filterinfo = $("#jqxgrid").jqxGrid('getfilterinformation');		    		    
+		    var filterinfo = $("#jqxGrid").jqxGrid('getfilterinformation');		    		    
 
 		    if(filterinfo != ''){
 			    $.each(filterinfo, function(key, filter){
@@ -50,7 +50,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 	}
 );
 	// Initialize Grid
-	$("#jqxgrid").jqxGrid({		
+	$("#jqxGrid").jqxGrid({		
 		groupable: true,
 		sortable: true,
 		filterable: true,
@@ -92,11 +92,11 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 
 
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 	$("#csvExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+		$("#jqxGrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
 	});	
 	$.mobile.loading('hide');				
 
@@ -121,7 +121,7 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 // Charts
 // ***********************	
 	function load_chart(){								
-		var grid_rows = $('#jqxgrid').jqxGrid('getrows');							
+		var grid_rows = $('#jqxGrid').jqxGrid('getrows');							
 		var data_set = {}
 		var chart_series = [];
 		var sku_ids = [];
@@ -262,12 +262,12 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_advanced', functi
 		$('#chart_3').jqxChart('refresh');
 
 	})
-	$("#jqxgrid").bind("filter", function (event) {
+	$("#jqxGrid").bind("filter", function (event) {
 		$.mobile.loading('show');
 		dataAdapter.dataBind();
 		
 	});                       
-	$("#jqxgrid").bind("bindingcomplete", function (event) {
+	$("#jqxGrid").bind("bindingcomplete", function (event) {
 		$.mobile.loading('hide')			
 		load_chart();
 	});                       

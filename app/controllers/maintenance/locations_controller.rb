@@ -56,6 +56,23 @@ class Maintenance::LocationsController < ApplicationController
 
   # GET /locations/1/edit
   def edit
+    record = Location.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
+          response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /locations

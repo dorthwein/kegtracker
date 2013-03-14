@@ -1,5 +1,7 @@
 class User
   include Mongoid::Document
+  field :record_status, type: Integer, default: 1
+
   before_save :ensure_authentication_token
 	# Check User Permission		
 #	def permission?(permission_id)
@@ -17,6 +19,7 @@ class User
     devise :database_authenticatable, # :registerable,
          :recoverable, :rememberable, :trackable, :validatable, 
          :token_authenticatable
+
 
 	belongs_to :entity, :inverse_of => 'Entity'
   field :entity_description, type: String
@@ -86,10 +89,12 @@ class User
 
   ## Token authenticatable
 	field :authentication_token, :type => String
-  
+  devise :token_authenticatable
+
   before_save :sync_descriptions  
   def sync_descriptions
     self.entity_description = self.entity.description
+    self.ensure_authentication_token
   end
   
   def scanner_data

@@ -8,11 +8,9 @@
 */
 
 $(document).on('pageshow', '#_scanners_rfid_readers', function(event){		
-
 	$.mobile.loading('show');
 
 	theme = settings.theme;
-
 	// Grid data source
 	var grid_source = {
 		datatype : "json",
@@ -31,7 +29,7 @@ $(document).on('pageshow', '#_scanners_rfid_readers', function(event){
 	});
 		
 	// Initiate grid
-	$("#jqxgrid").jqxGrid({
+	$("#jqxGrid").jqxGrid({
 		groupable: true,
 		sortable: true,
 		filterable: true,
@@ -52,10 +50,10 @@ $(document).on('pageshow', '#_scanners_rfid_readers', function(event){
 	});
 
 
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/row_select',
 			type: "POST",
@@ -192,7 +190,7 @@ $(document).on('pageshow', '#_scanners_rfid_readers', function(event){
 		$("#location_select").jqxDropDownList('refresh')
 		$("#product_select").jqxDropDownList('refresh')
 
-//    	$('#jqxgrid').jqxGrid('refresh');
+//    	$('#jqxGrid').jqxGrid('refresh');
     })
 
     $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
@@ -255,15 +253,15 @@ $(document).on('pageshow', '#_scanners_rfid_readers', function(event){
 
 
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 	$("#csvExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+		$("#jqxGrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
 	});
 
 	$("#jsonExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'json' );
+		$("#jqxGrid").jqxGrid('exportdata', 'json' );
 	});
 
 	$.mobile.loading('hide');		

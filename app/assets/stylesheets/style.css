@@ -4,10 +4,12 @@
         width: 100%;
         margin: 0px;
         padding: 0px;
+		text-shadow: none;
+		background:#4c66a4;
 
     }   
-.jqxExpander {	
-	border-bottom: 1px solid #CCC;
+#content, .ui-page{
+
 }
 
 .hidden {
@@ -31,7 +33,13 @@ li {
 	margin:0px;
 	padding:0px;
 }
+#quick_search {
+	border-top:none;
+	border-right:none;
+	border-left:none;
+	border-bottom:1px solid #CCC;
 
+}
 /*
 ul.main_nav  {
 	display: inline; 
@@ -150,7 +158,12 @@ table.ft tr > td
 
 
 #jqxMenu {
- background:#F8F8F8;
+/* background:#F8F8F8; */
+
+	background:#4c66a4;
+	text-shadow:none;
+ 	color: #FFF;
+ 	border:none;
 }
 .section-header {
 	background-color:#E0E0E0;

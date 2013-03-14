@@ -1,5 +1,7 @@
 class ProductType
   include Mongoid::Document
+	field :record_status, type: Integer, default: 1
+	
 	field :description, type: String    
 
 	field :style, type: Integer	

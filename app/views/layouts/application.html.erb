@@ -9,7 +9,7 @@
 </head>
 <body> 
 	<div data-role="page" data-cache="never" id="<%= request.path.gsub('/', '_') %>" data-url="<%= request.path %>">		
-		<div id="page_header" data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px;" data-theme="none" >
+		<div id="page_header" data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px; padding-top:0;" data-theme="none" >
 			<% if !user_signed_in? %>			
             <div id="jqxMenu">
                 <ul>                				
@@ -49,12 +49,14 @@
 									</li>
 								</ul>
 							</li>
+
 							<li> 	
 								Assets
 								<ul>
 									<li>
 										<%= link_to 'Browse', :reports_asset_browse %> 	
 									</li>
+
 									<li>
 										<%= link_to 'Inventory Report', :reports_asset_sku_summary_report_simple %> 									
 									</li>
@@ -66,7 +68,7 @@
 								Locations
 								<ul>
 									<li>
-										<%= link_to 'Browse', :reports_location_browse %> 			
+										<%= link_to 'Browse', :reports_location_browse %>
 									</li>
 								</ul>							
 							</li>
@@ -112,10 +114,12 @@
 						</ul>
 					</li>					
 					<li> 
-						Scanners/Readers 
+						Scanners
 						<ul>	
 							<li> <%= link_to 'Barcode Scanner', :scanners_barcode %> </li>
 							<li> <%= link_to 'RFID Readers', :scanners_rfid_readers %> </li>
+							<li> <%= link_to 'Invoice Manifest', :accounting_invoices %> </li>
+
 						</ul>							
 					</li>
 					<li> 
@@ -137,8 +141,9 @@
 									<li> <%= link_to 'SKUs', :maintenance_skus %> 
 									</li>		
 
-									<li> <%= link_to 'Products', :maintenance_products %> </li>
-									<li> 
+									<li> <%= link_to 'Products', :maintenance_products %> 
+									</li>				
+									<li> 										
 										<%= link_to 'Contract Breweries', :maintenance_production_partnerships %> 
 									</li>		
 								</ul>
@@ -184,7 +189,7 @@
 		</div>
 		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:10px;">			
 		<!-- Main Content -->	
-			<%= yield %>																
+			<%= yield %>														
 		</div>
 		<div id="page_footer" data-role="footer" data-position="fixed" style="position:fixed; bottom:0px">
 			<div id="content-alert" style="display:none">	</div>								
@@ -192,5 +197,16 @@
 			<span style="float:right; padding: 0px 10px 0px 0px"> Cobalt </span>
 		</div>
 	</div>
+	<div class="jqxWindow" style="display:none">
+		<div class="jqxWindowTitle">	
+			<span class="jqxWindowTitleText">
+				<br />	
+			</span>
+		</div>
+		<div class="jqxWindowContent">		
+			<iframe width="100%" height="100%" src="" class="jqxWindowIFrame"> </iframe>
+		</div>
+	</div>
+
 </body>
 </html>

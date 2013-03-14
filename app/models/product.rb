@@ -1,7 +1,11 @@
 class Product
   include Mongoid::Document
+  include Mongoid::Timestamps  
+
+  field :record_status, type: Integer, default: 1
+  
 	has_many :assets
-	belongs_to :entity
+	belongs_to :entity, index: true
 	belongs_to :product_type
 
 

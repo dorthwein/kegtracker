@@ -38,7 +38,7 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 	});
 
 	// Initialize Grid
-	$("#jqxgrid").jqxGrid(
+	$("#jqxGrid").jqxGrid(
 	{
 		// Grid Options
 		groupable: true,
@@ -65,10 +65,10 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 		]
 	});
 
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 
 		$("#reader_name").val(rowdata['reader_name']);
 		$("#reader_type").val(rowdata['reader_type']);
@@ -146,8 +146,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 
 	$("#new_antenna").jqxButton({ theme: theme, disabled: true });	
 	$("#new_antenna").click(function () {			
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);		
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
@@ -178,7 +178,7 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 			$("#physical_location").val(' ');
 			$("#antenna_number").val(' ');	
 			$("#save_antenna").jqxButton({ disabled: true });
-			$("#jqxgrid").jqxGrid('refreshdata')
+			$("#jqxGrid").jqxGrid('refreshdata')
 			 dataAdapter.dataBind();
 
 	
@@ -210,8 +210,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 
 	$("#save_reader").jqxButton({ theme: theme, disabled: true });	
 	$("#save_reader").click(function () {			
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);				
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);				
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
@@ -236,8 +236,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 
 	$("#new_reader").jqxButton({ theme: theme, width:100 });            
 	$("#new_reader").click(function () {
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);		
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
@@ -252,8 +252,8 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 
 	$("#delete_reader").jqxButton({ theme: theme, width:100 });            
 	$("#delete_reader").click(function () {
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);		
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
@@ -269,7 +269,7 @@ $(document).on('pageshow', '#_maintenance_rfid_readers', function(event){
 
 	$("#excelExport").jqxButton({ theme: theme, width:100 });            
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 	
 	$.mobile.loading('hide');				

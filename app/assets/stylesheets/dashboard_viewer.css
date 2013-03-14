@@ -27,8 +27,11 @@
 
 }
 
+
 .dashboard.button h3, .dashboard.button h4 {	
 	vertical-align: middle;
 	margin:5px 0 5px 0;
+	color: #6a7180;
+	text-shadow:none;
 
 }

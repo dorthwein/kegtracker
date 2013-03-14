@@ -1,91 +1,121 @@
 class Accounting::InvoicesController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
-
-  # GET /invoices
-  # GET /invoices.json
-  def index    		
+  # GET /Invoices
+  # GET /Invoices.json
+  def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json {                 
-			invoices = JqxConverter.jqxGrid(current_user.entity.invoices)          	            
-			print invoices.to_json
-          	render json: invoices
+      format.json { 
+        invoices = JqxConverter.jqxGrid(current_user.entity.invoices)
+        render json: invoices
       }
     end
-
   end
-
-  # GET /invoices/1
-  # GET /invoices/1.json
+  # GET /Invoices/1
+  # GET /Invoices/1.json
   def show
     respond_to do |format|
+      format.html {render :layout => 'popup'}
       format.json { 
-        invoice = Invoice.find(params[:id])
-		invoice_details = invoice.invoice_details       
-        location_types = JqxConverter.jqxDropDownList(Location.location_types)
+        
+        record = Invoice.find(params[:id])        
+        response = {}
+        response[:jqxDropDownLists] = {}        
 
-        response = {:location => location, :networks => networks, :location_types => location_types }
-
+        response[:record] = record  
+        response[:jqxListBoxes] = {}
+        response[:jqxListBoxes][:price_id] = JqxConverter.jqxListBox(current_user.entity.prices)        
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
         render json: response 
       }
-    end
+    end    
   end
 
-  # GET /invoices/new
-  # GET /invoices/new.json
+  # GET /Invoices/new
+  # GET /Invoices/new.json
   def new
     respond_to do |format|
+      format.html {render :layout => 'popup'}
       format.json { 
-        networks = JqxConverter.jqxDropDownList(current_user.entity.networks)        
-        location_types = JqxConverter.jqxDropDownList(Location.location_types)        
         
-        response = {:networks => networks, :location_types => location_types }
+        record = Invoice.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+
         render json: response 
       }
-    end
+    end    
   end
 
-  # GET /invoices/1/edit
+
+  # GET /Invoices/1/edit
   def edit
-  end
+    record = Invoice.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
 
-  # POST /invoices
-  # POST /invoices.json
-  def create
-    respond_to do |format|          
-      format.json { 
-        location = Location.new(params[:location])
-        
-        if location.save
-          render json: location
-        else
-          render json: {:success => false, :message => 'Location creation error, please contact support'}
-        end
-      }        
+
+          response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
+
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
     end
   end
 
-  # PUT /invoices/1
-  # PUT /invoices/1.json
-  def update	
+  # POST /Invoices
+  # POST /Invoices.json
+  def create
+    record = Invoice.where(entity_id: params[:record][:entity_id], number: params[:record][:number]).first
+    if record.nil?
+      record = Invoice.new(params[:record])
+    end
     respond_to do |format|
+      if record.save
+        format.html 
+        format.json {  render json: record }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
+    end
+  end
+
+  # PUT /Invoices/1
+  # PUT /Invoices/1.json
+  def update
+    record = Invoice.find(params[:id])
+    print record.to_json
+    record.update_attributes(params[:record])    
+    respond_to do |format|
+      format.html
       format.json {
-        location = Location.find(params[:id])
-        if location.update_attributes(params[:location])
-          render json: location
-        else
-          render json: {:sucess => false, :message => 'Location update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end
 
-  # DELETE /invoices/1
-  # DELETE /invoices/1.json
+  # DELETE /Invoices/1
+  # DELETE /Invoices/1.json
   def destroy
-    location = Location.find(params[:id])
-    location.destroy
+    record = Invoice.find(params[:id])
+    record.destroy
 
     respond_to do |format|    
       format.json { head :no_content }

@@ -24,7 +24,6 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
         response[:record] = record              
         response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
         response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
-        response[:jqxDropDownLists][:measurement_unit_id] = 
         render json: response 
       }
     end    
@@ -43,7 +42,6 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
         response[:record] = record              
         response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
         response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
-        response[:jqxDropDownLists][:measurement_unit_id] = 
         render json: response 
       }
     end
@@ -51,6 +49,23 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
 
   # GET /locations/1/edit
   def edit
+    record = EntityPartnership.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+          response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /locations

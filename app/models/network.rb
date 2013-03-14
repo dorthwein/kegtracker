@@ -1,7 +1,10 @@
 class Network
   include Mongoid::Document
+  include Mongoid::Timestamps  
 
-  auto_increment :netid #, type: Integer        # Unique
+  field :record_status, type: Integer, default: 1
+
+  auto_increment :netid, index: true #, type: Integer        # Unique
 
   field :description, type: String, :default => nil	
   field :tagCounter, type: Integer, :default => 1 # Maybe useless - See Barcode Maker
@@ -31,9 +34,9 @@ class Network
 
 # has_one :entity
   has_many :barcode_makers
-  belongs_to :entity  
+  belongs_to :entity, index: true  
   
-  has_many :network_memberships 
+  has_many :network_memberships # Being Depricated
   has_many :locations
 
 
@@ -106,6 +109,6 @@ class Network
     self.smart_mode_out_location_description = self.smart_mode_out_location.description    
   end
 
-  index({ entity_id: 1 }, { name: "entity_index" })
-  index({ description: 1 }, { name: "description_index" })
+#  index({ entity_id: 1 }, { name: "entity_index" })
+ # index({ description: 1 }, { name: "description_index" })
 end

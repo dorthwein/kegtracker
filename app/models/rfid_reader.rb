@@ -1,5 +1,7 @@
 class RfidReader
   include Mongoid::Document  
+  field :record_status, type: Integer, default: 1
+
   belongs_to :network
   field :network_description, type: String
 

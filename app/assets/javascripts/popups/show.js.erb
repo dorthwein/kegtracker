@@ -1,12 +1,22 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
-$(document).on('pageshow', '#popup_show', function(event){	
-	var theme = settings.theme
-	$(".jqxInput").jqxInput({height: '20px', width: '100%', minLength: 1, theme: theme, disabled: true });
-	$(".jqxDropDownList").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '20px', theme: theme, disabled: true });
-	$(".jqxButton").jqxButton({ theme: theme, width:'75px' });
-	$(".jqxToggle").jqxToggleButton({ theme: theme, width:'75px', disabled: true});               
 
+
+$(document).on('pageshow', '.popup_show', function(event){	
+	$.mobile.loading('show');
+	var theme = settings.theme
+	// Initialize Fields
+	$(".jqxInput").jqxInput({height: '20px', width: '100%', minLength: 1, theme: theme, disabled: true });
+	$(".jqxNumberInput").jqxNumberInput({height: '20px', digits: 4, width: '100%', minLength: 1, theme: theme, disabled: true });
+	$(".jqxNumberInput.currency").jqxNumberInput({decimalDigits: 2, symbol: '$'})
+	
+	$(".jqxDateTimeInput").jqxDateTimeInput({ width: '100%', height: '20px', theme: theme, disabled: true });
+
+	$(".jqxDropDownList").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '100%',  height: '20px', theme: theme, disabled: true });
+	$(".jqxDropDownList").jqxDropDownList('selectIndex', 0 ); 
+	$(".jqxButton").jqxButton({ theme: theme, width:'75px' });
+
+	$(".jqxToggle").jqxToggleButton({ theme: theme, width:'75px', disabled: true});               
     $(".jqxToggle").bind('click', function () {    	    	    
     	if ($(this).attr("disabled") != "disabled"){
 	        var toggled = $(this).jqxToggleButton('toggled');
@@ -21,6 +31,7 @@ $(document).on('pageshow', '#popup_show', function(event){
 	    }
     });
 
+    // Load record data
 	var url =  system.server + $('.ui-page-active').attr('data-url')
 	$.ajax({
 		url: url,
@@ -40,6 +51,18 @@ $(document).on('pageshow', '#popup_show', function(event){
 			$('#' + value.id).val(data['record'][value.id])
 		});
 
+		$.each($('.jqxNumberInput'), function(key, value){		
+			$('#' + value.id).jqxNumberInput('setDecimal', data['record'][value.id]);
+		});
+
+		$.each($('.jqxDateTimeInput'), function(key, value){		
+			element = $('#' + value.id)			
+			
+			$(element).jqxDateTimeInput('setDate', new Date(data['record'][value.id])); 
+			$(element).jqxDateTimeInput({ disabled:true });
+
+		});
+
 		$.each($('.jqxToggle'), function(key, value){
 			element = $('#' + value.id)
 			element.val(data['record'][value.id])
@@ -51,59 +74,19 @@ $(document).on('pageshow', '#popup_show', function(event){
 	        	$(this).html('Off');
 	        }
 		});		
+		$.mobile.loading('hide');
+
 	})
 
 	
-
-	$("#edit").click(function () {
-		$.each($('.jqxDropDownList'), function(key, value){
-			$('#' + value.id).jqxDropDownList({disabled:false});			
-		})
-		$.each($('.jqxInput'), function(key, value){
-			$('#' + value.id).jqxInput({disabled:false});			
-		})
-		$.each($('.jqxToggle'), function(key, value){
-			$('#' + value.id).jqxToggleButton({disabled:false});									
-		})
-		$('.jqxToggle').jqxToggleButton('refresh'); 
-		$("#save").jqxButton({disabled:false})
+	$(".edit").click(function () {
+		document.location.href = url + '/edit'
 	});
 	
+	$(".save").jqxButton({disabled:true})
+	$(".cancel").click(function () {
+//		window.parent.dataAdapter.dataBind();					
+		window.parent.$('.jqxWindow').jqxWindow('close');
 
-
-	$("#save").jqxButton({disabled:true})
-	$("#save").click(function () {
-		$.mobile.loading('show');		
-        var params = {record: {}}
-		$.each($('.jqxDropDownList'), function(key, value){
-			element = $('#' + value.id)				
-			params['record'][value.id] = $(element).jqxDropDownList('getSelectedItem').value              				
-		})
-
-		$.each($('.jqxInput'), function(key, value){
-			element = $('#' + value.id)
-			params['record'][value.id] = $(element).val();
-		})
-
-		$.each($('.jqxToggle'), function(key, value){
-			element = $('#' + value.id)
-			params['record'][value.id] = $(element).val();
-		})
-
-		var url =  system.server + $('.ui-page-active').attr('data-url') + '.json';
-//		url = url.substring(0, url.length - 4) + '.json';		    
-		$.ajax({
-			type: "PUT",
-			dataType : "JSON",
-			url: url,
-			data: params,
-		}).done(function( data ) {						
-			var jqxgrid = window.opener.dataAdapter
-			jqxgrid.dataBind();
-			window.close();
-		})
-	});
-	$("#cancel").click(function () {
-		window.close()
 	});
 });

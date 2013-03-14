@@ -20,11 +20,10 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
         if (data.groupcolumn.datafield == 'invoice_detail_description') { 
             return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span>' + '<span  style="margin-right:10px; float:right;" class="' + toThemeProperty('jqx-grid-groups-row-details') + '">' + data.subItems.length + '</span></div>';
         }
-    }
-   
+    }   
 
 	$('#scan_invoice').hide()
-	$("#jqxgrid").jqxGrid({
+	$("#jqxGrid").jqxGrid({
 		groupable: true,
 		closeablegroups: false,
 		sortable: true,
@@ -42,9 +41,10 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 
 		},
 		columns: [
-			{ text: 'Description', datafield: 'invoice_detail_description' },	
+			{ text: 'Description', datafield: 'sku_description' },	
+			{ text: 'Fullfilled', datafield: 'invoice_attached_asset_count', width:100 },	
+			{ text: 'Quantity', datafield: 'quantity', width:100 },	
 		],
-		groups: ['invoice_detail_description' ],
 	});	
 
 	function get_invoice_details(){
@@ -59,11 +59,13 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 						datatype : "JSON",
 						localdata: data['invoice_details'],
 						datafields: [
-							{ name: 'invoice_detail_description' },
-							{ name: 'asset_type_description' },							
+							{ name: 'sku_description' },
+							{ name: 'invoice_attached_asset_count' },
+							{ name: 'quantity', width:100 },
+							{ name: 'invoice_detail_description', width:100 },							
 						],				
 					};					
-				$("#jqxgrid").jqxGrid({source:source});
+				$("#jqxGrid").jqxGrid({source:source});
 				$("#invoice_id").val(data['invoice']['_id']);
 			})	
 		}
@@ -78,13 +80,8 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 
 	$("#excelExport").jqxButton({ theme: theme, width:100 });                        
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
-
-
-
-
-
 	// Initialize Grid
 
 
@@ -149,7 +146,7 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 	// ********************	
 		$('#toggle_invoice').bind('checked', function (event) { 
 			$('#scan_invoice').show()
-			$("#jqxgrid").jqxGrid('render');
+			$("#jqxGrid").jqxGrid('render');
 			$('#toggle_invoice').val(1)
 		}); 
 		$('#toggle_invoice').bind('unchecked', function (event) { 
@@ -267,8 +264,6 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 
 		scanSubmit : function(obj){		
 			var scan = {};
-			scan.user = {};
-			scan.processing = {};
 			
 			function IsJsonString(str) {
 				try {
@@ -328,28 +323,28 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 				}			
 				scan.tag = tag;
 				scan.user = {};
-				var N = $('#simple_container').attr('userName');
-				var P = 'PASS';
-				scan.user.N = N;
-				scan.user.P = P;
+				var email = $('#simple_container').attr('userName');
+				var password = 'PASS';
+				scan.email = email;
+				scan.password = password;
 
-				scan.location = $('#location_id').jqxDropDownList('getSelectedItem').value;
-				scan.processing.HC = $('#handle_code').jqxDropDownList('getSelectedItem').value;
-				scan.processing.auto_mode = $('#toggle_auto_mode').val();
-				scan.processing.correction = $('#toggle_correction').val();
+				scan.location_id = $('#location_id').jqxDropDownList('getSelectedItem').value;
+				scan.handle_code = $('#handle_code').jqxDropDownList('getSelectedItem').value;
+				scan.auto_mode = $('#toggle_auto_mode').val();
+				scan.correction = $('#toggle_correction').val();
 				scan.invoice_id = $('#invoice_id').val();
 				scan.version = "s1";
 
 				if($('#handle_code').jqxDropDownList('getSelectedItem').value == 4){
-					scan.processing.P = $('#product_id').jqxDropDownList('getSelectedItem').value;			
+					scan.product_id = $('#product_id').jqxDropDownList('getSelectedItem').value;			
 				}
 
 				if($('#toggle_asset_type').val() == 1){
-					scan.processing.AT = $("#asset_type_id").jqxDropDownList('getSelectedItem').value;
+					scan.asset_type_id = $("#asset_type_id").jqxDropDownList('getSelectedItem').value;
 				}
 				
 
-				scan.processing.T = + new Date / 1000;
+				scan.time = + new Date / 1000;
 //				alert(JSON.stringify(scan));
 				var url = system.server + '/scanners/barcode/scan.json';
 				$('#scan_input').val("");				
@@ -456,8 +451,11 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 	scanner_on();
 });
 // UNBIND KEY LOCK ON HIDE
-$(document).on('pagehide', '#_scanners_barcode', function(event){		
+$(document).on('pagebeforehide', '#_scanners_barcode', function(event){		
+	$('#simple_container').jqxValidator('destroy')
 	$(window).unbind('keydown');
 	delete pgFunc;
 	delete scanOptions;
 });
+
+

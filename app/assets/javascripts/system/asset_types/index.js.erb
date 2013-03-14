@@ -45,7 +45,7 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 //	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$("#jqxgrid").jqxGrid(
+	$("#jqxGrid").jqxGrid(
 	{
 		// Grid Options
 		groupable: true,
@@ -110,16 +110,16 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 				} 
 			},		
 			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);			
+				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
 				return 'View'
 			}},			
 
 		]
 	});
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
 			type: "GET",
@@ -136,10 +136,10 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 		});					
 	});
 
-	$("#jqxgrid").on("cellclick", function (event) {
+	$("#jqxGrid").on("cellclick", function (event) {
 	    var column = event.args.column;	   
 	    var rowindex = event.args.rowindex;
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);
 
 	    var columnindex = event.args.columnindex;
 	    if(column.text == 'View'){	    	
@@ -157,8 +157,8 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 
 	$("#delete").jqxButton({ theme: theme, width:100 });            
 	$("#delete").click(function () {
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);		
 		$.ajax({
 			type: "DELETE",
 			dataType : "JSON",
@@ -175,7 +175,7 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 	// NEW BUTTON
 	$("#excelExport").jqxButton({ theme: theme,});                        
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 	$.mobile.loading('hide');					
 });

@@ -48,7 +48,7 @@ $(document).on('pageshow', '#_system_entities', function(event){
 	});
 
 	// Initialize Grid
-	$("#jqxgrid").jqxGrid(
+	$("#jqxGrid").jqxGrid(
 	{
 		// Grid Options
 		groupable: true,
@@ -79,10 +79,10 @@ $(document).on('pageshow', '#_system_entities', function(event){
 			{ text: 'Mrkt. Networks', width:100, datafield: 'market_network_count', filtertype: 'number' },			
 		]
 	});
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
 			type: "GET",
@@ -191,8 +191,8 @@ $(document).on('pageshow', '#_system_entities', function(event){
 	        	params['entity'][obj.id] = $(obj).val();
 	        });        
 
-			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
-		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);
 		    
 		    var url =  system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id']	    
 			$.ajax({
@@ -222,8 +222,8 @@ $(document).on('pageshow', '#_system_entities', function(event){
 	        	params['entity'][obj.id] = $(obj).val();
 	        });        
 
-			var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');		
-		    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);
+			var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');		
+		    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);
 			$.ajax({
 				url: system.server + $('.ui-page-active').attr('data-url'),
 				type: "POST",
@@ -283,8 +283,8 @@ $(document).on('pageshow', '#_system_entities', function(event){
 
 	$("#delete").jqxButton({ theme: theme, width:100 });            
 	$("#delete").click(function () {
-		var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('#jqxgrid').jqxGrid('getrowdata', rowindex);		
+		var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
+		var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);		
 		$.ajax({
 			type: "DELETE",
 			dataType : "JSON",
@@ -302,7 +302,7 @@ $(document).on('pageshow', '#_system_entities', function(event){
 	// NEW BUTTON
 	$("#excelExport").jqxButton({ theme: theme,});                        
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 	$("#brewery_upload_button").jqxButton({ theme: theme,});                        

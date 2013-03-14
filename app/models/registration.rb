@@ -1,5 +1,6 @@
 class Registration
   include Mongoid::Document
+	field :record_status, type: Integer, default: 1	
 	
 	field :brewery_name, type: String
 	field :contact_name, type: String

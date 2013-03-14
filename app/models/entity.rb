@@ -1,7 +1,8 @@
 class Entity
   include Mongoid::Document
   include Mongoid::Timestamps  
-
+	field :record_status, type: Integer, default: 1
+	
 	has_many :users
 	has_many :locations	
 	has_many :products
@@ -142,8 +143,6 @@ class Entity
 			  	{ :product.in => self.production_products }, 
 			  	{ :entity => self }
 		   	)
-
-
 	end
 
 	def visible_asset_activity_facts
@@ -151,10 +150,19 @@ class Entity
 				{ :location_network.in => self.networks.map{|x| x._id} },
 			  	{ :product.in => self.production_products }, 
 			  	{ :entity => self }
-		   	)
+		   	).desc(:fact_time)
 	end
 	def visible_fill_activity_facts
-		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
+		print 'visible_fill_activity_facts - DEPREICATED FUNCTION'
+#		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
+	end
+
+	def visible_asset_cycle_facts
+		AssetCycleFact.any_of( 
+			{ :location_network.in => self.networks.map{|x| x._id} },
+			{ :product.in => self.production_products }, 
+			{ :entity => self }
+		).desc(:start_time)
 	end
 
 ###########################
@@ -184,12 +192,23 @@ class Entity
 
 	def visible_networks
 		networks = []
-		networks = networks + self.networks        
+		networks = networks + self.networks
 		networks = networks + self.distribution_partnerships_shared_networks
 		networks = networks + self.production_partnerships_shared_networks		
-		
 		return networks
 	end
+###########################
+# Locations				  #
+###########################
+	def visible_locations
+		locations = self.locations + []
+#		self.distribution_partnerships_shared_networks.each do |x|
+#			locations = locations + x.locations.where(:location_type => 5)
+#		end
+		return locations
+	end        
+
+
 ###########################
 # Entity Reports		  #
 ###########################
@@ -197,6 +216,9 @@ class Entity
 		
 	end
 
+###########################
+# Entity Reports		  #
+###########################
   before_save :sync_descriptions  
   def sync_descriptions
   	self.admin_user_email = self.admin_user.email rescue nil	

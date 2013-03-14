@@ -7,8 +7,8 @@ class Maintenance::PricesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        prices = JqxConverter.jqxGrid(current_user.entity.prices)
-        render json: prices
+        records = JqxConverter.jqxGrid(current_user.entity.prices)
+        render json: records
       }
     end
   end
@@ -21,12 +21,13 @@ class Maintenance::PricesController < ApplicationController
         
         record = Price.find(params[:id])        
         response = {}
-        response[:jqxDropDownLists] = {}        
+        response[:jqxDropDownLists] = {}            
         response[:record] = record  
 
-		response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList([current_user.entity.skus])                                        
-		response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+		    response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
+        response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
+		    response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+#        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
 
         render json: response 
       }
@@ -42,12 +43,13 @@ class Maintenance::PricesController < ApplicationController
         
         record = Price.new
         response = {}
-        response[:jqxDropDownLists] = {}        
+        response[:jqxDropDownLists] = {}   
         response[:record] = record              
 
-		response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList([current_user.entity.skus])                    
+		    response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
+        response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
         response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+#        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
 
         render json: response 
       }
@@ -56,7 +58,26 @@ class Maintenance::PricesController < ApplicationController
 
   # GET /Prices/1/edit
   def edit
-    # Not Active
+    record = Price.find(params[:id])
+    respond_to do |format|
+      if can? :update, record
+        format.html {render :layout => 'popup'}
+        format.json { 
+          response = {}
+          response[:jqxDropDownLists] = {}                  
+          response[:record] = record 
+
+          response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)                                        
+          response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+#          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+
+          render json: response 
+        }        
+      else
+        format.html {redirect_to :action => 'show'}
+      end
+    end
   end
 
   # POST /Prices

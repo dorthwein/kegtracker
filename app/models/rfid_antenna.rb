@@ -1,6 +1,8 @@
 class RfidAntenna
 	# NOT DENORMALIZED
   include Mongoid::Document
+  field :record_status, type: Integer, default: 1
+  
   # Set in Maintenance
   belongs_to :rfid_reader  
   field :antenna_number, type: Integer

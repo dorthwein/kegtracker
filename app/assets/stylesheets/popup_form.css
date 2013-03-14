@@ -1,5 +1,5 @@
 table.popup{ 
-	margin: 10px;
+	margin: 0px;
 	background-color: #FFF;
 	border:1px solid #CCC;		
 }
@@ -7,19 +7,12 @@ table.popup td {
 	padding:10px;	
 } 
 .popup_title {
-	padding:5px;
-
-	margin:10px;	
-	background-color: #FFF;
-	border:1px solid #CCC
+	display:none;
 }
 button.popup {
-	float:right;
-	margin-left:5px;
 }
 .popup b {
 	font-size:14px;
-
 }
 .popup th h3 {
 	text-align: left;

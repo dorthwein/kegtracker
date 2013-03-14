@@ -6,27 +6,126 @@
 		<th>	</th>
 	</thead>
 	<tbody>
-		<tr>
-			<td>	<b> Description </b>	</td>
-			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
-			<td>	<b> Product # </b>	 	</td>
+		<tr>		
+			<td>	<b> SKU </b>	</td>
 			<td>	
-				<input type="text" id="externalID" class="jqxInput" data-role="none" />
-			</td>		
-		</tr>				
-		<tr>
-			<td>	<b> Brewer </b>	</td>
-			<td>	<div id="entity_id" class="jqxDropDownList required ">	</div></td>
-			<td>	</td>
-			<td>	</td>
+				<div class="jqxDropDownList required" id="sku_id">	</div>	
+			</td>
+			<td>	<b> Entity </b>	</td>
+			<td>	
+				<div class="jqxDropDownList required" id="entity_id">	</div>	
+			</td>
+
 		</tr>
+		<tr>
+			<td>	<b> Price </b>	</td>
+			<td>	
+				<div class="jqxNumberInput percent currency" type="number"  id="price" data-role="none">  </div>
+			</td>
+			<td>	<b> per </b>	</td>
+			<td>	
+				<div id="base_price_tier" class="jqxDropDownList required">	</div>
+			</td>
+
+		</tr>
+		<tr>
+			<td> 
+				<b>	Sales Tax </b>
+			 </td>
+			<td>			
+				<div class="jqxNumberInput percent currency" type="number"  id="sales_tax" data-role="none"> </div> 
+
+				<div class="jqxToolTip" id="sales_tax_tooltip">	
+					Percent or dollar amount.
+				</div>
+			</td>			
+			<td> <b> 	Gallonage Tax	</b> </td>
+			
+			<td> 
+				<div class="jqxNumberInput percent currency" type="number"  id="gallonage_tax" data-role="none"> </div> 
+			</td>		
+		</tr>
+<!--
+		<tr>
+			<td> <button id="auto_calculate" class="jqxToggle" data-role="none" value="0"> On </button></td>
+			<td> <b> 	Price	</b> </td>
+			<td> <b>	Sales Tax		</b> </td>
+			<td> <b> 	Gallonage Tax	</b> </td>
+		</tr>
+		<tr>
+			<td>	<b> Unit </b>	 	</td>
+			<td>	
+				<input class="jqxInput percent currency" type="number"  id="sku_tier_1_price" data-role="none" /> 
+
+			</td>
+			<td>	
+				<input class="jqxInput" type="number" id="sku_tier_1_sales_tax" data-role="none" />	
+			</td>		
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_1_gallonage_tax" data-role="none" /> 
+			</td>		
+		</tr>
+
+
+
+
+
+		<tr>
+			<td>	<b> Consumer Pack </b>	 	</td>
+			<td>	
+				<input class="jqxInput percent currency" type="number"  id="sku_tier_2_price" data-role="none" /> 
+
+			</td>
+			<td>	
+				<input class="jqxInput" type="number" id="sku_tier_2_sales_tax" data-role="none" />	
+			</td>		
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_2_gallonage_tax" data-role="none" />
+			</td>		
+		</tr>
+
+		<tr>
+			<td>	<b> Case </b>	 	</td>
+			<td>
+				<input class="jqxInput percent currency" type="number"  id="tier_3_asset_type_id" data-role="none" /> 
+
+
+			</td>
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_3_sales_tax" data-role="none" />	
+			</td>		
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_3_gallonage_tax" data-role="none" />
+			</td>		
+		</tr>
+
+
+
+
+
+
+
+		<tr>
+			<td>	<b> Pallet </b>	 	</td>
+			<td>	
+				<input class="jqxInput percent currency" type="number"  id="sku_tier_4_price" data-role="none" /> 
+			</td>
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_4_sales_tax" data-role="none" />	
+			</td>		
+			<td>	
+				<input class="jqxInput" type="number"  id="sku_tier_4_gallonage_tax" data-role="none" />
+			</td>		
+		</tr>		
+-->
 		<tr>
 			<td>	</td>			
 			<td>	</td>			
 			<td>	</td>
 			<td> 
-			 	<button class="popup jqxButton" id="cancel" data-role="none"> Cancel	</button>	
-				<button class="popup jqxButton" id="save" data-role="none"> Save	</button>		 	
+				<button class="popup jqxButton save" data-role="none"> Save	</button>
+				<button class="popup jqxButton cancel" data-role="none"> Cancel	</button>					
+>		 	
 			</td>						
 								
 		</tr>

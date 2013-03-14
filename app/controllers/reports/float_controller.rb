@@ -65,25 +65,23 @@ class Reports::FloatController < ApplicationController
 #				else
 #					default_network = Network.find(params['fill_network_id'])					
 #				end
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 1)
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 1).gt(life_cycle_completed_cycles: 0)
 #				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :fill_network => default_network)				
 		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}
 		    	 
 		    	render json: response		
 		    }
-		end			
+		end
 	end	
+
 	def asset_fill_to_fill_cycle_fact_by_delivery_network
 		respond_to do |format|  
 			format.html
 		    format.json {
 		    	options = {:entity => current_user.entity}
 								 
-
 				date = DateTime.parse(params['date'])
-
-
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
@@ -98,7 +96,7 @@ class Reports::FloatController < ApplicationController
 #					default_network = Network.find(params['delivery_network_id'])					
 #				end
 				
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).or({location_network_type: 2}, {location_network_type: 3})
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(life_cycle_completed_cycles: 0).or({location_network_type: 2}, {location_network_type: 3})
 				
 #				facts = NetworkFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
 		    	

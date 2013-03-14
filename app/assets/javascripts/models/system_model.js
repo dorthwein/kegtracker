@@ -6,16 +6,12 @@ var system = {};
 system.background = {};
 system.background.intervals = {};	// Not sure what this is for...?
 
-
-
-x = function(){
-	var height = $(window).height() - 150;
-	return height	
-}
 $(window).resize(function() {  
-	$('.jqxValidator').jqxValidator('updatePosition');
-//	$("#jqxgrid").jqxGrid({height:x()});
+	$('.jqxValidator').jqxValidator('updatePosition');	
+	$('.jqxGrid.full_window').jqxGrid({height: system.full_window_table_height()});
+//	$("#jqxGrid").jqxGrid({height:x()});
 });
+
 
 toThemeProperty = function (className) {
     return className + " " + className + "-" + settings.theme;
@@ -24,8 +20,14 @@ default_groupsrenderer = function (text, group, expanded, data) {
 	return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span> </div>';
 }
 
-system.full_window_table_height = '800px'
+system.full_window_table_height = function(){
+									var height = $(window).height() - 150;
+									return height	
+								} //	 '800px'
+
+
 system.table_height = '625px'
+
 system.simple_grid_height = '800px';
 system.simple_grid_width = '958px';
 
@@ -41,6 +43,9 @@ system.func = {}
 // ***************************
 // Prevent Cacheing
 // ***************************
+$(document).on('pagebeforehide', function(event, ui){
+	$('.jqxValidator').jqxValidator('destroy');
+});
 
 $(document).on('pagehide', function(event, ui){
 	var page = jQuery(event.target);

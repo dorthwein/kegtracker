@@ -1,11 +1,15 @@
 class Sku
   include Mongoid::Document
-	belongs_to :product
+	field :record_status, type: Integer, default: 1
+	
+	belongs_to :product, index: true
 	field :product_description, type: String	
-	belongs_to :entity
+	belongs_to :entity, index: true
 
 	field :description, type: String	
 	field :item_number, type: String
+	belongs_to :primary_asset_type, :class_name => 'AssetType'
+	field :primary_asset_type_description, type: String
 
 	field :tier_1_description, type: String
 	field :tier_1_upc, type: String # Typically Bottle
@@ -34,6 +38,8 @@ class Sku
 	before_save :sync_descriptions		
 	def sync_descriptions
 		self.product_description = self.product.description
+
+		self.primary_asset_type_description = self.primary_asset_type.description.to_s
 		self.tier_1_asset_type_description = self.tier_1_asset_type.description.to_s
 		self.tier_2_asset_type_description = self.tier_2_asset_type.description.to_s
 		self.tier_3_asset_type_description = self.tier_3_asset_type.description.to_s
@@ -44,6 +50,7 @@ class Sku
 		self.tier_3_description = self.product.description.to_s + ' (' + self.tier_3_asset_type_description.to_s + ')'
 		self.tier_4_description = self.product.description.to_s + ' (' + self.tier_4_asset_type_description.to_s + ')'
 		
-		self.description = self.product.description.to_s + ' - ' + self.tier_1_asset_type_description.to_s	
+		self.description = self.product.description.to_s + ' - ' + self.primary_asset_type.description.to_s	
 	end
 end
+

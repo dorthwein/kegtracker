@@ -1,11 +1,13 @@
 Cobalt::Application.routes.draw do 	
   	match 'access_denied' => 'access_denied#index', :via => [:get, :post]  	
 
-	namespace :accounting do 
-		resources :invoices
+	namespace :accounting do 		
+		resources :invoices do
+			resources :invoice_line_items
+		end
 	end
-	namespace :maintenance do 
-		
+
+	namespace :maintenance do 		
 		match 'network_memberships/new_distributor_partnership' => 'network_memberships#new_distributor_partnership', :via => [:get, :post]	
 		
 		resources :rfid_antennas
@@ -22,7 +24,8 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
 
 		resources :skus
-
+	  	resources :prices
+	  	resources :tax_rules 
 	  	resources :locations 
 #		devise_for :users	  	
 	  	resources :users 
@@ -45,7 +48,7 @@ Cobalt::Application.routes.draw do
 #	match 'current_inventory_by_network' => 'home#current_inventory_by_network', :via => [:get, :post]
   	
 	match 'account' => 'account#index', :via => [:get, :post]  	
-  	
+
   	namespace :dashboard do 
 		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
   	end
@@ -93,14 +96,12 @@ Cobalt::Application.routes.draw do
 		resources :asset_states
 		resources :measurement_units
 
-
-
 		match 'rfid_reads' => 'rfid_reads#read', :via => [:get, :post] 						
 		match 'entities/distributor_upload' => 'entities#distributor_upload', :via => [:get, :post] 						
 	end
 
 	namespace :scanners do 
-#		resources :rfid_readers	
+#		resources :rfid_readers			
 		match "rfid_readers" => 'rfid_readers#index', :via => [:get, :post]
 		match "rfid_readers/row_select" => 'rfid_readers#browse_row_select', :via => [:get, :post]
 		match "rfid_readers/antenna_select" => 'rfid_readers#antenna_select', :via => [:get, :post]
@@ -113,24 +114,6 @@ Cobalt::Application.routes.draw do
 		
 	end
 
-	namespace :api do 		
-		# Widgets
-		match 'filter_tree_widget' => 'widgets#filter_tree_widget', :via => [:get, :post]
-		
-		# Charts
-		match 'assets_by_network' => 'charts#assets_by_network', :via => [:get, :post]		
-		match 'sku_by_network' => 'charts#sku_by_network', :via => [:get, :post]		
-		match 'current_sku_quantities' => 'charts#current_sku_quantities', :via => [:get, :post]		
-
-
-		namespace :v1 do
-		  match 'check_connection' => 'check_connection#index', :via => [:get, :post]
-		  match 'scan' => 'scans#scan', :via => [:get, :post]		
-		  match 'locations' => 'locations#index', :via => [:get, :post]
-		  match 'products' => 'products#index', :via => [:get, :post]
-		  match 'asset_types' => 'asset_types#index', :via => [:get, :post] 
-		end	
-	end
 
 #  resources :reports
 
@@ -157,6 +140,29 @@ Cobalt::Application.routes.draw do
 	end
   	root :to => 'home#index'
 #  resources :locations
+
+#	devise_for :users, :controllers => { :sessions => "api/v1/sessions" }
+	namespace :api do 		
+		namespace :v1 do
+		  match 'sync' => 'mobile_app#sync', :via => [:get, :post]
+		  match 'check_connection' => 'mobile_app#check_connection', :via => [:get, :post]
+		end	
+	end
+
+
+	devise_scope :user do
+	  namespace :api do
+	    namespace :v1 do
+  			post "sign_in", :to => "sessions#create"
+  			delete "sign_out", :to => "sessions#destroy"
+#	      resources :sessions, :only => [:create, :destroy]
+	    end
+	  end
+	end
+	#resources :users
+
+
+
 
   #devise_for :users, :controllers => {:sessions => 'api/v1/sessions'}, :skip => [:sessions] do
  #   match 'api/v1/login' => 'api/v1/sessions#create', :via => [:get, :post]

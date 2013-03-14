@@ -14,7 +14,6 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 			{ name: 'externalID' },
 			{ name: 'description' },
 			{ name: 'network_description' }, 
-
 			{ name: 'name' },
 			{ name: 'street' },
 			{ name: 'city' },
@@ -35,7 +34,7 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 
 		
 	// Initiate grid
-	$("#jqxgrid").jqxGrid({
+	$("#jqxGrid").jqxGrid({
 		groupable: true,
 		sortable: true,
 		filterable: true,
@@ -118,10 +117,10 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 									
 
 
-	$('#jqxgrid').bind('rowselect', function (event){	    
+	$('#jqxGrid').bind('rowselect', function (event){	    
 	    var args = event.args;
 	    var row = args.rowindex;
-	    var rowdata = $('#jqxgrid').jqxGrid('getrowdata', row);		
+	    var rowdata = $('#jqxGrid').jqxGrid('getrowdata', row);		
 
 		$.ajax({
 			url: system.server + $('.ui-page-active').attr('data-url') + '/row_select',
@@ -179,7 +178,7 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
     $(window).resize(function() {
 //		$('#docking').jqxDocking('refresh');   		
 			
-//    	$('#jqxgrid').jqxGrid('refresh');
+//    	$('#jqxGrid').jqxGrid('refresh');
     })
 
     $('#docking').jqxDocking({ theme: theme,  orientation: 'horizontal', width: '100%', mode: 'docked' });
@@ -201,15 +200,15 @@ $(document).on('pageshow', '#_reports_location_browse', function(event){
 
 
 	$("#excelExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 
 	$("#csvExport").click(function () {
-		$("#jqxgrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+		$("#jqxGrid").jqxGrid('exportdata', 'csv', 'jqxGrid');
 	});
 
 	$("#jsonExport").click(function () {
-		alert($("#jqxgrid").jqxGrid('exportdata', 'json' ))
+		alert($("#jqxGrid").jqxGrid('exportdata', 'json' ))
 	});
 
 	$.mobile.loading('hide');		

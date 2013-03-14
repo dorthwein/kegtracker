@@ -328,13 +328,13 @@ $(document).on('pageshow', '#_reports_network_performance_scorecard_report', fun
 	$("#findRecord").click(function () {
 		
 		dataAdapter.dataBind();
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));		
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));		
 	});
 
 	// NEW BUTTON
 	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxgrid").jqxGrid('getrows')));
-		$("#jqxgrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
+		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
 	});
 	$.mobile.loading('hide');
 });
