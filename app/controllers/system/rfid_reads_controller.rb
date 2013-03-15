@@ -51,7 +51,7 @@ class System::RfidReadsController < ApplicationController
 						scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
 					end
 					
-					scan['location'] = rfid_antennas[tag_antenna].location._id
+					scan['location_id'] = rfid_antennas[tag_antenna].location._id
 					scan['tag'] = new_str
 				else
 					print 'bad tag found'
@@ -104,7 +104,7 @@ class System::RfidReadsController < ApplicationController
 							scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
 						end
 						
-						scan['location'] = rfid_antennas[tag_antenna].location._id
+						scan['location_id'] = rfid_antennas[tag_antenna].location._id
 						scan['tag'] = new_str
 
 
