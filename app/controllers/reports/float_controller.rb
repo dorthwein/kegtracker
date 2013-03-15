@@ -32,7 +32,8 @@ class Reports::FloatController < ApplicationController
 				print facts.to_json
 #		    	response = {:grid => facts, :location_networks => location_network_list}
 		    	response = {:grid => facts}
-		    	 
+		    	
+
 		    render json: response
 		}
 		end				
@@ -69,7 +70,7 @@ class Reports::FloatController < ApplicationController
 #				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :fill_network => default_network)				
 		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}
-		    	 
+		   		 	 
 		    	render json: response		
 		    }
 		end
@@ -99,7 +100,18 @@ class Reports::FloatController < ApplicationController
 				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(life_cycle_completed_cycles: 0).or({location_network_type: 2}, {location_network_type: 3})
 				
 #				facts = NetworkFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
-		    	
+				by_network = current_user.entity.visible_asset_cycle_facts #.where(cycle_complete: 1, cycle_quality: 1) #.map{|x| x.product_id}.flatten.uniq
+				print 'fuck'
+				by_network.each do |x|
+					print x.product.description.to_s + "\n"
+				end
+
+		    	current_user.entity.visible_asset_cycle_facts.each do |x|
+		    		print x.start_network.description + '---' + x.product.description + '---' + "\n"
+		    		print x.fill_network.description + '---' + x.product.description + '---' + "\n"
+		    		print x.delivery_network.description + '---' + x.product.description + '---' + "\n"
+		    		print x.start_network.description + "\n"
+		    	end
 		    	response = {:grid => facts}
 		    	#response = {:grid => facts, :delivery_networks => delivery_network_list}
 		    	 

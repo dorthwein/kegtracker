@@ -86,27 +86,28 @@ class BuildReport
 
 	# Full Cycle Times					
 			start = @date.beginning_of_day - (86400 * 90)
+
 	# Step 1: Grab visible AssetCycleFact Networks
 			by_network = entity.visible_asset_cycle_facts.where(cycle_complete: 1, cycle_quality: 1).gte(end_time: start ).map{|x| x.cycle_networks}.flatten.uniq
-	
+				
 	# Step 2: For each network, get impacted facts
-			by_network.each do |y|
+			by_network.each do |y|			
 				asset_cycle_facts = entity.visible_asset_cycle_facts.gte(end_time: start).where(
 					cycle_complete: 1, 
 					cycle_quality: 1,
-				).or(						
-					{start_network_id: y},
-					{fill_network_id: y},
-					{delivery_network_id: y},
-					{pickup_network_id: y},
-					{end_network_id: y},
+				).any_of(						
+					{:start_network_id.in => by_network},
+					{:fill_network_id.in => by_network},
+					{:delivery_network_id.in => by_network}
+#					{pickup_network_id: y},
+#					{end_network_id: y},
 				)
 
 
 		# Step 3: Group by Product
 				by_product = asset_cycle_facts.group_by{|x| x.product}
 				by_product.each do |z|							
-
+						
 		# Step 4: Group by Asset Type
 					by_asset_type = z[1].group_by{|x| x.asset_type}
 					by_asset_type.each do |b|											
@@ -126,15 +127,15 @@ class BuildReport
 						minmax[0] = (t.min.to_f / 86400).ceil
 						minmax[1] = (t.max.to_f / 86400).ceil
 							
-#						print entity.description.to_s + ' -- ' + y.class.to_s + ' -- ' + z[0].class.to_s + ' -- ' + b[0].class.to_s
+#						print entity.description.to_s + ' -- ' + Network.find(y).description.to_s + ' -- ' + z[0].description.to_s + ' -- ' + b[0].description.to_s
 #						print "\n"
 #						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
 #						print "\n"
 #						print "\n"
 
 						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
-							.where(	:report_entity_id => entity,
-									:location_network_id => y,
+							.where(	:report_entity => entity,
+									:location_network_id => y.to_s,
 									:product => z[0],
 									:asset_type => b[0],
 							).first_or_create!

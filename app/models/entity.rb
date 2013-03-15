@@ -152,6 +152,7 @@ class Entity
 			  	{ :entity => self }
 		   	).desc(:fact_time)
 	end
+
 	def visible_fill_activity_facts
 		print 'visible_fill_activity_facts - DEPREICATED FUNCTION'
 #		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
@@ -159,7 +160,7 @@ class Entity
 
 	def visible_asset_cycle_facts
 		AssetCycleFact.any_of( 
-			{ :cycle_networks.any_in => self.networks.map{|x| x._id} },
+			{ :cycle_networks.in => self.networks.map{|x| x._id} },
 			{ :product.in => self.production_products }, 
 			{ :entity => self }
 		).desc(:start_time)

@@ -117,7 +117,7 @@ class AssetActivityFact
   def sync_to_asset_cycle_fact
       cycle_fact = AssetCycleFact.where(fill_asset_activity_fact: self.fill_asset_activity_fact).first_or_create!
 
-      self.asset_cycle_fact = cycle_fact
+      self.asset_cycle_fact_id = cycle_fact._id
   
       cycle_fact.entity_id = self.entity_id
       cycle_fact.product_id = self.product_id
