@@ -147,7 +147,8 @@ class BuildReport
 							:fact_time => @date
 						)
 						else 
-							print 'Save Failed'
+
+							print 'Save Failing'
 						end
 					end
 				end
