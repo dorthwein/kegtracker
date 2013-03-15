@@ -159,7 +159,7 @@ class Entity
 
 	def visible_asset_cycle_facts
 		AssetCycleFact.any_of( 
-			{ :location_network.in => self.networks.map{|x| x._id} },
+			{ :cycle_networks.any_in => self.networks.map{|x| x._id} },
 			{ :product.in => self.production_products }, 
 			{ :entity => self }
 		).desc(:start_time)
