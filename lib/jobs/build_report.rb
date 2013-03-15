@@ -126,11 +126,11 @@ class BuildReport
 						minmax[0] = (t.min.to_f / 86400).ceil
 						minmax[1] = (t.max.to_f / 86400).ceil
 							
-						print entity.description.to_s + ' -- ' + y.class.to_s + ' -- ' + z[0].class.to_s + ' -- ' + b[0].class.to_s
-						print "\n"
-						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
-						print "\n"
-						print "\n"
+#						print entity.description.to_s + ' -- ' + y.class.to_s + ' -- ' + z[0].class.to_s + ' -- ' + b[0].class.to_s
+#						print "\n"
+#						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
+#						print "\n"
+#						print "\n"
 
 						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
 							.where(	:report_entity_id => entity,

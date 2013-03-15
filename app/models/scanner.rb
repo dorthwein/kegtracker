@@ -184,11 +184,14 @@ class Scanner
 		end
 
 		# Same Location within last day minutes but not a fill		
-		if obj[:asset].location._id.to_s == obj[:location_id] && (obj[:handle_code].to_i != 6 || obj[:handle_code].to_i != 4 || obj[:handle_code].to_i != obj[:asset].handle_code.to_i) && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)			
+		if obj[:asset].location._id.to_s == obj[:location_id] && (obj[:handle_code].to_i != 4 || obj[:handle_code].to_i != obj[:asset].handle_code.to_i) && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)			
 			print "Same Location within 15 minutes Correction \n"
 			obj[:correction] = 1	
 		end
-				
+		if obj[:handle_code].to_i == 6 
+			obj[:correction] = 0
+			print "RFNet - deffering to RF Logic \n"
+		end	
 		# Fill action within last day & asset current full
 		if obj[:handle_code].to_i == 4 && obj[:asset].asset_status.to_i == 1 && obj[:asset].fill_time.to_i > (obj[:time].to_i - 86400)
 			print "Fill Correction \n"
