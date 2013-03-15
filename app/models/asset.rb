@@ -191,8 +191,6 @@ class Asset
 #		self.add_to_invoice(options)
 	end
 
-=begin
-	to be moved to scanner logic
 
 	def rfnet options
 		# Options: time, location, correction
@@ -201,12 +199,17 @@ class Asset
 			self.last_action_time = options[:time]
 			self.location_id = options[:location_id]
 			
-			self.create_asset_activity_fact
-			self.process_asset_cycle_fact(options)
-			self.add_to_invoice(options)
+			self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+			self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
+				self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
+				self.asset_cycle_fact.move(self.asset_activity_fact)
+			)
+			self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
+			self.asset_activity_fact.save!
+
+			print "RFNet Catch \n"
 		end
 	end	
-=end
 
 	def audit options
 		# HC = 7

@@ -154,11 +154,12 @@ class Scanner
 			print "Move \n"
 
 		when 6		# RFNet
-			if obj[:asset].location_network != Location.find(obj[:location_id]).network
-				obj[:asset].move(obj)				
-
-				print "RFNet \n" + obj[:asset].location_network.description.to_s
-			end
+			obj[:asset].rfnet(obj)				
+#			if obj[:asset].location_network_id.to_s != Location.find(obj[:location_id]).network_id.to_s
+#				obj[:asset].move(obj)				
+#
+#				print "RFNet \n" + obj[:asset].location_network.description.to_s
+#			end
 		when 7		# Audit
 			obj[:asset].process_audit
 			print "Audit \n"			
