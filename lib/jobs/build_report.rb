@@ -84,154 +84,14 @@ class BuildReport
 				end
 			end	
 
-
-=begin
-			start = Time.new(2013,2,14)			
-			asset_activity_facts = entity.visible_asset_activity_facts.gte(fill_time: start).between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).excludes(:fill_asset_activity_fact => nil).desc(:fact_time)
-			by_network = asset_activity_facts.group_by{|x| x.location_network}
+	# Full Cycle Times					
+			start = @date.beginning_of_day - (86400 * 90)
+	# Step 1: Grab visible AssetCycleFact Networks
+			by_network = entity.visible_asset_cycle_facts.where(cycle_complete: 1, cycle_quality: 1).gte(end_time: start ).map{|x| x.cycle_networks}.flatten.uniq
+	
+	# Step 2: For each network, get impacted facts
 			by_network.each do |y|
-
-				by_product = y[1].group_by{|x| x.product}
-				by_product.each do |z|							
-
-					by_asset_type = z[1].group_by{|x| x.asset_type}
-					by_asset_type.each do |b|											
-						
-						t = []
-						by_fill = b[1].group_by{|x| x.fill_asset_activity_fact}
-						# Build Fact Set
-						by_fill.each do |c|							
-							# print c[0].class.to_s
-							t.push(c[0].completed_cycle_length)
-						end
-						
-						# Process Fact Set
-						avg = t.inject{ |sum, el| sum + el }.to_f / t.size
-						minmax = []
-
-						avg = (avg / 86400).ceil
-						minmax[0] = (t.min.to_f / 86400).ceil
-						minmax[1] = (t.max.to_f / 86400).ceil
-							
-						print entity.description.to_s + ' -- ' + y[0].description.to_s + ' -- ' + z[0].description.to_s + ' -- ' + b[0].description.to_s						
-						print "\n"
-						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
-						print "\n"
-						print "\n"
-
-						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
-							.where(	:report_entity => entity,
-									:location_network => y[0],
-									:product => z[0],
-									:asset_type => b[0],
-							).first_or_create!
-
-						network_fact.update_attributes(
-							:life_cycle_avg_time => avg.to_i,
-							:life_cycle_min_time => minmax[0].to_i,
-							:life_cycle_max_time => minmax[1].to_i,
-							:life_cycle_completed_cycles => t.length.to_i,
-							:fact_time => @date
-						)
-						print "Cycle Fact Created/Updated \n"						
-					end
-				end
-			end	
-=end
-=begin
-		# Full Cycle Times
-			first_date = @date.beginning_of_day - (86400 * 7)
-			last_date = @date.end_of_day
-			
-			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: first_date..last_date).gt(completed_cycle_time: 0).desc(:fact_time)
-#			print asset_activity_facts.to_json
-#			print "\n"
-#			print "\n"
-#			asset_activity_facts = entity.visible_fill_activity_facts.between(fact_time: first_date..last_date)
-			t = []
-
-			asset_activity_facts.each do |a|
-				if !a.nil?
-					x = { 
-						:fill_asset_activity_fact => a.fill_asset_activity_fact,
-						:cycle_time => a.completed_cycle_time,
-						:asset_type => a.asset_type,
-						:product => a.product,
-						:location_network => a.location_network,
-					}
-					t.push(x)
-				end
-			end
-			print t.length
-			t = t.uniq
-
-			print "\n"
-			print t.length
-			print "\n"
-			print "\n"
-			by_network = t.group_by{|x| x[:location_network]}
-			by_network.each do |y|
-
-				by_product = y[1].group_by{|x| x[:product]}
-				by_product.each do |z|							
-
-					by_asset_type = z[1].group_by{|x| x[:asset_type]}
-					by_asset_type.each do |b|											
-							
-						t = []						
-						b[1].each do |c|							
-							t.push(c[:cycle_time])
-						end			
-						avg = t.inject{ |sum, el| sum + el }.to_f / t.size						
-						minmax = []
-
-						avg = (avg / 86400).ceil
-						minmax[0] = (t.min.to_f / 86400).ceil
-						minmax[1] = (t.max.to_f / 86400).ceil
-						
-						print entity.description.to_s + ' -- ' + y[0].description.to_s + ' -- ' + z[0].description.to_s + ' -- ' + b[0].description.to_s						
-						print "\n"
-						print 'Min:' + minmax[0].to_s + ' Avg: ' + avg.to_s + ' Max:' + minmax[1].to_s + ' Count:' + b[1].length.to_i.to_s
-						print "\n"
-						print "\n"
-
-						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
-							.where(	:report_entity => entity,
-									:location_network => y[0],
-									:product => z[0],
-									:asset_type => b[0],
-							).first_or_create!
-
-						network_fact.update_attributes(
-							:life_cycle_avg_time => avg.to_i,
-							:life_cycle_min_time => minmax[0].to_i,
-							:life_cycle_max_time => minmax[1].to_i,
-							:life_cycle_completed_cycles => b[1].length.to_i,
-							:fact_time => @date
-						)
-						print "Cycle Fact Created/Updated \n"
-
-					end
-				end
-			end						
-=end			
-		end			
-	end
- 	def test_build
- 		Entity.all.each do |entity|
-		# Full Cycle Times
-			# Assets that have had activity in the past year
-			first_date = @date.beginning_of_day - (86400 * 365)
-			last_date = @date.end_of_day
-			
-			start = Time.new(2013,2,14)	
-
-	# Step 1: Grab visible AssetCycleFacts
-			by_network = entity.visible_asset_cycle_facts.where(cycle_complete: 1, cycle_quality: 1).map{|x| x.cycle_networks}.flatten.uniq
-	# Step 3: Group by Network
-#			by_network = []# asset_cycle_facts.group_by{|x| x[:location_network]}
-			by_network.each do |y|
-				asset_cycle_facts = entity.visible_asset_cycle_facts.gte(start_time: start).where(
+				asset_cycle_facts = entity.visible_asset_cycle_facts.gte(end_time: start).where(
 					cycle_complete: 1, 
 					cycle_quality: 1,
 				).or(						
@@ -241,24 +101,24 @@ class BuildReport
 					{pickup_network_id: y},
 					{end_network_id: y},
 				)
-#				print y.to_s + " <-- Network \n \n"
 
-		# Step 4: Group by Product
+
+		# Step 3: Group by Product
 				by_product = asset_cycle_facts.group_by{|x| x.product}
 				by_product.each do |z|							
-#					print z[0].description.to_s + " <-- Product \n \n"
-			# Step 5: Group by Asset Type
+
+		# Step 4: Group by Asset Type
 					by_asset_type = z[1].group_by{|x| x.asset_type}
 					by_asset_type.each do |b|											
-					# NEED TO BREAK OUT DIFFERENT NETWORKS
+
 
 						t = []						
-					# Step 6: Build Fact Set
+		# Step 5: Build Fact Set
 						b[1].each do |c|														  
 							t.push(c.completed_cycle_length)
 						end
 
-						# Process Fact Set
+					# Process Fact Set
 						avg = t.inject{ |sum, el| sum + el }.to_f / t.size
 						minmax = []
 
@@ -286,17 +146,21 @@ class BuildReport
 							:life_cycle_completed_cycles => t.length.to_i,
 							:fact_time => @date
 						)
-#							print network_fact.to_json.to_s + "\n \n"
-#							print entity.description.to_s + " -- Cycle Fact Created/Updated \n"
 						else 
 							print 'Save Failed'
 						end
 					end
 				end
 			end	
+		end			
+	end
+ 	def test_build
+ 		Entity.all.each do |entity|
+
 		end
  	end
-
+ end
+=begin
 # **************************************
 # Asset Summary Report Build
 # **************************************
@@ -346,6 +210,7 @@ class BuildReport
 # **************************************
 # Asset Activity Summary Report Build
 # **************************************
+
 	def asset_activity_summary_fact		
 		first_date = @date.beginning_of_day
 		last_date = @date.end_of_day
@@ -526,3 +391,4 @@ class BuildReport
 		end		
 	end
 end
+=end
