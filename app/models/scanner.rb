@@ -66,6 +66,7 @@ class Scanner
 		obj[:asset].save!
 		return obj
 	end
+
 	def self.auto_mode_from_brewery obj
 		# Ensure Filled  brewery location
 		if obj[:from_network].network_type == 1
@@ -126,7 +127,7 @@ class Scanner
 
 	def self.auto_mode_from_market obj
 		if obj[:from_network].network_type == 3 # && obj[:to_network].auto_mode == 1		
-			obj[:handle_code] = 1
+			obj[:handle_code] = 2
 		end
 		return obj
 	end
