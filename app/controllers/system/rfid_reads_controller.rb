@@ -34,21 +34,21 @@ class System::RfidReadsController < ApplicationController
 					scan = Hash.new
 					scan['version'] = 'S1'
 
-					scan['user'] = Hash.new
-					scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
-					scan['user']['P'] = 'system_rfid_pass'
+					
+					scan['email'] = 'd.orthwein@lipmanbrothers.com'
+					scan['password'] = 'system_rfid_pass'
 
-					scan['processing'] = Hash.new
-					scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
-					scan['processing']['T'] = Time.now.to_i
+					
+					scan['handle_code'] = rfid_antennas[tag_antenna].handle_code
+					scan['time'] = Time.now.to_i
 
-					scan['processing']['auto_mode'] = 1
+					scan['auto_mode'] = 1
 
 					if !rfid_antennas[tag_antenna].product.nil?
-						scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
+						scan['product_id'] = rfid_antennas[tag_antenna].product._id
 					end
 					if !rfid_antennas[tag_antenna].asset_type.nil?
-						scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
+						scan['asset_type_id'] = rfid_antennas[tag_antenna].asset_type._id
 					end
 					
 					scan['location_id'] = rfid_antennas[tag_antenna].location._id
@@ -88,20 +88,20 @@ class System::RfidReadsController < ApplicationController
 						scan = Hash.new
 						scan['version'] = 'S1'
 		
-						scan['user'] = Hash.new
-						scan['user']['N'] = 'd.orthwein@lipmanbrothers.com'
-						scan['user']['P'] = 'system_rfid_pass'
+						
+						scan['email'] = 'd.orthwein@lipmanbrothers.com'
+						scan['password'] = 'system_rfid_pass'
 		
-						scan['processing'] = Hash.new
-						scan['processing']['HC'] = rfid_antennas[tag_antenna].handle_code
-						scan['processing']['T'] = Time.now.to_i
-						scan['processing']['auto_mode'] = 1
+						
+						scan['handle_code'] = rfid_antennas[tag_antenna].handle_code
+						scan['time'] = Time.now.to_i
+						scan['auto_mode'] = 1
 		
 						if !rfid_antennas[tag_antenna].product.nil?
-							scan['processing']['P'] = rfid_antennas[tag_antenna].product._id
+							scan['product_id'] = rfid_antennas[tag_antenna].product._id
 						end
 						if !rfid_antennas[tag_antenna].asset_type.nil?
-							scan['processing']['AT'] = rfid_antennas[tag_antenna].asset_type._id
+							scan['asset_type_id'] = rfid_antennas[tag_antenna].asset_type._id
 						end
 						
 						scan['location_id'] = rfid_antennas[tag_antenna].location._id
