@@ -1,0 +1,20 @@
+.jqxWindowIFrame {
+	border:none;
+
+	margin:0;
+}
+.jqxWindow {
+	border:1px solid #ccc;
+
+}
+.jqxWindowContent {
+	padding: 0;
+	background-color: #eee;
+}
+.jqxExpander {	
+	border-bottom: 1px solid #CCC;
+}
+
+.jqxToolTip {
+	display:none;
+}

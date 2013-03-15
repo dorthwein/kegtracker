@@ -1,0 +1,71 @@
+* Note - correction not catching
+
+Asset
+	Created when?
+		* An asset ID is processed - i.e. scanning process
+
+	Things an asset can do
+		* Be delivered
+		* Be picked up
+		* Be filled
+		* Be moved	
+		* Be Looked Up
+	
+	Things that happen to an asset
+		* Arrive at a brewery
+		* Departs a brewery
+		* Arrive at a distributor
+		* Leaves a distributor
+		* Arrives in market
+		* Leaves market
+
+	Things about assets that are tracked
+		* Asset cycle 
+		* Asset activity
+
+Cycle Facts
+	Created when?
+		* An asset is filled or currently not in a cycle
+
+	Things an asset cycle do
+		* Start
+		* Fill
+		* Deliver
+		* Pickup
+		* Return
+		* End
+
+	Things a cycle fact tracks
+		* When an asset cycle starts
+		* When an asset is filled
+		* When an asset is delivered
+		* When an asset is picked up
+		* When an asset returns to a brewery
+		* When an asset cycle ends
+
+Asset Activity Facts
+	Created when?
+		* An asset is delivered, picked up, filled, or moved
+
+	Things an asset activity fact tracks
+		* When/where an asset is filled
+		* When/where an asset is delivered
+		* When/where an asset is pickedup
+		* When/where an asset is moved
+
+Invoice
+	Created when?
+		* Users inputs an invoice number
+
+	Things an invoice does
+		* Add line item
+		* Remove line item
+
+		* Attach an asset
+		* Detach an asset
+
+Scanner
+	Things a scanner does
+		* Reads a tag
+		* Parses the tag
+		* Decides what to do with the tag

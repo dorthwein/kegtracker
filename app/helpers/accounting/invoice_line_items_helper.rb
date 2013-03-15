@@ -1,0 +1,2 @@
+module Accounting::InvoiceLineItemsHelper
+end
