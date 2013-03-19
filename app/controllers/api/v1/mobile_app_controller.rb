@@ -18,13 +18,18 @@ class Api::V1::MobileAppController < ApplicationController
 
 		respond_to do |format|          
 		  format.json {
-		  	user = User.where(:authentication_token => params[:auth_token]).first
+		  	if !params[:scans].nil?
+				Scanner.process_scans({:scans => params[:scans]})
+			end
 
-		  	response = {db: {sync: {}} }
+		  	user = User.where(:authentication_token => params[:auth_token]).first
+		  	response = {db: {sync: {}} }		 
+		  	response[:db][:sync][:processed_scans] = params[:scan_ids]
 		  	response[:db][:sync][:asset_types] = AssetType.all
 		  	response[:db][:sync][:locations] = user.entity.visible_locations
-		  	response[:db][:sync][:assets] = user.entity.visible_assets
-		  	response[:db][:sync][:products] = user.entity.production_products		  
+#		  	response[:db][:sync][:assets] = user.entity.visible_assets
+		  	response[:db][:sync][:products] = user.entity.production_products
+
 		  	render json: response
 		  }
 		end					

@@ -199,12 +199,18 @@ class Scanner
 			obj[:correction] = 1			
 		end
 		return obj
+
 	end
 
 	def self.find_asset obj
 		##############################
 		####### Pre Processing #######			
-		user = User.where(:email => obj[:email]).first				
+		#self.email.downcase! if self.email
+		user = User.where(:email => obj[:email].downcase!).first
+
+#		user = User.find(email: /#{obj[:email]}$/i)
+		print user.to_json
+		print obj[:email].to_json
 		if obj[:tag][:netid].nil?			
 			obj[:tag][:network] = user.entity.networks.first
 		else
@@ -233,7 +239,7 @@ class Scanner
 	# Asset Type Override				
 		if !obj[:asset_type_id].nil?
 			obj[:asset].asset_type = AssetType.find(obj[:asset_type_id])
-			print obj[:asset].asset_type.to_json
+		
 		end
 
 		obj[:to_network] = Location.find(obj[:location_id]).network
@@ -261,8 +267,7 @@ class Scanner
 		scan_params[:location_id] = scan['location_id']
 		scan_params[:tag] = {}
 
-		# TAG
-		print scan['tag']
+		# TAG		
 		# Check T2 - T2-8983-1-43DDF-RF & convert to array
 		if scan['tag'].count('-') == 4			
 			scan['tag'] = scan['tag'].split('-')

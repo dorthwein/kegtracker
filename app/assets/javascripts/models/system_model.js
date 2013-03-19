@@ -44,7 +44,8 @@ system.func = {}
 // Prevent Cacheing
 // ***************************
 $(document).on('pagebeforehide', function(event, ui){
-	$('.jqxValidator').jqxValidator('destroy');
+//	$('.jqxValidator').jqxValidator('destroy');
+	$('.jqx-validator-hint').remove();	
 });
 
 $(document).on('pagehide', function(event, ui){

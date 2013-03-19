@@ -2,7 +2,7 @@ class User
   include Mongoid::Document
   field :record_status, type: Integer, default: 1
 
-  before_save :ensure_authentication_token
+#  before_save :ensure_authentication_token
 	# Check User Permission		
 #	def permission?(permission_id)
 #		return !!self.authorizations.find_by_permission_id(permission_id)
@@ -92,7 +92,8 @@ class User
   devise :token_authenticatable
 
   before_save :sync_descriptions  
-  def sync_descriptions
+  def sync_descriptions    
+    self.email.downcase! if self.email
     self.entity_description = self.entity.description
     self.ensure_authentication_token
   end

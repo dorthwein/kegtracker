@@ -3,6 +3,7 @@ January 16th, 2013
 Items to complete before marketable
 
 Inside Rim Weld Start Date: January 24th, 2013
+
 --- SYSTEM RELATED TASKS ---
 *****************************************
 Reporting - Est. Time: 3 weeks (21 days)
@@ -10,28 +11,13 @@ Reporting - Est. Time: 3 weeks (21 days)
 	4) Network Performance Scorecard
 		- Design & Build
 
-	5) Product Perfomance Scorecard
-		- Design & Build
-
 	9) Lost Asset Report
 
 	10) Keg Register - Low Priority
 
 	11) Lookup via scan
-
-	12) Pricing Rules
-		- Pricing Rules
-			* Tax Rule
-			* 
 	
-	13) Redo Invoicing			
-		- Invoice
-			- Invoice Detail
-				* Contains total qty, price, taxes etc...
-
-			- Attached Assets
-				* 
-
+	12) Asset Scan to support mobile/batched scans
 		
 ***********************************************
 Maintenance - Est. Time: TBD minimal 2 weeks
@@ -52,10 +38,11 @@ System Management - Est. Time:  1 week
 	1) Create new entity/customer 
 		- Build & refine process
 
-	2) Monitoring tools
-
-	3) RFID Management (COMPLETE)
-
 	4) Payment System
 
 
+*******************************************
+Mobile App - Est. Time:  1 week
+*******************************************
+	- Camera Scanner
+	- Invoice System

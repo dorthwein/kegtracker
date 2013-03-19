@@ -179,7 +179,6 @@ class AssetActivityFact
       asset_rollback = {
         :asset_activity_fact => (self.prev_asset_activity_fact rescue nil),
         :asset_type => (self.prev_asset_activity_fact.asset_type rescue nil),
-        :entity => (self.prev_asset_activity_fact.entity rescue nil),
         :product => (self.prev_asset_activity_fact.product rescue nil),
         :asset_status => (self.prev_asset_activity_fact.asset_status rescue nil),
         :location => (self.prev_asset_activity_fact.location rescue nil),
