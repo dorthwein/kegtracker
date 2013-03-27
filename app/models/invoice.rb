@@ -44,6 +44,7 @@ class Invoice
   	def sync_descriptions
   		self.entity_description = self.entity.description
   		self.bill_to_entity_description = self.bill_to_entity.description  		
+  		self.update_line_item_attached_assets_count  	
 	end
 
 	def attach_asset options
