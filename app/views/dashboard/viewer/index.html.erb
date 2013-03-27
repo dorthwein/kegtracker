@@ -8,25 +8,30 @@
 
 		<a href="#" class="dashboard button left"> <h3> Order Barcodes <h3> <h4> (Comming Soon) </h4></a>
 	</div>
-		
+
+	<div class="dashboard button-group">
+		<h2> Browse / Lookup</h2>	
+		<%= link_to '<h3> Invoices </h3>'.html_safe, :accounting_invoices, :class => "dashboard button left" %> 
+
+		<%= link_to '<h3> Assets </h3>'.html_safe, :reports_assets, :class => "dashboard button left" %> 
+
+		<%= link_to '<h3> My Locations </h3>'.html_safe, :reports_locations, :class => "dashboard button left" %> 	
+		<%= link_to '<h3> Asset Cycles </h3>'.html_safe, :reports_asset_cycles, :class => "dashboard button left" %> 
+
+	</div>		
 	<div class="dashboard button-group">
 		<h2> Reports</h2>	
-		<%= link_to '<h3> Asset Cycles </h3> <h4> by Distribution Channel</h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network, :class => "dashboard button left" %> 
-		<%= link_to '<h3> Asset Cycles</h3><h4> by Production Channel </h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Asset Cycles Summary </h3> <h4> by Distribution Channel</h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Asset Cycles Summary</h3><h4> by Production Channel </h4>'.html_safe, :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network, :class => "dashboard button left" %> 
 
-		<%= link_to '<h3> Activity </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Asset Activity </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
 
 		<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button left hidden" %> 
 		
 		<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_assets_sku_summary_report_simple, :class => "dashboard button left" %> 
-	</div>
-	<div class="dashboard button-group">
-		<h2> Browse / Lookup</h2>	
-		<%= link_to '<h3> Invoice Lookup </h3>'.html_safe, :reports_invoice_lookup, :class => "dashboard button left" %> 
 
-		<%= link_to '<h3> Assets </h3>'.html_safe, :reports_assets, :class => "dashboard button left" %> 
-		<%= link_to '<h3> My Locations </h3>'.html_safe, :reports_locations, :class => "dashboard button left" %> 	
 	</div>
+
 
 
 	<div class="dashboard button-group">
@@ -35,7 +40,7 @@
 			
 		<%= link_to '<h3> Networks </h3>'.html_safe, :maintenance_networks, :class => "dashboard button left" %> 
 			
-		<%= link_to '<h3> Distributors </h3>'.html_safe, :maintenance_distribution_partnerships, :class => "dashboard button left" %> 					
+		<%= link_to '<h3> Distributor Partnerships </h3>'.html_safe, :maintenance_distribution_partnerships, :class => "dashboard button left" %> 					
 
 		<%= link_to '<h3> Products </h3>'.html_safe, :maintenance_products, :class => "dashboard button left" %> 		
 
