@@ -142,9 +142,9 @@ Cobalt::Application.routes.draw do
 
   	namespace :public do 
 		match 'home' => 'home#index', :via => [:get, :post]
-		
-		
-		resources :contact 
+		match 'contact' => 'contact#index', :via => [:get, :post]
+			
+#		resources :contact 
 		resources :join 
 
 		#match 'join' => 'join#index', :via => [:get, :post]		
