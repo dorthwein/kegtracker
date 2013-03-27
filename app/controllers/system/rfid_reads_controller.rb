@@ -35,8 +35,8 @@ class System::RfidReadsController < ApplicationController
 					scan['version'] = 'S1'
 
 					
-					scan['email'] = 'd.orthwein@lipmanbrothers.com'
-					scan['password'] = 'system_rfid_pass'
+					scan['user_id'] = User.where(:email => 'd.orthwein@lipmanbrothers.com').first._id
+#					scan['password'] = 'system_rfid_pass'
 
 					
 					scan['handle_code'] = rfid_antennas[tag_antenna].handle_code
@@ -89,8 +89,8 @@ class System::RfidReadsController < ApplicationController
 						scan['version'] = 'S1'
 		
 						
-						scan['email'] = 'd.orthwein@lipmanbrothers.com'
-						scan['password'] = 'system_rfid_pass'
+						scan['user_id'] = User.where(:email => 'd.orthwein@lipmanbrothers.com').first._id
+	#					scan['password'] = 'system_rfid_pass'
 		
 						
 						scan['handle_code'] = rfid_antennas[tag_antenna].handle_code
