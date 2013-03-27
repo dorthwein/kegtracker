@@ -8,7 +8,7 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 	$.mobile.loading('show');
 	var theme = settings.theme
 
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$("#date").jqxDateTimeInput({ theme: theme });
 	$('#date').bind('valuechanged', function (event) {  
 		
 	//	var jsDate = event.args.date; 		
@@ -55,55 +55,28 @@ $(document).on('pageshow', '#_reports_float_activity_summary_report_simple', fun
 
 
 	// Initialize Grid	
-	$("#jqxGrid").jqxGrid({		
-		groupable: true,
-		closeablegroups: false,
-    	groupsrenderer: default_groupsrenderer,		
-		sortable: true,
-		filterable: false,
-        showfilterrow: false,		
-		autoshowfiltericon: false,		
-		theme: theme,
-		width: system.simple_grid_width,
-		groupsexpandedbydefault: true,
-		height: system.simple_grid_height,
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,	
-		ready: function() {
-
-		},
-		columns: [																						
-			{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
-			{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
-			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
-			{ text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [		
+		{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
+		{ text: 'Product', width:'250px', datafield: 'product_description', filtertype: 'checkedlist'  },			
+		{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+		{ text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
 
 
-			{ text: 'Fill', width:'75px', datafield: 'fill_quantity', filtertype: 'number' },
-			{ text: 'Delivery', width:'75px', datafield: 'delivery_quantity', filtertype: 'number' },
-			{ text: 'Pickup', width:'75px', datafield: 'pickup_quantity', filtertype: 'number' },
-			{ text: 'Move', width:'75px', datafield: 'move_quantity', filtertype: 'number' },
+		{ text: 'Fill', width:'75px', datafield: 'fill_quantity', filtertype: 'number' },
+		{ text: 'Delivery', width:'75px', datafield: 'delivery_quantity', filtertype: 'number' },
+		{ text: 'Pickup', width:'75px', datafield: 'pickup_quantity', filtertype: 'number' },
+		{ text: 'Move', width:'75px', datafield: 'move_quantity', filtertype: 'number' },
 
-		],
-        groups: ['location_network_description', 'asset_type_description']
-	});
-
-
-	$("#excelExport").jqxButton({ theme: theme });	
-	$("#advancedView").jqxButton({ theme: theme });
-	$("#simpleView").jqxButton({ theme: theme });
+	],
 	
 	$("#findRecord").jqxButton({ theme: theme });	
 	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
-	});
-	
-	// NEW BUTTON
-	$("#excelExport").click(function () {
-		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
-	});
+	});	
 
-
-	$.mobile.loading('hide');
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
+	$.mobile.loading('hide');					
 });

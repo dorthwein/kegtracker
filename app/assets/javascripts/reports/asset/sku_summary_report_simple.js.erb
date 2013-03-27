@@ -1,12 +1,12 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function(event){	
+$(document).on('pageshow', '#_reports_assets_sku_summary_report_simple', function(event){	
 	// prepare the data
 	$.mobile.loading('show');
 	var theme = settings.theme
 
-	$("#date").jqxDateTimeInput({ width: '150px', height: '20px', theme: theme });
+	$("#date").jqxDateTimeInput({theme: theme });
 	$('#date').bind('valuechanged', function (event) {  
 		
 	//	var jsDate = event.args.date; 		
@@ -59,81 +59,36 @@ $(document).on('pageshow', '#_reports_asset_sku_summary_report_simple', function
 			var item = $("#location_network_id").jqxDropDownList('getSelectedItem')
 			$('#displayNetwork').html(item.html);
 */			
-			$('#displayDate').html(jsDate.toDateString());
+//			$('#displayDate').html(jsDate.toDateString());
 		}
 	});
 
 	// Initialize Grid	
-	$("#jqxGrid").jqxGrid({		
-		groupable: true,
-		closeablegroups: false,
-    	groupsrenderer: default_groupsrenderer,		
-		sortable: true,
-		filterable: false,
-        showfilterrow: false,		
-		autoshowfiltericon: false,		
-		theme: theme,
-		width: system.simple_grid_width,
-		groupsexpandedbydefault: true,
-		height: system.simple_grid_height,
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,	
-		ready: function() {
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [											
+		{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
+		{ text: 'Product', datafield: 'product_description', filtertype: 'checkedlist'  },			
+		{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+		{ text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
+		
+		{ text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
+		{ text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
+		{ text: 'Full', width:'75px', datafield: 'full_quantity', filtertype: 'number' },
+		{ text: 'Total', width:'75px', datafield: 'total_quantity', filtertype: 'number' }						
 
-	},
-
-		columns: [																						
-			{ text: 'Location Network', width:'150px', datafield: 'location_network_description', filtertype: 'checkedlist'  },			
-			{ text: 'Product', datafield: 'product_description', filtertype: 'checkedlist'  },			
-			{ text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
-			{ text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },				
-			
-			{ text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
-			{ text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
-			{ text: 'Full', width:'75px', datafield: 'full_quantity', filtertype: 'number' },
-			{ text: 'Total', width:'75px', datafield: 'total_quantity', filtertype: 'number' }						
-
-		],
-        groups: ['location_network_description', 'asset_type_description']
-	});
-
-//	$("#location_network_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '200px',  height: '20px', theme: theme, disabled: false });
-/*
-	$('#location_network_id').bind('select', function (event) {
-	    var args = event.args;
-	    if (args) {
-	        // index represents the item's index.                
-	        var index = args.index;
-	        var item = args.item;
-	        // get item's label and value.
-	        var label = item.label;
-	        var value = item.value;
-	    
-	    }
-	});
-*/
+	],
+//    gridSettings['groups'] = ['location_network_description', 'asset_type_description']
+	$(".jqxGrid").jqxGrid( gridSettings );	
 
 
-	$("#excelExport").jqxButton({ theme: theme });	
-	$("#advancedView").jqxButton({ theme: theme });
-	$("#simpleView").jqxButton({ theme: theme });
-	
 	$("#findRecord").jqxButton({ theme: theme });	
 	$("#findRecord").click(function () {		
 		dataAdapter.dataBind();
 //		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));		
 	});
-
 	
-	// NEW BUTTON
-
-
-	$("#excelExport").click(function () {
-//		alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));
-		$("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
-	});
-
-
+	jqxIntialize();
 	$.mobile.loading('hide');
+	
 });

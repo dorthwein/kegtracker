@@ -1,4 +1,4 @@
-<div id="simple_container" class="dashboard content">
+<div class="dashboard content container">
 	<h1> <%= current_user.entity.description %> </h1>
 	<div class="dashboard button-group">					
 		<h2> Scanning </h2>
@@ -16,16 +16,16 @@
 
 		<%= link_to '<h3> Activity </h3>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
 
-		<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button left hidden" %> 
 		
-		<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_asset_sku_summary_report_simple, :class => "dashboard button left" %> 
+		<%= link_to '<h3> Inventory Report </h3>'.html_safe, :reports_assets_sku_summary_report_simple, :class => "dashboard button left" %> 
 	</div>
 	<div class="dashboard button-group">
 		<h2> Browse / Lookup</h2>	
 		<%= link_to '<h3> Invoice Lookup </h3>'.html_safe, :reports_invoice_lookup, :class => "dashboard button left" %> 
 
-		<%= link_to '<h3> Assets </h3>'.html_safe, :reports_asset_browse, :class => "dashboard button left" %> 
-		<%= link_to '<h3> My Locations </h3>'.html_safe, :reports_location_browse, :class => "dashboard button left" %> 	
+		<%= link_to '<h3> Assets </h3>'.html_safe, :reports_assets, :class => "dashboard button left" %> 
+		<%= link_to '<h3> My Locations </h3>'.html_safe, :reports_locations, :class => "dashboard button left" %> 	
 	</div>
 
 

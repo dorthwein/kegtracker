@@ -14,6 +14,10 @@ class AssetActivityFact
 
   belongs_to :location
 
+  field :handle_code_description, type: String
+  field :location_description, type: String
+  field :location_network_description, type: String
+
 # Asset Details
   belongs_to :asset
   
@@ -29,6 +33,8 @@ class AssetActivityFact
   belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact',   :inverse_of => 'AssetActivityFact'
   belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
   belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
+
+
 
 # Variable Details 
 
@@ -55,7 +61,7 @@ class AssetActivityFact
 # Activity
 
 # Reporting
-  def asset_status_description
+  def get_asset_status_description
     case self.asset_status.to_i
     when 0
       return 'Empty'  
@@ -72,7 +78,7 @@ class AssetActivityFact
     end
   end
 
-  def handle_code_description
+  def get_handle_code_description
     case self.handle_code.to_i
     when 1
       return 'Delivery' 
@@ -219,12 +225,18 @@ class AssetActivityFact
     print 'Asset Rollback'
   end
 
-
   before_save :sync
 	def sync	    
     self.location_network = self.location.network
     self.location_network_type = self.location_network.network_type rescue nil
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
+
+    self.handle_code_description = self.get_handle_code_description
+    self.location_description = self.location.description
+    self.location_network_description = self.location_network.description
   end
+
 end
+
+

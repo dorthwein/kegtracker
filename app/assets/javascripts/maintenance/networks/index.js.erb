@@ -4,7 +4,6 @@
 $(document).on('pageshow', '#_maintenance_networks', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-	jqxIntialize()
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -45,44 +44,36 @@ $(document).on('pageshow', '#_maintenance_networks', function(event){
 //	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$(".jqxGrid").jqxGrid(
-	{
-		// Grid Options
-		groupable: true,
-		sortable: true,
-		filterable: true,
-		showfilterrow: true,		
-        autoshowfiltericon: true,		
-		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height(),
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,		
-		columns: [
-			{ text: 'NetID', datafield: 'netid' },
-			{ text: 'Network', datafield: 'description' },
-			{ text: 'Network Type', datafield: 'network_type_description', filtertype: 'checkedlist' },
-			{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist' },
-			{ text: 'Auto Fill Product', datafield: 'smart_mode_product_description' },			
-			{ text: 'In Bound Location', datafield: 'smart_mode_in_location_description' },		
-			{ text: 'Out Bound Location', datafield: 'smart_mode_out_location_description' },					
-			{ text: 'Auto Mode', datafield: 'auto_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: 'NetID', datafield: 'netid' },
+		{ text: 'Network', datafield: 'description' },
+		{ text: 'Network Type', datafield: 'network_type_description', filtertype: 'checkedlist' },
+		{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist' },
+		{ text: 'Auto Fill Product', datafield: 'smart_mode_product_description' },			
+		{ text: 'In Bound Location', datafield: 'smart_mode_in_location_description' },		
+		{ text: 'Out Bound Location', datafield: 'smart_mode_out_location_description' },					
+		{ text: 'Auto Mode', datafield: 'auto_mode', filterable:false, width: '75px', cellsrenderer: function (row, column, value) {
+				if(value == 1){
+					return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+				} else {
+					return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
 				}
-			},		
-			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
-				return 'View'
-			}},			
+			}
+		},		
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = $('.ui-page-active').attr('data-url') + "/" + rowdata['_id']						
+			openPopupWindow(url)
+		}},	
+	]
 
-		]
-	});
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
 	$.mobile.loading('hide');					
-
 });
+
+

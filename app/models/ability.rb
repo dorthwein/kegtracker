@@ -10,10 +10,103 @@ class Ability
 #	can [:read], User if user.user_maintenance == 1
 #	can [:read, :update, :create, :destroy] User if user.user_maintenance == 2
 	
-	# View Location
+	# Scanning										
+
+	# :read, :create, :update, :destroy, and :manage
+
+# Operations Permissions
+	# Operations
+		# Location		
+		# Partnerships	
+		# SKUs
+		# Networks
+		# Products
+		# Scanner		
+
+		
+ 	if user.operation == 1 || user.operation == 2 || user.operation == 3
+		can [:read], Location, :_id => user.entity.visible_locations.map{|x| x._id}
+		can [:read], Asset, :_id => user.entity.visible_assets.map{|x| x._id}
+		can [:read], AssetCycleFact, :_id => user.entity.visible_asset_cycle_facts.map{|x| x._id}
+		can [:read], Network, :_id => user.entity.visible_networks.map{|x| x._id}
+		can [:read], Product, :_id => user.entity.production_products.map{|x| x._id}
+		can [:read], Scanner
+		can [:read], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+
+		# Viewing in Operations, Creation/Editing in Financial
+#		can [:read], Price, TBI
+		can [:read], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+		can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+		can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+	end
+
+	if user.operation == 2 || user.operation == 3
+		can [:create], Location #, location: user.entity.visible_locations
+		can [:create], Asset #, asset: user.entity.visible_assets
+		can [:create], AssetCycleFact #, asset_cycle_fact: user.entity.visible_asset_cycle_facts				
+		can [:create], Network #, network: user.entity.visible_networks
+		can [:create], Product #, product: user.entity.production_products
+		can [:create], Sku #, product: user.entity.production_products
+	end
+	
+	if user.operation == 3
+		can [:update, :destroy], Location, :_id => user.entity.visible_locations.map{|x| x._id}
+		can [:update, :destroy], Asset, :_id => user.entity.visible_assets.map{|x| x._id}
+		can [:update, :destroy], AssetCycleFact, :_id => user.entity.visible_asset_cycle_facts.map{|x| x._id}
+		can [:update, :destroy], Network, :_id => user.entity.visible_networks.map{|x| x._id}
+		can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}
+		can [:update, :destroy], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+	end
+
+
+
+# Account Admin
+	# Admin
+		# Users
+		# Entity
+	if user.account == 1 || user.account == 2 || user.account == 3
+		can [:read], User, :entity_id => user.entity_id
+	end
+	if user.account == 2 || user.account == 3
+		can [:create], User
+	end
+	if user.account == 3
+		can [:update, :destroy], User, :entity_id => user.entity_id
+		can [:update], Entity, _id: user.entity_id
+	end
+
+# Financial Admin
+	# Financial
+		# Financials
+		# Price
+		# Invoices
+	if user.financial == 1 || user.financial == 2 || user.financial == 3
+		can [:read], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+		can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+		can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+
+	end
+	if user.financial == 2 || user.financial == 3
+		can [:create], Invoice
+		can [:create], InvoiceAttachedAsset
+		can [:create], InvoiceLineItem
+
+	end
+	if user.financial == 3
+		can [:update, :destroy], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+		can [:update, :destroy], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+		can [:update, :destroy], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+	end
+
+
+
+
+
+
+=begin
 	if user.location_maintenance == 1 || user.scanner_delivery_pickup == 1 || user.scanner_add == 1 || user.scanner_fill == 1 || user.scanner_move == 1
 		can [:view], Location
-		can [:view], Network		
+		can [:view], Network
 		can [:manage], Asset
 	end
 	# View Product
@@ -31,7 +124,6 @@ class Ability
 	# ***************	
 
 	# Location
-	print user.entity.networks.map { |network| network.id}
 	if user.location_maintenance == 1
 		can [:manage, :maintenance_menu], Location, :network_id => user.entity.networks.map { |network| network.id }
 		can [:create], Location
@@ -72,6 +164,7 @@ class Ability
 	# ***************
 	# System
 	# ***************	
+=end
 	if user.system_admin == 1
 		can [:system_admin, :manage], :all
 	end

@@ -1,0 +1,93 @@
+<div>
+	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
+	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>	
+	<button id="asset_id" data-url="/reports/assets/" class=" right popup jqxButton jqxRecordLinkButton" data-role="none"> Asset	</button>	
+</div>
+
+<table class="popup jqxValidator">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Current Life Cycle </h3> </th>			
+		</tr>
+		<tr>
+			<td>	<b>  Start Date </b> </td>
+			<td>
+				<div id="start_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+
+			<td>	<b> Fill Date  </b> </td>
+			<td>
+				<div id="fill_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+		</tr>
+		<tr>
+			<td>	<b>  Delivery Date </b> </td>
+			<td>
+				<div id="delivery_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+
+			<td>	<b> Pickup Date  </b> </td>
+			<td>
+				<div id="pickup_time" class='jqxDateTimeInput'>		</div>				
+			</td>
+		</tr>	
+		<tr>
+			<td>	<b>  End Date </b> </td>
+			<td>
+				<div id="end_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+
+			<td>	 </td>
+			<td>
+				
+			</td>
+		</tr>				
+
+		<tr>
+			<th colspan="4"> <h3> Asset Details </h3> </th>			
+		</tr>
+
+		<tr>	
+			<td>	
+				<b> Asset Type </b>	 	
+			</td>
+			
+			<td>	
+				<div id="asset_type_id" class="jqxDropDownList">	</div>
+			</td>		
+
+	
+			<td>	
+				<b> Asset Owner </b>	 	
+			</td>
+			
+			<td>	
+				<div id="entity_id" class="jqxDropDownList">	</div>
+			</td>		
+		</tr>				
+		<tr>
+			<td>	
+				<b> Product </b>	
+			</td>
+
+			<td>	
+				<div id="product_id" class="jqxDropDownList">	</div>
+			</td>
+			<td>	
+				<b> Brewery </b>	
+			</td>
+
+			<td>	
+				<div id="product_entity_id" class="jqxDropDownList">	</div>
+			</td>
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> Asset Activity </h3> </th>			
+		</tr>			
+		<tr>
+			<td colspan="4">
+				<div class="jqxGrid">	</div>
+			</td>
+		</tr>	
+	</tbody>
+</table>	

@@ -1,5 +1,4 @@
-<div id="simple_container" class="scanner" userName="<%= current_user.email %>">
-
+<div id="simple_container" class="scanner" user="<%= current_user._id %>">
 	<div class="scanner input_toggle_group left">	
 		<h5> Auto Mode	</h5>
 		<div id="toggle_auto_mode" class="flip_switch scanner">
@@ -62,19 +61,28 @@
 	</div>
 
 	<div id="scan_invoice" class="scanner">
-		<input type="hidden" id="invoice_id" />
 	   	<input type="button" value="Export to Excel" id="excelExport" data-role="none" style="margin:0 0 0 0px;" class="scanner left hidden" />	   	
 
 	   	<input type="button" value="Find/Create" id="find_invoice" data-role="none" style="margin:0 0 0 10px;" class="scanner right" />	   	
-			<input type="text" id="number" data-role="none" class="scanner right" />       							
+			<input type="text" id="invoice_number" data-role="none" class="scanner right" />       							
        	
-		<div id="jqxGrid" class="scanner right"></div>
+		<div class="jqxGrid" class="scanner right"></div>
 	</div>
 
 	<div class="scanner left" style="margin:30px 0 10px 30px; width:100%;">
 		<span style="float:left"> Connect barcode scanner to begin scanning. </span> <br />
 		<%= text_field_tag :scan_input, '', {'data-role' => 'none'} %>
 	</div>
-
 	<div class="clear"></div>	
 </div>
+<div id="content-alert"> </div>
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 class Scanners::BarcodeController < ApplicationController
 	before_filter :authenticate_user!
-	
+	layout "web_app"
   def index	
 #  	["T1",2,1,"we0ws","RF"]
     respond_to do |format|
@@ -80,7 +80,7 @@ class Scanners::BarcodeController < ApplicationController
         format.json {  
 
           if !params[:invoice].nil?            
-            invoice = Invoice.find_or_create_by(:entity => current_user.entity, :number => params[:invoice][:number].to_s)        
+            invoice = Invoice.find_or_create_by(:entity => current_user.entity, :invoice_number => params[:invoice][:invoice_number].to_s)        
             invoice_details = JqxConverter.jqxGrid(invoice.invoice_line_items)          
 
             render json: {:invoice => invoice, :invoice_details => invoice_details}

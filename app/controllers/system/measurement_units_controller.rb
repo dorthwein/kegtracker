@@ -1,6 +1,7 @@
 class System::MeasurementUnitsController < System::ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
+  layout "web_app"
 
   # GET /measurement_units
   # GET /measurement_units.json

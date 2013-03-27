@@ -3,7 +3,7 @@
 $(document).on('pageshow', '#_maintenance_users', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-	jqxIntialize()
+	
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -16,17 +16,11 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 			{ name: 'cell_phone' },
 			{ name: 'office_phone' },
 
-			{ name: 'scanner_delivery_pickup' },
-			{ name: 'scanner_add' },
-			{ name: 'scanner_fill' },
-			{ name: 'scanner_move' },
-
-			{ name: 'user_maintenance' },
-			{ name: 'location_maintenance' },
-			{ name: 'product_maintenance' },
-			{ name: 'network_maintenance' },
-			{ name: 'barcode_maker_maintenance' },
-			{ name: '_id'}		], 
+			{ name: 'operation_description' },
+			{ name: 'account_description' },
+			{ name: 'financial_description' },
+			{ name: '_id'}		
+		], 
 		url: url,
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
@@ -46,111 +40,84 @@ $(document).on('pageshow', '#_maintenance_users', function(event){
 		},
 		loadError: function (xhr, status, error) { }      
 	});
-//	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$(".jqxGrid").jqxGrid(	
-	{
-		// Grid Options
-		groupable: true,
-		sortable: true,
-		filterable: true,
-		showfilterrow: true,		
-        autoshowfiltericon: true,		
-		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height(),
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,		
-		columns: [
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
 			{ text: 'First', datafield: 'first_name' },
 			{ text: 'Last', datafield: 'last_name' },
 			{ text: 'Email', datafield: 'email' }, 
 			{ text: 'Entity', datafield: 'entity_description', filtertype: 'checkedlist' },
 			{ text: 'Cell', datafield: 'cell_phone' },
 			{ text: 'Office', datafield: 'office_phone' },
+			{ text: 'Operation', datafield: 'operation_description', filtertype: 'checkedlist' },
+			{ text: 'Account', datafield: 'account_description', filtertype: 'checkedlist' },
+			{ text: 'Financial', datafield: 'financial_description', filtertype: 'checkedlist' },
+/*
+			{ text: 'Operations', datafield: 'operation', filterable: false, width: '100px', cellsrenderer: function (row, column, value) {
+					if(value == 0){
+						// If Denied												
+						return '<div class="grid_check permission_denied"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					} else if( value == 1) {
+						// If User
+						return '<div class="grid_check permission_user"> <span class="ui-icon ui-icon-clipboard" style="display:inline-block"> </span></div>'
+					} else if( value == 2) {
+						// If Power User						
+						return '<div class="grid_check permission_power_user"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
 
-			{ text: 'Pickup/Delivery (Scanner)', datafield: 'scanner_delivery_pickup', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					} else if( value == 3) {
+						// If Admin
+						return '<div class="grid_check permission_admin"> <span class="ui-icon ui-icon-star" style="display:inline-block"> </span></div>'
 					}
 				}
 			},
-			{ text: 'Add (Scanner)', datafield: 'scanner_add', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {					
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
+			{ text: 'Financial', datafield: 'financial', filterable: false, width: '100px', cellsrenderer: function (row, column, value) {					
+					if(value == 0){
+						// If Denied												
+						return '<div class="grid_check permission_denied"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					} else if( value == 1) {
+						// If User
+						return '<div class="grid_check permission_user"> <span class="ui-icon ui-icon-clipboard" style="display:inline-block"> </span></div>'
+					} else if( value == 2) {
+						// If Power User						
+						return '<div class="grid_check permission_power_user"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
 
-				} 
+					} else if( value == 3) {
+						// If Admin
+						return '<div class="grid_check permission_admin"> <span class="ui-icon ui-icon-star" style="display:inline-block"> </span></div>'
+					}
+				}			},
+			{ text: 'Account', datafield: 'account', filterable: false, width: '100px', cellsrenderer: function (row, column, value) {					
+					if(value == 0){
+						// If Denied												
+						return '<div class="grid_check permission_denied"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
+					} else if( value == 1) {
+						// If User
+						return '<div class="grid_check permission_user"> <span class="ui-icon ui-icon-pencil" style="display:inline-block"> </span></div>'
+					} else if( value == 2) {
+						// If Power User						
+						return '<div class="grid_check permission_power_user"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
+
+					} else if( value == 3) {
+						// If Admin
+						return '<div class="grid_check permission_admin"> <span class="ui-icon ui-icon-star" style="display:inline-block"> </span></div>'
+					}
+				}			
 			},
-			{ text: 'Fill (Scanner)', datafield: 'scanner_fill', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {					
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},
-			{ text: 'Move (Scanner)', datafield: 'scanner_move', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},
-
-			{ text: 'User (Maintenance)', datafield: 'user_maintenance', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},
-			{ text: 'Location (Maintenance)', datafield: 'location_maintenance', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {							
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},
-			{ text: 'Product (Maintenance)', datafield: 'product_maintenance', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},
-			{ text: 'Network (Maintenance)', datafield: 'network_maintenance', filterable: false, width: '75px', cellsrenderer: function (row, column, value) {							
-					if(value == 1){
-						return '<div class="grid_check on"> <span class="ui-icon ui-icon-check" style="display:inline-block"> </span></div>'
-					} else {
-						return '<div class="grid_check off"> <span class="ui-icon ui-icon-delete" style="display:inline-block"> </span></div>'
-					}
-
-				} 
-			},			
-			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
+			*/
+			{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 				return 'View'
-			}},			
+			}, buttonclick: function (row) {
+				var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+				var url = $('.ui-page-active').attr('data-url') + "/" + rowdata['_id']						
+				openPopupWindow(url)
+			}},	
 
 		]
-	});
+		
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
 	$.mobile.loading('hide');					
 
 });

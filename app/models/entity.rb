@@ -14,10 +14,21 @@ class Entity
 
 	has_many :network_facts, :inverse_of => :report_entity
 	
-	has_many :entity_partnerships_as_partner, :class_name => 'EntityPartnership', :inverse_of => :partner
-	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
+	has_many :distribution_partnerships #, :inverse_of => :partner
+#	has_many :distribution_partnerships, :inverse_of => :entity
 
-	has_many :invoices, :inverse_of => :invoice_entity
+	has_many :production_partnerships #, :inverse_of => :partner
+#	has_many :production_partnerships_as_partner, :inverse_of => :entity
+
+
+#	has_many :distribution_partnerships_as_entity, :class_name => 'Distribution', :inverse_of => :partner	
+#	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
+
+#	has_many :entity_partnerships_as_partner, :class_name => 'EntityPartnership', :inverse_of => :partner
+#	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
+
+	has_many :invoices
+	has_many :invoice_line_items
 	belongs_to :admin_user, :class_name => 'User', :inverse_of => :user
 
 #	has_many :entity_partnerships_as_entity, as: :entity_partnerships_as_entity
@@ -70,28 +81,28 @@ class Entity
 	def related_entities
 		related_entities = []
 
-		related_entities = related_entities + self.entity_partnerships_as_partner.map{|x| x.entity }
-		related_entities = related_entities + self.entity_partnerships_as_entity.map{|x| x.partner }
+		related_entities = related_entities + self.production_partnerships.map{|x| x.partner }
+		related_entities = related_entities + self.distribution_partnerships.map{|x| x.partner }
 		return related_entities.uniq
 	end
 	
 #############################
 # Distribution Partnerships #
 #############################
-	def distribution_partnerships_as_partner
+#	def distribution_partnerships_as_partner
 		# Where current user is partner
-		self.entity_partnerships_as_partner.where(:distribution_partnership => 1).asc(:description)
+#		self.entity_partnerships_as_partner.where(:distribution_partnership => 1).asc(:description)
 
-	end
-	def distribution_partnerships_as_entity
+#	end
+#	def distribution_partnerships_as_entity
 		# Where current user is entity
-		self.entity_partnerships_as_entity.where(:distribution_partnership => 1).asc(:description)
+#		self.entity_partnerships_as_entity.where(:distribution_partnership => 1).asc(:description)
 
-	end
+#	end
 	def distribution_partnerships_shared_networks
 		networks = []
-		self.distribution_partnerships_as_partner.each do |x|
-			networks = networks + x.entity.networks.where(:network_type => 2)
+		self.distribution_partnerships.each do |x|
+			networks = networks + x.partner.networks.where(:network_type => 2)
 		end
 		return networks
 	end
@@ -99,20 +110,19 @@ class Entity
 #############################
 # Production Partnerships #
 #############################
-	def production_partnerships_as_partner
+#	def production_partnerships_as_partner
 		# Where current user is partner
-		self.entity_partnerships_as_partner.where(:production_partnership => 1)
-
-	end
-	def production_partnerships_as_entity
+#		self.entity_partnerships_as_partner.where(:production_partnership => 1)
+#	end
+#	def production_partnerships_as_entity
 		# Where current user is entity
-		self.entity_partnerships_as_entity.where(:production_partnership => 1)
-
-	end
+#		self.entity_partnerships_as_entity.where(:production_partnership => 1)
+#	end
 
 	def production_partnerships_shared_products
 		products = []
-		self.production_partnerships_as_partner.each do |x|
+		partnerships = ProductionPartnership.where(partner_id: self._id)
+		partnerships.each do |x|
 			products = products + x.entity.products
 		end
 		return products
@@ -120,7 +130,7 @@ class Entity
 
 	def production_partnerships_shared_networks
 		networks = []
-		self.production_partnerships_as_entity.each do |x|
+		self.production_partnerships.each do |x|
 			networks = networks + x.partner.networks.where(:network_type => 1)
 		end
 		return networks
@@ -130,7 +140,10 @@ class Entity
 # Products 					#
 #############################
 	def production_products	
-		products = self.products + self.production_partnerships_shared_products
+		Product.any_of(
+			{ entity: self }, 	# Products I own
+			{ :_id.in => self.production_partnerships_shared_products.map{|x| x._id} },
+		)
 	end
 
 #############################
@@ -140,7 +153,7 @@ class Entity
 		# A product I produce, a keg I own, or a network I controll		
 		Asset.any_of( 
 				{ :location_network.in => self.networks.map{|x| x._id} },
-			  	{ :product.in => self.production_products }, 
+			  	{ :product.in => self.production_products.map{|x| x._id} }, 
 			  	{ :entity => self }
 		   	)
 	end
@@ -148,7 +161,7 @@ class Entity
 	def visible_asset_activity_facts
 		AssetActivityFact.any_of( 
 				{ :location_network.in => self.networks.map{|x| x._id} },
-			  	{ :product.in => self.production_products }, 
+			  	{ :product.in => self.production_products.map{|x| x._id} },
 			  	{ :entity => self }
 		   	).desc(:fact_time)
 	end
@@ -161,7 +174,7 @@ class Entity
 	def visible_asset_cycle_facts
 		AssetCycleFact.any_of( 
 			{ :cycle_networks.in => self.networks.map{|x| x._id} },
-			{ :product.in => self.production_products }, 
+			{ :product.in => self.production_products.map{|x| x._id} },
 			{ :entity => self }
 		).desc(:start_time)
 	end
@@ -202,11 +215,10 @@ class Entity
 # Locations				  #
 ###########################
 	def visible_locations
-		locations = self.locations + []
-#		self.distribution_partnerships_shared_networks.each do |x|
-#			locations = locations + x.locations.where(:location_type => 5)
-#		end
-		return locations
+		Location.any_of(
+			{ entity_id: self._id	},
+			{ :network_id.in => self.distribution_partnerships_shared_networks, location_type: 5 }		
+		)
 	end        
 
 
@@ -215,6 +227,15 @@ class Entity
 ###########################
 	def network_score_card
 		
+	end
+	def visible_invoices
+		Invoice.where(entity: self)
+	end
+	def visible_invoice_attached_assets
+		InvoiceAttachedAsset.where(:invoice_id.in => self.visible_invoices.map{|x| x._id})
+	end
+	def visible_invoice_line_items
+		InvoiceLineItem.where(:invoice_id.in => self.visible_invoices.map{|x| x._id})
 	end
 
 ###########################

@@ -1,6 +1,7 @@
 class System::EntitiesController < System::ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
+  layout "web_app"
 
   # GET /entities
   # GET /entities.json

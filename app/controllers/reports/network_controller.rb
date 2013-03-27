@@ -1,5 +1,6 @@
 class Reports::NetworkController < ApplicationController
 	before_filter :authenticate_user!	
+	layout "web_app"
 # *****************************************
 # Network Reports
 # *****************************************

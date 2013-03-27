@@ -22,7 +22,7 @@ class Scanner
 
 			obj = Scanner.normal_process(obj)
 			
-			if obj[:invoice_id] != '' && !obj[:invoice_id].nil?
+			if obj[:invoice_number] != '' && !obj[:invoice_number].nil?
 				Scanner.invoice_process(obj)
 			end
 
@@ -171,8 +171,11 @@ class Scanner
 		return obj
 	end
 
-	def self.invoice_process obj			
-		invoice = Invoice.find(obj[:invoice_id])
+
+	def self.invoice_process obj
+		invoice = Invoice.find_or_create_by(invoice_number: obj[:invoice_number], entity: obj[:user].entity )
+
+#		invoice = Invoice.find(obj[:invoice_id])
 		invoice.attach_asset(obj)
 		#return obj
 	end
@@ -199,26 +202,23 @@ class Scanner
 			obj[:correction] = 1			
 		end
 		return obj
-
 	end
 
 	def self.find_asset obj
 		##############################
 		####### Pre Processing #######			
-		#self.email.downcase! if self.email
-		user = User.where(:email => obj[:email].downcase!).first
+		#self.email.downcase! if self.email		
 
+		obj[:user] = User.find(obj[:user_id])
 #		user = User.find(email: /#{obj[:email]}$/i)
-		print user.to_json
-		print obj[:email].to_json
-		if obj[:tag][:netid].nil?			
-			obj[:tag][:network] = user.entity.networks.first
+
+		if obj[:tag][:netid].nil?
+			obj[:tag][:network] = obj[:user].entity.networks.first
 		else
 			obj[:tag][:network] = Network.where(:netid => obj[:tag][:netid]).first		
 		end	
-
 		obj[:asset] = Asset.where(netid: obj[:tag][:network].netid, tag_value: obj[:tag][:value]).first
-		
+
 		if obj[:asset].nil? 
 			obj[:asset] = Asset.new(
 				:location_id => obj[:location_id],				
@@ -229,12 +229,12 @@ class Scanner
 				:tag_key => obj[:tag][:key], 
 				:entity_id => obj[:tag][:network].entity._id
 			)		
-		end		
+		end
 		obj[:asset].save!
 		return obj
 	end
 	def self.preprocess_asset obj
-		obj[:asset].user = User.where(:email => obj[:email]).first		
+		obj[:asset].user = obj[:user] # User.where(:email => obj[:email]).first		
 
 	# Asset Type Override				
 		if !obj[:asset_type_id].nil?
@@ -252,13 +252,14 @@ class Scanner
 		scan = JSON.parse(obj)	
 		scan_params = {}
 
-		scan_params[:email] = scan['email']
-		scan_params[:password] = scan['password']
+		scan_params[:user_id] = scan['user_id']
+#		scan_params[:password] = scan['password']
+
 		scan_params[:handle_code] = scan['handle_code'].to_i 
 		scan_params[:correction] = scan['correction'].to_i
 		scan_params[:auto_mode] = scan['auto_mode'].to_i	
 
-		scan_params[:invoice_id] = scan['invoice_id']
+		scan_params[:invoice_number] = scan['invoice_number']
 		scan_params[:time] = Time.at(scan['time'].to_i)
 
 		scan['product_id'] ? scan_params[:product_id] = scan['product_id'] : nil

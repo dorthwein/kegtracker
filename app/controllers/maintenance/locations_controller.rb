@@ -1,5 +1,6 @@
 class Maintenance::LocationsController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
 
   # GET /locations
@@ -20,18 +21,23 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}      
-      format.json {          
+      record = Location.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else           
+        format.html {render :layout => 'popup'}      
+        format.json {          
         
-        record = Location.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
-        response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
 
-        render json: response 
-      }
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
+          response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
+
+          render json: response 
+        }
+      end
     end
   end
 
@@ -56,11 +62,11 @@ class Maintenance::LocationsController < ApplicationController
 
   # GET /locations/1/edit
   def edit
-    record = Location.find(params[:id])
+    
     respond_to do |format|
-      if can? :update, record
         format.html {render :layout => 'popup'}
         format.json { 
+          record = Location.find(params[:id])
           response = {}
           response[:jqxDropDownLists] = {}        
           response[:record] = record              
@@ -69,9 +75,6 @@ class Maintenance::LocationsController < ApplicationController
 
           render json: response 
         }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
     end
   end
 

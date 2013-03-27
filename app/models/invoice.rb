@@ -1,11 +1,13 @@
 class Invoice
   include Mongoid::Document
+  include Mongoid::Timestamps  
+
   field :record_status, type: Integer, default: 1
   
 	belongs_to :entity, index: true
 	belongs_to :bill_to_entity, :class_name => 'Entity', index: true	# Billed to Entity - in-active
 
-	field :number, type: String	
+	field :invoice_number, type: String	
 	field :date, :type => Time
 	field :invoice_type, type: Integer
 
@@ -35,9 +37,6 @@ class Invoice
 				print "\n \n"
 			end
 		end
-
-
-
 	end
 
 

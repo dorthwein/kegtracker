@@ -1,8 +1,11 @@
 class InvoiceLineItem
 	include Mongoid::Document
+	include Mongoid::Timestamps  
+
 	field :record_status, type: Integer, default: 1
 	
 	belongs_to :invoice, index: true
+	belongs_to :entity, index: true
 	has_many :invoice_attached_assets
 #	belongs_to :price
 	
@@ -89,7 +92,7 @@ class InvoiceLineItem
 	before_save :sync_descriptions
 	def sync_descriptions
 		self.sku_description = self.sku.description		
-
+		self.entity_id = self.invoice.entity_id
 
 #		self.base_tier_description = self.get_base_tier_description		
 #		self.total_tax = self.total_sales_tax + self.total_gallonage_tax

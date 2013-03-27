@@ -4,7 +4,7 @@
 $(document).on('pageshow', '#_maintenance_production_partnerships', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-	jqxIntialize()
+	
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -50,37 +50,27 @@ $(document).on('pageshow', '#_maintenance_production_partnerships', function(eve
 //	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$(".jqxGrid").jqxGrid(
-	{
-		// Grid Options
-		groupable: true,
-		sortable: true,
-		filterable: true,
-		showfilterrow: true,		
-        autoshowfiltericon: true,		
-		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height(),
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,		
-		columns: [
-			{ text: 'Contractee', datafield: 'entity_description', filtertype: 'checkedlist' }, 
-			{ text: 'Production Brewery', datafield: 'partner_description', filtertype: 'checkedlist' }, 
-			{ text: 'Prod. Address', datafield: 'partner_street' },
-			{ text: 'Prod. City', datafield: 'partner_city' },
-			{ text: 'Prod. State', datafield: 'partner_state', filtertype: 'checkedlist' },
-			{ text: 'Prod. Zip', datafield: 'partner_zip' },
-			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
-				return 'View'
-			}},			
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: 'Contractee', datafield: 'entity_description', filtertype: 'checkedlist' }, 
+		{ text: 'Production Brewery', datafield: 'partner_description', filtertype: 'checkedlist' }, 
+		{ text: 'Prod. Address', datafield: 'partner_street' },
+		{ text: 'Prod. City', datafield: 'partner_city' },
+		{ text: 'Prod. State', datafield: 'partner_state', filtertype: 'checkedlist' },
+		{ text: 'Prod. Zip', datafield: 'partner_zip' },
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = $('.ui-page-active').attr('data-url') + "/" + rowdata['_id']						
+			openPopupWindow(url)
+		}},	
+	]
 
-		]
-	});
 
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
 	$.mobile.loading('hide');					
-
 });
 

@@ -38,7 +38,20 @@ class User
 	field :state, type: String
 	field :zip, type: String
 =end	
-	
+	  
+# 0 Denied = Nothing 
+# 1 User = View
+# 2 Power User = Create & View
+# 3 Admin = Create, View, Edit, Destroy
+  field :operation, :type => Integer, default: 0
+  field :account, :type => Integer, default: 0
+  field :financial, :type => Integer, default: 0
+
+  field :operation_description, type: String
+  field :account_description, type: String
+  field :financial_description, type: String
+
+  
 	# Scanner Permissions - 0 => No, 1 => View
 	field :scanner_delivery_pickup, :type => Integer, :default => 0	
 	field :scanner_add, :type => Integer, :default => 0	
@@ -96,8 +109,33 @@ class User
     self.email.downcase! if self.email
     self.entity_description = self.entity.description
     self.ensure_authentication_token
+    
+    self.operation_description = User.get_permission_description(self.operation)
+    self.account_description = User.get_permission_description(self.account)
+    self.financial_description = User.get_permission_description(self.financial)
   end
-  
+  def self.get_permission_options
+    permission_options = [ 
+      {:_id => 0, :description => 'Denied'},
+      {:_id => 1, :description => 'User'},
+      {:_id => 2, :description => 'Power User'},
+      {:_id => 3, :description => 'Admin'},      
+    ]
+    return permission_options
+  end
+  def self.get_permission_description i
+    case i.to_i
+    when 0
+      return 'Denied' 
+    when 1
+      return 'User'
+    when 2
+      return 'Power User'
+    when 3
+      return 'Admin'
+    end
+  end   
+
   def scanner_data
       reponse = {}
       permissions = self.scan_permissions

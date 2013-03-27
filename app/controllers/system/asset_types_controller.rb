@@ -1,6 +1,7 @@
 class System::AssetTypesController < System::ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
+  layout "web_app"
 
   # GET /asset_types
   # GET /asset_types.json

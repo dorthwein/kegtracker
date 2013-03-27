@@ -3,7 +3,7 @@
 $(document).on('pageshow', '#_maintenance_products', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-	jqxIntialize()
+	
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -38,33 +38,24 @@ $(document).on('pageshow', '#_maintenance_products', function(event){
 //	window.dataAdapter = dataAdapter
 
 	// Initialize Grid
-	$(".jqxGrid").jqxGrid(
-	{
-		// Grid Options
-		groupable: true,
-		sortable: true,
-		filterable: true,
-		showfilterrow: true,		
-        autoshowfiltericon: true,		
-		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height(),
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,		
-		columns: [
-			{ text: 'Brewer', datafield: 'entity_description', filtertype: 'checkedlist' },
-			{ text: 'Product', datafield: 'description' },
-			{ text: 'Product #', datafield: 'externalID' }, 
-			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
-				return 'View'
-			}},			
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: 'Brewer', datafield: 'entity_description', filtertype: 'checkedlist' },
+		{ text: 'Product', datafield: 'description' },
+		{ text: 'Product #', datafield: 'externalID' }, 
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = $('.ui-page-active').attr('data-url') + "/" + rowdata['_id']
+			openPopupWindow(url)
+		}},	
 
-		]
-	});
+	]
 
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
 	$.mobile.loading('hide');					
 
 });

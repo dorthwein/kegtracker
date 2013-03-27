@@ -109,7 +109,7 @@ $(document).on('pageshow', '#_system_asset_types', function(event){
 
 				} 
 			},		
-			{ text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);			
 				return 'View'
 			}},			

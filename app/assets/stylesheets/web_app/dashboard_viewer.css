@@ -1,0 +1,36 @@
+.container.dashboard.content{
+	max-width: 960px;
+	margin:auto;
+}
+
+.dashboard.content {	
+	padding-bottom:30px;
+	padding-right:30px;	
+}
+.dashboard.content h2 {		
+	width:100%;	
+	display: inline-block;
+	margin:15px 10px 5px -15px;
+	font-size:18px;
+
+}
+.dashboard.button-group {
+	margin-bottom:20px;
+	margin-left:25px;
+	display: inline-block;		
+	width:100%;
+}
+
+.dashboard.button {	
+	margin-left:1%;
+	margin-bottom:15px;		
+
+}
+
+
+.dashboard.button h3, .dashboard.button h4 {	
+	vertical-align: middle;
+	margin:5px 0 5px 0;
+	color: #FFF;
+	text-shadow:none;
+}

@@ -1,17 +1,19 @@
+<div>
+	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
+	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+</div>
 <table class="popup jqxValidator">
-	<thead>
-		<th>	</th>
-		<th>	</th>
-		<th>	</th>
-		<th>	</th>
-	</thead>
 	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Details </h3> </th>			
+		</tr>
+
 		<tr>
 			<td>	
 				<b> Invoice # </b>	
 			</td>
 			<td>	
-				<input type="text" id="number" class="jqxInput required" data-role="none" />	
+				<input type="text" id="invoice_number" class="jqxInput required" data-role="none" />	
 			</td>
 			<td>
 				<b>	Date </b>
@@ -36,6 +38,10 @@
           		<div id="bill_to_entity_id" class="jqxDropDownList required ">				
           	</td>	
 		</tr>
+		<tr>
+			<th colspan="4"> <h3> Add to Invoice </h3> </th>			
+		</tr>
+
 		<tr id="add_to_invoice">
 			<td colspan="4">									
 
@@ -51,18 +57,6 @@
 
 				<div id="invoice_line_items" class="jqxGrid">	</div>
 			</td>
-		</tr>
-
-		<tr>
-			<td>	</td>			
-			<td>	</td>			
-			<td>	</td>
-			<td> 
-				<button class="popup jqxButton save" data-role="none"> Save	</button>
-				<button class="popup jqxButton cancel" data-role="none"> Cancel	</button>					
-		 	
-			</td>						
-								
 		</tr>
 	</tbody>
 </table>	

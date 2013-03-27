@@ -1,5 +1,6 @@
 class Maintenance::PricesController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
   # GET /Prices
   # GET /Prices.json
@@ -16,21 +17,27 @@ class Maintenance::PricesController < ApplicationController
   # GET /Prices/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
+      record = Price.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else       
+
+        format.html {render :layout => 'popup'}
+        format.json { 
         
-        record = Price.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}            
-        response[:record] = record  
+     
+          response = {}
+          response[:jqxDropDownLists] = {}            
+          response[:record] = record  
 
-		    response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
-        response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
-		    response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-#        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+  		    response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
+          response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
+  		    response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+  #        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
 
-        render json: response 
-      }
+          render json: response 
+        }
+      end
     end    
   end
 
@@ -57,26 +64,22 @@ class Maintenance::PricesController < ApplicationController
   end
 
   # GET /Prices/1/edit
-  def edit
-    record = Price.find(params[:id])
+  def edit    
     respond_to do |format|
-      if can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-          response = {}
-          response[:jqxDropDownLists] = {}                  
-          response[:record] = record 
+      format.html {render :layout => 'popup'}
+      format.json {
+        record = Price.find(params[:id]) 
+        response = {}
+        response[:jqxDropDownLists] = {}                  
+        response[:record] = record 
 
-          response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)                                        
-          response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+        response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)                                        
+        response[:jqxDropDownLists][:base_price_tier] = JqxConverter.jqxDropDownList(Price.base_price_tiers)
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
 #          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
 
-          render json: response 
-        }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
+        render json: response 
+      }        
     end
   end
 

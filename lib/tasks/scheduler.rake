@@ -153,7 +153,21 @@ task :save_invoices => :environment do
 	end
 end
 
+task :number_to_invoice_number => :environment do
+	Invoice.all.each do |x|
+		x.invoice_number = x.number
+		x.save!
+		print "Invoice Number Updated \n"
+	end
+end
+
 task :save_all => :environment do 
+	AssetCycleFact.all.each do |x|
+		if x.save!
+			print "Asset Cycle Fact Saved \n"
+		end
+	end
+
 	Entity.all.each do |x|
 		if x.save!
 			print "Entity Saved \n"
@@ -186,6 +200,23 @@ task :save_all => :environment do
 			print "Invoice Saved \n"
 		end
 	end
+	InvoiceLineItem.all.each do |x|
+		if x.save!
+			print "Invoice Line Item Saved \n"
+		end
+	end
+
+	Product.all.each do |x|
+		if x.save!
+			print "Product Saved \n"
+		end
+	end
+	AssetType.all.each do |x|
+		if x.save!
+			print "Asset Type Saved \n"
+		end
+	end
+
 	
 end
 

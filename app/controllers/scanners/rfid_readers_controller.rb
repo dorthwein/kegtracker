@@ -1,7 +1,7 @@
 class Scanners::RfidReadersController < ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
-
+	layout "web_app"
   # GET /rfids
   # GET /rfids.json
 

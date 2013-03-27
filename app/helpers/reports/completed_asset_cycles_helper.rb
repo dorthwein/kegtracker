@@ -1,0 +1,2 @@
+module Reports::CompletedAssetCyclesHelper
+end

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Brewery Apps</title>
+  <%= stylesheet_link_tag "public_manifest", :media => "all" %>
+  <%= csrf_meta_tags %>
+
+    <meta name="viewport" content="width=960, user-scalable=yes" />   
+</head>
+<body class="public" data-role="none"> 
+	<div id="<%= params[:controller].to_s.gsub('/', '_') %>" class="public_container">		
+		<div id="header" class="public">	
+			<%= link_to 'Log in', new_user_session_path %> 
+		</div>
+		<div id="content" class="public">		
+			<h1>	
+				Brewery Apps 	
+			</h1>
+
+			<table style="width:100%; margin-top:20px">
+				<tbody>
+					<tr>
+						<td width="20%">	
+							<%= image_tag("abouticon.png") %>
+							<h5> About Us	</h5>
+						</td>
+						<td width="20%">	
+							<%= image_tag("kegsearchicon.png") %>
+							<h5> KegSearch	</h5>
+						</td>
+						<td width="20%">	
+							<%= image_tag("kegtrackericon.png") %>
+							<h5> KegTracker	</h5>
+						</td>
+						<td width="20%">	
+							<%= image_tag("kegregicon.png") %>
+							<h5> KegReg	</h5>
+						</td>
+						<td width="20%">	
+							<%= image_tag("mailicon.png") %>
+							<h5> Contact	</h5>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		<!-- Main Content -->	
+			<%= yield %>												
+		</div>
+	</div>
+</body>
+</html>

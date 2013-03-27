@@ -1,6 +1,7 @@
 class System::ProductTypesController < System::ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
+  layout "web_app"
 
   # GET /product_types
   # GET /product_types.json

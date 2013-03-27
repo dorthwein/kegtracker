@@ -5,7 +5,7 @@
 $(document).on('pageshow', '#_maintenance_prices', function(event){	
 	$.mobile.loading('show');
 	var theme = settings.theme
-	jqxIntialize()
+	
 	url = system.server + $('.ui-page-active').attr('data-url') + '.json'	
 	var source =
 	{
@@ -47,37 +47,31 @@ $(document).on('pageshow', '#_maintenance_prices', function(event){
 	}
 
 	// Initialize Grid
-	$(".jqxGrid").jqxGrid({
-		// Grid Options
-		groupable: true,
-		sortable: true,
-		filterable: true,
-		showfilterrow: true,		
-        autoshowfiltericon: true,		
-		theme: theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		height:  system.full_window_table_height(),
-		source: dataAdapter,
-		columnsresize: true,
-		altrows: true,		
-		columns: [
-			{text:'Description', datafield: 'description', width:'30%'},
-			{text:'SKU', datafield: 'sku_description', filtertype: 'checkedlist'},		
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{text:'Description', datafield: 'description', width:'30%'},
+		{text:'SKU', datafield: 'sku_description', filtertype: 'checkedlist'},		
 //			{text:'Customer', datafield: 'bill_to_entity_description', filtertype: 'checkedlist'},
-			{text:'Per', datafield: 'base_price_tier_description', width:100, filtertype: 'checkedlist'},		
-			{text:'Price', datafield: 'price', width:100, cellsalign: 'right', cellsformat: 'c2' },
-			{text:'Sales Tax', datafield: 'sales_tax', width:100, cellsalign: 'right', cellsformat: 'c2' },
-			{text:'Gallonage Tax', datafield: 'gallonage_tax', width:100, cellsalign: 'right', cellsformat: 'c2' },
-			{text:'Total', datafield: 'total', width:100, cellsalign: 'right', cellsformat: 'c2' },
-			
-			{text: 'View', datafiefld: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-				var dataRecord = $("#jqxGrid").jqxGrid('getrowdata', row);
-				return 'View'
-			}},			
-		]
-	});
+		{text:'Per', datafield: 'base_price_tier_description', width:100, filtertype: 'checkedlist'},		
+		{text:'Price', datafield: 'price', width:100, cellsalign: 'right', cellsformat: 'c2' },
+		{text:'Sales Tax', datafield: 'sales_tax', width:100, cellsalign: 'right', cellsformat: 'c2' },
+		{text:'Gallonage Tax', datafield: 'gallonage_tax', width:100, cellsalign: 'right', cellsformat: 'c2' },
+		{text:'Total', datafield: 'total', width:100, cellsalign: 'right', cellsformat: 'c2' },
+		
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = $('.ui-page-active').attr('data-url') + "/" + rowdata['_id']						
+			openPopupWindow(url)
+		}},	
+	]
+
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
 	$.mobile.loading('hide');					
+	
 
 });
 

@@ -1,5 +1,7 @@
 class InvoiceAttachedAsset
   include Mongoid::Document
+  include Mongoid::Timestamps  
+  
 	field :record_status, type: Integer, default: 1
 	
 	belongs_to :invoice, index: true

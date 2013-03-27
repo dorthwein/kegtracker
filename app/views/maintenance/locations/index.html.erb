@@ -1,6 +1,20 @@
-   	<input type="button" style="float:left; margin:5px 5px 5px 0;" value="New" class='new' data-role="none"/>
-	<input type="button" style="float:left; margin:5px 5px 5px 0;" value="Delete" class='delete' data-role="none"/>
-	<input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" class='excelExport' data-role="none"/>
+    <div class="full sidebar">
+        <div class="logo">    
+        </div>
 
-    <div class="full_window jqxGrid"></div>
-	<h5 class="right" style="margin:0;"> Double click row to view. </h5>	
+	   	<input type="button" value="New" class='new' data-role="none"/>
+		<input type="button" value="Delete" class='delete' data-role="none"/>
+        <input type="button" value="Excel" class='excelExport' data-role="none"/>       
+        <button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
+
+
+
+        <div class="jqxGridColumnListBox">  </div>
+    </div>
+    <div class="full display">
+        <div class="toolbar">   
+
+        </div>
+        <div class="jqxGrid full display"></div>
+    </div>
+

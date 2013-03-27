@@ -1,5 +1,6 @@
 class Maintenance::ProductsController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
   # GET /products
   # GET /products.json
@@ -16,18 +17,23 @@ class Maintenance::ProductsController < ApplicationController
   # GET /products/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = Product.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+      record = Product.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else
+        format.html {render :layout => 'popup'}
+        format.json { 
+      
 
-        render json: response 
-      }
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+
+          render json: response 
+        }
+      end
     end    
   end
 
@@ -52,22 +58,18 @@ class Maintenance::ProductsController < ApplicationController
 
   # GET /products/1/edit
   def edit
-    record = Product.find(params[:id])
     respond_to do |format|
-      if can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-          response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+      format.html {render :layout => 'popup'}
+      format.json { 
+        record = Product.find(params[:id])
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
 
-          render json: response 
-        }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
+        render json: response 
+      }        
     end
   end
 

@@ -18,8 +18,9 @@ class AssetCycleFact
 	field :fill_time, type: Time
 	field :delivery_time, type: Time
 	field :pickup_time, type: Time
-# TBI	field :return_to_brewery_time, type: Time
 	field :end_time, type: Time
+# TBI	field :return_to_brewery_time, type: Time
+	
 	
 	belongs_to :start_asset_activity_fact, class_name: 'AssetActivityFact' #, 		:inverse_of => 'AssetActivityFact'
   	belongs_to :fill_asset_activity_fact, class_name: 'AssetActivityFact' #, 		:inverse_of => 'AssetActivityFact'
@@ -44,8 +45,21 @@ class AssetCycleFact
   	belongs_to :fill_network, class_name: 'Network'
   	belongs_to :delivery_network, class_name: 'Network'
   	belongs_to :pickup_network, class_name: 'Network'
+	belongs_to :end_network, class_name: 'Network'
+
+	field :start_network_description, type: String
+	field :fill_network_description, type: String
+	field :delivery_network_description, type: String
+	field :pickup_network_description, type: String
+	field :end_network_description, type: String
+	field :product_description, type: String
+	field :product_entity_description, type: String
+	field :asset_type_description, type: String
+	field :asset_status_description, type: String
+	field :handle_code_description, type: String
+
 # TBI  	belongs_to :return_to_brewery_network, class_name: 'Network'
-  	belongs_to :end_network, class_name: 'Network'
+  	
 
 #  	belongs_to :fill_user, class_name:'User', inverse_of: 'User'
 # 	belongs_to :delivery_user, class_name: 'User', inverse_of: 'User'
@@ -148,9 +162,37 @@ class AssetCycleFact
 #  			self.pickup_network_id,
 #  			self.end_network_id
 	  	].delete_if {|x| x == nil}
+
+
+		# Check Descriptions		
+		self.product_description = self.product.description		
+		self.product_entity_description = self.product.entity.description
+		self.asset_type_description = self.asset_type.description	
+
+		self.start_network_description = self.start_network.description
+		self.fill_network_description = self.fill_network.description
+		self.delivery_network_description = self.delivery_network.description
+		self.pickup_network_description = self.pickup_network.description
+		self.end_network_description = self.end_network.description
+	end
+	def get_asset_status_description
+		case self.asset_status.to_i
+		when 0
+			return 'Empty'	
+		when 1
+			return 'Full'	
+		when 2
+			return 'Market'	
+		when 3
+			return 'Damaged'	
+		when 4
+			return 'Lost'	
+		else
+			return 'Unknown'	
+		end
 	end
 
-	def handle_code_description
+	def get_handle_code_description
 		case self.handle_code.to_i
 		when 1
 		  return 'Delivery' 

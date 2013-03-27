@@ -1,5 +1,6 @@
 class Maintenance::UsersController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
 
   # GET /users
@@ -9,7 +10,11 @@ class Maintenance::UsersController < ApplicationController
     respond_to do |format|
    		format.html # index.html.erb
     	format.json { 	
-			users = JqxConverter.jqxGrid(current_user.entity.users)
+      if current_user.system_admin == 1 
+			   users = JqxConverter.jqxGrid(User.all)
+      else
+        users = JqxConverter.jqxGrid(current_user.entity.users)
+      end
       		render json: users 
 	    }
     end
@@ -19,18 +24,26 @@ class Maintenance::UsersController < ApplicationController
   # GET /users/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = User.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-
-
-        render json: response 
-      }
+        record = User.find(params[:id])
+        if can? :update, record 
+          format.html {redirect_to :action => 'edit'}
+        else       
+          format.html {render :layout => 'popup'}
+          format.json {                         
+            response = {}
+            response[:jqxDropDownLists] = {}        
+            response[:record] = record
+            if current_user.system_admin == 1 
+              response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
+            else
+              response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+            end
+            response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
+            response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
+            response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
+            render json: response 
+          }
+      end      
     end    
   end
 
@@ -39,13 +52,19 @@ class Maintenance::UsersController < ApplicationController
   def new
     respond_to do |format|
       format.html {render :layout => 'popup'}
-      format.json { 
-        
+      format.json {         
         record = User.new
         response = {}
         response[:jqxDropDownLists] = {}                
         response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+        if current_user.system_admin == 1 
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
+        else
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        end
+        response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
+        response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
+        response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
 
         render json: response 
       }
@@ -54,21 +73,25 @@ class Maintenance::UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    record = User.find(params[:id])
     respond_to do |format|
-      if can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-          response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-          render json: response 
-        }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        record = User.find(params[:id])
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        
+        if current_user.system_admin == 1 
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
+        else
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+        end
+        response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
+        response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
+        response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
+
+        render json: response 
+      }        
     end
   end
 

@@ -1,5 +1,6 @@
 class Maintenance::NetworksController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
   # GET /networks
   # GET /networks.json
@@ -18,21 +19,27 @@ class Maintenance::NetworksController < ApplicationController
   # GET /networks/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = Network.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])      
-        response[:jqxDropDownLists][:smart_mode_product_id] = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
-        response[:jqxDropDownLists][:smart_mode_in_location_id] = JqxConverter.jqxDropDownList(record.locations) 
-        response[:jqxDropDownLists][:smart_mode_out_location_id] = JqxConverter.jqxDropDownList(record.locations) 
-        response[:jqxDropDownLists][:network_type] = JqxConverter.jqxDropDownList(Network.network_types)
+      record = Network.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else       
 
-        render json: response 
-      }
+        format.html {render :layout => 'popup'}
+        format.json { 
+        
+        
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])      
+          response[:jqxDropDownLists][:smart_mode_product_id] = JqxConverter.jqxDropDownList(current_user.entity.production_products) 
+          response[:jqxDropDownLists][:smart_mode_in_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+          response[:jqxDropDownLists][:smart_mode_out_location_id] = JqxConverter.jqxDropDownList(record.locations) 
+          response[:jqxDropDownLists][:network_type] = JqxConverter.jqxDropDownList(Network.network_types)
+
+          render json: response 
+        }
+      end
     end    
   end
 
@@ -59,11 +66,11 @@ class Maintenance::NetworksController < ApplicationController
 
   # GET /networks/1/edit
   def edit
-    record = Network.find(params[:id])
+    
     respond_to do |format|
-      if can? :update, record
         format.html {render :layout => 'popup'}
         format.json { 
+          record = Network.find(params[:id])
           response = {}
           response[:jqxDropDownLists] = {}        
           response[:record] = record              
@@ -75,9 +82,6 @@ class Maintenance::NetworksController < ApplicationController
 
           render json: response 
         }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
     end
   end
 

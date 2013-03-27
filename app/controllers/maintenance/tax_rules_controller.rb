@@ -1,6 +1,6 @@
 class Maintenance::TaxRulesController < ApplicationController
-
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
   # GET /TaxRules
   # GET /TaxRules.json
@@ -17,19 +17,23 @@ class Maintenance::TaxRulesController < ApplicationController
   # GET /TaxRules/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
+      record = TaxRule.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else             
+        format.html {render :layout => 'popup'}
+        format.json { 
         
-        record = TaxRule.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record  
-	
-		    response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record  
 
-        render json: response 
-      }
+    	    response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+
+          render json: response 
+        }
+      end
     end    
   end
 
@@ -56,23 +60,18 @@ class Maintenance::TaxRulesController < ApplicationController
 
   # GET /TaxRules/1/edit
   def edit
-    record = TaxRule.find(params[:id])
     respond_to do |format|
-      if can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-          response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList([current_user.entity.skus])                            
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
-
-          render json: response 
-        }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
+      format.html {render :layout => 'popup'}
+      format.json { 
+        record = TaxRule.find(params[:id])
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
+        response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList([current_user.entity.skus])                            
+        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
+        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
+        render json: response 
+      }        
     end
   end
 

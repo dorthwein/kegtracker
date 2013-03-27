@@ -1,7 +1,9 @@
 class Maintenance::SkusController < ApplicationController
   before_filter :authenticate_user!
+  layout "web_app"
   load_and_authorize_resource
-  
+ 
+
   # GET /skus
   # GET /skus.json
   def index
@@ -18,23 +20,27 @@ class Maintenance::SkusController < ApplicationController
   # GET /skus/1.json
   def show
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = Sku.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList(current_user.entity.products)
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        response[:jqxDropDownLists][:primary_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.all)
-        response[:jqxDropDownLists][:tier_1_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_1 => 1))
-        response[:jqxDropDownLists][:tier_2_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_2 => 1))
-        response[:jqxDropDownLists][:tier_3_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_3 => 1))
-        response[:jqxDropDownLists][:tier_4_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_4 => 1))
+      record = Sku.find(params[:id])              
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else       
 
-        render json: response 
-      }
+        format.html {render :layout => 'popup'}
+        format.json {   
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList(current_user.entity.products)
+          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
+          response[:jqxDropDownLists][:primary_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.all)
+          response[:jqxDropDownLists][:tier_1_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_1 => 1))
+          response[:jqxDropDownLists][:tier_2_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_2 => 1))
+          response[:jqxDropDownLists][:tier_3_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_3 => 1))
+          response[:jqxDropDownLists][:tier_4_asset_type_id] = JqxConverter.jqxDropDownList(AssetType.where(:tier_4 => 1))
+  
+          render json: response 
+        }
+      end
     end  
   end
 
@@ -64,11 +70,10 @@ class Maintenance::SkusController < ApplicationController
 
   # GET /skus/1/edit
   def edit
-    record = Sku.find(params[:id])
     respond_to do |format|
-      if can? :update, record
         format.html {render :layout => 'popup'}
         format.json { 
+          record = Sku.find(params[:id])
           response = {}
           response[:jqxDropDownLists] = {}        
           response[:record] = record              
@@ -82,9 +87,6 @@ class Maintenance::SkusController < ApplicationController
 
           render json: response 
         }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
     end
   end
 

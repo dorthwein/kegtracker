@@ -27,6 +27,9 @@ Cobalt::Application.routes.draw do
 	  	resources :prices
 	  	resources :tax_rules 
 	  	resources :locations 
+		
+
+	  	
 #		devise_for :users	  	
 	  	resources :users 
 	    resources :networks	  			  	
@@ -57,17 +60,30 @@ Cobalt::Application.routes.draw do
 #		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
 		
 		# Asset
-		match 'asset/sku_summary_report_advanced' => 'asset#sku_summary_report_advanced', :via => [:get, :post]
-		match 'asset/sku_summary_report_simple' => 'asset#sku_summary_report_simple', :via => [:get, :post]		
+		match 'assets/sku_summary_report_advanced' => 'assets#sku_summary_report_advanced', :via => [:get, :post]
+		match 'assets/sku_summary_report_simple' => 'assets#sku_summary_report_simple', :via => [:get, :post]		
+
+		resources :assets	
+		resources :locations
+		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]
 		
-		match 'asset/browse' => 'asset#browse', :via => [:get, :post]		
-		match "asset/browse/row_select" => 'asset#browse_row_select', :via => [:get, :post]
-		match "asset/browse/life_cycle_select" => 'asset#browse_life_cycle_select', :via => [:get, :post]
+		resources :asset_cycles do 
+			resources :asset_activity_facts
+		end
+
+
+		
+		resources :completed_asset_cycles
+
+
+#		match 'asset/browse' => 'asset#browse', :via => [:get, :post]		
+#		match "asset/browse/row_select" => 'asset#browse_row_select', :via => [:get, :post]
+#		match "asset/browse/life_cycle_select" => 'asset#browse_life_cycle_select', :via => [:get, :post]
 
 		# Location
-		match 'location/browse' => 'location#browse', :via => [:get, :post]		
-		match "location/browse/row_select" => 'location#browse_row_select', :via => [:get, :post]		
-		match "location/browse/asset_select" => 'location#browse_asset_select', :via => [:get, :post]				
+#		match 'location/browse' => 'location#browse', :via => [:get, :post]		
+#		match "location/browse/row_select" => 'location#browse_row_select', :via => [:get, :post]		
+#		match "location/browse/asset_select" => 'location#browse_asset_select', :via => [:get, :post]				
 
 		# Network
 		match 'network/in_out_asset_report_advanced' => 'network#in_out_asset_report_advanced', :via => [:get, :post]

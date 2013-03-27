@@ -32,6 +32,8 @@ class Asset
 
 	belongs_to :product, index: true	
 	field :product_description, type: String		
+
+	belongs_to :product_entity, :class_name => 'Entity', index: true
 	field :product_entity_description, type: String # AKA Brewery
 	
 	# asset status: 0 = Empty, 1 = Full, 2 = In Market
@@ -259,14 +261,14 @@ class Asset
 		
 		self.location_network = self.location.network		
 #		self.fill_network = self.fill_location.network		
-
+		self.product_entity = self.product.entity rescue nil
 
 		# Check Descriptions
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description	
 		self.product_description = self.product.description
 		
-		self.product_entity_description = self.product.nil? ? ' ' : self.product.entity.description	
+		self.product_entity_description = self.product_entity.description
 		self.asset_type_description = self.asset_type.description	
 		self.asset_status_description = self.get_asset_status_description		
 		self.handle_code_description = self.get_handle_code_description

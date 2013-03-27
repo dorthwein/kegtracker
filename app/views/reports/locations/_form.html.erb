@@ -1,0 +1,98 @@
+<div>
+	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
+	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+</div>
+<table class="popup jqxValidator">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Details </h3> </th>			
+		</tr>
+
+		<tr>
+			<td>	<b> Description </b>	</td>
+			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>
+				<b>	Account # </b>
+			</td>
+			<td>
+				<input type="text" id="externalID" class="jqxInput" data-role="none" />	            
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b> Network </b>
+			</td>
+			<td>
+				<div id="network_id" class="jqxDropDownList required "> 
+				</div>
+			</td>
+			<td>
+            	<b> Location Type </b>
+            </td>
+            <td>
+          		<div id="location_type" class="jqxDropDownList required ">					
+          	</td>	
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> Address </h3> </th>
+		</tr>
+	
+
+		<tr>
+			<td>
+				<b> Address Name </b>
+
+			</td>
+			<td>
+				<input type="text" id="name" class="jqxInput" data-role="none" />
+			</td>
+			<td>	
+				<b> Street </b>
+
+			</td>
+			<td>
+				<input type="text" id="street" class="jqxInput" data-role="none" />
+			</td>
+
+		</tr>
+		<tr>
+			<td>
+				<b> City </b>
+			</td>
+			<td>
+				<input type="text" id="city" class="jqxInput" data-role="none" />	
+			</td>
+			<td>
+				<b> State </b>
+			</td>
+			<td>
+				<input type="text" class="jqxInput" id="state" data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<td>	</td>
+			<td>	</td>
+			<td>
+				<b> Zip </b>
+			</td>
+			<td>
+				<input type="text" id="zip" class="jqxInput" data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<th colspan="4"> 
+				<h3> 
+					Assets 
+					<input type="button" value="Excel" class='excelExport right' data-role="none"/>		
+				</h3>
+				
+			</th>			
+		</tr>
+		<tr>
+			<td colspan="4">
+				<div id="asset_id" class="jqxGrid localLoad">	</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>	

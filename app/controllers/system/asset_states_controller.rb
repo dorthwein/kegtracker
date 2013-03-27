@@ -1,6 +1,7 @@
 class System::AssetStatesController < ApplicationController
 	before_filter :authenticate_user!
 	load_and_authorize_resource
+  layout "web_app"
 
   # GET /asset_states
   # GET /asset_states.json

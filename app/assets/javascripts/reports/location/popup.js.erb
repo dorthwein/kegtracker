@@ -1,0 +1,63 @@
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+// # Place all the behaviors and hooks related to the matching controller here.
+// # All this logic will automatically be available in application.js.
+
+$(document).on('pageshow', '#reports_locations_popup', function() {
+	$.mobile.loading('show');
+	var theme = settings.theme
+
+	var url =  system.server + $('.ui-page-active').attr('data-url') 
+
+	var source = {
+		datatype: "json",
+		type: "GET",
+		datafields: [
+			{name: 'product_description', type: 'string'}, 
+			{name: 'asset_type_description', type: 'string'}, 			
+			{name: 'location_description', type: 'string'}, 
+			{name: 'location_network_description', type: 'string'}, 
+			{name: 'last_action_time', type: 'date'},
+			{name: '_id'}
+		], 
+		root: "jqxGrid",
+		url: url
+	};
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			$.mobile.loading('show');	
+		},
+		loadComplete: function (data) {			
+			$.mobile.loading('hide');
+		},
+		loadError: function (xhr, status, error) { }
+	});
+	//	window.dataAdapter = dataAdapter
+
+	// 	Initialize Grid
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['height'] = 150;
+	gridSettings['groupable'] = false;
+	gridSettings['columns'] = [
+		{text: 'Product', datafield: 'product_description', filtertype:' checkedlist'},
+		{text: 'Size', datafield: 'asset_type_description', filtertype:' checkedlist'},
+		{text: 'Location', datafield: 'location_description', filtertype:' checkedlist'},
+		{text: 'Network', datafield: 'location_network_description', filtertype:' checkedlist'},
+		{text: 'Date', datafield: 'last_action_time', filtertype:' date', cellsformat:'d'},		
+		{text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = system.server + '/reports/assets/' + rowdata['_id'] //+ "/edit"
+			
+			window.location = url			
+
+		}},	
+
+	]
+	$(".jqxGrid").jqxGrid( gridSettings );	
+
+
+});

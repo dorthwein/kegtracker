@@ -1,0 +1,124 @@
+<div>
+	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
+	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>	
+	<button id="asset_cycle_fact_id" data-url="/reports/asset_cycles/" class=" right popup jqxButton jqxRecordLinkButton" data-role="none"> Asset Cycle	</button>	
+</div>
+<table class="popup jqxValidator">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Current Life Cycle </h3> </th>			
+		</tr>
+		<tr>
+			<td>	<b>  Last Scene </b> </td>
+			<td>
+				<div id="last_action_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+
+			<td>	<b> Fill Date  </b> </td>
+			<td>
+				<div id="fill_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+		</tr>
+		<tr>
+			<td>	<b>  Delivery Date </b> </td>
+			<td>
+				<div id="delivery_time" class='jqxDateTimeInput'>	</div>				
+			</td>
+
+			<td>	<b> Pickup Date  </b> </td>
+			<td>
+				<div id="pickup_time" class='jqxDateTimeInput'>		</div>				
+			</td>
+		</tr>		
+		<tr>
+			<td>	
+				<b> Product </b>	
+			</td>
+
+			<td>	
+				<div id="product_id" class="jqxDropDownList">	</div>
+			</td>
+			<td>	
+				<b> Brewery </b>	
+			</td>
+
+			<td>	
+				<div id="product_entity_id" class="jqxDropDownList">	</div>
+			</td>
+		</tr>				
+		<tr>
+			<td> 
+				<b> Fill Count</b>
+			</td>
+			<td>
+				<input type="text" id="fill_count" class="jqxInput"  data-role="none" />
+			</td>
+			<td> </td>
+			<td> </td>
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> Asset Details </h3> </th>			
+		</tr>
+
+		<tr>	
+			<td>	
+				<b> Asset Type </b>	 	
+			</td>
+			
+			<td>	
+				<div id="asset_type_id" class="jqxDropDownList">	</div>
+			</td>		
+
+	
+			<td>	
+				<b> Asset Owner </b>	 	
+			</td>
+			
+			<td>	
+				<div id="entity_id" class="jqxDropDownList">	</div>
+			</td>		
+		</tr>				
+		<tr>
+			<td> 
+				<b> Tag Value </b>
+			</td>
+			<td>
+				<input type="text" id="tag_value" class="jqxInput" data-role="none" />
+			</td>
+			
+			<td> 
+				<b> Tag Key </b>
+			</td>			
+			<td>
+				<input type="text" id="tag_key" class="jqxInput"  data-role="none" />
+			</td>			
+
+		</tr>
+		<tr>
+			<td> 
+				<b>Net ID </b>
+			</td>
+			<td>
+				<input type="text" id="netid" class="jqxInput"  data-role="none" />
+			</td>
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> Invoice Details </h3> </th>			
+		</tr>
+		<tr>
+			<td> 
+				<b> Invoice # </b>
+			</td>
+			<td>
+				<input type="text" id="invoice_number" class="jqxInput" disabled data-role="none" />
+			</td>
+			<td> 
+				<b> Date</b>
+			</td>
+			<td>
+				<div id="invoice_date" class='jqxDateTimeInput'>	</div>					
+			</td>
+		</tr>
+
+	</tbody>
+</table>	

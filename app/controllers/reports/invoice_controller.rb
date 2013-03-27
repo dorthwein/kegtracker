@@ -1,4 +1,5 @@
 class Reports::InvoiceController < ApplicationController
+	layout "web_app"
 	def lookup
 		respond_to do |format|
 			format.html 

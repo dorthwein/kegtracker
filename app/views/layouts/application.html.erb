@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
     <meta name="viewport" content="width=960, user-scalable=yes" />   
 </head>
-<body> 
+<body style="display:none"> 
 	<div data-role="page" data-cache="never" id="<%= request.path.gsub('/', '_') %>" data-url="<%= request.path %>">		
 		<div id="page_header" data-role="header" data-position="fixed" style="position:fixed; top:0px; height:30px; padding-top:0;" data-theme="none" >
 			<% if !user_signed_in? %>			
@@ -187,7 +187,7 @@
             
 			<div style="clear:both"> </div>	
 		</div>
-		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:10px;">			
+		<div id="content" data-role="content" style="position:relative; padding-bottom:40px; top:0px;">			
 		<!-- Main Content -->	
 			<%= yield %>														
 		</div>
