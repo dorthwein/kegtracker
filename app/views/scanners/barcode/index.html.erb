@@ -257,20 +257,19 @@ $(document).ready(function(){
 			                if (  $("#handle_code").jqxDropDownList('getSelectedItem').value == 4 ) {
 			                	if( $("#product_id").jqxDropDownList('getSelectedItem') != null){			                		
 			                		return true;
-			                	} else {
-			                		return false;
-								}
+			                	} else { return false; }
 			            	} else {return true;}			           	
 		        		}
 		        	}
 		        },	        
-		        { input: '#asset_type_id', message: 'Asset Type Required!', action: 'keyup, blur',rule: function(input, commit) {			            			            
-			            if($("#handle_code").jqxDropDownList('getSelectedItem').value == 4){	            	
-			                if (  $("#asset_type_id").jqxDropDownList('getSelectedItem') != null){
-			                	return true;
-			                } else { return false; }		                
-						}
-						return true;  
+		        { input: '#asset_type_id', message: 'Asset Type Required!', action: 'keyup, blur',rule: function(input, commit) {
+			            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
+			                if (  $("#handle_code").jqxDropDownList('getSelectedItem').value == 4 ) {
+				                if (  $("#asset_type_id").jqxDropDownList('getSelectedItem') != null){
+				                	return true;
+				                } else { return false;}		                
+				            } else {return true;}
+						} 
 		        	}
 		        },
 		        { input: '#invoice_number', message: 'Invoice # Required!', action: 'keyup, blur',rule: function(input, commit) {			            			            
