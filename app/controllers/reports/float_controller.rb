@@ -29,9 +29,12 @@ class Reports::FloatController < ApplicationController
 #					default_network = Network.find(params['location_network_id'])					
 #				end
 				
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date) #.where(:report_entity => current_user.entity) #, :location_network => default_network)				
-				print facts.to_json
-#		    	response = {:grid => facts, :location_networks => location_network_list}
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).any_of(
+					{:fill_quantity.gt => 0},	
+					{:delivery_quantity.gt => 0},
+					{:pickup_quantity.gt => 0}, 
+					{:move_quantity.gt => 0}, 						
+				)
 		    	response = {:grid => facts}
 		    	
 
@@ -59,16 +62,7 @@ class Reports::FloatController < ApplicationController
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 
-#				visible_networks = current_user.entity.production_networks
-#		    	fill_network_list = JqxConverter.jqxDropDownList(visible_networks)
-		    	
-#				if params['fill_network_id'].nil?
-#					default_network = visible_networks[0]
-#				else
-#					default_network = Network.find(params['fill_network_id'])					
-#				end
 				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 1).gt(life_cycle_completed_cycles: 0)
-#				facts = AssetFillToFillCycleFactByFillNetwork.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #, :fill_network => default_network)				
 		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}
 		   		 	 
@@ -87,32 +81,20 @@ class Reports::FloatController < ApplicationController
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
-
-#				visible_networks = current_user.entity.distribution_networks
-#		    	delivery_network_list = JqxConverter.jqxDropDownList(visible_networks)
-		    	
-#				if params['fill_network_id'].nil?
-#					default_network = visible_networks[0]
-#					print params['delivery_network_id'].class.to_s + "<---"
-#				else
-#					default_network = Network.find(params['delivery_network_id'])					
-#				end
 				
 				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(life_cycle_completed_cycles: 0).or({location_network_type: 2}, {location_network_type: 3})
 				
-#				facts = NetworkFact.between(fact_time: start_date..end_date).where(:report_entity => current_user.entity) #), :delivery_network => default_network)
 				by_network = current_user.entity.visible_asset_cycle_facts #.where(cycle_complete: 1, cycle_quality: 1) #.map{|x| x.product_id}.flatten.uniq
-				print 'fuck'
 				by_network.each do |x|
 					print x.product.description.to_s + "\n"
 				end
 
-		    	current_user.entity.visible_asset_cycle_facts.each do |x|
-		    		print x.start_network.description + '---' + x.product.description + '---' + "\n"
-		    		print x.fill_network.description + '---' + x.product.description + '---' + "\n"
-		    		print x.delivery_network.description + '---' + x.product.description + '---' + "\n"
-		    		print x.start_network.description + "\n"
-		    	end
+#		    	current_user.entity.visible_asset_cycle_facts.each do |x|
+#		    		print x.start_network.description + '---' + x.product.description + '---' + "\n"
+#		    		print x.fill_network.description + '---' + x.product.description + '---' + "\n"
+#		    		print x.delivery_network.description + '---' + x.product.description + '---' + "\n"
+#		    		print x.start_network.description + "\n"
+#		    	end
 		    	response = {:grid => facts}
 		    	#response = {:grid => facts, :delivery_networks => delivery_network_list}
 		    	 

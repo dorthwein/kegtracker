@@ -1,14 +1,12 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
-$(document).on('pageshow', '.popup_edit', function(event){	
-	$.mobile.loading('show');
+//$(document).on('pageshow', '.popup_edit', function(event){		 
+function edit_popup(){
 	var theme = settings.theme	
 	jqxIntialize();
-
-	var url =  system.server + $('.ui-page-active').attr('data-url')
-	var record_url = url.slice(0, url.length - 5);
+	var record_url = location.href.slice(0, location.href.length - 5);
 	$.ajax({
-		url: url,
+		url: location.href,
 		type: "GET",
 		dataType : "JSON",
 		data: params,
@@ -52,7 +50,7 @@ $(document).on('pageshow', '.popup_edit', function(event){
 	        	$(this).html('Off');
 	        }
 		});		
-		$.mobile.loading('hide');
+		 
 	});
 
 	$(".view").click(function () {	
@@ -61,7 +59,7 @@ $(document).on('pageshow', '.popup_edit', function(event){
 		
 	$(".save").click(function () {
 		if(	$('.jqxValidator').jqxValidator('validate') ){		
-			$.mobile.loading('show');		
+			 		
 	        var params = {record: {}}
 			$.each($('.jqxDropDownList'), function(key, value){
 				element = $('#' + value.id)	
@@ -91,9 +89,6 @@ $(document).on('pageshow', '.popup_edit', function(event){
 				element = $('#' + value.id)
 				params['record'][value.id] = $(element).val();
 			})
-
-			var url =  system.server + $('.ui-page-active').attr('data-url') + '.json';
-	//		url = url.substring(0, url.length - 4) + '.json';		    
 			$.ajax({
 				type: "PUT",
 				dataType : "JSON",
@@ -110,6 +105,5 @@ $(document).on('pageshow', '.popup_edit', function(event){
 	});
 	$(".cancel").click(function () {
 		window.parent.$('.jqxWindow').jqxWindow('close');
-
 	});
-});
+};

@@ -1,6 +1,6 @@
 Cobalt::Application.routes.draw do 	
   	match 'access_denied' => 'access_denied#index', :via => [:get, :post]  	
-
+	match 'popup_record_not_found' => 'access_denied#popup_record_not_found', :via => [:get, :post]  	  	
 	namespace :accounting do 		
 		resources :invoices do
 			resources :invoice_line_items

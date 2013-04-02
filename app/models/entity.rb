@@ -1,10 +1,9 @@
 class Entity
   include Mongoid::Document
   include Mongoid::Timestamps  
-	field :record_status, type: Integer, default: 1
-	
+	field :record_status, type: Integer, default: 1	
 	has_many :users
-	has_many :locations	
+	has_many :locations
 	has_many :products
 	has_many :networks
 	has_many :assets
@@ -35,8 +34,7 @@ class Entity
 #	has_one :network
 
 # Fields
-	field :admin_user_email, type: String    
-
+	field :admin_user_email, type: String
 	field :payment_token, type: String
 	field :card_ending, type: Integer
 
@@ -100,11 +98,13 @@ class Entity
 
 #	end
 	def distribution_partnerships_shared_networks
-		networks = []
-		self.distribution_partnerships.each do |x|
-			networks = networks + x.partner.networks.where(:network_type => 2)
-		end
-		return networks
+		
+		Network.where(:entity_id.in => self.distribution_partnerships.map{|x| x.partner_id}, :network_type => 2)
+#		networks = []
+#		self.distribution_partnerships.each do |x|
+#			networks = networks + x.partner.networks.where(:network_type => 2)
+#		end
+#		return networks
 	end
 
 #############################
@@ -120,29 +120,21 @@ class Entity
 #	end
 
 	def production_partnerships_shared_products
-		products = []
-		partnerships = ProductionPartnership.where(partner_id: self._id)
-		partnerships.each do |x|
-			products = products + x.entity.products
-		end
-		return products
+#		Moved to production products
 	end	
 
 	def production_partnerships_shared_networks
-		networks = []
-		self.production_partnerships.each do |x|
-			networks = networks + x.partner.networks.where(:network_type => 1)
-		end
-		return networks
+		Network.where(:entity_id.in => self.production_partnerships.map{|x| x.entity_id}, :network_type => 1)				
 	end
 
 #############################
 # Products 					#
 #############################
 	def production_products	
+		partner_entities = ProductionPartnership.where(:partner_id => self._id).map{|x| x.entity_id}
 		Product.any_of(
-			{ entity: self }, 	# Products I own
-			{ :_id.in => self.production_partnerships_shared_products.map{|x| x._id} },
+			{ entity_id: self._id }, 	# Products I own			
+			{ :entity_id.in => partner_entities}  # self.production_partnerships.map{|x| x.entity_id} }
 		)
 	end
 
@@ -152,30 +144,25 @@ class Entity
 	def visible_assets
 		# A product I produce, a keg I own, or a network I controll		
 		Asset.any_of( 
-				{ :location_network.in => self.networks.map{|x| x._id} },
-			  	{ :product.in => self.production_products.map{|x| x._id} }, 
-			  	{ :entity => self }
+				{ :location_network_id.in => self.networks.map{|x| x._id} },
+			  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+			  	{ :entity_id => self._id }
 		   	)
 	end
 
 	def visible_asset_activity_facts
 		AssetActivityFact.any_of( 
-				{ :location_network.in => self.networks.map{|x| x._id} },
-			  	{ :product.in => self.production_products.map{|x| x._id} },
-			  	{ :entity => self }
+				{ :location_network_id.in => self.networks.map{|x| x._id} },
+			  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+			  	{ :entity_id => self._id }
 		   	).desc(:fact_time)
-	end
-
-	def visible_fill_activity_facts
-		print 'visible_fill_activity_facts - DEPREICATED FUNCTION'
-#		self.visible_asset_activity_facts.where(:handle_code => 4).desc(:fact_time) #.to_a.shift
 	end
 
 	def visible_asset_cycle_facts
 		AssetCycleFact.any_of( 
-			{ :cycle_networks.in => self.networks.map{|x| x._id} },
-			{ :product.in => self.production_products.map{|x| x._id} },
-			{ :entity => self }
+			{ :location_network_id.in => self.networks.map{|x| x._id} },
+		  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+		  	{ :entity_id => self._id }
 		).desc(:start_time)
 	end
 
@@ -217,7 +204,7 @@ class Entity
 	def visible_locations
 		Location.any_of(
 			{ entity_id: self._id	},
-			{ :network_id.in => self.distribution_partnerships_shared_networks, location_type: 5 }		
+			{ :network_id.in => self.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5 }		
 		)
 	end        
 
@@ -229,7 +216,7 @@ class Entity
 		
 	end
 	def visible_invoices
-		Invoice.where(entity: self)
+		Invoice.where(entity_id: self._id)
 	end
 	def visible_invoice_attached_assets
 		InvoiceAttachedAsset.where(:invoice_id.in => self.visible_invoices.map{|x| x._id})
@@ -253,9 +240,22 @@ class Entity
 
   after_create :on_create  
   def on_create
+  	if self.mode == 1
+          Network.create(
+            :description => self.description.to_s + " Production",
+            :network_type => 1,
+            :entity => self,
+          )
+          Network.create(
+            :description => self.description.to_s + " Tap Room",
+            :network_type => 3,
+            :entity => self,
+          )
+
+  	end
   	if self.mode == 4
           Network.create(
-            :description => self.description.to_s + " Network",
+            :description => self.description.to_s + " Distribution",
             :network_type => 2,
             :entity => self,
           )

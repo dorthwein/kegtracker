@@ -1,13 +1,11 @@
 // # Place all the behaviors and hooks related to the matching controller here.
 // # All this logic will automatically be available in application.js.
 
-$(document).on('pageshow', '.popup_new', function(event){	
-	$.mobile.loading('show');	
-	jqxIntialize()
 
-	var url =  system.server + $('.ui-page-active').attr('data-url')
+function new_popup(){	 	
+	jqxIntialize()
 	$.ajax({
-		url: url,
+		url: location.href,
 		type: "GET",
 		dataType : "JSON",
 		data: params,
@@ -23,15 +21,12 @@ $(document).on('pageshow', '.popup_new', function(event){
 			$(element).jqxListBox({source: data['jqxListBoxes'][value.id]});			
 			$(element).jqxListBox('selectIndex', 0);
 		});
-
-//		$(".jqxGrid").jqxGrid({});
-
-		$.mobile.loading('hide');
+		 
 	});
 
 	$(".save").click(function () {		
 		if(	$('.jqxValidator').jqxValidator('validate')){
-			$.mobile.loading('show');		
+			 		
 	        var params = {record: {}}
 			$.each($('.jqxDropDownList'), function(key, value){
 				element = $('#' + value.id)				
@@ -61,17 +56,13 @@ $(document).on('pageshow', '.popup_new', function(event){
 				params['record'][value.id] = $(element).val();
 			})
 
-			var url =  system.server + $('.ui-page-active').attr('data-url');
-			url = url.substring(0, url.length - 4) + '.json';
 						
 			$.ajax({
 				type: "POST",
 				dataType : "JSON",
-				url: url,
+				url: location.href.substring(0, location.href.length - 4),
 				data: params,
 			}).done(function( data ) {						
-//				var jqxGrid = window.opener.dataAdapter
-//				jqxGrid.dataBind();
 				window.parent.dataAdapter.dataBind();					
 				window.parent.$('.jqxWindow').jqxWindow('close');
 			})
@@ -83,4 +74,4 @@ $(document).on('pageshow', '.popup_new', function(event){
 		window.parent.$('.jqxWindow').jqxWindow('close');
 //		window.close()
 	});
-});
+};

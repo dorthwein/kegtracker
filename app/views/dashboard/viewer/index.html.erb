@@ -62,3 +62,37 @@
 	
 	</div>				
 </div>
+<script>
+$(document).ready(function(){
+	var theme =  settings.theme // settings.theme
+	url = system.server + $('.ui-page-active').attr('data-url');
+    // LEFT OFF HERE!! BUILDING AJAX JSON CALLBACK TO PAGE FOR FILTER DATA
+    $(".dashboard.button").jqxButton({ theme: theme, width:'30%', height:50 });                
+//    Initialize window pane docking
+    $("#docking").jqxDocking({
+    	theme: theme,
+    	mode: 'docked',        
+        width: '100%',    
+    });
+
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_1');
+    $('#docking').jqxDocking('pinWindow', 'dashboard_slot_2');
+
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_1', 'keyboardCloseKey', 'none' );
+    $('#docking').jqxDocking('setWindowProperty','dashboard_slot_2', 'keyboardCloseKey', 'none' );
+
+    $('#docking').jqxDocking('hideAllCloseButtons');    
+
+    url = system.server + $('.ui-page-active').attr('data-url');
+    $.ajax({
+        type: "POST",        
+        dataType: "JSON",
+        data: {
+            date: $('#date_filter').jqxDateTimeInput('getDate')                
+        },
+        url: url,
+    }).done(function(data) {             
+        $("#dashboard_slot_2_content").jqxListBox({ source: data['recent_activity_data'], height: 300, width:'100%', theme: theme });
+    });
+})    
+</script>

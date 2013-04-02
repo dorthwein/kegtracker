@@ -1,121 +1,99 @@
-    <input type="button" style="float:left; margin:5px 0px 5px 0;" value="Export to Excel" id='excelExport' data-role="none"/>
-    
-    <input type="button" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
+<div class="full sidebar">
+    <div class="logo">    
+    </div>
 
-	<input id="fileupload" type="file" name="files[]" data-url="<%= request.fullpath %>/distributor_upload" multiple data-role="none">
+   	<input type="button" value="New" class='new' data-role="none"/>
+	<input type="button" value="Delete" class='delete' data-role="none" />
+    <input type="button" value="Excel" class='excelExport' data-role="none"/> 
 
+    <button class='jqxFilterToggle' data-role="none"> Filter Off </button>
+
+
+	<!-- Distributor Upload -->
+	<input type="button" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
+
+	<input id="fileupload" type="file" name="files[]" data-url="<%= request.fullpath %>/distributor_upload" multiple data-role="none" />
 	
 	<div id="progress" class="bar"> </div>	
-	
-    <div id="jqxGrid">
+    <div class="jqxGridColumnListBox">  </div>
+</div>
+<div class="full display">
+    <div class="toolbar">   
+
     </div>
+    <div class="jqxGrid full display"></div>
+</div>
 
+<script>
+$(document).ready(function(){        
 
-    <div id="docking" class="">
-        <div style="width:50%;">
-            <div id="window1" class="report_dock_window">
-            	<div>	Entity Details</div>
-	            <div>
-	            	<form id="form_validator">
-		            	<table style="width:100%;">
-		            		<thead>
-		            			<tr>
-		            				<th>
-					            		<h2> Entity Details </h2>	           	
-		            				</th>
-		            				<th> </th>
-		            				<th> </th><th> </th>
-		            				<th colspan="3">
-					            		<h2>  </h2>	           		            					
-		            				</th>	
-		            			</tr>
-							</thead>
-		            		<tbody>
-		            			<tr>
-		            				<td style="width:10%" colspan="1">  
-										<h3 >Display Name </h3>
-										 <input type="text" id="description" class="form_input" data-role="none" />
-		            				</td>
+	 	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'description' },
+			{ name: 'name'},
+			{ name: 'street' },
+			{ name: 'city' },
+			{ name: 'state' },
+			{ name: 'zip' },			
+			{ name: 'admin_user_email' },
+			{ name: 'mode' },
+			{ name: 'distribution_network_count' },
+			{ name: 'production_network_count' },
+			{ name: 'market_network_count' },
+			{ name: '_id' },
+		], 
+		url: location.href,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}
+		
+	};
 
-		            				<td style="width:10%" colspan="1">  
-						                <h3> Admin User </h3>
-						              	<div id="admin_user_id">						              		
-						              	</div>
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			 	
+		},
+		loadComplete: function (data) { 
+			 
+		},
+		loadError: function (xhr, status, error) { }      
+	});
 
-		            				</td>
-		            				<td style="width:10%" colspan="1"> 
+	// Initialize Grid
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [
+		{ text: 'Entity', datafield: 'description', filtertype: 'checkedlist' },	
+		{ text: 'Admin', datafield: 'admin_user_email'},
+		{ text: 'Address Name', datafield: 'name', filtertype: 'checkedlist' },		
+		{ text: 'Street', datafield: 'street', filtertype: 'checkedlist' },
+		{ text: 'City', datafield: 'city', filtertype: 'checkedlist' },			
+		{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },
+		{ text: 'Zip', datafield: 'zip' },
+		{ text: 'Mode', datafield: 'mode', filtertype: 'checkedlist' },			
+		{ text: 'Dist. Networks', width:100, datafield: 'distribution_network_count', filtertype: 'number' },			
+		{ text: 'Prod. Networks', width:100, datafield: 'production_network_count', filtertype: 'number' },			
+		{ text: 'Mrkt. Networks', width:100, datafield: 'market_network_count', filtertype: 'number' },
+        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            var url = location.href + "/" + rowdata['_id']            
+            openPopupWindow(url);           
+        }}, 
 
-		            				</td>
+	]
+    $(".jqxGrid").jqxGrid( gridSettings );  
+    
+	$("#distributor_upload_button").jqxButton({ theme: settings.theme,});                        
+	$("#distributor_upload_button").click(function () {		
 
-		            				<td style="width:10%" colspan="1"> 
-						            </td>
-
-		            			</tr>
-
-		            			<tr>
-		            				<td style="width:10%" colspan="1">  
-										<h3> Address Name </h3>
-										<input type="text" id="name" class="form_input" data-role="none" />
-
-		            				</td>
-		            				<td style="width:10%" colspan="1">  	
-										<h3> Street </h3>
-										<input type="text" id="street" class="form_input" data-role="none" />
-		            				</td>
-
-		            				<td style="width:10%" colspan="1">  	
-										 <h3> City </h3>
-										<input type="text" id="city" class="form_input" data-role="none" />	
-		            				</td>
-
-
-		            				<td style="width:10%" colspan="1"> 
-
-									</td>
-									<td style="width:10%" colspan="1"> 
-						            </td>
-
-		            			</tr>
-
-		            			<tr>
-		            				<td style="width:10%" colspan="1">  	
-										<h3> State </h3>
-										<input type="text" class="form_input" id="state" data-role="none" />
-		            					
-
-		            				</td>
-		            				<td style="width:10%" colspan="1">  	
-										<h3> Zip </h3>
-										<input type="text" id="zip" class="form_input" data-role="none" />
-		            				</td>
-		            				<td style="width:10%" colspan="1">  	
-
-		            				</td>
-		            				<td> </td>
-		            				<td> </td>
-		            				<td> 
-
-		            					<input type="button" style="width:100%; margin:5px auto 0 auto; float:right; min-width:200px;" value="Cancel" id='newCancelButton' data-role="none"/>
-		            					
-		            				</td>
-
-									<td> 	            				
-		            					<input type="button" style="width:100%; min-width:200px; display:none; margin:5px auto 0 auto; float:right;" value="Save" id='updateSaveButton' data-role="none"/>
-
-		            					<input type="button" style="width:100%; margin:5px auto 0 auto; float:right; min-width:200px;" value="Create" id='newSaveButton' data-role="none"/>
-		            				</td>	           				
-		            			</tr>	            				
-				
-		            		</tbody>
-		            	</table>
-		            </form>
-	            </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="popupWindow" style="display:none">
-        <div> Daily Asset Summary </div>
-        <div>   </div>
-    </div>
+	});
+	jqxIntialize()
+});
+</script>

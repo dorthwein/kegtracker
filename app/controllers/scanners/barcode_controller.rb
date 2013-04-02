@@ -1,6 +1,7 @@
 class Scanners::BarcodeController < ApplicationController
 	before_filter :authenticate_user!
 	layout "web_app"
+
   def index	
 #  	["T1",2,1,"we0ws","RF"]
     respond_to do |format|
@@ -13,20 +14,17 @@ class Scanners::BarcodeController < ApplicationController
         response[:handle_codes_auto_mode_off] = []                    
         
         # Scanner 
-        if current_user.scanner_delivery_pickup == 1
+        if current_user.operation > 0
           response[:handle_codes_auto_mode_on].push({:html => 'Move/Deliver/Pickup', :value => 5})
-          
           response[:handle_codes_auto_mode_off].push({:html => 'Deliver', :value => 1})
           response[:handle_codes_auto_mode_off].push({:html => 'Pickup', :value => 2})
           response[:handle_codes_auto_mode_off].push({:html => 'Move', :value => 5})
-        end
 
-        if current_user.scanner_fill == 1
+
+
           response[:handle_codes_auto_mode_on].push({:html => 'Fill', :value => 4})
           response[:handle_codes_auto_mode_off].push({:html => 'Fill', :value => 4})            
-        end
         
-        if current_user.scanner_add == 1        
           response[:toggle_options][:asset_type] = 1
           response[:handle_codes_auto_mode_off].push({:html => 'Add', :value => 4})            
         end

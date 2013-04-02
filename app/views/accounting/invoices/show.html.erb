@@ -2,3 +2,56 @@
 	<h3> Invoice</h3>
 </div>
 <%= render 'form' %>
+
+<script>
+$(document).ready(function(){
+//	url = system.server + $('.ui-page-active').attr('data-url') + '.json'
+	var source = {
+		datatype: "json",
+		type: "GET",
+		datafields: [
+			{name: 'sku_description', type: 'string'},
+			{name: 'quantity', type: 'number'},	
+			{name: 'invoice_attached_asset_count', type: 'number'},				
+			{name: '_id'},	
+		], 
+		url: location.href.substring(0, location.href.length - 4) + 'invoice_line_items',
+	};
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			 	
+		},
+		loadComplete: function (data) {			
+			 
+		},
+		loadError: function (xhr, status, error) { }
+
+	});
+	//	window.dataAdapter = dataAdapter
+	// 	Initialize Grid
+
+	$(".jqxGrid").jqxGrid({
+		// Grid Options
+		groupable: false,
+		sortable: true,       
+		filterable: false,
+		showfilterrow: false,		
+        autoshowfiltericon: false,		
+		theme: settings.theme,
+		width: '100%',
+		groupsexpandedbydefault: false,
+		height:  200,
+		source: dataAdapter,	
+		columnsresize: true,
+		altrows: true,		
+		columns: [
+			{text: 'SKU',  datafield: 'sku_description'},
+			{text: 'Fullfilled',  datafield: 'invoice_attached_asset_count', width:100},
+			{text: 'Qty',  datafield: 'quantity', width:100},
+		]
+	});
+	 
+});
+
+</script>

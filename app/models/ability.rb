@@ -1,6 +1,7 @@
 class Ability
   include CanCan::Ability
   def initialize(user)
+
 #CUSTOMER PERMISSIONS
 
 	# Scanner Permissions
@@ -22,20 +23,31 @@ class Ability
 		# Networks
 		# Products
 		# Scanner		
-
 		
  	if user.operation == 1 || user.operation == 2 || user.operation == 3
-		can [:read], Location, :_id => user.entity.visible_locations.map{|x| x._id}
-		can [:read], Asset, :_id => user.entity.visible_assets.map{|x| x._id}
-		can [:read], AssetCycleFact, :_id => user.entity.visible_asset_cycle_facts.map{|x| x._id}
-		can [:read], Network, :_id => user.entity.visible_networks.map{|x| x._id}
+		can [:read], Location, entity_id: user.entity_id
+		can [:read], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
+
+		can [:read], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
+		can [:read], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+		can [:read], Asset, :entity_id => user.entity_id 	# Assets I own
+
+		can [:read], AssetCycleFact, :product_id => user.entity.production_products		# Visible Products
+		can [:read], AssetCycleFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+		can [:read], AssetCycleFact, :entity_id => user.entity_id 	# Assets I own
+
+		can [:read], AssetActivityFact, :product_id => user.entity.production_products		# Visible Products
+		can [:read], AssetActivityFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+		can [:read], AssetActivityFact, :entity_id => user.entity_id 	# Assets I own
+
+		can [:read], Network, :entity_id => user.entity_id
 		can [:read], Product, :_id => user.entity.production_products.map{|x| x._id}
 		can [:read], Scanner
 		can [:read], Sku, :product_id => user.entity.production_products.map{|x| x._id}
 
 		# Viewing in Operations, Creation/Editing in Financial
 #		can [:read], Price, TBI
-		can [:read], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+		can [:read], Invoice, :entity_id => user.entity_id
 		can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
 		can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
 	end
@@ -50,10 +62,14 @@ class Ability
 	end
 	
 	if user.operation == 3
-		can [:update, :destroy], Location, :_id => user.entity.visible_locations.map{|x| x._id}
-		can [:update, :destroy], Asset, :_id => user.entity.visible_assets.map{|x| x._id}
-		can [:update, :destroy], AssetCycleFact, :_id => user.entity.visible_asset_cycle_facts.map{|x| x._id}
-		can [:update, :destroy], Network, :_id => user.entity.visible_networks.map{|x| x._id}
+		can [:update, :destroy], Location, entity_id: user.entity_id
+		can [:update, :destroy], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
+
+		can [:update, :destroy], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
+		can [:update, :destroy], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+		can [:update, :destroy], Asset, :entity_id => user.entity_id 	# Assets I own
+
+		can [:update, :destroy], Network, :entity_id => user.entity_id 
 		can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}
 		can [:update, :destroy], Sku, :product_id => user.entity.production_products.map{|x| x._id}
 	end

@@ -1,4 +1,7 @@
 class AccountController < ApplicationController
+	before_filter :authenticate_user!	
+	layout "web_app"
+
 	def index
 		if !params[:token].nil?
 			token = params[:token]			

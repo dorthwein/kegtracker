@@ -29,16 +29,12 @@ class Api::V1::MobileAppController < ApplicationController
 		  	response[:db][:sync][:processed_scans] = params[:scan_ids]
 		  	response[:db][:sync][:asset_types] = AssetType.gte(updated_at: last_sync)
 		  	response[:db][:sync][:locations] = user.entity.visible_locations.gte(updated_at: last_sync)
-		  	response[:db][:sync][:assets] = user.entity.visible_assets.gte(updated_at: last_sync)
+#		  	response[:db][:sync][:assets] = user.entity.visible_assets.gte(updated_at: last_sync)
 		  	response[:db][:sync][:products] = user.entity.production_products.gte(updated_at: last_sync)
 
 			response[:db][:sync][:invoice_line_items] = user.entity.invoice_line_items.gte(updated_at: last_sync)
-
-			print user.entity.invoice_line_items.gte(updated_at: last_sync).to_json
-			
 			response[:db][:sync][:invoices] = user.entity.invoices.gte(updated_at: last_sync)
-
-		  	response[:db][:sync][:invoice_attached_assets] = []		  
+#		  	response[:db][:sync][:invoice_attached_assets] = []		  
 
 		  	render json: response
 

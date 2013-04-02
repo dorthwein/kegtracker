@@ -18,3 +18,60 @@
         <div class="jqxGrid full display"></div>
     </div>
 
+<script>
+     
+$(document).ready(function(){
+    var source =
+    {
+        datatype: "json",
+        datafields: [
+            { name: 'entity_description'},
+            { name: 'description' },
+            { name: 'externalID' },
+            { name: 'product_type_description' },
+            { name: 'upc' },
+            { name: '_id' }
+        ], 
+        url: location.href,
+        updaterow: function (rowid, rowdata, commit) {
+            // synchronize with the server - send update command
+            // call commit with parameter true if the synchronization with the server is successful 
+            // and with parameter false if the synchronization failder.     
+            commit(true);
+        }
+        
+    };
+
+    window.dataAdapter = new $.jqx.dataAdapter(source, {
+        beforeSend: function(jqXHR, settings){
+                
+        },
+        loadComplete: function (data) { 
+             
+        },
+        loadError: function (xhr, status, error) { }      
+    });
+//  window.dataAdapter = dataAdapter
+
+    // Initialize Grid
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [
+        { text: 'Brewer', datafield: 'entity_description', filtertype: 'checkedlist' },
+        { text: 'Product', datafield: 'description' },
+        { text: 'Product #', datafield: 'externalID' }, 
+        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            var url = location.href + "/" + rowdata['_id']
+            openPopupWindow(url)
+        }}, 
+    ]
+    $(".jqxGrid").jqxGrid( gridSettings );  
+    jqxIntialize()
+});
+
+
+
+</script>

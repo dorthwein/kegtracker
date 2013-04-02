@@ -8,9 +8,8 @@
 */
 
 $(document).on('pageshow', '#_scanners_barcode', function(event){		
-	$.mobile.loading('show');					
+	 					
     var theme = settings.theme;
-
 	url = system.server + $('.ui-page-active').attr('data-url')	
 
 	var toThemeProperty = function (className) {
@@ -107,6 +106,7 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 		type: "POST",
 		dataType : "JSON",		
 	}).done(function( data ) {				
+
 		$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_on']});
 	    $("#handle_code").bind('select', function (event) {
 		    var args = event.args;
@@ -119,8 +119,10 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 		        var value = item.value;
 		    	if(value == 4){
 					$('#product_id').jqxDropDownList({disabled: false});		    		
+					$('#asset_type_id').jqxDropDownList({disabled: false});		    		
 		    	} else {
 		    		$('#product_id').jqxDropDownList({disabled: true});		    		
+		    		$('#asset_type_id').jqxDropDownList({disabled: true});		    		
 		    	}
 		    }                        	        
 	    });
@@ -131,8 +133,8 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 	
 	    $('.flip_switch.scanner').jqxSwitchButton({ height: 20, width: 75, theme: 'fresh', checked: false });
 	    $('#toggle_auto_mode').jqxSwitchButton({checked: true});
-	    $('#toggle_auto_mode').val(1);
-		$('#toggle_correction').val(0);
+	    $('#toggle_auto_mode').val('1');
+		$('#toggle_correction').val('0');
 
 	    $("#location_network_id").bind('select', function (event) {
 		    var args = event.args;
@@ -152,22 +154,22 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 		$('#toggle_invoice').bind('checked', function (event) { 
 			$('#scan_invoice').show()
 			$(".jqxGrid").jqxGrid('render');
-			$('#toggle_invoice').val(1)
+			$('#toggle_invoice').val('1')
 		}); 
 		$('#toggle_invoice').bind('unchecked', function (event) { 
 			$('#scan_invoice').hide()
-			$('#toggle_invoice').val(0)
+			$('#toggle_invoice').val('0')
 		}); 		
 	// ********************	    
 	// Auto Mode Toggle
 	// ********************	
 		$('#toggle_auto_mode').bind('checked', function (event) { 
 			$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_on']});
-			$('#toggle_auto_mode').val(1)
+			$('#toggle_auto_mode').val('1')
 		}); 
 		$('#toggle_auto_mode').bind('unchecked', function (event) { 
 			$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_off']});			
-			$('#toggle_auto_mode').val(0)
+			$('#toggle_auto_mode').val('0')
 		}); 
 
 	// ********************
@@ -175,19 +177,19 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 	// ********************	
 		$('#toggle_asset_type').bind('checked', function (event) { 
 			$('#asset_type_id').jqxDropDownList({disabled: false});
-			$('#toggle_asset_type').val(1)
+			$('#toggle_asset_type').val('1')
 		
 		}); 
 		$('#toggle_asset_type').bind('unchecked', function (event) { 
 			$('#asset_type_id').jqxDropDownList({disabled: true});
-			$('#toggle_asset_type').val(0)
+			$('#toggle_asset_type').val('0')
 		}); 
 
 	// ********************
 	// Correction Toggle
 	// ********************	
 		$('#toggle_correction').bind('checked', function (event) { 
-			$('#toggle_correction').val(1)
+			$('#toggle_correction').val('1')
 		}); 
 		$('#toggle_correction').bind('unchecked', function (event) { 
 			$('#toggle_correction').val(0)
@@ -233,8 +235,7 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 		        	}
 		        },	        
 		        { input: '#asset_type_id', message: 'Asset Type Required!', action: 'keyup, blur',rule: function(input, commit) {			            			            
-			            if($("#toggle_asset_type").val() == 1 ){
-			            	
+			            if($("#toggle_asset_type").val() == 1 ||  $("#handle_code").jqxDropDownList('getSelectedItem').value == 4 ){
 			                if (  $("#asset_type_id").jqxDropDownList('getSelectedItem') != null){
 			                	return true;
 			                } else { return false; }		                
@@ -255,7 +256,7 @@ $(document).on('pageshow', '#_scanners_barcode', function(event){
 			],
 			theme: theme
 		});
-		$.mobile.loading('hide');
+		 
 	});
 
 	$("#scan_input").jqxInput({placeHolder: "Scan Barcode...", height: 25, minLength: 1, theme: theme });	
@@ -459,5 +460,3 @@ $(document).on('pagebeforehide', '#_scanners_barcode', function(event){
 	delete pgFunc;
 	delete scanOptions;
 });
-
-

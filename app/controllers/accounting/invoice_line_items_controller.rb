@@ -1,15 +1,18 @@
 class Accounting::InvoiceLineItemsController < ApplicationController
   before_filter :authenticate_user!
   layout "web_app"
-  load_and_authorize_resource
+#  load_and_authorize_resource
   # GET /Invoices
   # GET /Invoices.json  
   def index
     respond_to do |format|
       format.html # index.html.erb
+
       format.json { 
-        invoice = Invoice.find(params[:invoice_id])
+        invoice = Invoice.find(params[:invoice_id])        
         records = JqxConverter.jqxGrid(invoice.invoice_line_items)
+        print records.to_json + 'fuck'
+
         render json: records
       }
     end

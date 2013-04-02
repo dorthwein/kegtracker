@@ -2,8 +2,7 @@
 // # All this logic will automatically be available in application.js.
 
 
-$(document).on('pageshow', '.popup_show', function(event){	
-	$.mobile.loading('show');
+function show_popup(){
 	var theme = settings.theme
 	// Initialize Fields
 	jqxIntialize();
@@ -33,9 +32,9 @@ $(document).on('pageshow', '.popup_show', function(event){
     });
 
     // Load record data
-	var url =  system.server + $('.ui-page-active').attr('data-url')
+	
 	$.ajax({
-		url: url,
+		url: location.href,
 		type: "GET",
 		dataType : "JSON",
 		data: params,
@@ -80,19 +79,14 @@ $(document).on('pageshow', '.popup_show', function(event){
 			element = $('#' + value.id + '.jqxRecordLinkButton')
 			$(element).data('data-id', data['jqxRecordLinkButton'][value.id])
 		});		
-		$.mobile.loading('hide');
+		 
 
 	})
 
-	
-	$(".edit").click(function () {
-		document.location.href = url + '/edit'
-	});
-	
+		
 	$(".save").jqxButton({disabled:true})
 	$(".cancel").click(function () {
 //		window.parent.dataAdapter.dataBind();					
 		window.parent.$('.jqxWindow').jqxWindow('close');
-
 	});	
-});
+};

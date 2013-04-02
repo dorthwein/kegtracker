@@ -2,15 +2,7 @@
 		<div class="logo">
 			<h3> 
 			
-			</h3>
-
-
-<!--		   	
-		   	<input type="button" value="New" class='new' data-role="none"/>
-			<input type="button" value="Delete" class='delete' data-role="none"/>
--->			
-	
-
+			</h3>	
 		</div>
 		<input type="button" value="Excel" class='excelExport' data-role="none"/>		
 		<button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
@@ -20,10 +12,94 @@
 	<div class="full display">
 		<div class="toolbar">	
 
-
-
 		</div>
     	<div class="jqxGrid full display"></div>
 	</div>
 
-<!-- BREAK POINT	-->
+<script>
+$(document).ready(function(){
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'entity_description', type: 'string' },
+			{ name: 'product_entity_description', type: 'string' },
+			{ name: 'tag_value', type: 'string' },
+			{ name: 'asset_type_description', type: 'string' },
+			{ name: 'asset_status_description', type: 'string' },
+			{ name: 'product_description', type: 'string' },
+			{ name: 'location_description', type: 'string' },
+			{ name: 'location_network_description', type: 'string' },
+			{ name: '_id' },
+			{ name: 'fill_time', type: 'date' },
+			{ name: 'last_action_time', type: 'date' },
+			{ name: 'asset_cycle_fact_id'},
+		],
+		url: location.href,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}		
+	};
+/*
+	On grid load - get total # rows
+*/
+
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){		
+			 	
+		},
+		loadComplete: function (data) { 
+			 
+		},
+		loadError: function (xhr, status, error) { }      
+	});
+//	window.dataAdapter = dataAdapter
+
+	// Initialize Grid
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: 'Owner', datafield: 'entity_description', filtertype: 'checkedlist' },			
+		{ text: 'Product', datafield: 'product_description', filtertype: 'checkedlist' },			
+		{ text: 'Size', datafield: 'asset_type_description', filtertype: 'checkedlist' },
+		{ text: 'Brewery', datafield: 'product_entity_description', filtertype: 'checkedlist' },			
+		{ text: 'Fill Date', datafield: 'fill_time', filtertype: 'date', cellsformat: 'd'  },
+		{ text: 'Tag Value', datafield: 'tag_value' },
+		{ text: 'Status', datafield: 'asset_status_description', filtertype: 'checkedlist' },			
+		{ text: 'Location', datafield: 'location_description', filtertype: 'checkedlist' },
+		{ text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist' },
+		{ text: 'Last Scene', datafield: 'last_action_time', filtertype: 'date', cellsformat: 'd'  },
+		{ text: 'Cycle', datafield: 'asset_cycle_fact_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'Cycle'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			if(rowdata['asset_cycle_fact_id'] == ''){
+				var url = system.server + "/popup_record_not_found"
+			} else{
+				var url = system.server + "/reports/asset_cycles/" + rowdata['asset_cycle_fact_id'];
+			}
+			openPopupWindow(url)
+		}},	
+
+
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = location.href + "/" + rowdata['_id'] + "/edit"						
+			openPopupWindow(url)
+		}},	
+	]
+
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
+	 					
+});
+
+
+
+</script>

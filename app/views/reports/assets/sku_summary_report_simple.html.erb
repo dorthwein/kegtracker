@@ -21,3 +21,91 @@
     </div>
 
 
+<script>
+$(document).ready(function(){
+
+    $("#date").jqxDateTimeInput({theme: settings.theme });
+    $('#date').bind('valuechanged', function (event) {  
+        
+    //  var jsDate = event.args.date;       
+    }); 
+
+    var source = {
+        datatype : "json",
+        type: 'POST',
+        datafields: [                                           
+            { name: 'location_network_description', type: 'string' },
+            { name: 'product_description', type: 'string' },
+            { name: 'product_entity_description', type: 'string' },
+            { name: 'asset_type_description', type: 'string' },
+            { name: 'empty_quantity', type: 'number' },
+            { name: 'market_quantity', type: 'number' },
+            { name: 'full_quantity', type: 'number' },
+            { name: 'total_quantity', type: 'number' },
+            { name: 'sku_id' },
+            { name: 'date_id', type: 'date' },
+            { name: '_id' }
+        ],
+        url: location.href,
+        root: 'grid',
+    };
+
+    var dataAdapter = new $.jqx.dataAdapter(source, {
+        formatData: function(){
+            var params = {}         
+            
+            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
+            params['date'] = jsDate;
+/*
+            var item = $("#location_network_id").jqxDropDownList('getSelectedItem');
+            if(item != undefined){
+                params['location_network_id'] = item.value              
+            }           
+*/          
+            return params       
+        },
+        downloadComplete: function(edata, textStatus, jqXHR){       
+            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
+            params['date'] = jsDate;
+/*          
+            $("#location_network_id").jqxDropDownList({ source: edata['location_networks']});
+            
+            if($("#location_network_id").jqxDropDownList('getSelectedItem') == null){                               
+                var x = $("#location_network_id").jqxDropDownList('getItemByValue', edata['location_networks'][0].value);
+                $("#location_network_id").jqxDropDownList('selectItem', x );                
+            }
+            var item = $("#location_network_id").jqxDropDownList('getSelectedItem')
+            $('#displayNetwork').html(item.html);
+*/          
+//          $('#displayDate').html(jsDate.toDateString());
+        }
+    });
+
+    // Initialize Grid  
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [                                         
+        { text: 'Location Network', datafield: 'location_network_description', filtertype: 'checkedlist'  },            
+        { text: 'Product', datafield: 'product_description', filtertype: 'checkedlist'  },          
+        { text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
+        { text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },             
+        
+        { text: 'Empty', width:'75px', datafield: 'empty_quantity', filtertype: 'number' },
+        { text: 'Market', width:'75px', datafield: 'market_quantity', filtertype: 'number' },
+        { text: 'Full', width:'75px', datafield: 'full_quantity', filtertype: 'number' },
+        { text: 'Total', width:'75px', datafield: 'total_quantity', filtertype: 'number' }                      
+
+    ],
+//    gridSettings['groups'] = ['location_network_description', 'asset_type_description']
+    $(".jqxGrid").jqxGrid( gridSettings );  
+
+
+    $("#findRecord").jqxButton({ theme: settings.theme });  
+    $("#findRecord").click(function () {        
+        dataAdapter.dataBind();
+//      alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));        
+    });    
+    jqxIntialize();
+    
+});
+</script>

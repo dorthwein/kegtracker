@@ -9,9 +9,22 @@ class Reports::AssetsController < ApplicationController
 
 		respond_to do |format|		
 		  	format.html # index.html.erb
-		  	format.json { 		  								  		
-				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets)
-			}
+		  	format.json {
+  				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets.only(
+            :entity_description,
+            :product_entity_description,
+            :tag_value,
+            :asset_type_description,
+            :asset_status_description,
+            :product_description,
+            :location_description,
+            :location_network_description,
+            :_id,
+            :fill_time,
+            :last_action_time,
+            :asset_cycle_fact_id,        
+          ));
+			  }
 		end
 	end  
   	def show
@@ -19,10 +32,10 @@ class Reports::AssetsController < ApplicationController
 	      format.html {render :layout => 'popup'}
 	      format.json { 
 	        
-	      record = Asset.find(params[:id])        
-	      response = {}
-	      response[:jqxDropDownLists] = {}            
-	      response[:jqxRecordLinkButton] = {}
+		      record = Asset.find(params[:id])        
+		      response = {}
+	    	  response[:jqxDropDownLists] = {}            
+	      	  response[:jqxRecordLinkButton] = {}
 	      
 	      response[:record] = record  
 	      if !record.invoice.nil?
@@ -129,99 +142,6 @@ class Reports::AssetsController < ApplicationController
     end
   end
 
-
-=begin
-	def browse_row_select
-		respond_to do |format|
-			format.json {
-				response = []				
-				asset = Asset.find(params[:_id]);
-				current_user.entity.visible_asset_cycle_facts.where(asset: asset).each do |x|
-
-					date = 	"<td class='life_cycle_select'><b> Start Date: </b> #{x.start_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y") rescue nil} </td>"
-					product = 	"<td class='life_cycle_select'> <b> Product: </b> #{x.product.description} </td>"
-					brewery = 	"<td class='life_cycle_select'> <b> Brewery: </b> #{x.product.entity.description} </td>"
-					location_network = 	"<td class='life_cycle_select'> <b> Start Network: </b> #{x.start_network.description} </td>"
-					
-					asset_cycle_fact = x._id
-					response.push({:value => asset_cycle_fact, :html => '<table><tbody><tr>' + date + location_network +  '</tr> <tr>' + product + brewery + '</tr></tbody> </table>'})
-				end
-
-				render json: response
-			}
-		end
-	end
-	def browse_life_cycle_select
-		respond_to do |format|
-			format.json {
-#				gatherer = Gatherer.new(current_user.entity)
-#				location, product, entity = gatherer.asset_activity_fact_criteria				
-				transactions = 'No Fill Event Found' 
-				response = {}
-				
-				asset_cycle_fact = AssetCycleFact.find(params[:record])				
-				if !asset_cycle_fact.nil?
-		            x_product = 	"<td> <b> 	Product: 	</b> 	#{asset_cycle_fact.product.description}	 </td>"
-		            x_brewery = 	"<td> <b> 	Brewery: 	</b> 	#{asset_cycle_fact.product.entity.description} </td>"
-		            x_asset_type = 	"<td> <b> 	Asset Type: </b> 	#{asset_cycle_fact.asset_type.description} </td>"
-		            x_entity = 		"<td> <b> 	Owner: 		</b> 	#{asset_cycle_fact.entity.description} </td>"
-		            x_fill_date = 	"<td> <b> 	Start Date: 	</b> 	#{asset_cycle_fact.start_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
-					x_fill_count = 	"<td> <b> 	Fill Count: </b> 	#{asset_cycle_fact.fill_count} 		</td>"
-					x_tag_value = 	"<td> <b> 	Tag Value: 	</b> 	#{asset_cycle_fact.asset.tag_value} 	</td>"
-					x_tag_key = 	"<td> <b> 	Tag Key: 	</b> 	#{asset_cycle_fact.asset.tag_key} 		</td>"
-
-					# Start Table
-					transactions = "<table> <tbody> " 
-
-					# Add Asset Details
-					transactions = transactions + "<tr>" + x_product + x_brewery + x_asset_type + x_entity + x_fill_date + " </tr> "
-					transactions = transactions + "<tr>" + x_fill_count + x_tag_value + x_tag_key + "<td></td><td></td> </tr> "
-					# Activity Header
-					transactions = transactions + ' <tr> <td colspan="5"> <h3 style="border-bottom:1px solid #CCC;border-top:1px solid #CCC; margin:10px 0 0 0;"> Activity </h3> </td> </tr>'
-
-
-					
-					transactions = transactions + '<tr>	<th> Action	</th> <th> Location </th> <th> Location Network	</th> <th> Date </th> <th> Transaction Entity </th> </tr>'
-
-
-					# For each transaction, create a row
-					asset_activity_facts = current_user.entity.visible_asset_activity_facts.where(asset_cycle_fact: asset_cycle_fact)					
-					print asset_activity_facts.to_json
-					asset_activity_facts.each do |x|					
-						action = 					"<td> #{x.handle_code_description} </td>"
-						location = 					"<td> #{x.location.description} </td>"
-						location_network = 			"<td> #{x.location.network_description} </td>"
-						date = 						"<td> #{x.fact_time.in_time_zone("Central Time (US & Canada)").strftime("%b %d, %Y")} </td>"
-						transaction_entity = 		"<td> #{x.user.entity.description} </td>"
-						transactions = transactions + '<tr>' + action + location + location_network + date + transaction_entity +  '</tr>'
-					end
-				end
-				response = {:html => transactions}
-				render json: response
-			}
-		end
-	end
-
-	def sku_summary_report_advanced
-		respond_to do |format|  
-			format.html
-		    format.json {
-		    	if params['date'].nil?
-		    		start_date = Time.new() - (14 * 86400)
-		    		end_date = Time.new()
-		    	else
-		    		start_date = DateTime.parse(params['date']['0'])
-		    		end_date = DateTime.parse(params['date']['1'])
-		    	end
-				
-				asset_summary_facts = AssetSummaryFact.where(:report_entity => current_user.entity).between(fact_time: start_date..end_date).desc(:fact_time)
-				response = asset_summary_facts
-
-		    	render json: response
-			}			
-		end			
-	end
-=end
 	def sku_summary_report_simple
 		respond_to do |format|  
 			format.html
@@ -229,18 +149,17 @@ class Reports::AssetsController < ApplicationController
 				
 				date = DateTime.parse(params['date'])
 
-    			start_date = date.beginning_of_day
-    			end_date = date.end_of_day
-    			
-#				if params['location_network_id'].nil?
-#					default_network = visible_networks[0]
-#				else
-#					default_network = Network.find(params['location_network_id'])
-#				end				
-								
-				facts = JqxConverter.jqxGrid(current_user.entity.network_facts.between(fact_time: start_date..end_date))
+				start_date = date.beginning_of_day
+				end_date = date.end_of_day
+												
+				facts = JqxConverter.jqxGrid(current_user.entity.network_facts.between(fact_time: start_date..end_date)).any_of(
+					{:empty_quantity.gt => 0},
+					{:full_quantity.gt => 0},
+					{:market_quantity.gt => 0},
+					{:total_quantity.gt => 0}
+				)
 		    	response = {:grid => facts} #, :location_networks => location_network_list}
- 	 
+		 
 		    render json: response
 		}
 		end			

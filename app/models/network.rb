@@ -13,7 +13,8 @@ class Network
   # 1 = Production, 2 = Distribution, 3 = Market
   field :network_type, type: Integer, :default => 2
 
-  field :market, type: Integer, :default => 0
+  # Depreicated
+  field :market, type: Integer, :default => 0           
   field :distribution, type: Integer, :default => 0
   field :production, type: Integer, :default => 0
 
@@ -74,7 +75,7 @@ class Network
     self.network_type_description = self.get_network_type_description
 
     if self.locations.count == 0
-      location = Location.create(:description => self.description + " General Area", :network => self)
+      location = Location.create(:description => self.description, :network => self, :location_type => 6)
       self.smart_mode_in_location = location
       self.smart_mode_out_location = location
 
@@ -96,14 +97,13 @@ class Network
 
   def on_create
     if self.network_type == 1
-      Location.create(:description => self.entity.description + " General Area", :network => self, :location_type => 6)
-      Location.create(:description => "Keg Room", :network => self, :location_type => 1)
-      location = Location.create(:description => "Empty Keg Area", :network => self, :location_type => 2)
+      out_location = Location.create(:description => "Keg Room", :network => self, :location_type => 1)
+      in_location = Location.create(:description => "Empty Keg Area", :network => self, :location_type => 2)
     elsif self.network_type == 2
       location = Location.create(:description => self.entity.description + " General Area", :network => self, :location_type => 5)
     end  
-    self.smart_mode_in_location = location
-    self.smart_mode_out_location = location
+    self.smart_mode_in_location = in_location
+    self.smart_mode_out_location = out_location
 
     self.smart_mode_in_location_description = self.smart_mode_in_location.description
     self.smart_mode_out_location_description = self.smart_mode_out_location.description    

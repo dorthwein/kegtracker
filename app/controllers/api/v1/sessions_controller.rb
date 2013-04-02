@@ -25,12 +25,11 @@ class Api::V1::SessionsController < Devise::SessionsController
 #      }
       format.json {
         user = User.where(:authentication_token => params[:auth_token]).first
-        print params.to_json + 'fuck'
         if user         
           user.reset_authentication_token!
           render :json => { :message => 'Session deleted.' }, :success => true, :status => 204
         else
-          render :json => { :message => 'Invalid token.' }, :status => 404
+          render :json => { :message => 'Invalid token.' }, :status => 204
         end
       }
     end

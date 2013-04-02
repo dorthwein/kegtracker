@@ -36,7 +36,7 @@ class AssetCycleFact
   	field :completed_cycle_length, type: Integer, default: 0
 
 	field :cycle_complete, type: Integer, default: 0 # yes/no	
-
+	field :cycle_complete_description, type: String, default: 'No'
 	# 0 = Bad Quality
 	# 1 = Good Quality - Fill, Delivery, & Pickup
 	field :cycle_quality, type: Integer, default: 0
@@ -169,6 +169,12 @@ class AssetCycleFact
 		self.product_entity_description = self.product.entity.description
 		self.asset_type_description = self.asset_type.description	
 
+		if self.cycle_complete == 1
+			self.cycle_complete_description = 'Yes'
+		else
+			self.cycle_complete_description = 'No'
+		end
+		
 		self.start_network_description = self.start_network.description
 		self.fill_network_description = self.fill_network.description
 		self.delivery_network_description = self.delivery_network.description

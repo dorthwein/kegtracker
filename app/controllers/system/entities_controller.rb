@@ -1,36 +1,37 @@
-class System::EntitiesController < System::ApplicationController
-	before_filter :authenticate_user!
-	load_and_authorize_resource
+class System::EntitiesController < ApplicationController
+	before_filter :authenticate_user!	
   layout "web_app"
+  load_and_authorize_resource
 
   # GET /entities
   # GET /entities.json
-
   def index       
     respond_to do |format|
       format.html # index.html.erb
       format.json {        
           if current_user.system_admin == 1     
-            JqxConverter.jqxGrid(Entity.all)
             render json: JqxConverter.jqxGrid(Entity.all)
           end
       }
     end
-
   end
 
   # GET /entities/1
   # GET /entities/1.json
   def show
     respond_to do |format|
-      format.json { 
-        entity = Entity.find(params[:id])
-        users = entity.users.map{|x| {:html => x.email, :value => x._id}}
-        
-
-        response = {:entity => entity, :users => users}
-        render json: response 
-      }
+      record = Entity.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else           
+        format.html {render :layout => 'popup'}      
+        format.json {              
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          render json: response 
+        }
+      end
     end
   end
 
@@ -38,46 +39,57 @@ class System::EntitiesController < System::ApplicationController
   # GET /entities/new.json
   def new
     respond_to do |format|
-      format.json { 
-        users = JqxConverter.jqxDropDownList(entity.users)
-
-        response = {:users => users}
+      format.html {render :layout => 'popup'}      
+      format.json {          
+        
+        record = Entity.new
+        response = {}
+        response[:jqxDropDownLists] = {}        
+        response[:record] = record              
         render json: response 
-      }
+      }    
     end
   end
 
   # GET /entities/1/edit
   def edit
+    respond_to do |format|
+        format.html {render :layout => 'popup'}
+        format.json { 
+          record = Entity.find(params[:id])
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          render json: response 
+        }        
+    end    
   end
 
   # POST /entities
   # POST /entities.json
   def create
-    respond_to do |format|          
-      format.json { 
-        entity = Entity.new(params[:entity])
-        
-        if entity.save
-          render json: entity
-        else
-          render json: {:success => false, :message => 'Entity creation error, please contact support'}
-        end
-      }        
+    record = Entity.new(params[:record])
+    respond_to do |format|
+      if record.save
+        format.html 
+        format.json {  render json: {} }
+      else
+        format.html { render action: "new" }
+        format.json {  render json: {} }
+      end
     end
   end
 
   # PUT /entities/1
   # PUT /entities/1.json
   def update  
+    record = Entity.find(params[:id])
+    record.update_attributes(params[:record])
+    
     respond_to do |format|
+      format.html
       format.json {
-        entity = Entity.find(params[:id])
-        if entity.update_attributes(params[:entity])
-          render json: entity
-        else
-          render json: {:sucess => false, :message => 'Location update error, please contact support'}
-        end
+        render json: {}
       }
     end
   end
@@ -86,8 +98,9 @@ class System::EntitiesController < System::ApplicationController
   # DELETE /entities/1.json
   def destroy
     entity = Entity.find(params[:id])
-    entity.mode = 0
-    entity.save
+    entity.destroy
+#    entity.mode = 0
+ #   entity.save
 
     respond_to do |format|    
       format.json { head :no_content }

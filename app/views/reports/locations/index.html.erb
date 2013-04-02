@@ -22,3 +22,62 @@
 	</div>
 
 <!-- BREAK POINT	-->
+<script>
+$(document).ready(function(){
+	// Grid data source
+	var grid_source = {
+		datatype : "json",
+		type: 'GET',		
+		datafields: [
+			{ name: 'externalID' },
+			{ name: 'description' },
+			{ name: 'network_description' }, 
+			{ name: 'name' },
+			{ name: 'street' },
+			{ name: 'city' },
+			{ name: 'state' },					
+			{ name: 'zip' },                	
+			{ name: 'location_type' },                	
+			{ name: 'location_type_description' },                	
+			{ name: '_id'},
+			{ name: 'asset_count'}
+		], 
+		url: location.href
+	};
+	var dataAdapter = new $.jqx.dataAdapter(grid_source, {
+
+		loadComplete: function (data) {},
+		loadError: function (xhr, status, error) { }      
+	});
+	// Initiate grid
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [	
+		{ text: 'Act #', datafield: 'externalID' },
+		{ text: 'Location', datafield: 'description' },
+		{ text: 'Network', datafield: 'network_description', filtertype: 'checkedlist' },
+
+		{ text: 'Name', datafield: 'name' },
+		{ text: 'Address', datafield: 'street' },
+		{ text: 'City', datafield: 'city' },
+		{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },			
+		{ text: 'Zip', datafield: 'zip' },
+		{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },			
+		{ text: '# Assets', width:75, datafield: 'asset_count', filtertype: 'number' },			
+		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = location.href + "/" + rowdata['_id'] + "/edit"						
+			openPopupWindow(url)
+		}},	
+
+	]
+	
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
+	 					
+
+});
+
+</script>

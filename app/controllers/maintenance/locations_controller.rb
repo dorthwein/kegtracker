@@ -61,8 +61,7 @@ class Maintenance::LocationsController < ApplicationController
   end
 
   # GET /locations/1/edit
-  def edit
-    
+  def edit    
     respond_to do |format|
         format.html {render :layout => 'popup'}
         format.json { 

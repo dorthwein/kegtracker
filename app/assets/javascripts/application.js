@@ -8,16 +8,12 @@
 // the compiled file.
 // require plugins/jquery.mobile-1.3.0-rc.1.min.js
 // plugins/jquery-1.8.3.min.js
+// require jquery.mobile
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery.js
-//= require config.js
 //= require jquery_ujs
-//= require jquery.mobile
-//= require plugins/jqx-all.js
-//= require plugins/jquery.global.js
 //= require plugins/jquery.ui.widget.js
 //= require plugins/jquery.iframe-transport.js
-//= require plugins/jquery.fileupload.js
 //= require_tree .

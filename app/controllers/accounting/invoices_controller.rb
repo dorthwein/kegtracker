@@ -9,7 +9,7 @@ class Accounting::InvoicesController < ApplicationController
       format.html # index.html.erb
       format.json { 
         invoices = JqxConverter.jqxGrid(current_user.entity.invoices)
-        render json: invoices
+        render json: invoices        
       }
     end
   end

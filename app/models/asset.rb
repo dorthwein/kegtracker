@@ -3,6 +3,13 @@ class Asset
   include Mongoid::Timestamps  
 	field :record_status, type: Integer, default: 1	
 
+# Instead of changing key values - simply change key mapping before send 
+# harder on the system easier on bandwidth
+#
+#
+#
+#
+
 # Fixed Details
 	field :netid, type: Integer
 	field :tag_value, type: String
@@ -58,13 +65,13 @@ class Asset
 # Relations	
 	# Life Cycle
 	field :last_action_time, :type => Time
-
 	field :fill_time, :type => Time
 	belongs_to :fill_location, :class_name => 'Location'
 	field :fill_location_description, type: String	
 	belongs_to :fill_network, :class_name => 'Network'
 	field :fill_network_description, type: String	
 
+=begin
 # Not active
 	field :delivery_time, :type => Time
 	belongs_to :delivery_location, :class_name => 'Location'
@@ -79,7 +86,7 @@ class Asset
 	field :pickup_location_description, type: String	
 	belongs_to :pickup_network, :class_name => 'Network'	
 	field :pickup_network_description, type: String
-
+=end
 =begin
 # To be moved to invoice
 	def add_to_invoice options
@@ -108,8 +115,8 @@ class Asset
 		self.last_action_time = options[:time]		
 		self.location_id = options[:location_id]
 		
-		self.delivery_time = options[:time]
-		self.delivery_location_id = options[:location_id]				
+#		self.delivery_time = options[:time]
+#		self.delivery_location_id = options[:location_id]				
 				
 		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)		
 		self.asset_cycle_fact.deliver(self.asset_activity_fact) rescue (
@@ -131,8 +138,8 @@ class Asset
 		
 		self.location_id = options[:location_id]
 		
-		self.pickup_time = options[:time]
-		self.pickup_location_id = options[:location_id]
+#		self.pickup_time = options[:time]
+#		self.pickup_location_id = options[:location_id]
 				
 		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)						
 
@@ -158,7 +165,6 @@ class Asset
 		self.fill_time = options[:time]
 		self.fill_location_id = options[:location_id]
 		
-
 		self.fill_count = self.fill_count.to_i + 1
 		
 		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)		
@@ -256,7 +262,6 @@ class Asset
 	before_save :sync_descriptions	
 	def sync_descriptions
 		self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
-
 		self.invoice_number = self.invoice.number rescue nil
 		
 		self.location_network = self.location.network		
@@ -274,8 +279,9 @@ class Asset
 		self.handle_code_description = self.get_handle_code_description
 		self.location_description = self.location.description	
 		self.location_network_description = self.location_network.description			
-		self.fill_network_description = self.fill_network.description
-		self.pickup_network_description = self.pickup_network.description
+
+#		self.fill_network_description = self.fill_network.description
+#		self.pickup_network_description = self.pickup_network.description
 	end	
 
 	after_save :after_save

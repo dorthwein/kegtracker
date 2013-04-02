@@ -2,3 +2,55 @@
 	<h3> New Invoice</h3>
 </div>
 <%= render 'form' %>
+<script>
+$(document).ready(function(){
+	$('#add_to_invoice').empty()
+
+	$('#number').on('change', function () { 
+		 		
+		var url =  system.server + $('.ui-page-active').attr('data-url')
+		url = url.replace('/new', '');
+
+        var params = {record: {}}
+		$.each($('.jqxDropDownList'), function(key, value){
+			element = $('#' + value.id)				
+			params['record'][value.id] = $(element).jqxDropDownList('getSelectedItem').value              				
+		})
+
+		$.each($('.jqxInput'), function(key, value){
+			element = $('#' + value.id)
+			params['record'][value.id] = $(element).val();
+		})
+
+		$.each($('.jqxNumberInput'), function(key, value){
+			element = $('#' + value.id)
+			params['record'][value.id] = $(element).jqxNumberInput('getDecimal');
+		})
+
+		$.each($('.jqxDateTimeInput'), function(key, value){		
+			element = $('#' + value.id)
+			params['record'][value.id] = $(element).jqxDateTimeInput('getDate'); 
+		});
+
+		$.each($('.jqxToggle'), function(key, value){
+			element = $('#' + value.id)
+			params['record'][value.id] = $(element).val();
+		})
+		
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType : "JSON",
+			data: params,
+		}).done(function( data ) {			
+			window.parent.dataAdapter.dataBind();					
+//			window.parent.$('.jqxWindow').jqxWindow('close');
+	//		window.opener.dataAdapter.dataBind();				
+			document.location.href = url + '/' + data['_id'] + '/edit';
+			 
+		})
+	});
+});
+
+
+</script>

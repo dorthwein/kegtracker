@@ -1,14 +1,17 @@
-
 table.popup{ 
 	margin: 0px;
 	background-color: #FFF;	
 	height:100%;
+	width:100%;
 	display:inline-block;
 
 }
+table.popup tbody {
+	width:100%;
+}
 table.popup td {
 	padding:10px;	
-	max-width: 25%;
+	width: 25%;
 } 
 .popup_title {
 	display:none;
