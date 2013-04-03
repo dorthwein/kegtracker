@@ -8,9 +8,27 @@ class Reports::AssetCyclesController < ApplicationController
 	def index    
 		respond_to do |format|		
 		  	format.html # index.html.erb
-		  	format.json { 		  						
-				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts)
-			}
+		  	format.json { 		  	
+  				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts.map{|x| {
+            a: x.start_network_description,
+            b: x.fill_network_description,
+            c: x.delivery_network_description,
+            d: x.pickup_network_description,
+            e: x.end_network_description,
+            f: x.product_description,
+            g: x.product_entity_description,
+            h: x.asset_type_description,
+            i: x.asset_status_description,
+            j: x.handle_code_description,
+            k: x.start_time.to_i * 1000,
+            l: x.fill_time.to_i * 1000,
+            m: x.delivery_time.to_i * 1000,
+            n: x.pickup_time.to_i * 1000,
+            o: x.end_time.to_i * 1000,
+            p: x.cycle_complete_description,
+            q: x._id
+          }})
+  			}
 		end
 	end  
 
@@ -24,7 +42,7 @@ class Reports::AssetCyclesController < ApplicationController
 	         response[:jqxDropDownLists] = {}      
            response[:jqxRecordLinkButton] = {}      
 	         response[:record] = record  
-    
+
            response[:jqxRecordLinkButton][:asset_id] = JqxConverter.jqxRecordLinkButton(record.asset_id)
   			   response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList([record.product])
   			   response[:jqxDropDownLists][:product_entity_id] = JqxConverter.jqxDropDownList([record.product.entity])

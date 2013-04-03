@@ -93,20 +93,20 @@ $(document).ready(function(){
 			return 'Cycle'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			if(rowdata['asset_cycle_fact_id'] == ''){
+			if(rowdata['l'] == ''){
 				var url = system.server + "/popup_record_not_found"
 			} else{
-				var url = system.server + "/reports/asset_cycles/" + rowdata['asset_cycle_fact_id'];
+				var url = system.server + "/reports/asset_cycles/" + rowdata['l'];
 			}
 			openPopupWindow(url)
 		}},	
 
 
-		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+		{ text: 'View', datafield: 'i', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = location.href + "/" + rowdata['_id'] + "/edit"						
+			var url = location.href + "/" + rowdata['i'] + "/edit"						
 			openPopupWindow(url)
 		}},	
 	]

@@ -89,7 +89,7 @@ function jqxIntialize(){
 	// NEW BUTTON
 	$(".excelExport").jqxButton({ theme: theme});
 	$(".excelExport").click(function () {		
-		$(".jqxGrid").jqxGrid('exportdata', 'xls', 'BreweryApps', true, null, false, 'http://localhost:3000');           
+		$(".jqxGrid").jqxGrid('exportdata', 'xls', 'BreweryApps'); //, true, null, false, 'http://localhost:3000');           
 
 // The first parameter of the export method determines the export’s type – ‘xls’, ‘xml’, ‘html’, ‘json’, ‘tsv’ or ‘csv’.
 // The second parameter is the file’s name.

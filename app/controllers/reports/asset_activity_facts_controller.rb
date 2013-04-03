@@ -7,16 +7,14 @@ class Reports::AssetActivityFactsController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json {
-      	
+      format.json {      	
+        print params[:asset_cycle_id].to_s + 'fuck'
         if params[:asset_cycle_id].nil?
-			     records = JqxConverter.jqxGrid(current_user.entity.visible_asset_activity_facts)
+			     records = current_user.entity.visible_asset_activity_facts
         else
-#        	asset_cycle_fact = AssetCycleFact.find(params[:asset_cycle_id])
-#       	records = AssetActivityFact.where(asset_cycle_fact_id: asset_cycle_fact._id)
-	        records = JqxConverter.jqxGrid(current_user.entity.visible_asset_activity_facts.where(:asset_cycle_fact_id => params[:asset_cycle_id]))
+	        records = current_user.entity.visible_asset_activity_facts.where(:asset_cycle_fact_id => params[:asset_cycle_id])
 	    end	     
-        render json: records
+        render json: JqxConverter.jqxGrid(records)
       }
     end
   end
