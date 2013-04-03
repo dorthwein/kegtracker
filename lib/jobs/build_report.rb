@@ -24,11 +24,9 @@ class BuildReport
 
 						by_asset_status = b[1].group_by{|c| c.asset_status }					
 						by_asset_status.each do |d|
-							if d[0].nil?
-								d[0] = 0
+							if !d[0].nil?
+								q[d[0]] = d[1].length
 							end
-
-							q[d[0]] = d[1].length
 						end
 
 						network_fact = NetworkFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)

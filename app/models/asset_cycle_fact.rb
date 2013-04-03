@@ -89,7 +89,6 @@ class AssetCycleFact
 		self.fill_time = asset_activity_fact.fact_time
 	  	self.fill_asset_activity_fact = asset_activity_fact
   		self.fill_network = asset_activity_fact.location_network
-		
 		self.general_attributes asset_activity_fact
 
 		self.save!
@@ -126,7 +125,6 @@ class AssetCycleFact
   		
 		self.cycle_complete = 1
 		self.completed_cycle_length = (self.end_time.to_i - self.start_time.to_i)
-
 		self.save!
 	end
 
@@ -152,6 +150,7 @@ class AssetCycleFact
 	  	else
 			self.cycle_quality = 0
 	  	end
+
 	  	if self.cycle_complete == 1
 	  		self.completed_cycle_length = (self.end_time.to_i - self.start_time.to_i)
 	  	end	  		  	

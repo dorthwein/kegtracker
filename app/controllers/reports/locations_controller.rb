@@ -34,12 +34,11 @@ class Reports::LocationsController < ApplicationController
 	        record = Location.find(params[:id])
 	        response = {}
 	        response[:jqxDropDownLists] = {}        
-		   	        
 	        
 	        response[:record] = record              
 	        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
 	        response[:jqxDropDownLists][:location_type] = JqxConverter.jqxDropDownList(Location.location_types)
-			response[:jqxGrid] = JqxConverter.jqxGrid(current_user.entity.visible_assets.where(location: record))
+  			 response[:jqxGrid] = JqxConverter.jqxGrid(current_user.entity.visible_assets.where(location: record))
 
 	        render json: response 
 	      }
