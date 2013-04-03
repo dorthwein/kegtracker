@@ -28,7 +28,7 @@ class Api::V1::MobileAppController < ApplicationController
 		  	response = {db: {sync: {}} }		 
 		  	response[:db][:sync][:processed_scans] = params[:scan_ids]
 		  	response[:db][:sync][:asset_types] = AssetType.gte(updated_at: last_sync)
-		  	response[:db][:sync][:locations] = user.entity.visible_locations.gte(updated_at: last_sync).map{|x| {  
+		  	response[:db][:sync][:locations] = user.entity.visible_locations.map{|x| {  
 				_id: x._id, 
 				created_at: x.created_at, 
 				updated_at: x.updated_at, 
