@@ -1,13 +1,6 @@
 
 	<div class="full sidebar">
 		<div class="logo">
-
-<!--		   	
-		   	<input type="button" value="New" class='new' data-role="none"/>
-			<input type="button" value="Delete" class='delete' data-role="none"/>
--->			
-	
-
 		</div>
 		<input type="button" value="Excel" class='excelExport' data-role="none"/>		
 		<button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
@@ -25,22 +18,36 @@
 <script>
 $(document).ready(function(){
 	// Grid data source
+/*
+a: x.externalID,
+b: x.description,
+c: x.network_description,
+d: x.name,
+e: x.street,
+f: x.city,
+g: x.state,
+h: x.zip,
+i: x.location_type,
+j: x.location_type_description,
+k: x._id,
+l: current_user.entity.visible_assets.where(location_id: x._id).count,
+*/
 	var grid_source = {
 		datatype : "json",
 		type: 'GET',		
 		datafields: [
-			{ name: 'externalID' },
-			{ name: 'description' },
-			{ name: 'network_description' }, 
-			{ name: 'name' },
-			{ name: 'street' },
-			{ name: 'city' },
-			{ name: 'state' },					
-			{ name: 'zip' },                	
-			{ name: 'location_type' },                	
-			{ name: 'location_type_description' },                	
-			{ name: '_id'},
-			{ name: 'asset_count'}
+			{ name: 'a', type: 'string' },
+			{ name: 'b', type: 'string' },
+			{ name: 'c', type: 'string' }, 
+			{ name: 'd', type: 'string' },
+			{ name: 'e', type: 'string' },
+			{ name: 'f', type: 'string' },
+			{ name: 'g', type: 'string' },					
+			{ name: 'h', type: 'string' },
+//			{ name: 'i', type: 'string' },
+			{ name: 'j', type: 'string' },
+			{ name: 'k' },
+			{ name: 'l', type: 'integer'},
 		], 
 		url: location.href
 	};
@@ -53,22 +60,22 @@ $(document).ready(function(){
 	var gridSettings = settings.jqxGridProperties
 	gridSettings['source'] = dataAdapter;
 	gridSettings['columns'] = [	
-		{ text: 'Act #', datafield: 'externalID' },
-		{ text: 'Location', datafield: 'description' },
-		{ text: 'Network', datafield: 'network_description', filtertype: 'checkedlist' },
+		{ text: 'Act #', datafield: 'a' },
+		{ text: 'Location', datafield: 'b' },
+		{ text: 'Network', datafield: 'c', filtertype: 'checkedlist' },
 
-		{ text: 'Name', datafield: 'name' },
-		{ text: 'Address', datafield: 'street' },
-		{ text: 'City', datafield: 'city' },
-		{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },			
-		{ text: 'Zip', datafield: 'zip' },
-		{ text: 'Type', datafield: 'location_type_description', filtertype: 'checkedlist' },			
-		{ text: '# Assets', width:75, datafield: 'asset_count', filtertype: 'number' },			
-		{ text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+		{ text: 'Name', datafield: 'd' },
+		{ text: 'Address', datafield: 'e' },
+		{ text: 'City', datafield: 'f' },
+		{ text: 'State', datafield: 'g', filtertype: 'checkedlist' },			
+		{ text: 'Zip', datafield: 'h' },
+		{ text: 'Type', datafield: 'j', filtertype: 'checkedlist' },			
+		{ text: '# Assets', width:75, datafield: 'l', filtertype: 'number' },			
+		{ text: 'View', datafield: 'k', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = location.href + "/" + rowdata['_id'] + "/edit"						
+			var url = location.href + "/" + rowdata['k'] + "/edit"						
 			openPopupWindow(url)
 		}},	
 
