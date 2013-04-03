@@ -10,20 +10,20 @@ class Reports::AssetsController < ApplicationController
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json {
-  				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets.only(
-            :entity_description,
-            :product_entity_description,
-            :tag_value,
-            :asset_type_description,
-            :asset_status_description,
-            :product_description,
-            :location_description,
-            :location_network_description,
-            :_id,
-            :fill_time,
-            :last_action_time,
-            :asset_cycle_fact_id,        
-          ));
+  				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets.map{ |x| {
+            a: x.entity_description,
+            b: x.product_entity_description,
+            c: x.tag_value,
+            d: x.asset_type_description,
+            e: x.asset_status_description,
+            f: x.product_description,
+            g: x.location_description,
+            h: x.location_network_description,
+            i: x._id,
+            j: x.fill_time.to_i * 1000,
+            k: x.last_action_time.to_i * 1000,
+            l: x.asset_cycle_fact_id,                    
+          }});
 			  }
 		end
 	end  
