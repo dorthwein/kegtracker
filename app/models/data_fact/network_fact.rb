@@ -6,7 +6,6 @@ class NetworkFact
 	belongs_to :location_network, :class_name => 'Network'	
 
 	belongs_to :product  
-
 	belongs_to :asset_type 
 	belongs_to :product_entity, :class_name => 'Entity'	
 

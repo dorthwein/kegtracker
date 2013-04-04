@@ -60,7 +60,7 @@ a:link {
 	text-align:center;
 }
 .full.sidebar .logo{
-	min-height: 80px;
+	min-height: 50px;
 	background: #EEE;
 	border-bottom:1px solid #CCC;
 	margin-bottom:20px;
@@ -69,12 +69,26 @@ a:link {
 }
 
 .full.display .toolbar {
-	min-height:80px;
+	min-height:50px;
 	background: #EEE;
 	border-bottom:1px solid #CCC;
 	margin-bottom:20px;
 	
 }
+/*
+.toolbar {
+	padding:10px 0 10px 0;	
+	background: #EEE;
+	border-bottom:1px solid #CCC;
+	margin-bottom:20px;
+	width:100%;
+}
+.logo {
+	width:12%;
+	height:100%;
+	float:left;	
+}
+*/
 .full.sidebar input, button.jqxFilterToggle, .full.sidebar #date { 
 	width:85%;
 	margin:5px auto 5px auto;
@@ -130,3 +144,130 @@ MENU STYLING
 .left {
 	float:left;
 }
+
+
+
+
+
+
+.categoryControlFilter {		
+	font-size: 12px;
+	float:left;
+	margin:0px 10px 0px 0px;
+}
+
+.categoryControlFilter label{
+	font-weight: bolder;
+	color:#2d2d2d;
+}
+/*
+
+.categoryControlFilter div{
+
+}
+.categoryControlFilter .goog-inline-block .goog-menu-button-dropdown {
+	color:#767676;
+	background: #FFF;
+	display:none;
+}
+
+.categoryControlFilter .goog-inline-block .goog-menu-button-outer-box, .categoryControlFilter .goog-inline-block .goog-menu-button-inner-box, .categoryControlFilter .goog-inline-block .goog-menu-button {
+	background: #FFF;
+	color:#767676;
+	border:none;
+	
+	margin:0;
+	text-shadow:none;
+
+
+	
+}
+
+.categoryControlFilter div{
+	border-radius:10px;
+}
+.categoryControlFilter .goog-inline-block .goog-menu-button-dropdown {
+	color:#FFF;
+	background: #d14836;
+	display:none;
+}
+
+.categoryControlFilter .goog-inline-block .goog-menu-button-outer-box, .categoryControlFilter .goog-inline-block .goog-menu-button-inner-box, .categoryControlFilter .goog-inline-block .goog-menu-button {
+	background: #d14836;
+	color:#FFF;
+	border-radius:10px;
+	border:solid 1px #d14836;
+	margin:0;
+	text-shadow:none;
+
+
+	
+}
+
+
+.categoryControl .goog-inline-block.goog-link-button {
+	padding:5px;
+	float:left;
+	border:1px solid #CCC;
+
+}
+.categoryControl .goog-control.goog-inline-block {
+	float:right;
+	padding:5px;
+}
+*/
+
+#table .headerRow {
+	background: #FFF;
+}
+#table .tableRow {
+
+}
+#table .oddTableRow {
+
+}
+#table .selectedTableRow {
+	background: #1faeff;
+	color:#FFF;
+
+
+}
+#table .selectedTableRow .tableCell {
+	border-bottom:1px solid #1faeff;
+	color:#FFF;
+}
+#table .hoverTableRow {
+
+}
+#table .headerCell {
+	font-size: 14px;
+	font-weight: bolder;
+	color: #333;
+	border-bottom:1px solid #CCC;
+	border-right:1px solid #CCC;
+	padding:0 3px 0 3px;
+	
+}
+#table .tableCell {
+	color:#333;
+	padding:15px 3px 15px 3px;
+	border-bottom: 1px solid #EEE;
+
+}
+#table .rowNumberCell {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,7 +9,7 @@ class Asset
 #
 #
 #
-
+#
 # Fixed Details
 	field :netid, type: Integer
 	field :tag_value, type: String

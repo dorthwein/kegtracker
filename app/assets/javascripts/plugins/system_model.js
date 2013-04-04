@@ -31,18 +31,18 @@ function jqxGridFullWindowHeight(){
 
 // Default Grid Settings
 settings.jqxGridProperties = {
-		groupable: true,
-		sortable: true,
-        autoshowfiltericon: true,
-		theme: settings.theme,
-		width: '100%',
-		groupsexpandedbydefault: true,
-		groupsrenderer: default_groupsrenderer,		
-		height: jqxGridFullWindowHeight(),		
-		columnsresize: true,
-		autoshowcolumnsmenubutton:false,
-		rowsheight:35,
-		showfiltercolumnbackground: false,
+	groupable: true,
+	sortable: true,
+    autoshowfiltericon: true,
+	theme: settings.theme,
+	width: '100%',
+	groupsexpandedbydefault: true,
+	groupsrenderer: default_groupsrenderer,		
+	height: jqxGridFullWindowHeight(),		
+	columnsresize: true,
+	autoshowcolumnsmenubutton:false,
+	rowsheight:35,
+	showfiltercolumnbackground: false,
 }
 
 system.simple_grid_height = '800px';

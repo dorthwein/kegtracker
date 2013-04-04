@@ -18,6 +18,93 @@
 
 <script>
 $(document).ready(function(){
+/*
+	$.ajax({
+	  url: location.href + '.json', 
+	  dataType: "TEXT",
+	  type: "GET",
+	}).done(function(data) {		
+
+	    var t = new google.visualization.DataTable(data);
+        var options = {'title':'How Much Pizza I Ate Last Night', 'allowHtml': true};
+
+        var chart = new google.visualization.Table(document.getElementById('chart_div'));
+        chart.draw(t, options);
+
+
+	  // Define a category picker control for the Gender column
+	var filters = [
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl1', 'Owner')),
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl2', 'Product')),
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl3', 'Size')),
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl4', 'Brewer')),	
+		
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl5', 'Status')),
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl6', 'Location')),
+		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl7', 'Location Network')),
+//		new google.visualization.ControlWrapper(g_chart_api.CategoryFilter('categoryControl8', 'Location')),
+	]
+
+	  // Define a Pie chart
+	  var pie = new google.visualization.ChartWrapper({
+	    'chartType': 'PieChart',
+	    'containerId': 'chart1',
+	    'options': {
+	      'width': 300,
+	      'height': 300,
+	      'legend': 'none',
+	      'title': 'Donuts eaten per person',
+	      'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
+	      'pieSliceText': 'label'
+	    },
+	    // Instruct the piechart to use colums 0 (Name) and 3 (Donuts Eaten)
+	    // from the 'data' DataTable.
+	    'view': {'columns': [0, 3]}
+	  });
+
+//			 - Assigns a class name to the table header row (<tr> element).
+//			 - Assigns a class name to the non-header rows (<tr> elements).
+//			 - Assigns a class name to odd table rows (<tr> elements). Note: the alternatingRowStyle option must be set to true.
+//			 - Assigns a class name to the selected table row (<tr> element).
+//			 - Assigns a class name to the hovered table row (<tr> element).
+//			 - Assigns a class name to all cells in the header row (<td> element).
+//			 - Assigns a class name to all non-header table cells (<td> element).
+//			 - Assigns a class name to the cells in the row number column (<td> element). Note: the showRowNumber option must be set to true.
+	  // Define a table
+		var tableChartCss = {
+			headerRow: 'headerRow',
+			tableRow: 'tableRow',
+			oddTableRow: 'oddTableRow',
+			selectedTableRow: 'selectedTableRow',
+			hoverTableRow: 'hoverTableRow',
+			headerCell: 'headerCell',
+			tableCell: 'tableCell',
+			rowNumberCell: 'rowNumberCell',	 
+		} 
+	  var table = new google.visualization.ChartWrapper({
+	    'chartType': 'Table',
+	    'containerId': 'table',
+	    'options': {
+	      'height': jqxGridFullWindowHeight(),
+	      'cssClassNames': tableChartCss,
+	    }
+	  });
+
+	  // Create a dashboard
+
+	  new google.visualization.Dashboard(document.getElementById('content_dashboard')).
+	      // Establish bindings, declaring the both the slider and the category
+	      // picker will drive both charts.
+	      bind(filters, [table]).
+	      // Draw the entire dashboard.
+	      draw(data);
+	
+
+
+	});
+
+
+*/
 /*      
 	Datafields Mapping
       a: entity_description,

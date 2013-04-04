@@ -5,11 +5,18 @@
   <%= stylesheet_link_tag    "web_app_manifest"%>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
 
+      // Load the Visualization API and the piechart package.
+		google.load('visualization', '1.0', {'packages':['corechart', 'table', 'controls']});
+//		google.setOnLoadCallback(drawChart);
+
+    </script>
     <meta name="viewport" content="width=960, user-scalable=yes" />   
 </head>
 <body> 
-	<div id="header" style="position:fixed; top:0; left: 0; height:30px; width:100%;">
+	<div id="header" style="top:0; left: 0; height:30px; width:100%;">
 		<% if !user_signed_in? %>			
         <div id="jqxMenu">
             <ul>                				
