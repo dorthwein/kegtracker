@@ -9,7 +9,8 @@ class Reports::AssetCyclesController < ApplicationController
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json { 		  	
-  				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts.map{|x| {
+          start = Time.now - (86400 * 180)
+  				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts.gte(start_time: start).map{|x| {
             a: x.start_network_description,
             b: x.fill_network_description,
             c: x.delivery_network_description,

@@ -36,10 +36,15 @@ class NetworkFact
 	field :total_quantity, 							type: Integer, :default => 0
 
 # Fill to Fill Cycle by Network
-	field :life_cycle_max_time, 					:type => Integer, :default => 0
-	field :life_cycle_avg_time, 					:type => Integer, :default => 0
-	field :life_cycle_min_time, 					:type => Integer, :default => 0
-	field :life_cycle_completed_cycles, 			:type => Integer, :default => 0
+	field :delivery_life_cycle_max_time, 			:type => Integer, :default => 0
+	field :delivery_life_cycle_avg_time, 			:type => Integer, :default => 0
+	field :delivery_life_cycle_min_time, 			:type => Integer, :default => 0
+	field :delivery_life_cycle_completed_cycles, 	:type => Integer, :default => 0
+
+	field :fill_life_cycle_max_time, 				:type => Integer, :default => 0
+	field :fill_life_cycle_avg_time, 				:type => Integer, :default => 0
+	field :fill_life_cycle_min_time, 				:type => Integer, :default => 0
+	field :fill_life_cycle_completed_cycles, 		:type => Integer, :default => 0
 
 # In bound Out Bound by Network
 	field :in_full_quantity, 						type: Integer, :default => 0

@@ -159,6 +159,7 @@ class AssetCycleFact
   			self.start_network_id,
   			self.fill_network_id,
   			self.delivery_network_id,
+
 #  			self.pickup_network_id,
 #  			self.end_network_id
 	  	].delete_if {|x| x == nil}

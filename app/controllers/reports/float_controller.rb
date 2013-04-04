@@ -62,10 +62,9 @@ class Reports::FloatController < ApplicationController
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).where(:location_network_type => 1).gt(life_cycle_completed_cycles: 0)
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
 		    	response = {:grid => facts}
-		    	# response = {:grid => facts, :fill_networks => fill_network_list}
-		   		 	 
+		    	# response = {:grid => facts, :fill_networks => fill_network_list}		   		
 		    	render json: response		
 		    }
 		end
@@ -82,8 +81,8 @@ class Reports::FloatController < ApplicationController
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 				
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(life_cycle_completed_cycles: 0).or({location_network_type: 2}, {location_network_type: 3})
-				
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(delivery_life_cycle_completed_cycles: 0) #.or({location_network_type: 2}, {location_network_type: 3})
+
 				by_network = current_user.entity.visible_asset_cycle_facts #.where(cycle_complete: 1, cycle_quality: 1) #.map{|x| x.product_id}.flatten.uniq
 				by_network.each do |x|
 					print x.product.description.to_s + "\n"
