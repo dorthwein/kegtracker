@@ -62,9 +62,7 @@ class Reports::FloatController < ApplicationController
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 
-				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0).map{|x| {
-					
-				}
+				facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
 		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}		   		
 		    	render json: response		
