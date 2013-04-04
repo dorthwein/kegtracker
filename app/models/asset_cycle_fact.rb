@@ -154,6 +154,7 @@ class AssetCycleFact
 	  	if self.cycle_complete == 1
 	  		self.completed_cycle_length = (self.end_time.to_i - self.start_time.to_i)
 	  	end	  		  	
+
 	  	self.cycle_networks = [
   			self.start_network_id,
   			self.fill_network_id,
@@ -197,6 +198,91 @@ class AssetCycleFact
 		end
 	end
 
+	def self.build_cycle_facts_from_time_line
+		i = 0 
+		AssetActivityFact.all.asc(:fact_time).each do |x|
+			i = i + 1
+			print i.to_s + "\n"
+			case x.handle_code.to_i
+		    when 1
+				n = AssetCycleFact.where(asset_id: x.asset_id).lte(start_time: x.fact_time).desc(:start_time).first
+				if !n.nil?
+					n.delivery_time = x.fact_time
+				  	n.delivery_asset_activity_fact_id = x._id
+			  		n.delivery_network_id = x.location_network_id
+			  		n.save!
+
+					x.asset_cycle_fact_id = n._id
+					x.save!
+				end
+		    when 2
+				n = AssetCycleFact.where(asset_id: x.asset_id).lte(start_time: x.fact_time).desc(:start_time).first
+				if !n.nil?
+					n.pickup_time = x.fact_time
+				  	n.pickup_asset_activity_fact_id = x._id
+			  		n.pickup_network_id = x.location_network_id
+			  		n.save!
+
+					x.asset_cycle_fact_id = n._id
+					x.save!
+				end
+#			      return 'Pickup'
+		    when 4
+				# If a fill, find this asset's previous cycle fact and end it
+				t = AssetCycleFact.where(asset_id: x.asset_id, :start_asset_activity_fact_id.ne => x._id).lte(start_time: x.fact_time).desc(:start_time).first
+				if !t.nil?
+					t.end_time = x.fact_time
+				  	t.end_asset_activity_fact_id = x._id
+			  		t.end_network_id = x.location_network_id
+					t.cycle_complete = 1
+					t.completed_cycle_length = (t.end_time.to_i - t.start_time.to_i)				
+					t.save!
+#					print t.start_time.to_s + ' -- ' + x.fact_time.to_s + ' -- ' + "Found Cycle - ending it \n"
+				end
+
+				# Find or Create new cycle
+				n = AssetCycleFact.where(asset_id: x.asset_id).lte(start_time: x.fact_time).desc(:start_time).find_or_create_by(:start_asset_activity_fact_id => x._id)
+				
+			  	n.asset_id = x.asset_id
+			  	n.asset_type_id = x.asset_type_id
+			  	n.entity_id = x.entity_id
+			  	n.product_id = x.product_id
+			  	n.fill_count = x.fill_count.to_i
+
+				n.start_time = x.fact_time
+				n.start_asset_activity_fact_id = x._id
+				n.start_network_id = x.location_network_id
+				
+				n.fill_time = x.fact_time
+				n.fill_asset_activity_fact_id = x._id
+				n.fill_network_id = x.location_network_id
+				n.save!
+
+				x.asset_cycle_fact_id = n._id
+				x.save!
+			when 5
+				n = AssetCycleFact.where(asset_id: x.asset_id).lte(start_time: x.fact_time).desc(:start_time).first
+				if !n.nil?
+					x.asset_cycle_fact_id = n._id
+					x.save!
+				end
+		    end			
+#			print x.fact_time.to_s + " \n"
+		end
+
+		i = 0
+		Asset.all.each do |x|
+			n = AssetCycleFact.where(asset_id: x._id).desc(:start_time).first._id
+			if !n.nil?
+				x.asset_cycle_fact_id = AssetCycleFact.where(asset_id: x._id).desc(:start_time).first._id
+				x.fill_time = x.asset_cycle_fact.fill_time
+				x.save!
+			else 
+				i = i + 1
+				print i.to_s + "\n"
+			end
+		end
+	end
 	def get_handle_code_description
 		case self.handle_code.to_i
 		when 1

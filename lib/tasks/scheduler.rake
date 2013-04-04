@@ -12,11 +12,14 @@ task :ten_minute_build => :environment do
 
 end
 
+task :rebuild_cycle_facts => :environment do
+	AssetCycleFact.build_cycle_facts_from_time_line	
+end
+
 task :process_payments => :environment do
 	Entity.all.each do |x|
 		if !x.payment_token.nil?			
 			payment_method = SpreedlyCore::PaymentMethod.find(x.payment_token.to_s)
-
 			if payment_method.valid?
 				purchase_transaction = payment_method.purchase(550)
 				print purchase_transaction.succeeded? # true

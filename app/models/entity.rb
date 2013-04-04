@@ -145,7 +145,7 @@ class Entity
 		# A product I produce, a keg I own, or a network I controll		
 		Asset.any_of( 
 				{ :location_network_id.in => self.networks.map{|x| x._id} },
-			  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+			  	{ :product_id.in => self.products.map{|x| x._id} }, 
 			  	{ :entity_id => self._id }
 		   	)
 	end
@@ -153,15 +153,15 @@ class Entity
 	def visible_asset_activity_facts
 		AssetActivityFact.any_of( 
 				{ :location_network_id.in => self.networks.map{|x| x._id} },
-			  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+			  	{ :product_id.in => self.products.map{|x| x._id} }, 
 			  	{ :entity_id => self._id }
 		   	).desc(:fact_time)
 	end
 
 	def visible_asset_cycle_facts
 		AssetCycleFact.any_of( 
-			{ :cycle_networks.in => self.networks.map{|x| x._id} },
-		  	{ :product_id.in => self.production_products.map{|x| x._id} }, 
+			{ :cycle_networks => self.networks.map{|x| x._id}},
+		  	{ :product_id.in => self.products.map{|x| x._id}.delete_if {|x| x == nil} }, 
 		  	{ :entity_id => self._id }
 		).desc(:start_time)
 	end

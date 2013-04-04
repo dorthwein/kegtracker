@@ -90,20 +90,23 @@ class BuildReport
 			start = @date.beginning_of_day - (86400 * 90)
 
 	# Step 1: Grab visible AssetCycleFact Networks
+			print  "\n" + entity.description + "\n"
 			by_network = entity.visible_asset_cycle_facts.where(cycle_complete: 1, cycle_quality: 1).gte(end_time: start ).map{|x| x.cycle_networks}.flatten.uniq
-				
+		 	by_network.each do |n|
+		 		nd = Network.find(n)
+		 		print nd.description + "\n"
+		 	end
 	# Step 2: For each network, get impacted facts
 			by_network.each do |y|			
 				asset_cycle_facts = entity.visible_asset_cycle_facts.gte(end_time: start).where(
 					cycle_complete: 1, 
 					cycle_quality: 1,
-				).any_of(						
-					{:start_network_id.in => by_network},
-					{:fill_network_id.in => by_network},
-					{:delivery_network_id.in => by_network}
-#					{pickup_network_id: y},
-#					{end_network_id: y},
 				)
+#				.any_of(						
+#					{:start_network_id.in => by_network},
+#					{:fill_network_id.in => by_network},
+#					{:delivery_network_id.in => by_network}
+#				)
 
 
 		# Step 3: Group by Product

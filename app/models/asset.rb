@@ -156,11 +156,6 @@ class Asset
 
 	def fill options
 		# Options: time, location_id, product_id, correction
-		if !self.asset_activity_fact.nil? && !self.asset_cycle_fact.nil?
-			self.asset_cycle_fact.end(self.asset_activity_fact)
-		end
-		
-
 		self.handle_code = 4		
 		self.asset_status = 1
 		self.last_action_time = options[:time]				
@@ -171,7 +166,11 @@ class Asset
 		self.fill_count = self.fill_count.to_i + 1	
 
 
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)		
+		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+		if !self.asset_activity_fact.nil? && !self.asset_cycle_fact.nil?
+			self.asset_cycle_fact.end(self.asset_activity_fact)
+		end
+
 		self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
 
 		self.asset_cycle_fact.fill(self.asset_activity_fact) rescue (
