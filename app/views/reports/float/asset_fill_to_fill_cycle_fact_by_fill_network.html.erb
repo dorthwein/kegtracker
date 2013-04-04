@@ -51,49 +51,33 @@ $(document).ready(function(){
         dataType: 'TEXT',
     }).done(function(JSONData) {
         var data = new google.visualization.DataTable(JSONData);
-        
-        var dashboard = new google.visualization.Dashboard(
-            document.getElementById('dashboard_div'));
 
-
-        var table = new google.visualization.ChartWrapper({
-            chartType: 'Table',
-            containerId: 'table',
-            options: {
-                height:300,
-                cssClassNames: {
-                    headerRow: 'headerRow',
-                    tableRow: 'tableRow',
-                    oddTableRow: 'oddTableRow',
-                    selectedTableRow: 'selectedTableRow',
-                    hoverTableRow: 'hoverTableRow',
-                    headerCell: 'headerCell',
-                    tableCell: 'tableCell',
-                    rowNumberCell: 'rowNumberCell',
-                }
+        var grouped_dt = google.visualization.data.group(
+            data, [3],
+            [{'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+        var table = new google.visualization.Table(document.getElementById('table'));
+        var options =  {
+            height:300,
+            cssClassNames: {
+                headerRow: 'headerRow',
+                tableRow: 'tableRow',
+                oddTableRow: 'oddTableRow',
+                selectedTableRow: 'selectedTableRow',
+                hoverTableRow: 'hoverTableRow',
+                headerCell: 'headerCell',
+                tableCell: 'tableCell',
+                rowNumberCell: 'rowNumberCell',
             }
-        })
-        var line_chart = new google.visualization.ChartWrapper({
-            'chartType': 'BarChart',
-            'containerId': 'pie_chart',
-            'options': {
-                'width': 300,
-                'height': 300,
-                'legend': 'none',
-                'title': 'Donuts eaten per person',
-                'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
-                'pieSliceText': 'label',
-            }
+        }
 
-        })        
         filters = [
-//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl1', 'Fill Network') ),
-  //          new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl2', 'Brewer') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl1', 'Fill Network') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl2', 'Brewer') ),
             new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl3', 'Product') ),
-    //        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl4', 'Size') ),
-//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'Fill Network') ),
-//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl6', 'Fill Network') ),
-//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl7', 'Fill Network') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl4', 'Size') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'Fill Network') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl6', 'Fill Network') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl7', 'Fill Network') ),
 
         ]
         // Establish dependencies, declaring that 'filter' drives 'pieChart',
@@ -102,9 +86,9 @@ $(document).ready(function(){
 //        var line_chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 //        chart.draw(data, options);
 
-        dashboard.bind(filters, [table, line_chart]);
+//        table.bind(filters, [table]);
         // Draw the dashboard.
-        dashboard.draw(data);
+        table.draw(grouped_dt, options);
 //        chart.draw(data, options);
         
 
