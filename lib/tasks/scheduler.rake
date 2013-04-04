@@ -11,7 +11,7 @@ task :ten_minute_build => :environment do
 	build_report.network_facts
 
 end
-
+# test
 task :rebuild_cycle_facts => :environment do
 	AssetCycleFact.build_cycle_facts_from_time_line	
 end
