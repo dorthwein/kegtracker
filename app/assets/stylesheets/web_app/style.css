@@ -217,6 +217,15 @@ MENU STYLING
 }
 */
 
+#dashboard_div {
+	width:100%;
+	text-align: center;
+	margin:auto;
+}
+#table {
+	height:300px;
+	width:100%;
+}
 #table .headerRow {
 	background: #FFF;
 }

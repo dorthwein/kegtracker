@@ -1,4 +1,25 @@
+<div id="dashboard_div" style="width:960px;">
+    <div style="display:inline-block;"> 
+        <div class="categoryControlFilter" id="categoryControl1"> </div>
+        <div class="categoryControlFilter" id="categoryControl2"> </div>
+        <div class="categoryControlFilter" id="categoryControl3"> </div>
+        <div class="categoryControlFilter" id="categoryControl4"> </div>
+        <div class="categoryControlFilter" id="categoryControl5"> </div>
+        <div class="categoryControlFilter" id="categoryControl6"> </div>
+        <div class="categoryControlFilter" id="categoryControl7"> </div>
+        <div class="categoryControlFilter" id="categoryControl8"> </div>
+    </div>
+    <div id="charts">   
 
+    </div>
+    <div id="pie_chart"> </div>    
+    <div id="table" style="bottom:20px; position:fixed">    
+
+    </div>
+    
+</div>
+
+<!--
     <div class="full sidebar">
         <div class="logo">    
         </div>
@@ -20,10 +41,103 @@
         </div>
         <div class="jqxGrid full display"></div>
     </div>
-
+-->
 <script>
 // prepare the data
 $(document).ready(function(){
+
+    $.ajax({
+        url: location.href + '.json',
+        dataType: 'TEXT',
+    }).done(function(JSONData) {
+        var data = new google.visualization.DataTable(JSONData);
+        
+        var dashboard = new google.visualization.Dashboard(
+            document.getElementById('dashboard_div'));
+
+
+        var table = new google.visualization.ChartWrapper({
+            chartType: 'Table',
+            containerId: 'table',
+            options: {
+                height:300,
+                cssClassNames: {
+                    headerRow: 'headerRow',
+                    tableRow: 'tableRow',
+                    oddTableRow: 'oddTableRow',
+                    selectedTableRow: 'selectedTableRow',
+                    hoverTableRow: 'hoverTableRow',
+                    headerCell: 'headerCell',
+                    tableCell: 'tableCell',
+                    rowNumberCell: 'rowNumberCell',
+                }
+            }
+        })
+        var line_chart = new google.visualization.ChartWrapper({
+            'chartType': 'BarChart',
+            'containerId': 'pie_chart',
+            'options': {
+                'width': 300,
+                'height': 300,
+                'legend': 'none',
+                'title': 'Donuts eaten per person',
+                'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
+                'pieSliceText': 'label',
+            }
+
+        })        
+        filters = [
+//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl1', 'Fill Network') ),
+  //          new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl2', 'Brewer') ),
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl3', 'Product') ),
+    //        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl4', 'Size') ),
+//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'Fill Network') ),
+//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl6', 'Fill Network') ),
+//            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl7', 'Fill Network') ),
+
+        ]
+        // Establish dependencies, declaring that 'filter' drives 'pieChart',
+        // so that the pie chart will only display entries that are let through
+        // given the chosen slider range.
+//        var line_chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+//        chart.draw(data, options);
+
+        dashboard.bind(filters, [table, line_chart]);
+        // Draw the dashboard.
+        dashboard.draw(data);
+//        chart.draw(data, options);
+        
+
+//        var dashboard = new google.visualization.Dashboard(
+//            document.getElementById('dashboard_div'));
+
+        // Create a range slider, passing some options
+/*
+        var donutRangeSlider = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'categoryControl8',
+          'options': {
+            'filterColumnLabel': 'Donuts eaten'
+          }
+        });
+
+        // Create a pie chart, passing some options
+        var tableChart = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table',
+          'options': {
+            'width': 300,
+            'height': 300,
+            'pieSliceText': 'value',
+            'legend': 'right'
+          }
+        });
+*/
+        
+
+
+    });
+/*    
     $("#date").jqxDateTimeInput({ theme: settings.theme });
     $('#date').bind('valuechanged', function (event) {  
         
@@ -89,6 +203,7 @@ $(document).ready(function(){
     // NEW BUTTON
     $(".jqxGrid").jqxGrid( gridSettings );  
     jqxIntialize()
+*/    
                         
 });
 
