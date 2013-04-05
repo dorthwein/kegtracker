@@ -15,18 +15,23 @@
         </div>
         <div class="jqxGrid full display"></div>
     </div>
-
 <script>
+
 $(document).ready(function(){
     //url = //system.server + $('.ui-page-active').attr('data-url') + '.json'   
+/*
+    a: x.bill_to_entity_description,
+    b: x.invoice_number,
+    c: x.date.to_i * 1000,
+    d: x._id,    
+*/
     var source = {
         datatype: "json",
         datafields: [
-            { name: 'bill_to_entity_description', type: 'string'},
-            { name: 'invoice_number', type: 'string'},
-            { name: 'date', type: 'date'},
-            { name: 'total_value', type: 'number'},
-            { name: '_id'},
+            { name: 'a', type: 'string'},
+            { name: 'b', type: 'string'},
+            { name: 'c', type: 'date'},            
+            { name: 'd' },
         ], 
         url: location.href,
         updaterow: function (rowid, rowdata, commit) {
@@ -49,17 +54,18 @@ $(document).ready(function(){
     });
 //  window.dataAdapter = dataAdapter
     // Initialize Grid
+
     var gridSettings = settings.jqxGridProperties
     gridSettings['source'] = dataAdapter;
     gridSettings['columns'] = [
-        { text: 'Bill To', datafield: 'bill_to_entity_description', filtertype: 'checkedlist' },
-        { text: 'Invoice #', datafield: 'invoice_number'},
-        { text: 'Date', datafield: 'date', cellsformat: 'd', filtertype: 'date' },
-        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+        { text: 'Bill To', datafield: 'a', filtertype: 'checkedlist' },
+        { text: 'Invoice #', datafield: 'b'},
+        { text: 'Date', datafield: 'c', cellsformat: 'd', filtertype: 'date' },
+        { text: 'View', datafield: 'd', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
             return 'View'
         }, buttonclick: function (row) {
             var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-            var url = location.href + "/" + rowdata['_id'];
+            var url = location.href + "/" + rowdata['d'];
             openPopupWindow(url);
         }}, 
     ]

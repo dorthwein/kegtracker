@@ -12,6 +12,7 @@ class JqxConverter
 	end
 
 	def self.jqxGrid array, options = {}
+		#x = array.delete_if{|k, v| v.nil?}
 		return array
 	end
 end

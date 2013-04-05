@@ -21,11 +21,13 @@ class Reports::AssetCyclesController < ApplicationController
             h: x.asset_type_description,
             i: x.asset_status_description,
             j: x.handle_code_description,
-            k: x.start_time.to_i * 1000,
-            l: x.fill_time.to_i * 1000,
-            m: x.delivery_time.to_i * 1000,
-            n: x.pickup_time.to_i * 1000,
-            o: x.end_time.to_i * 1000,
+
+            k: x.start_time != nil ? x.start_time.to_i * 1000 : nil,
+            l: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
+            m: x.delivery_time != nil ? x.delivery_time.to_i * 1000 : nil,
+            n: x.pickup_time != nil ? x.pickup_time.to_i * 1000 : nil,
+            o: x.end_time != nil ? x.end_time.to_i * 1000 : nil,
+
             p: x.cycle_complete_description,
             q: x._id
           }})

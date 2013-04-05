@@ -20,8 +20,8 @@ class Reports::AssetsController < ApplicationController
             g: x.location_description,
             h: x.location_network_description,
             i: x._id,
-            j: x.fill_time.to_i * 1000,
-            k: x.last_action_time.to_i * 1000,
+            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
+            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
             l: x.asset_cycle_fact_id,                    
           }});
 			  }

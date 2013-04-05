@@ -8,8 +8,13 @@ class Accounting::InvoicesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        invoices = JqxConverter.jqxGrid(current_user.entity.invoices)
-        render json: invoices        
+        records = JqxConverter.jqxGrid(current_user.entity.invoices.map{|x| {
+          a: x.bill_to_entity_description,
+          b: x.invoice_number,
+          c: x.date != nil ? x.date.to_i * 1000 : nil,          
+          d: x._id,
+        }})
+        render json: records        
       }
     end
   end
