@@ -13,11 +13,11 @@ function jqxIntialize(){
 			listSource.push({ label: item.text, value: item.datafield, checked:true })
 		})
 
-	    $(".jqxGridColumnListBox").jqxListBox({ 	    	
-	    	source: listSource,     	
-	    	height: jqxGridColumnListBoxHeight(), 
+	    $(".jqxGridColumnListBox").jqxListBox({
+	    	source: listSource,
+	    	height: jqxGridColumnListBoxHeight(),
 	    	width:'85%',
-	    	theme: theme, 
+	    	theme: theme,
 	    	checkboxes: true,
 	    });
 	   
@@ -53,7 +53,7 @@ function jqxIntialize(){
 		var url = system.server + base_url + id
 		window.location = url
 	})
-	$(".new").jqxButton({ theme: theme });            
+	$(".new").jqxButton({ theme: theme });
 	$(".new").click(function () {
 		var url = location.href
 		url = url.replace("/new","");
