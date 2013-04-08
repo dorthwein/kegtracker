@@ -172,7 +172,10 @@ $(document).ready(function(){
                     type: 'number',
                     label: value, // dataTableSkuValues[i],
                     calc: function (sourceDataTable, row) {
-                        if(sourceDataTable.getValue(row, 2) == value){
+                        var today = new Date();
+                        today = today.toDateString();
+                        factDate = sourceDataTable.getValue(row, 9).toDateString();
+                        if (sourceDataTable.getValue(row, 2) == value && factDate == today){
                             return sourceDataTable.getValue(row, selected_column);
                         }
                     },                    
@@ -192,8 +195,13 @@ $(document).ready(function(){
                     type: 'number',
                     label: value, // dataTableSkuValues[i],
                     calc: function (sourceDataTable, row) {
-                        // console.log('Max: ' + sourceDataTable.getValue(row, 2) + ' -- ' + value)
-                        return (sourceDataTable.getValue(row, 2) == value) ? sourceDataTable.getValue(row, selected_column) : null;
+                        var today = new Date();
+                        today = today.toDateString();
+                        factDate = sourceDataTable.getValue(row, 9).toDateString();
+                        if (sourceDataTable.getValue(row, 2) == value && factDate == today){
+                            return sourceDataTable.getValue(row, selected_column);
+                        }
+
                     },                    
                 }
 
@@ -206,7 +214,11 @@ $(document).ready(function(){
                     // Requires custom min function to eliminate 0 values
                     aggregation: function(values){
                         values = values.filter(Number)
-                        return Math.min.apply(Math,values)                    
+                        var sum = 0;
+                        for (var i = 0; i < values.length; i++) {
+                            sum += values[i];
+                        }                    
+                        return sum
                     }
                 }            
                 var avgPivotCol = {
@@ -227,7 +239,14 @@ $(document).ready(function(){
                     column: key + 1,
                     type: 'number',
                     label: value,
-                    aggregation: google.visualization.data.max
+                    aggregation: function(values){
+                        values = values.filter(Number)
+                        var sum = 0;
+                        for (var i = 0; i < values.length; i++) {
+                            sum += values[i];
+                        }                    
+                        return sum
+                    }
                 }
             // Push to respective Arrays
                 minDataViewColumns.push(minViewCol);
