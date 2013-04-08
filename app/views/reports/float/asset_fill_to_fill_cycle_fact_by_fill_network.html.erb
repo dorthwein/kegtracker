@@ -1,194 +1,257 @@
-<div id="dashboard_div" style="width:960px;">
-    <div style="display:inline-block;"> 
-        <div class="categoryControlFilter" id="categoryControl1"> </div>
-        <div class="categoryControlFilter" id="categoryControl2"> </div>
-        <div class="categoryControlFilter" id="categoryControl3"> </div>
-        <div class="categoryControlFilter" id="categoryControl4"> </div>
-        <div class="categoryControlFilter" id="categoryControl5"> </div>
-        <div class="categoryControlFilter" id="categoryControl6"> </div>
-        <div class="categoryControlFilter" id="categoryControl7"> </div>
-        <div class="categoryControlFilter" id="categoryControl8"> </div>
-    </div>
-    <div id="charts">   
-
-    </div>
-    <div id="pie_chart"> </div>    
-    <div id="table" style="bottom:20px; position:fixed">    
-
-    </div>
-    
-</div>
-
-<!--
+<div id="dashboard_div" style="text-align:center;">
     <div class="full sidebar">
         <div class="logo">    
         </div>
 
-        <input type="button" value="Excel" class='excelExport' data-role="none"/>       
-        <input type="button" value="Refresh Records" id='findRecord' data-role="none"/>
-        <div id='date'>
-        </div>
-
-        <button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
-
-
-
-        <div class="jqxGridColumnListBox">  </div>
+        <div class="categoryControlContainer" id="categoryControl1"> </div>
+        <div class="categoryControlContainer" id="categoryControl2"> </div>
+        <div class="categoryControlContainer" id="categoryControl3"> </div>
+        <div class="categoryControlContainer" id="categoryControl4"> </div>
+        <div class="categoryControlContainer" id="categoryControl5"> </div>
+        <div class="categoryControlContainer" id="categoryControl6"> </div>
+        <div class="categoryControlContainer" id="categoryControl7"> </div>
+        <div class="categoryControlContainer" id="categoryControl8"> </div>
+    
     </div>
-    <div class="full display">
+    <div class="full display" style="font-size:10px;">
         <div class="toolbar">   
 
         </div>
-        <div class="jqxGrid full display"></div>
+
+        <div id="charts" style="padding:0 1% 0 1%; width:98%">
+
+            <div id="chart1" style="width:100%%; height:350px; margin:10px 0 0 0">  
+                <!-- CHART 1 -->
+            </div>
+            <div id="chartRangeFinder1"> </div>
+            
+            <div style="width:100%; margin:10px 0 0 0">
+                <div id="chart2" style="width:49%;display:inline-block;height:200px;">
+                    <!-- CHART 2 -->
+                </div>
+
+                <div id="chart3" style="width:49%; display:inline-block; height:200px;">
+                    <!-- CHART 3 -->
+                </div>
+            </div>
+
+            <div id="chart4" style="width:100%; height:250px; margin:75px 0 25px 0;">
+                <!-- Dataset -->    
+            </div>            
+        </div>
     </div>
--->
+</div>
 <script>
 // prepare the data
 $(document).ready(function(){
-
     $.ajax({
         url: location.href + '.json',
         dataType: 'TEXT',
     }).done(function(JSONData) {
-        var data = new google.visualization.DataTable(JSONData);
+    // Build main DataTable (dataset)
+        var dataTable = new google.visualization.DataTable(JSONData);
+    
+    // Get SKU Distinct Values
+        var dashboard = new google.visualization.Dashboard(
+            document.getElementById('dashboard_div')
+        );
 
-        var grouped_dt = google.visualization.data.group(
-            data, [3],
-            [{'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
-        var table = new google.visualization.Table(document.getElementById('table'));
-        var options =  {
-            height:300,
-            cssClassNames: {
-                headerRow: 'headerRow',
-                tableRow: 'tableRow',
-                oddTableRow: 'oddTableRow',
-                selectedTableRow: 'selectedTableRow',
-                hoverTableRow: 'hoverTableRow',
-                headerCell: 'headerCell',
-                tableCell: 'tableCell',
-                rowNumberCell: 'rowNumberCell',
+    // Add on Change Listener
+        google.visualization.events.addListener(dashboard, 'ready', drawCharts);                    
+
+    // Build dashboard DataTable
+        var dashTable = new google.visualization.ChartWrapper({
+            'chartType': 'Table',
+            'containerId': 'chart4',
+            'options': {
+                width: 300,
+                height: 300,
+                legend: 'right',
+                cssClassNames: {
+                    headerRow: 'headerRow',
+                    tableRow: 'tableRow',
+                    oddTableRow: 'oddTableRow',
+                    selectedTableRow: 'selectedTableRow',
+                    hoverTableRow: 'hoverTableRow',
+                    headerCell: 'headerCell',
+                    tableCell: 'tableCell',
+                    rowNumberCell: 'rowNumberCell',
+                }                
             }
-        }
+        });
 
+    // Add Dashboard Controls/Filters
         filters = [
             new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl1', 'Fill Network') ),
             new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl2', 'Brewer') ),
             new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl3', 'Product') ),
             new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl4', 'Size') ),
-            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'Fill Network') ),
-            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl6', 'Fill Network') ),
-            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl7', 'Fill Network') ),
-
+            new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'SKU') ),            
         ]
-        // Establish dependencies, declaring that 'filter' drives 'pieChart',
-        // so that the pie chart will only display entries that are let through
-        // given the chosen slider range.
-//        var line_chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-//        chart.draw(data, options);
+         dashboard.bind(filters, dashTable);
+         dashboard.draw(dataTable);
 
-//        table.bind(filters, [table]);
-        // Draw the dashboard.
-        table.draw(grouped_dt, options);
-//        chart.draw(data, options);
-        
-
-//        var dashboard = new google.visualization.Dashboard(
-//            document.getElementById('dashboard_div'));
-
-        // Create a range slider, passing some options
-/*
-        var donutRangeSlider = new google.visualization.ControlWrapper({
-          'controlType': 'NumberRangeFilter',
-          'containerId': 'categoryControl8',
-          'options': {
-            'filterColumnLabel': 'Donuts eaten'
-          }
-        });
-
-        // Create a pie chart, passing some options
-        var tableChart = new google.visualization.ChartWrapper({
-          'chartType': 'Table',
-          'containerId': 'table',
-          'options': {
-            'width': 300,
-            'height': 300,
-            'pieSliceText': 'value',
-            'legend': 'right'
-          }
-        });
-*/
-        
-
-
-    });
-/*    
-    $("#date").jqxDateTimeInput({ theme: settings.theme });
-    $('#date').bind('valuechanged', function (event) {  
-        
-    //  var jsDate = event.args.date;       
-    }); 
-
-    var source = {
-        datatype : "json",
-        type: 'POST',
-        datafields: [
-            { name: 'location_network_description' },
-            { name: 'product_description' },            
-            { name: 'asset_type_description' },
-            { name: 'product_entity_description' },
-            { name: 'fill_life_cycle_avg_time' },
-            { name: 'fill_life_cycle_min_time' },
-            { name: 'fill_life_cycle_max_time' },
-            { name: 'fill_life_cycle_completed_cycles' },
-            { name: '_id' }
-        ],
-        url: location.href,
-        root: 'grid',
-    };
-
-    var dataAdapter = new $.jqx.dataAdapter(source, {
-        formatData: function(){
-            var params = {}         
+    // Draw Charts Function
+        function drawCharts(){
+        // Get data from dashboard DataTable
+            var graphData = dashTable.getDataTable()
+            var dataTableSkuValues = dataTable.getDistinctValues(2)            
             
-            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
-            params['date'] = jsDate;
-            return params       
-        },
-        downloadComplete: function(edata, textStatus, jqXHR){       
-            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
-            params['date'] = jsDate;
+
+        // Set/Create DataViewColumns specific to page
+            var minDataViewColumns = [
+                {
+                    type: 'string',
+                    label: 'Aggregation',
+                    calc: function(){
+                        return 'Min'
+                    }
+                },
+            ]
+            var avgDataViewColumns = [9]
+            var maxDataViewColumns = [
+                {
+                    type: 'string',
+                    label: 'Aggregation',
+                    calc: function(){
+                        return 'Max'
+                    }
+                },
+                
+            ]        
+            var minDataPivotColumns = []
+            var avgDataPivotColumns = []
+            var maxDataPivotColumns = []
+
+        // For each SKU create distinct columns
+            // Note - Averages are an average of an average - need to determine correct math calculations
+            // Possibly remove bottom 20% & top 20% at report generation
+            $.each(dataTableSkuValues, function(key, value){
+                // Create View Columns
+                    // Used to create a correctly formatted chart table layout
+                var minViewCol = {
+                    type: 'number',
+                    label: value, // dataTableSkuValues[i],
+                    calc: function (sourceDataTable, row) {
+                        if(sourceDataTable.getValue(row, 2) == value){                    
+                            return sourceDataTable.getValue(row, 5);
+                        }
+                    },                    
+                }      
+
+                var avgViewCol = {
+                    type: 'number',
+                    label: value, // dataTableSkuValues[i],
+                    calc: function (sourceDataTable, row) {
+                        if(sourceDataTable.getValue(row, 2) == value){                    
+                            return sourceDataTable.getValue(row, 6);
+                        }
+                    },                                    
+                }
+
+                var maxViewCol = {
+                    type: 'number',
+                    label: value, // dataTableSkuValues[i],
+                    calc: function (sourceDataTable, row) {
+                        // console.log('Max: ' + sourceDataTable.getValue(row, 2) + ' -- ' + value)
+                        return (sourceDataTable.getValue(row, 2) == value) ? sourceDataTable.getValue(row, 7) : null;
+                    },                    
+                }
+
+                // Create Pivoted Columns
+                    // Used to aggregate the View Columns to present min/max/avg
+                var minPivotCol = {
+                    column: key + 1,
+                    type: 'number',
+                    label: value,
+                    // Requires custom min function to eliminate 0 values
+                    aggregation: function(values){
+                        values = values.filter(Number)
+                        return Math.min.apply(Math,values)                    
+                    }
+                }            
+                var avgPivotCol = {
+                    column: key + 1,
+                    type: 'number',
+                    label: value,            
+                    aggregation: function(values){
+                        values = values.filter(Number)
+                        var sum = 0;
+                        for (var i = 0; i < values.length; i++) {
+                            sum += values[i];
+                        }                    
+                        return (sum != 0) ? sum/values.length : 0                    
+                    }
+
+                }
+                var maxPivotCol = {
+                    column: key + 1,
+                    type: 'number',
+                    label: value,
+                    aggregation: google.visualization.data.max
+                }
+            // Push to respective Arrays
+                minDataViewColumns.push(minViewCol);
+                avgDataViewColumns.push(avgViewCol);
+                maxDataViewColumns.push(maxViewCol);
+
+                minDataPivotColumns.push(minPivotCol);
+                avgDataPivotColumns.push(avgPivotCol);
+                maxDataPivotColumns.push(maxPivotCol);
+
+            });
+
+        // Create Chart DataView
+            var minDataView = new google.visualization.DataView(graphData);
+            var avgDataView = new google.visualization.DataView(graphData);
+            var maxDataView = new google.visualization.DataView(graphData);
+
+        // Set Chart DataView Columns
+            minDataView.setColumns( minDataViewColumns)
+            avgDataView.setColumns( avgDataViewColumns)
+            maxDataView.setColumns( maxDataViewColumns)
+            
+        // Create Google Visulizations on DataView /w Aggregated Data (i.e. pivoted views)
+            var minPivotedData = google.visualization.data.group(minDataView, [0], minDataPivotColumns)
+            var avgPivotedData = google.visualization.data.group(avgDataView, [0], avgDataPivotColumns)
+            var maxPivotedData = google.visualization.data.group(maxDataView, [0], maxDataPivotColumns)
+
+            var minColumnChart = new google.visualization.ColumnChart(document.getElementById('chart2'));  
+            var avgLineChart = new google.visualization.LineChart(document.getElementById('chart1'));  
+            var maxColumnChart = new google.visualization.ColumnChart(document.getElementById('chart3'));  
 
 
+        // Set Chart Options
+            var lineChartOptions =  {
+                legend: {
+                    position:'bottom',
+                    textStyle:{color: '#333', fontSize: 12},
+                },
+                curveType: 'function',
+                title: 'Average # of days per cycle',
+                titleTextStyle: {color: '#333'},
+                hAxis: {
+                    textStyle:{color: '#333', fontSize: 12},
+                },
+                vAxis: {
+                    textStyle:{color: '#333', fontSize: 12},
+                },            
+                chartArea:{    
+                    width:'98%',
+                    left:'2%',
+                    top:'10%',
+                }
+            }
+            var columnChartOptions =  {
+                legend: {position:'none'},
+                chartArea:{width:"96%", height:'95%', left:'4%'},      
+            }
+        // Draw Charts
+            minColumnChart.draw(minPivotedData, columnChartOptions);
+            avgLineChart.draw(avgPivotedData, lineChartOptions);
+            maxColumnChart.draw(maxPivotedData, columnChartOptions);
         }
-    });
-
-    // Initialize Grid  
-    var gridSettings = settings.jqxGridProperties
-    gridSettings['source'] = dataAdapter;
-    gridSettings['columns'] = [
-        { text: 'Production Network', width:'150px', datafield: 'location_network_description', filtertype: 'checkedlist'  },
-        { text: 'Product',  datafield: 'product_description', filtertype: 'checkedlist'  },
-        { text: 'Brewery',  datafield: 'product_entity_description', filtertype: 'checkedlist'  },
-        { text: 'Container',  datafield: 'asset_type_description', filtertype: 'checkedlist' },
-        { text: 'Min (Days)', width:'90px', datafield: 'fill_life_cycle_min_time', filtertype: 'number'  },
-        { text: 'Avg. (Days)', width:'90px', datafield: 'fill_life_cycle_avg_time', filtertype: 'number' },          
-        { text: 'Max (Days)', width:'90px', datafield: 'fill_life_cycle_max_time', filtertype: 'number' },
-        { text: '# Cycles', width:'90px', datafield: 'fill_life_cycle_completed_cycles', filtertype: 'number' },         
-
-    ],
-    
-    $("#findRecord").jqxButton({ theme: settings.theme });   
-    $("#findRecord").click(function () {        
-        dataAdapter.dataBind();
-//      alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));        
-    });
-
-    
-    // NEW BUTTON
-    $(".jqxGrid").jqxGrid( gridSettings );  
-    jqxIntialize()
-*/    
-                        
+    });                 
 });
 
 </script>

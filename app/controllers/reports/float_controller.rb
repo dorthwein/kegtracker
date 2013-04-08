@@ -56,10 +56,10 @@ class Reports::FloatController < ApplicationController
 #		    format.json {
 #		    	options = {:entity => current_user.entity}
 				
-#				date = Time.now #.parse(params['date'])
+				date = Time.now #.parse(params['date'])
 
- #   			start_date = date.beginning_of_day
-  #  			end_date = date.end_of_day
+    			start_date = date.beginning_of_day
+    			end_date = date.end_of_day
 
 				#facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
 			
@@ -67,7 +67,8 @@ class Reports::FloatController < ApplicationController
 	          cols = [
 	            {:id => :location_network_description, label: 'Fill Network', type: 'string'},    
 	            {:id => :product_entity_description, label: 'Brewer', type: 'string'},    
-	            {:id => :product_description, label: 'Product', type: 'string'},    
+	            {:id => :sku_description, label: 'SKU', type: 'string'},
+	            {:id => :product_description, label: 'Product', type: 'string'},	            
 	            {:id => :asset_type_description, label: 'Size', type: 'string'},    		            	            
 				{:id => :fill_life_cycle_min_time, label: 'Min (Days)', type: 'number'},
 				{:id => :fill_life_cycle_avg_time, label: 'Avg (Days)', type: 'number'},
