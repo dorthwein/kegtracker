@@ -81,6 +81,6 @@ class NetworkFact
 		self.location_network_type = self.location_network.network_type rescue nil
 		self.location_network_type_description = self.location_network.get_network_type_description rescue nil
 
-		self.total_quantity = self.empty_quantity.to_i + self.delivery_quantity.to_i + self.market_quantity.to_i
+		self.total_quantity = self.empty_quantity.to_i + self.market_quantity.to_i + self.delivery_quantity.to_i
 	end	
 end

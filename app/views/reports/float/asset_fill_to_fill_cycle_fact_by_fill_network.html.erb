@@ -14,10 +14,8 @@
     
     </div>
     <div class="full display" style="font-size:10px;">
-        <div class="toolbar">   
-
+        <div class="toolbar">
         </div>
-
         <div id="charts" style="padding:0 1% 0 1%; width:98%">
 
             <div id="chart1" style="width:100%%; height:350px; margin:10px 0 0 0">  
@@ -64,7 +62,7 @@ $(document).ready(function(){
             'chartType': 'Table',
             'containerId': 'chart4',
             'options': {
-                width: 300,
+                width: '100%',
                 height: 300,
                 legend: 'right',
                 cssClassNames: {
@@ -91,6 +89,25 @@ $(document).ready(function(){
          dashboard.bind(filters, dashTable);
          dashboard.draw(dataTable);
 
+        var rtime;
+        var timeout = false;
+        var delta = 100;
+        $(window).resize(function() {
+            rtime = new Date();
+            if (timeout === false) {
+                timeout = true;
+                setTimeout(resizeend, delta);
+            }
+        });
+
+        function resizeend() {
+            if (new Date() - rtime < delta) {
+                setTimeout(resizeend, delta);
+            } else {
+                timeout = false;
+                dashTable.draw()
+            }               
+        }
     // Draw Charts Function
         function drawCharts(){
         // Get data from dashboard DataTable
@@ -227,6 +244,7 @@ $(document).ready(function(){
                     position:'bottom',
                     textStyle:{color: '#333', fontSize: 12},
                 },
+
                 curveType: 'function',
                 title: 'Average # of days per cycle',
                 titleTextStyle: {color: '#333'},
