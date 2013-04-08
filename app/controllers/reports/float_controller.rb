@@ -22,7 +22,6 @@ class Reports::FloatController < ApplicationController
 
 #				visible_networks = current_user.entity.visible_networks
 #		    	location_network_list = JqxConverter.jqxDropDownList(visible_networks)
-
 #				if params['location_network_id'].nil?
 #					default_network = visible_networks[0]
 #				else
@@ -53,14 +52,15 @@ class Reports::FloatController < ApplicationController
 	def asset_fill_to_fill_cycle_fact_by_fill_network
 		respond_to do |format|  
 			format.html
-		    format.json {
-		    	options = {:entity => current_user.entity}
+#		    format.json {
+#		    	options = {:entity => current_user.entity}
 				
-				date = DateTime.parse(params['date'])
+				date = Time.now #.parse(params['date'])
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
 
+<<<<<<< HEAD
 				records = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0).map{|x| {
   					a: x.location_network_description,
   					b: x.product_description,
@@ -74,10 +74,74 @@ class Reports::FloatController < ApplicationController
 				}}
 		    	render json: records		
 		    }
+=======
+				#facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
+			
+		  	format.json {          
+	          cols = [
+	            {:id => :location_network_description, label: 'Fill Network', type: 'string'},    
+	            {:id => :product_entity_description, label: 'Brewer', type: 'string'},    
+	            {:id => :sku_description, label: 'SKU', type: 'string'},
+	            {:id => :product_description, label: 'Product', type: 'string'},	            
+	            {:id => :asset_type_description, label: 'Size', type: 'string'},    		            	            
+				{:id => :fill_life_cycle_min_time, label: 'Min (Days)', type: 'number'},
+				{:id => :fill_life_cycle_avg_time, label: 'Avg (Days)', type: 'number'},
+				{:id => :fill_life_cycle_max_time, label: 'Max (Days)', type: 'number'},					
+				{:id => :fill_life_cycle_completed_cycles, label: '# Cycles', type: 'number'},
+				{:id => :fact_time, label: 'Date', type: 'date'},
+	          ]
+			  source = current_user.entity.network_facts.gt(fill_life_cycle_completed_cycles: 0)	          
+#	          source = current_user.entity.visible_assets		          
+	          render json: GoogleChartApi.table(source, cols)
+		  	}
+				#.map{|x| {
+					
+			#	}}
+#		    	response = {:grid => facts}
+		    	# response = {:grid => facts, :fill_networks => fill_network_list}		   		
+#		    	render json: response				    
+>>>>>>> google_api
 		end
 	end	
 
 	def asset_fill_to_fill_cycle_fact_by_delivery_network
+		respond_to do |format|  
+			format.html
+#		    format.json {
+#		    	options = {:entity => current_user.entity}
+				
+				date = Time.now #.parse(params['date'])
+
+    			start_date = date.beginning_of_day
+    			end_date = date.end_of_day
+
+				#facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
+			
+		  	format.json {          
+	          cols = [
+	            {:id => :location_network_description, label: 'Delivery Network', type: 'string'},    
+	            {:id => :product_entity_description, label: 'Brewer', type: 'string'},    
+	            {:id => :sku_description, label: 'SKU', type: 'string'},
+	            {:id => :product_description, label: 'Product', type: 'string'},	            
+	            {:id => :asset_type_description, label: 'Size', type: 'string'},    		            	            
+				{:id => :delivery_life_cycle_min_time, label: 'Min (Days)', type: 'number'},
+				{:id => :delivery_life_cycle_avg_time, label: 'Avg (Days)', type: 'number'},
+				{:id => :delivery_life_cycle_max_time, label: 'Max (Days)', type: 'number'},					
+				{:id => :delivery_life_cycle_completed_cycles, label: '# Cycles', type: 'number'},
+				{:id => :fact_time, label: 'Date', type: 'date'},
+	          ]
+			  source = current_user.entity.network_facts.gt(delivery_life_cycle_completed_cycles: 0)	          
+#	          source = current_user.entity.visible_assets		          
+	          render json: GoogleChartApi.table(source, cols)
+		  	}
+				#.map{|x| {
+					
+			#	}}
+#		    	response = {:grid => facts}
+		    	# response = {:grid => facts, :fill_networks => fill_network_list}		   		
+#		    	render json: response				    
+		end
+=begin
 		respond_to do |format|  
 			format.html
 		    format.json {
@@ -104,6 +168,7 @@ class Reports::FloatController < ApplicationController
 		    	 
 		    	render json: response		
 		    }
-		end			
+		end	
+=end				
 	end	
 end

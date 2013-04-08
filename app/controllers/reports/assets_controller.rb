@@ -145,24 +145,39 @@ class Reports::AssetsController < ApplicationController
 	def sku_summary_report_simple
 		respond_to do |format|  
 			format.html
-		    format.json {
-				
-				date = DateTime.parse(params['date'])
+	    format.json {
+  			
+        cols = [
+          {:id => :location_network_description, label: 'Location Network', type: 'string'},    
+          {:id => :product_entity_description, label: 'Brewer', type: 'string'},    
+          {:id => :sku_description, label: 'SKU', type: 'string'},
+          {:id => :product_description, label: 'Product', type: 'string'},              
+          {:id => :asset_type_description, label: 'Size', type: 'string'},                                  
+          {:id => :empty_quantity, label: 'Empty',  type: 'number' },
+          {:id => :market_quantity, label: 'Market',  type: 'number' },
+          {:id => :full_quantity, label: 'Full',  type: 'number' },
+          {:id => :total_quantity, label: 'Total',  type: 'number' },
+          {:id => :fact_time, label: 'Date', type: 'date'},
+        ]
 
-				start_date = date.beginning_of_day
-				end_date = date.end_of_day
-												
-				facts = JqxConverter.jqxGrid(current_user.entity.network_facts.between(fact_time: start_date..end_date)).any_of(
-					{:empty_quantity.gt => 0},
-					{:full_quantity.gt => 0},
-					{:market_quantity.gt => 0},
-					{:total_quantity.gt => 0}
-				)
-		    	response = {:grid => facts} #, :location_networks => location_network_list}
-		 
-		    render json: response
-		}
-		end			
+        source = current_user.entity.network_facts.any_of(
+          {:empty_quantity.gt => 0},
+          {:full_quantity.gt => 0},
+          {:market_quantity.gt => 0},
+          {:total_quantity.gt => 0},
+        )
+        render json: GoogleChartApi.table(source, cols)
+	    }
+		end
 	end	
 end
+
+
+
+
+
+
+
+
+
 
