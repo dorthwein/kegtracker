@@ -42,54 +42,7 @@
 <script>
 // prepare the data
 $(document).ready(function(){
-<<<<<<< HEAD
-    $("#date").jqxDateTimeInput({ theme: settings.theme });
-    $('#date').bind('valuechanged', function (event) {  
-        
-    //  var jsDate = event.args.date;       
-    }); 
-/*
-a: x.location_network_description,
-b: x.product_description,
-c: x.asset_type_description,
-d: x.product_entity_description,
-e: x.fill_life_cycle_avg_time,
-f: x.fill_life_cycle_min_time,
-g: x.fill_life_cycle_max_time,
-h: x.fill_life_cycle_completed_cycles,
-i: x._id,
 
-*/
-    var source = {
-        datatype : "json",
-        type: 'POST',
-        datafields: [
-            {name: 'a', type: 'string' }, 
-            {name: 'b', type: 'string' }, 
-            {name: 'c', type: 'string' }, 
-            {name: 'd', type: 'string' }, 
-            {name: 'e', type: 'integer' },
-            {name: 'f', type: 'integer' },
-            {name: 'g', type: 'integer' },
-            {name: 'h', type: 'integer' },
-            {name: 'i' },  
-        ],
-        url: location.href,
-        root: 'grid',
-    };
-
-    var dataAdapter = new $.jqx.dataAdapter(source, {
-        formatData: function(){
-            var params = {}         
-            
-            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
-            params['date'] = jsDate;
-            return params       
-        },
-        downloadComplete: function(edata, textStatus, jqXHR){       
-            var jsDate = $('#date').jqxDateTimeInput('getDate'); 
-            params['date'] = jsDate;
-=======
     $.ajax({
         url: location.href + '.json',
         dataType: 'TEXT',
@@ -125,7 +78,6 @@ i: x._id,
                 }                
             }
         });
->>>>>>> google_api
 
     // Add Dashboard Controls/Filters
         filters = [
@@ -157,33 +109,6 @@ i: x._id,
                 dashTable.draw()
             }               
         }
-<<<<<<< HEAD
-    });
-    // Initialize Grid  
-    var gridSettings = settings.jqxGridProperties
-    gridSettings['source'] = dataAdapter;
-    gridSettings['columns'] = [
-        { text: 'Production Network', width:'150px', datafield: 'a', filtertype: 'checkedlist'  },
-        { text: 'Product',  datafield: 'b', filtertype: 'checkedlist'  },
-        { text: 'Brewery',  datafield: 'd', filtertype: 'checkedlist'  },
-        { text: 'Container',  datafield: 'c', filtertype: 'checkedlist' },
-        { text: 'Min (Days)', width:'90px', datafield: 'f', filtertype: 'number'  },
-        { text: 'Avg. (Days)', width:'90px', datafield: 'e', filtertype: 'number' },          
-        { text: 'Max (Days)', width:'90px', datafield: 'g', filtertype: 'number' },
-        { text: '# Cycles', width:'90px', datafield: 'h', filtertype: 'number' },         
-    ],
-    
-    $("#findRecord").jqxButton({ theme: settings.theme });   
-    $("#findRecord").click(function () {        
-        dataAdapter.dataBind();
-//      alert(JSON.stringify($("#jqxGrid").jqxGrid('getrows')));        
-    });
-
-    
-    // NEW BUTTON
-    $(".jqxGrid").jqxGrid( gridSettings );  
-    jqxIntialize()
-=======
     // Draw Charts Function
         function drawCharts(){
         // Get data from dashboard DataTable
@@ -346,7 +271,6 @@ i: x._id,
             maxColumnChart.draw(maxPivotedData, columnChartOptions);
         }
     });                 
->>>>>>> google_api
 });
 
 </script>

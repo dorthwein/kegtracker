@@ -59,23 +59,6 @@ class Reports::FloatController < ApplicationController
 
     			start_date = date.beginning_of_day
     			end_date = date.end_of_day
-
-<<<<<<< HEAD
-				records = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0).map{|x| {
-  					a: x.location_network_description,
-  					b: x.product_description,
-  					c: x.asset_type_description,
-  					d: x.product_entity_description,
-  					e: x.fill_life_cycle_avg_time,
-  					f: x.fill_life_cycle_min_time,
-  					g: x.fill_life_cycle_max_time,
-  					h: x.fill_life_cycle_completed_cycles,
-  					i: x._id,
-				}}
-		    	render json: records		
-		    }
-=======
-				#facts = current_user.entity.network_facts.between(fact_time: start_date..end_date).gt(fill_life_cycle_completed_cycles: 0)
 			
 		  	format.json {          
 	          cols = [
@@ -100,7 +83,6 @@ class Reports::FloatController < ApplicationController
 #		    	response = {:grid => facts}
 		    	# response = {:grid => facts, :fill_networks => fill_network_list}		   		
 #		    	render json: response				    
->>>>>>> google_api
 		end
 	end	
 
