@@ -114,6 +114,8 @@ Cobalt::Application.routes.draw do
 
 		match 'rfid_reads' => 'rfid_reads#read', :via => [:get, :post] 						
 		match 'entities/distributor_upload' => 'entities#distributor_upload', :via => [:get, :post] 						
+
+		match 'export/jqx_csv' => 'file_export#jqx_csv', :via => [:post]
 	end
 
 	namespace :scanners do 

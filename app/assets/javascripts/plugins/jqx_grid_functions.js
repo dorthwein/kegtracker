@@ -88,8 +88,8 @@ function jqxIntialize(){
 	// Button Processing/Action	
 	// NEW BUTTON
 	$(".excelExport").jqxButton({ theme: theme});
-	$(".excelExport").click(function () {		
-		$(".jqxGrid").jqxGrid('exportdata', 'xls', 'BreweryApps'); //, true, null, false, 'http://localhost:3000');           
+	$(".excelExport").click(function () {	
+		$(".jqxGrid").jqxGrid('exportdata', 'csv', 'BreweryApps', true, null, false, system.server + '/system/export/jqx_csv.csv');
 
 // The first parameter of the export method determines the export’s type – ‘xls’, ‘xml’, ‘html’, ‘json’, ‘tsv’ or ‘csv’.
 // The second parameter is the file’s name.
@@ -100,8 +100,7 @@ function jqxIntialize(){
 	
 	$(".jqxFilterToggle").jqxToggleButton({ theme: theme});
 	$(".jqxFilterToggle").click(function () {
-    	if ($(this).attr("disabled") != "disabled"){
-    		
+    	if ($(this).attr("disabled") != "disabled"){    		
 	        var toggled = $(this).jqxToggleButton('toggled');	        
 	        if (toggled) {	            
 	        	$(".jqxGrid").jqxGrid({filterable:true, showfilterrow:true})
