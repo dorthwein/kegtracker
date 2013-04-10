@@ -1,7 +1,7 @@
 class BuildReport
 	attr_accessor :date	
-	def initialize(report_date = Time.now)
-		@date = report_date #.beginning_of_day
+	def initialize(report_date)
+		@date = report_date.beginning_of_day + 43200
 	end
 
 	def network_facts		
@@ -42,6 +42,7 @@ class BuildReport
 							:market_quantity => q[2],
 							:fact_time => @date,
 						)
+						print @date.to_s + " <--- \n"
 
 #						print "Asset Summary Fact Created/Updated \n"
 					end

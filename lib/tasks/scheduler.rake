@@ -1,13 +1,6 @@
 desc "Schedule Tasks"
 task :ten_minute_build => :environment do
-	build_report = BuildReport.new(Time.new)
-#	build_report.asset_summary_fact	
-
-#	build_report.asset_summary_fact
-#	build_report.asset_location_network_in_out_report
-#	build_report.asset_activity_summary_fact
-#	build_report.asset_fill_to_fill_cycle_fact_by_delivery_network
-#	build_report.asset_fill_to_fill_cycle_fact_by_fill_network	
+	build_report = BuildReport.new(Time.now)
 	build_report.network_facts
 
 end
@@ -34,14 +27,14 @@ end
 
 
 task :thirty_day_build => :environment do
-	start = Time.new() - 2592000 
-	last = Time.new() # + 86400
+	start = Time.now - 2592000 
+	last = Time.now # + 86400
 	current = start
-
 	while current < last
 		current = current + 86400
 		print current.to_s + "\n"		
 		a = BuildReport.new(current)	
+		print '--- Day Completed'
 		a.network_facts
 	end	
 end
