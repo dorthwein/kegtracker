@@ -1,0 +1,2 @@
+module Public::AboutKegTrackerHelper
+end
