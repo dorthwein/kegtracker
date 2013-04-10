@@ -210,7 +210,7 @@ task :save_all => :environment do
 
 	
 end
-task :network_facts => :environment do
+task :save_network_facts => :environment do
 	NetworkFact.all.each do |x|		
 		if x.save!
 			print "Network Fact Saved \n"
