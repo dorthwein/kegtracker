@@ -1,16 +1,8 @@
 
 
 body.public {
-/*
-background: -moz-linear-gradient(top, rgba(35,35,35,0.95) 0%, rgba(51,51,51,0.85) 100%); 
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(35,35,35,0.95)), color-stop(100%,rgba(51,51,51,0.85)));
-background: -webkit-linear-gradient(top, rgba(35,35,35,0.95) 0%,rgba(51,51,51,0.85) 100%); 
-background: -o-linear-gradient(top, rgba(35,35,35,0.95) 0%,rgba(51,51,51,0.85) 100%); 
-background: -ms-linear-gradient(top, rgba(35,35,35,0.95) 0%,rgba(51,51,51,0.85) 100%);
-background: linear-gradient(to bottom, rgba(35,35,35,0.95) 0%,rgba(51,51,51,0.85) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2232323', endColorstr='#d9333333',GradientType=0 ); 
-*/
 
+	
 	font-family: sans-serif;
 	color:#333;
 	letter-spacing: 3px;
@@ -61,7 +53,9 @@ h1.public {
 	padding:10px;
 }
 .public_container {
-	max-width: 960px;
+	max-width: 80%;
 	margin: 0px auto;
+	max-width: 1024px;
+	min-width:960px;
 	text-align: center;
 }

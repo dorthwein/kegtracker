@@ -3,6 +3,7 @@
 <head>
   <title>BreweryApps</title>
   <%= stylesheet_link_tag "public_manifest"  %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 
     <meta name="viewport" content="width=960, user-scalable=yes" />   
@@ -47,6 +48,7 @@
 		<!-- Main Content -->	
 			<%= yield %>												
 		</div>
+
 	</div>
 </body>
 </html>
