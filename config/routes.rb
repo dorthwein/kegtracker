@@ -145,7 +145,7 @@ Cobalt::Application.routes.draw do
   	namespace :public do 
 		match 'home' => 'home#index', :via => [:get, :post]
 		match 'contact' => 'contact#index', :via => [:get, :post]
-			
+		match 'about_keg_tracker' => 'about_keg_tracker#index', :via => [:get, :post]
 #		resources :contact 
 		resources :join 
 
