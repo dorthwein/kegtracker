@@ -210,6 +210,13 @@ task :save_all => :environment do
 
 	
 end
+task :network_facts => :environment do
+	NetworkFact.all.each do |x|		
+		if x.save!
+			print "Network Fact Saved \n"
+		end
+	end
+end
 
 task :correct_cross_brewer => :environment do
 	Asset.all.excludes(:location_network => nil).each do |x|
