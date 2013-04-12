@@ -5,7 +5,8 @@ class AccountController < ApplicationController
 	def index
 		if !params[:token].nil?
 			token = params[:token]			
-			payment_method = SpreedlyCore::PaymentMethod.find(token) # Not Working...
+			print token + ' <--- FUCK'
+			print SpreedlyCore::PaymentMethod.find(token) # Not Working...
 
 
 			if payment_method.valid?

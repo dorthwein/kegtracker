@@ -20,7 +20,9 @@ body.public {
 	color: #FFF;
 
 }
-
+p {
+	padding-left: 50px;
+}
 #header.public a:link, #header a:visited, #header a:hover, #header a:active {
 	color: #FFF;
 	text-decoration: none;

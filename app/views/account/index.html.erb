@@ -1,119 +1,264 @@
-<div style="margin:auto; text-align:center">
-    <h1>    Account management coming soon    </h1>
-</div>
+<style>
 
-<div id="simple_container" class="hidden">
-    <div class="simple toolbar">
-        <h3 class="simple"> Account </h3>
-        <h5>   This page is not currently active</h5>
+    .billing.container {
+        width:960px;
+        margin:25px auto;
+
+    }
+    .billing.container h4{
+        margin:5px 0;        
+        color: #333;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .billing.container h3{
+        margin:10px 0;
+
+    }
+    .jqxExpander div {
+        border:none;
+        padding:5px;
+        border-color:#ccc;
+    }
+    .jqx-expander-header.jqx-expander-header-metro {
+        
+        background: #d14836;
+        color:#FFF;
+    }
+    
+    .product_detail td b {
+        color:#333;
+    }
+    .product_detail table {
+        text-align: left;        
+        border:none;
+        width:100%;
+    }
+    .product_detail td {
+    
+    }
+    .product_detail {  
+        margin: 0 0 20px 0 ;      
+        
+    }
+    .billing.container p{
+        margin:0px;
+        font-size:12px;
+    }
+    .billing.container ul{
+        list-style: none;    
+
+    }
+    input.input {
+        margin:15px;
+    }
+/*        
+                <li> Invoice Manifests </li>
+                <li> Asset - Current State </li>
+                <li> My Locations - Current Holdings </li>
+                <li> Asset Cycle Report - Active & Completed </li>
+                <li> SKU Cycle Summary Report - by Distribution Channel </li>
+                <li> SKU Cycle Summary Report - by Production Channel </li>
+                <li> Inventory Report - by SKU </li>
+                <li> Asset Activity - by SKU </li>
+                </tr>
+*/                
+</style>
+
+<div class="billing container">    
+    <div class="jqxExpander">
+        <div>
+            <h3 class=""> Account </h3>
+        </div>
+        <div> 
+            Account Information
+        </div>        
+    </div>    
+    <div class="jqxExpander">
+        <div>
+            <h3 class=""> Billing </h3>
+        </div>
+        <div>
+            <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
+                <div style="width:45%; float:left;">         
+                    <h4> Credit Card Information</h4>
+                
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>    
+                                    <input id="credit_card_first_name" name="credit_card[first_name]" type="text" class="input" />
+                                    <input id="credit_card_last_name" name="credit_card[last_name]" type="text" class="input" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td> 
+                                    <input id="credit_card_number" name="credit_card[number]" type="text" class="input" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="credit_card_month" name="credit_card[month]" type="text" class="input" />
+                                    <span style="font-size:15px">/</span>
+                                    <input id="credit_card_year" name="credit_card[year]" type="text" class="input" />
+                                </td>
+                            </tr>
+                            <tr>                                
+                                <td>
+                                    <input id="credit_card_verification_value" name="credit_card[verification_value]" type="text" class="input" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <input name="redirect_url" type="hidden" value="http://localhost:3000/account" />
+                    <% if %>
+                        <input name="api_login" type="hidden" value="ZCqlTGZYtZQesf5Zodny9jtQwj3" />
+                    <% else %>
+                        <input name="api_login" type="hidden" value="ENV['SPREEDLYCORE_API_LOGIN']" />
+                    <% end %>
+                    <button type="submit" id="credit_card_submit" class="input">  Submit Card  </button>                    
+                </div>    
+                <div style="width:45%; float:right;">         
+                    <h4> Billing Address</h4>                
+                </div>                
+            </form>
+        </div>
     </div>
-    <table class="simple">
-        <tbody>
-            <tr>            
-                <td>    
-                    <label class="left simple" style="clear:both"> Admin </label>
-                </td>
-                <td>                                            
-                    <div id="admin_user_id" style="margin-bottom:5px;" class="left"> </div>
-                    <button id="admin_user_id_save" data-role="none" class="input left">  Save  </button>
-                </td>                
-                <td>    
-                    <span class="simple small-font">
-                        This is your admin account which controlls all billing and system configurations.
-                        <br />
-                        <br />
-                        Changing this will lock you out of this screen and transfer billing responisbility to another user.  
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td>    
-                    <label class="left simple" style="clear:both"> Address </label>
-                </td>
-
-                <td>                                            
-                    <input type="text" id="name" data-role="none" class="left input" />         
-
-                    <input type="text" id="address_1" data-role="none" class="left input" />                     
-                    <input type="text" id="address_2" data-role="none" class="left input" />                     
 
 
-                    <input type="text" id="city" data-role="none" class="left input" />                     
+    <div class="jqxExpander">
+        <div>
+            <h3 class=""> KegTracker </h3>
+        </div>
+        <div> 
+            <div style="width:45%;" class="left">
+                <div class="product_detail">
+                    <h4>    Complete asset tracking </h4>
+                    <p>
+                        Monitor your keg assets throughout the supply chain by size, product, location, and sku.
+                    </p>
+                </div>        
+                <div class="product_detail">
+                    <h4>    Pricing </h4>
+                    <p>
+                        <table>
+                            <tr>
+                                <td> <b> Subscription </b> </td>
+                                <td> Monthly</td>
+                            </tr>
+                            <tr>
+                                <td> <b> Rate </b></td>
+                                <td> $0.04 per CE </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
 
-                    <input type="text" id="state" data-role="none" class="left input" />                     
+            </div>
+            <div style="width:45%;" class="right">
+                <div class="product_detail">
+                    <h4>    Mobile, Desktop, & RFID   </h4>
+                    <p>
+                        Use any combination of smartphones, desktop computers, or RFID equipment to collect scan and track your assets.
+                    </p>
+                </div>
 
-                    <input type="text" id="zip" data-role="none" class="left input" />
+                <div class="product_detail">
+                    <h4>    Interactive reporting   </h4>
+                    <p>
+                        Effectively manage your keg float with our comprehensive reporting tools. 
+                    </p>    
+                </div>                
 
-                    <button id="address_save" data-role="none" class="input left">  Save  </button>
-                </td>
-                <td>
-                    <span class="simple small-font">
-                        This is your public address for your main facility and will be visible to other CraftNet members.
-                    </span>
-                </td>
-
-                <!--  COL 3   -->
-                <td>    
-                </td>
-            </tr>
-            <tr>            
-                <td>    
-                    <label class="left simple" style="clear:both"> Billing </label>
-                </td>
-                <td>                                            
-                    <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
-                        <input name="redirect_url" type="hidden" value="http://www.craft-net.com/account" />
-
-                        <% if %>
-                            <input name="api_login" type="hidden" value="ZCqlTGZYtZQesf5Zodny9jtQwj3" />
-                        <% else %>
-                            <input name="api_login" type="hidden" value="ENV['SPREEDLYCORE_API_LOGIN']" />
-                        <% end %>
-                        
-                    
-                        <input id="credit_card_first_name" name="credit_card[first_name]" type="text" data-role="none" class="left input" />
-                    
-
-                        <input id="credit_card_last_name" name="credit_card[last_name]" type="text" data-role="none" class="left input" />
+            </div>
+        </div>    
+    </div>
 
 
-                        <input id="credit_card_number" name="credit_card[number]" type="text" data-role="none" class="left input" />
+
+    <div class="jqxExpander">
+        <div>
+            <h3 class=""> KegReg </h3>
+        </div>
+        <div> 
+            <div style="width:45%;" class="right">
+
+                <div class="product_detail ">
+                    <h4>    Lost Keg Return   </h4>
+                    <p>
+                        Consumers, KegTracker Customers, and our Distributor Partners will be able to find your contact information when they type in your a given kegs serial number.
+                    </p>
+                </div>
+                <div class="product_detail">
+                    <h4>    Keg Registration </h4>
+                    <p>
+                        Keep an accurate count of your current keg float and allow other Brewery Apps affialiates to find your contact information incase your keg is lost.
+                    </p>
+                </div>        
 
 
-                        <input id="credit_card_verification_value" name="credit_card[verification_value]" data-role="none" type="text" class="left input" />
+            </div>
+            <div style="width:45%;" class="left">
+                <div class="product_detail">
+                    <h4>    Participate within our partner network    </h4>
+                    <p>
+                        KegTracker customers & distributor partners will be able to scan and handle your assets.  If a participating partner does scan your asset, its last known location will be reflected in your keg asset inventory.
+                    </p>    
+                </div>                
 
-                        <input id="credit_card_month" name="credit_card[month]" type="text" data-role="none" class="left input" />
 
-                        <input id="credit_card_year" name="credit_card[year]" type="text" data-role="none" class="left input" />
+                <div class="product_detail">
+                    <h4>    Pricing </h4>
+                    <p>
+                        <table>
+                            <tr>
+                                <td> <b> Subscription </b> </td>
+                                <td> Monthly</td>
+                            </tr>
+                            <tr>
+                                <td> <b> Rate </b></td>
+                                <td> FREE </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
+            </div>
+        </div>    
+    </div>
 
-                        <button type="submit" id="credit_card_submit" data-role="none" class="input left">  Submit Card  </button>
-                    </form>
-                </td>                
-                <td>    
-                </td>
-            </tr>                    
-        </tbody>
-    </table>
-    <div style="clear:both">    </div>
+
+
 </div>
 <script>
 $(document).ready(function(){
     var theme = settings.theme
-    url = system.server + $('.ui-page-active').attr('data-url') + '.json'   
+    url = location.href;
     // Inputs
-    
-    $(".input").jqxInput({height: '25px', width: '285px', minLength: 1, theme: theme, disabled: false });
+  
+  
+            // Create jqxExpander
+    $(".jqxExpander").jqxExpander({ width: '100%', theme:'metro', expanded: true });
 
+
+    $(".input").jqxInput({height: '20px', theme: theme, disabled: false });
+/*
     $("#name").jqxInput({placeHolder: 'Name'});
     $("#address_1").jqxInput({placeHolder: 'Address 1'});
     $("#address_2").jqxInput({placeHolder: 'Address 2'});
     $("#city").jqxInput({placeHolder: 'City', width: '150px'});
     $("#state").jqxInput({placeHolder: 'State', width:'60px'});
     $("#zip").jqxInput({placeHolder: 'Zip', width:'60px'});
+*/
 
-    $("#credit_card_first_name").jqxInput({placeHolder: 'First Name', width: '135px'});
-    $("#credit_card_last_name").jqxInput({placeHolder: 'Last Name', width: '142px'});
-    $("#credit_card_number").jqxInput({placeHolder: 'Card #', width: '205px'});
+    $("#credit_card_first_name").jqxInput({placeHolder: 'First Name', width: '125px'});
+    $("#credit_card_last_name").jqxInput({placeHolder: 'Last Name', width: '125px'});
+    $("#credit_card_number").jqxInput({placeHolder: 'Card #', width: '255px'});
     $("#credit_card_verification_value").jqxInput({placeHolder: 'CSV', width: '71px'});
     $("#credit_card_month").jqxInput({placeHolder: 'Exp. Month', width: '75px'});
     $("#credit_card_year").jqxInput({placeHolder: 'Exp. Year', width: '100px'});
@@ -125,17 +270,6 @@ $(document).ready(function(){
     });
 
 
-    $("#admin_user_id").jqxDropDownList({ source: {}, valueMember: 'value', displayMember: 'html', width: '285px',  height: '25px', theme: theme});     
-    $("#admin_user_id_save").jqxButton({ theme: theme, width:100, height:20 });            
-    $("#admin_user_id_save").click(function () {
-
-    });
-
-
-    $("#address_save").jqxButton({ theme: theme, width:100, height:20 });            
-    $("#address_save").click(function () {
-
-    }); 
     $(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
     $(".toggle_switch").bind('click', function () {        
         if(!$(this).attr('disabled')){          
@@ -150,166 +284,7 @@ $(document).ready(function(){
             }
         }
     });
-
-
-/*
-    $('.jqxValidator').jqxValidator({
-        rules: [
-            // Email Rules
-            { input: '#email', message: 'Username is required!', action: 'keyup, blur', rule: 'required' },
-            { input: '#email', message: 'Invalid e-mail!', action: 'keyup', rule: 'email' },
-
-            // First/Last Name
-            { input: '#first_name', message: 'First Name is required!', action: 'keyup, blur', rule: 'required' },
-            { input: '#first_name', message: 'Your first name must contain only letters!', action: 'keyup', rule: 'notNumber' },
-
-            { input: '#last_name', message: 'Last Name is required!', action: 'keyup, blur', rule: 'required' },
-            { input: '#last_name', message: 'Your last name must contain only letters!', action: 'keyup', rule: 'notNumber' },
-            { input: '#password', message: 'Password is required!', action: 'keyup, blur', rule: function (input, commit) {
-                    if( $('#newSaveButton').is(':visible') && $('#password').val() == '' ){
-                        return false;
-                    }
-                    return true;
-                }
-            }, 
-
-            { input: '#password', message: 'Your password must be greater than 4 characters!', action: 'keyup, blur', rule: function (input, commit) {
-                    if( $('#newSaveButton').is(':visible') && $('#password').val().length < 4){                                             
-                        return false;
-                    }
-                    return true;
-                }
-            },
-            { input: '#password_confirmation', message: 'Password doesn\'t match!', action: 'keyup, focus', rule: function(input, commit){
-                    if (input.val() === $('#password').val())  {
-                        return true;
-                    }
-                    return false;                  
-                }
-            },
-        ],
-        theme: theme
-    });
-
-*/
-    // Style Buttons
-    $("#updateSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
-    $("#updateSaveButton").bind('click', function () {
-        if($('.jqxValidator').jqxValidator('validate', element)){   
-            var params = {user:{}}
-//          params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-            $('.toggle_switch').each(function(key, obj) {        
-                params['user'][obj.id] = $(obj).val();
-            });
-
-            $('.form_input').each(function(key, obj) {        
-                params['user'][obj.id] = $(obj).val();
-            });        
-
-
-    //      alert(JSON.stringify(params));
-            var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');        
-            var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);
-            $.ajax({
-                url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
-                type: "PUT",
-                dataType : "JSON",
-                data: params,
-            }).done(function( data ) {  
-                if(data['success'] == false){
-                    alert(data['message'])
-                }           
-                dataAdapter.dataBind();
-            })
-        }
-    });
-    
-    $("#newCancelButton").jqxButton({disabled: true, theme: theme, width: '100%'});
-
-    $("#newSaveButton").jqxButton({disabled: true, theme: theme, width: '100%'});
-    $("#newSaveButton").bind('click', function () {
-        if($('.jqxValidator').jqxValidator('validate', element)){   
-            var params = {user:{}}
-            params['user']['entity_id'] = $("#entity_id").jqxDropDownList('getSelectedItem').value;              
-            $('.toggle_switch').each(function(key, obj) {        
-                params['user'][obj.id] = $(obj).val();
-            });
-
-            $('.form_input').each(function(key, obj) {        
-                params['user'][obj.id] = $(obj).val();
-            });        
-
-            var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');        
-            var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);
-            $.ajax({
-                url: system.server + $('.ui-page-active').attr('data-url'),
-                type: "POST",
-                data: params,
-            }).done(function( data ) {  
-                if(data['success'] == false){
-                    alert(data['message'])
-                }
-                dataAdapter.dataBind();
-            })
-        }
-    }); 
-
-    $("#new").jqxButton({ theme: theme, width:100 });            
-    $("#new").click(function () {
-        $.ajax({
-            type: "GET",
-            dataType : "JSON",
-            url: system.server + $('.ui-page-active').attr('data-url') + '/new',
-            data: { },
-        }).done(function( data ) {          
-            
-            $("#entity_id").jqxDropDownList({ source: data['entities'], disabled: false });
-            $("#entity_id").jqxDropDownList('clearSelection' ); 
-            
-            $(".toggle_switch").html('Off');
-            $(".toggle_switch").val(0);
-            $(".toggle_switch").jqxToggleButton({toggled: false });
-            $(".toggle_switch").jqxToggleButton('refresh');
-
-            $(".form_input").jqxInput({disabled: false });
-            $(".form_input").val('');
-
-            $(".toggle_switch").jqxToggleButton({disabled: false, toggled: false });
-
-            $("#newSaveButton").jqxButton({disabled: false});           
-            $("#newCancelButton").jqxButton({disabled: false});         
-
-            $("#newSaveButton").show();         
-            $("#newCancelButton").show();
-            $("#updateSaveButton").hide();
-        });                 
-    });
-
-    $("#delete").jqxButton({ theme: theme, width:100 });            
-    $("#delete").click(function () {
-        var rowindex = $('#jqxGrid').jqxGrid('getselectedrowindex');
-        var rowdata = $('#jqxGrid').jqxGrid('getrowdata', rowindex);        
-        $.ajax({
-            type: "DELETE",
-            dataType : "JSON",
-            url: system.server + $('.ui-page-active').attr('data-url') + '/' + rowdata['_id'],
-            data: { 
-                _id: rowdata['_id'],
-            },
-        }).done(function( data ) {
-            dataAdapter.dataBind();
-        });                 
-    });
-    
-
-    // Button Processing/Action
-    
-    // NEW BUTTON
-    $("#excelExport").jqxButton({ theme: theme, width:100 });                        
-    $("#excelExport").click(function () {
-        $("#jqxGrid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
-    });
-                    
+                  
 });
 
 </script>

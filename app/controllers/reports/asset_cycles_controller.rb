@@ -10,7 +10,7 @@ class Reports::AssetCyclesController < ApplicationController
 		  	format.html # index.html.erb
 		  	format.json { 		  	
           start = Time.now - (86400 * 180)
-  				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts.gte(start_time: start).map{|x| {
+  				render json: JqxConverter.jqxGrid(current_user.entity.visible_asset_cycle_facts.where(cycle_complete: 0).map{|x| {
             a: x.start_network_description,
             b: x.fill_network_description,
             c: x.delivery_network_description,
@@ -58,79 +58,13 @@ class Reports::AssetCyclesController < ApplicationController
   	end
   # GET /AssetCycleFacts/new
   # GET /AssetCycleFacts/new.json
-  def new
-    respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = AssetCycleFact.new
-        response = {}
-        response[:jqxDropDownLists] = {}   
-        response[:record] = record              
-
-    		response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)
-        response[:jqxDropDownLists][:base_AssetCycleFact_tier] = JqxConverter.jqxDropDownList(AssetCycleFact.base_AssetCycleFact_tiers)
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-#        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
-
-        render json: response 
-      }
-    end    
-  end
 
   # GET /AssetCycleFacts/1/edit
   def edit
-    record = AssetCycleFact.find(params[:id])
     respond_to do |format|
-      if  1 == 0 # can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-           response = {}
-#          response[:jqxDropDownLists] = {}                  
- #         response[:record] = record 
-#
- #         response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)                                        
-  #        response[:jqxDropDownLists][:base_AssetCycleFact_tier] = JqxConverter.jqxDropDownList(AssetCycleFact.base_AssetCycleFact_tiers)
-   #       response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-#          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
-
-          render json: response 
-        }        
-      else
         format.html {redirect_to :action => 'show'}
-      end
     end
   end
-
-  # POST /AssetCycleFacts
-  # POST /AssetCycleFacts.json
-  def create
-    record = AssetCycleFact.new(params[:record])
-    respond_to do |format|
-      if record.save
-        format.html 
-        format.json {  render json: {} }
-      else
-        format.html { render action: "new" }
-        format.json {  render json: {} }
-      end
-    end
-  end
-
-  # PUT /AssetCycleFacts/1
-  # PUT /AssetCycleFacts/1.json
-  def update
-    record = AssetCycleFact.find(params[:id])
-    record.update_attributes(params[:record])
-    
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: {}
-      }
-    end
-  end
-
   # DELETE /AssetCycleFacts/1
   # DELETE /AssetCycleFacts/1.json
   def destroy

@@ -8,7 +8,6 @@
 
 	    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	    <script type="text/javascript">
-
 	      // Load the Visualization API and the piechart package.
 			google.load('visualization', '1.0', {'packages':['corechart', 'table', 'controls']});
 	//		google.setOnLoadCallback(drawChart);
@@ -59,14 +58,12 @@
 										<%= link_to 'Inventory Report', :reports_assets_sku_summary_report_simple %>
 									</li>
 									<li>
-										<%= link_to 'Recent Asset Cycles', :reports_asset_cycles %>
+										<%= link_to 'Active Asset Cycles', :reports_asset_cycles %>
 									</li>
 
-									<li style="display:none">
+									<li>
 										<%= link_to 'Completed Asset Cycles', :reports_completed_asset_cycles %>
 									</li>
-
-
 
 								</ul>							
 							</li>
