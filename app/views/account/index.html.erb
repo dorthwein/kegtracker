@@ -113,11 +113,9 @@
                     </table>
 
                     <input name="redirect_url" type="hidden" value="http://localhost:3000/account" />
-                    <% if %>
-                        <input name="api_login" type="hidden" value="ZCqlTGZYtZQesf5Zodny9jtQwj3" />
-                    <% else %>
-                        <input name="api_login" type="hidden" value="ENV['SPREEDLYCORE_API_LOGIN']" />
-                    <% end %>
+                    
+                    <input name="api_login" type="hidden" value="<%= ENV['SPREEDLYCORE_API_LOGIN'] %>" />
+                    
                     <button type="submit" id="credit_card_submit" class="input">  Submit Card  </button>                    
                 </div>    
                 <div style="width:45%; float:right;">         
