@@ -19,23 +19,28 @@ class System::AssetTypesController < System::ApplicationController
   # GET /asset_types/1.json
   def show    
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = AssetType.find(params[:id])        
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:measurement_unit_id] = JqxConverter.jqxDropDownList(MeasurementUnit.all)
+      record = AssetType.find(params[:id])        
+      if can? :update, record 
+        format.html {redirect_to :action => 'edit'}
+      else           
 
-        render json: response 
-      }
+        format.html {render :layout => 'popup'}
+        format.json {       
+          record = AssetType.find(params[:id])        
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:measurement_unit_id] = JqxConverter.jqxDropDownList(MeasurementUnit.all)
+
+          render json: response 
+        }
+      end
     end
   end
 
   # GET /asset_types/new
   # GET /asset_types/new.json
-  def new    
+  def new
     respond_to do |format|
       format.html {render :layout => 'popup'}
       format.json { 
@@ -52,6 +57,19 @@ class System::AssetTypesController < System::ApplicationController
 
   # GET /asset_types/1/edit
   def edit
+    respond_to do |format|
+        format.html {render :layout => 'popup'}
+        format.json { 
+          record = AssetType.find(params[:id])
+          response = {}
+          response[:jqxDropDownLists] = {}        
+          response[:jqxDropDownLists] = {}        
+          response[:record] = record              
+          response[:jqxDropDownLists][:measurement_unit_id] = JqxConverter.jqxDropDownList(MeasurementUnit.all)
+
+          render json: response 
+        }        
+    end    
   end
 
   # POST /asset_types

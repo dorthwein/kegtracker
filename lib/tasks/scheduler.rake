@@ -40,15 +40,7 @@ task :thirty_day_build => :environment do
 end
 
 task :build_test => :environment do
-# 30 Days
-#	start = Time.new() - (86400 * 7)
-#	last = Time.new() # + 86400
-#	current = start
-
-#	while current < last
-#		current = current + 86400
-#		print current.to_s + "\n"		
-		a = BuildReport.new()	
+		a = BuildReport.new(Time.now)
 		a.test_build
 #	end	
 end

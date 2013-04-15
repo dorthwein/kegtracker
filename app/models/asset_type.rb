@@ -7,7 +7,8 @@ class AssetType
   	belongs_to :measurement_unit
   	field :measurement_unit_description, type: String 
 	field :description, type: String 
-	field :measurement_unit_qty, type: Float
+	field :measurement_unit_qty, type: BigDecimal
+	field :case_equivalent, type: BigDecimal
 
 	field :tier_1, type: Integer	
 	field :tier_2, type: Integer	

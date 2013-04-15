@@ -42,6 +42,7 @@ $(document).ready(function(){
 			{ name: 'distribution_network_count' },
 			{ name: 'production_network_count' },
 			{ name: 'market_network_count' },
+			{ name: 'kt_rate' },
 			{ name: '_id' },
 		], 
 		url: location.href,
@@ -75,10 +76,19 @@ $(document).ready(function(){
 		{ text: 'City', datafield: 'city', filtertype: 'checkedlist' },			
 		{ text: 'State', datafield: 'state', filtertype: 'checkedlist' },
 		{ text: 'Zip', datafield: 'zip' },
+		{ text: 'KegTracker Rate', datafield: 'kt_rate', filtertype: 'checkedlist' },			
 		{ text: 'Mode', datafield: 'mode', filtertype: 'checkedlist' },			
 		{ text: 'Dist. Networks', width:100, datafield: 'distribution_network_count', filtertype: 'number' },			
 		{ text: 'Prod. Networks', width:100, datafield: 'production_network_count', filtertype: 'number' },			
 		{ text: 'Mrkt. Networks', width:100, datafield: 'market_network_count', filtertype: 'number' },
+
+        { text: 'Billing Histories', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            location.href = location.href + "/" + rowdata['_id'] + '/billing_facts'
+        }}, 
+
         { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
             return 'View'
         }, buttonclick: function (row) {

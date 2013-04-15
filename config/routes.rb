@@ -50,7 +50,10 @@ Cobalt::Application.routes.draw do
   
 #	match 'current_inventory_by_network' => 'home#current_inventory_by_network', :via => [:get, :post]
   	
-	match 'account' => 'account#index', :via => [:get, :post]  	
+	namespace :account do 	
+		resource :profiles
+		resources :billing_histories
+	end
 
   	namespace :dashboard do 
 		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
@@ -106,7 +109,12 @@ Cobalt::Application.routes.draw do
 		resources :product_types
 		resources :registrations
 	  	resources :entity_types
-		resources :entities    	
+		
+		resources :entities do
+			resources :billing_facts
+		end
+
+
 	  	resources :handle_codes
 		resources :asset_types  
 		resources :asset_states

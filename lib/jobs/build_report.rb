@@ -174,13 +174,36 @@ class BuildReport
 					end
 				end
 			end	
-
-
 		end			
 	end
- 	def test_build
- 		Entity.all.each do |entity|
 
+ 	def test_build
+ 		Entity.all.each do |entity| 			
+			billing_fact = BillingFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
+				.where(	:bill_to_entity_id => entity._id,
+			).first_or_create!
+
+			if billing_fact.paid.to_i == 0
+
+ 				# Get Assets the entity owns
+	 			assets = entity.assets.where(:asset_type.ne => nil)	 			 			
+	 			total_ces = BigDecimal.new(0)		
+	 			rate = BigDecimal.new(entity.kt_rate)/30
+	 			# For each asset type, get total CEs for assets of that type
+	 			assets.group_by{ |x| x.asset_type_id }.each do |x|	 			 				
+	 				asset_type = AssetType.find(x[0])
+	 				total_ces = total_ces + (BigDecimal.new(x[1].length.to_i) * BigDecimal.new(asset_type.measurement_unit_qty))
+	 			end
+				cost = rate * total_ces
+				billing_fact.update_attributes!(
+ 					:kt_assets => assets.map{|x| x._id},
+ 					:kt_ces => total_ces,
+ 					:kt_ce_rate => rate,
+ 					:kt_charge => cost,
+ 					:fact_time => @date,
+				)
+			end		
 		end
  	end
  end
+

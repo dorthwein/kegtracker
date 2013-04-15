@@ -4,6 +4,6 @@ class MeasurementUnit
   	
   	has_many :asset_types
 	field :description, type: String
-	field :gallon_equivalent, type: Float
+	field :gallon_equivalent, type: BigDecimal
 	field :abbreviation, type: String	
 end

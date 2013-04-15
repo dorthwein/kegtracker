@@ -7,11 +7,9 @@ class Accounting::InvoiceLineItemsController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-
       format.json { 
         invoice = Invoice.find(params[:invoice_id])        
         records = JqxConverter.jqxGrid(invoice.invoice_line_items)
-        print records.to_json + 'fuck'
 
         render json: records
       }

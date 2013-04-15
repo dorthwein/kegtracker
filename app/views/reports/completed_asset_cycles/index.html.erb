@@ -1,19 +1,19 @@
+	<div class="toolbar">   
+	    <h3 class="left">
+	        Completed Asset Cycles
+	    </h3>
+	    <h3 class="right">
+	        <%= current_user.entity.description %>
+	    </h3>
+	</div>
+
 	<div class="full sidebar">
-		<div class="logo">
-<!--		   	
-		   	<input type="button" value="New" class='new' data-role="none"/>
-			<input type="button" value="Delete" class='delete' data-role="none"/>
--->			
-		</div>
 		<input type="button" value="Excel" class='excelExport' data-role="none"/>		
 		<button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
 
 		<div class="jqxGridColumnListBox">	</div>
 	</div>
 	<div class="full display">
-		<div class="toolbar">	
-
-		</div>
     	<div class="jqxGrid full display"></div>
 	</div>
 <script>

@@ -1,7 +1,13 @@
-    <div class="full sidebar">
-        <div class="logo">    
-        </div>
+    <div class="toolbar">   
+        <h3 class="left">
+            Asset Activity
+        </h3>
+        <h3 class="right">
+            <%= current_user.entity.description %>
+        </h3>
+    </div>
 
+    <div class="full sidebar">
         <input type="button" value="Excel" class='excelExport' data-role="none"/>       
         <input type="button" value="Refresh Records" id='findRecord' data-role="none"/>
         <div id='date'>
@@ -14,9 +20,6 @@
         <div class="jqxGridColumnListBox">  </div>
     </div>
     <div class="full display">
-        <div class="toolbar">   
-
-        </div>
         <div class="jqxGrid full display"></div>
     </div>
 

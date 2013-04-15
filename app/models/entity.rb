@@ -19,7 +19,6 @@ class Entity
 	has_many :production_partnerships #, :inverse_of => :partner
 #	has_many :production_partnerships_as_partner, :inverse_of => :entity
 
-
 #	has_many :distribution_partnerships_as_entity, :class_name => 'Distribution', :inverse_of => :partner	
 #	has_many :entity_partnerships_as_entity, :class_name => 'EntityPartnership', :inverse_of => :entity	
 
@@ -34,6 +33,8 @@ class Entity
 #	has_one :network
 
 # Fields
+	field :kt_rate, type: BigDecimal, default: 0
+
 	field :admin_user_email, type: String
 	field :payment_token, type: String
 	field :card_ending, type: Integer
