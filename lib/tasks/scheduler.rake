@@ -232,3 +232,27 @@ task :correct_cross_brewer => :environment do
 	end	
 end
 
+
+
+task :purge_lipman => :environment do
+	Asset.where(:entity_id => '5061039bd920830200000003').delete
+	AssetActivityFact.where(:entity_id => '5061039bd920830200000003').delete
+	NetworkFact.where(:entity_id => '5061039bd920830200000003').delete
+	AssetCycleFact.where(:entity_id => '5061039bd920830200000003').delete
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,8 +28,6 @@ Cobalt::Application.routes.draw do
 	  	resources :tax_rules 
 	  	resources :locations 
 		
-
-	  	
 #		devise_for :users	  	
 	  	resources :users 
 	    resources :networks	  			  	
