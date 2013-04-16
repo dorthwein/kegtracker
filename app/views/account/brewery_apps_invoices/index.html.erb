@@ -1,0 +1,63 @@
+<div class="toolbar">	
+
+</div>
+
+<div class="full sidebar">	
+	<input type="button" value="Excel" class='excelExport' data-role="none"/>		
+	<button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
+
+	<div class="jqxGridColumnListBox">	</div>
+</div>
+<div class="full display">
+	<div class="jqxGrid full display"></div>
+</div>
+
+<!-- BREAK POINT	-->
+<script>
+	$(document).ready(function(){
+		// Grid data source
+	/*
+		a: x.externalID,
+		b: x.description,
+		c: x.network_description,
+		d: x.name,
+		e: x.street,
+		f: x.city,
+		g: x.state,
+		h: x.zip,
+		i: x.location_type,
+		j: x.location_type_description,
+		k: x._id,
+		l: current_user.entity.visible_assets.where(location_id: x._id).count,
+	*/
+
+		var grid_source = {
+			datatype : "json",
+			type: 'GET',		
+			datafields: [
+				{ name: 'a', type: 'string' },
+				{ name: 'b', type: 'string' },
+				{ name: 'c', type: 'string' }, 		
+			], 
+			url: location.href
+		};
+		var dataAdapter = new $.jqx.dataAdapter(grid_source, {
+
+			loadComplete: function (data) {},
+			loadError: function (xhr, status, error) { }      
+		});
+		// Initiate grid
+		var gridSettings = settings.jqxGridProperties
+		gridSettings['source'] = dataAdapter;
+		gridSettings['columns'] = [	
+			{ text: 'Bill Period', datafield: 'a', filtertype: 'checkedlist' },
+			{ text: 'Total', datafield: 'b' },
+			{ text: 'Status', datafield: 'c' },			
+		]
+		
+		$(".jqxGrid").jqxGrid( gridSettings );	
+		jqxIntialize()
+		 					
+
+	});
+</script>

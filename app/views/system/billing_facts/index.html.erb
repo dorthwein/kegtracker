@@ -1,0 +1,82 @@
+    <div class="toolbar">   
+
+    </div>
+
+<div class="full sidebar">
+
+    <input type="button" value="Excel" class='excelExport' data-role="none"/> 
+
+    <button class='jqxFilterToggle' data-role="none"> Filter Off </button>
+
+	<div id="progress" class="bar"> </div>	
+    <div class="jqxGridColumnListBox">  </div>
+</div>
+<div class="full display">
+    <div class="jqxGrid full display"></div>
+</div>
+
+<script>
+$(document).ready(function(){        
+
+	 	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'fact_time', type: 'date' },
+			{ name: 'bill_to_entity_description', type: 'string' },			
+			{ name: 'kt_ces', type: 'number' },			
+			{ name: 'kt_ce_rate', type: 'number' },			
+			{ name: 'kt_charge', type: 'number' },			
+			{ name: 'paid', type: 'string' }
+		], 
+		url: location.href,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}
+		
+	};
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			 	
+		},
+		loadComplete: function (data) { 
+			 
+		},
+		loadError: function (xhr, status, error) { }      
+	});
+
+	// Initialize Grid
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [
+
+		{ text: 'Entity', datafield: 'bill_to_entity_description' },
+		{ text: 'Total CEs', datafield: 'kt_ces' },
+		{ text: 'Rate per CE', datafield: 'kt_ce_rate' },
+		{ text: 'KT Charge Amt', datafield: 'kt_charge' },
+		{ text: 'Paid', datafield: 'paid' },    
+		{ text: 'Date', datafield: 'fact_time' },
+/*
+        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            var url = location.href + "/" + rowdata['_id']            
+            openPopupWindow(url);           
+        }}, 
+*/        
+
+	]
+    $(".jqxGrid").jqxGrid( gridSettings );  
+    
+	$("#distributor_upload_button").jqxButton({ theme: settings.theme,});                        
+	$("#distributor_upload_button").click(function () {		
+
+	});
+	jqxIntialize()
+});
+</script>
