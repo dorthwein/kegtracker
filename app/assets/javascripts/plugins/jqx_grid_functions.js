@@ -190,5 +190,5 @@ function jqxIntialize(){
 		form_rules.push({input: id, message: 'Required!', action: 'keyup, blur', rule: 'required'})
 	})
 
-    $('.jqxValidator').jqxValidator({rtl:true, rules: form_rules });
-}
+    $('.jqxValidator').jqxValidator({rtl:true, rules: form_rules });    
+}	

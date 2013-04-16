@@ -33,12 +33,20 @@ class Entity
 #	has_one :network
 
 # Fields
+	# Billing Information
 	field :kt_rate, type: BigDecimal, default: 0
-
-	field :admin_user_email, type: String
 	field :payment_token, type: String
 	field :card_ending, type: Integer
 
+	field :billing_address_1, type: String
+	field :billing_address_2, type: String	
+	field :billing_city, type: String
+	field :billing_state, type: String
+	field :billing_zip, type: String
+
+
+
+	field :admin_user_email, type: String
 	field :description, type: String    
 	field :name, type: String
 	field :address_1, type: String

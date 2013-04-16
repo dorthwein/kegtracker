@@ -177,8 +177,14 @@ class BuildReport
 		end			
 	end
 
- 	def test_build
+ 	def billing_facts
  		Entity.all.each do |entity| 			
+ 		# Get Current Invoice
+ 			current_billing_month = @date.month
+ 			current_billing_year = @date.year
+			current_invoice = BreweryAppsInvoice.find_or_create_by(bill_to_entity_id: entity._id, billing_period_month: current_billing_month, billing_period_year: current_billing_year)
+
+		# Build Today's Billing Facts
 			billing_fact = BillingFact.between(fact_time: @date.beginning_of_day..@date.end_of_day)
 				.where(	:bill_to_entity_id => entity._id,
 			).first_or_create!
@@ -188,7 +194,7 @@ class BuildReport
  				# Get Assets the entity owns
 	 			assets = entity.assets.where(:asset_type.ne => nil)	 			 			
 	 			total_ces = BigDecimal.new(0)		
-	 			rate = BigDecimal.new(entity.kt_rate)/30
+	 			rate = BigDecimal.new(entity.kt_rate)
 	 			# For each asset type, get total CEs for assets of that type
 	 			assets.group_by{ |x| x.asset_type_id }.each do |x|	 			 				
 	 				asset_type = AssetType.find(x[0])
@@ -201,9 +207,58 @@ class BuildReport
  					:kt_ce_rate => rate,
  					:kt_charge => cost,
  					:fact_time => @date,
+ 					:brewery_apps_invoice_id => current_invoice._id
 				)
-			end		
+			end	
+
+
+		# Fill in current_invoice details
+			current_invoice.update_attributes!(
+				:first_name => ,
+				:last_name => ,
+				:address_1 => ,
+				:address_2 => ,
+				:city => ,
+				:state => ,
+				:zip => ,
+				:status => ,
+				:billing_period_month => ,
+				:billing_period_year => ,
+			)
 		end
  	end
+ 	def test_build
+ 		# Build Invoices
+ 		Entity.all.each do |entity| 
+
+
+
+#			Find Previous Month Invoice
+
+ 		end
+ 	end
+
  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

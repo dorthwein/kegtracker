@@ -52,7 +52,7 @@ Cobalt::Application.routes.draw do
   	
 	namespace :account do 	
 		resource :profiles
-		resources :billing_histories
+		resources :brewery_apps_invoices
 	end
 
   	namespace :dashboard do 
