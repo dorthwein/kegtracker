@@ -145,7 +145,7 @@ class AssetCycleFact
 
 	before_save :sync
 	def sync
-	  	if !self.start_time.nil? && !self.fill_time.nil? && !self.delivery_time.nil? && !self.pickup_time.nil? && !self.end_time.nil? 
+	  	if !self.start_time.nil? && !self.fill_time.nil? && !self.delivery_time.nil? && !self.pickup_time.nil? && !self.end_time.nil? && !self.product.nil? && !self.asset_type.nil? 
 			self.cycle_quality = 1	  		
 	  	else
 			self.cycle_quality = 0

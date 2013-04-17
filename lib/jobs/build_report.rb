@@ -85,7 +85,7 @@ class BuildReport
 				end
 			end	
 
-	# Delivery Cycles - Brewer & Asset Owner Only
+		# Delivery Cycles - Brewer & Asset Owner Only
 			start = @date.beginning_of_day - (86400 * 30)
 			by_network = entity.visible_asset_cycle_facts.where(cycle_complete: 1, cycle_quality: 1).gte(end_time: start ).map{|x| x.delivery_network_id}.delete_if{|x| x == nil}.flatten.uniq
 			by_network.each do |y|			
