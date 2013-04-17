@@ -1,5 +1,5 @@
 <div class="limited container">    
-    <div class="jqxExpander">
+    <div class="jqxExpander" style="display:none;">
         <div>
             <h3 class=""> Account </h3>
         </div>
@@ -14,7 +14,6 @@
             </h3>
         </div>
         <div class="jqxValidator">
-
             <% if !params['token'].nil? %>
                 <span> Creditcard information updated </span>                
                 <br /><br />
@@ -28,13 +27,11 @@
                 <span> Billing to card ending in <%= current_user.entity.card_ending %>  </span>
                 <br /><br />
             <% end %>
-            
-            <%= link_to 'Billing History', :account_brewery_apps_invoices %>
-            
+<!--        <div id="payment"> payment </div>-->
 
             <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
                 <div style="width:45%; float:left;">         
-                    <h4> Credit Card Information</h4>                
+                    <h4> Credit Card Information</h4>
                     <table>
                         <tbody>
                             <tr>
@@ -61,6 +58,11 @@
                                     <input id="credit_card_verification_value" name="credit_card[verification_value]" type="text" class="jqxInput required" />
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <%= link_to 'Billing History', :account_brewery_apps_invoices %>
+                                </td>
+                            </tr>                            
                         </tbody>
                     </table>
 
@@ -132,11 +134,11 @@
                         <table>
                             <tr>
                                 <td> <b> Subscription </b> </td>
-                                <td> Monthly</td>
+                                <td> Case Equivalents Tracked per Day (ce-day)</td>
                             </tr>
                             <tr>
                                 <td> <b> Rate </b></td>
-                                <td> $0.04 per CE </td>
+                                <td> $0.0013/ce-day </td>
                             </tr>
                             <tr>
                             </tr>
@@ -158,9 +160,16 @@
                     <p>
                         Effectively manage your keg float with our comprehensive reporting tools. 
                     </p>    
-                </div>                
-
+                </div>
+                <div class="product_detail">
+                    <% if current_user.entity.keg_tracker == 1 %>
+                        <button class="jqxButton" id="keg_tracker_button" value="0"> Deactivate KegTracker  </button>
+                    <% else %>
+                        <button class="jqxButton" id="keg_tracker_button" value="1"> Activate KegTracker  </button>
+                    <% end %>
+                </div>
             </div>
+            
         </div>    
     </div>
 
@@ -203,7 +212,7 @@
                         <table>
                             <tr>
                                 <td> <b> Subscription </b> </td>
-                                <td> Monthly</td>
+                                <td> Always Active</td>
                             </tr>
                             <tr>
                                 <td> <b> Rate </b></td>
@@ -217,9 +226,6 @@
             </div>
         </div>    
     </div>
-
-
-
 </div>
 <script>
     $(document).ready(function(){
@@ -255,6 +261,35 @@
             $('.jqxValidator').jqxValidator('hide');
          });     
         
+        $("#payment").jqxButton({ theme: theme, width:150, height:25 })
+        $("#payment").on('click', function(){
+
+            alert( system.server + '/account/profiles/pay.json')
+            $.ajax({
+                url: system.server + '/account/profiles/pay.json',
+                context: document.body
+            }).done(function(data) {
+                alert(JSON.stringify(data));                
+            });
+
+        })
+        $("#keg_tracker_button").jqxButton({ theme: theme, width:150, height:25 })
+        $("#keg_tracker_button").on('click', function(){            
+            $.ajax({
+                url: location.href + '/keg_tracker_activation',
+                type: 'POST',
+                dataType: 'JSON', 
+                data: {activation: $(this).val()}           
+            }).done(function(data) {
+                if(data['keg_tracker'] == 1){
+                    $('#keg_tracker_button').html('Deactivate KegTracker')
+                    $('#keg_tracker_button').val(0)
+                } else {
+                    $('#keg_tracker_button').html('Activate KegTracker')
+                    $('#keg_tracker_button').val(1)
+                }
+            });
+        })
 
         $(".jqxInput").jqxInput({height: '20px', theme: theme, disabled: false });
 
@@ -273,20 +308,6 @@
         $("#credit_card_zip").jqxInput({placeHolder: 'Zip', width:'80px'});
 
         $("#credit_card_submit").jqxButton({ theme: theme, width:150, height:25 });
-        $(".toggle_switch").jqxToggleButton({ width: '100%', height:'15px', theme: theme, disabled: true });
-        $(".toggle_switch").bind('click', function () {        
-            if(!$(this).attr('disabled')){          
-                var toggled = $(this).jqxToggleButton('toggled');
-                if (toggled) {
-                    $(this).html('On');
-                    $(this).val(1);
-                }
-                else {
-                    $(this).html('Off');
-                    $(this).val(0);
-                }
-            }
-        });
-        
+
     });
 </script>

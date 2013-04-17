@@ -25,7 +25,7 @@ class NilClass
 		0
 	end
 	def description
-		'Unknown'
+		' '
 	end
 	def entity
 		nil

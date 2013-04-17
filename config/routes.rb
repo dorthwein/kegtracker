@@ -51,8 +51,11 @@ Cobalt::Application.routes.draw do
 	namespace :account do 	
 		resource :profiles
 		resources :brewery_apps_invoices
-	end
+		match 'profiles/keg_tracker_activation' => 'profiles#keg_tracker_activation', :via => [:get, :post]
+		match 'profiles/pay' => 'profiles#pay', :via => [:get, :post]	
 
+	end
+	
   	namespace :dashboard do 
 		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
   	end

@@ -15,39 +15,49 @@ class Account::ProfilesController < ApplicationController
 			new_payment_token = params[:token]			
 			payment_method = SpreedlyCore::PaymentMethod.find(new_payment_token)
 			# Store Token
+
 			# Store card ending
 			if payment_method.valid?
 				#print payment_method.to_json
 				payment_method.retain # Keep This				
 				current_user.entity.payment_token = payment_method.token
 				current_user.entity.card_ending = payment_method.last_four_digits
+				current_user.entity.billing_status = 1
 				current_user.entity.save!
 			else
 			  @error =  "Woops!\n" + payment_method.errors.join("\n")
 			end
-		end		
+		end						
 
-		respond_to do |format|
+		respond_to do |format|	
         	format.html
     	end
 	end
 
+	def keg_tracker_activation
+		respond_to do |format| 
+			format.json {
+				current_user.entity.update_attribute(:keg_tracker, params['activation'].to_i)
+				render json: {:keg_tracker => current_user.entity.keg_tracker}
+			}
+		end
+
+	end
+	
 	def pay
 		token = current_user.entity.payment_token
 		payment_method = SpreedlyCore::PaymentMethod.find(token)
 		#print payment_method.to_json
-		print token
+		print payment_method.to_json + 'fuck'
 		respond_to do |format|          
-			format.xml {
-				purchase_transaction = payment_method.purchase(550, {:gateway_token => ENV['SPREEDLYCORE_API_GATEWAY_TOKEN']})
+			format.json {
+#				purchase_transaction = payment_method.purchase(550, {:gateway_token => ENV['SPREEDLYCORE_API_GATEWAY_TOKEN']})
 
 #				purchase_transaction.succeeded? # true
-				render xml: purchase_transaction
+				render json: payment_method
 
 			}
 		end
-
-
 	end
 	
 	def create

@@ -1,0 +1,170 @@
+<style>
+    h1 {
+        margin: 0px;
+        font-weight: normal;
+    }
+    h5 {
+        margin:0px;
+    }
+    .invoice_section .left {
+        width:50%;
+        text-align: left;
+    }
+    .invoice_section .right {
+        width:50%;
+        text-align: right;
+    }
+
+    .invoice_section {        
+        border-top:1px solid #CCC; 
+        padding:15px 0;
+    }
+    .limited.container {
+        border-bottom:1px solid #ccc;
+    }
+    table.subscription_detail {
+        width:100%;
+    }
+    table.subscription_detail td, table.subscription_detail th {
+        padding:0 5px;
+        text-align: left;
+
+    }    
+    
+    
+    table td.service_name, table th.service_name {
+        width:55%;     
+        text-align: left;
+    }
+    table td.service_qty {
+        width:15%;
+    
+    }
+
+    table td.service_rate {
+        width:15%;
+    
+    }
+
+    table td.service_cost {
+        width:15%;
+    }
+
+
+</style>
+<div class="limited container">    
+    <!-- HEADER SECTION -->
+    <div class="invoice_section">
+        <div class="left">
+            <%= image_tag('brewery_apps_logo.png', :style => 'width:100px;') %>
+        </div>
+        <div class="right">        
+            <h1> Invoice </h1>
+            <h5>
+                <%= @invoice.billing_period_start.strftime("%B %d") %>
+                - 
+                <%= @invoice.billing_period_end.strftime("%B %d %Y") %>            
+            </h5>
+        </div>
+        <div style="clear:both;">   </div>
+    </div>
+
+    <!-- BILLING SUMMARY SECTION -->
+    <div class="invoice_section">
+
+        <div class="left">
+            <h3> Bill To: </h3>
+            <%= @invoice.billing_first_name %> <%= @invoice.billing_last_name %> <br />
+            <%= @invoice.billing_address_1 %>   <br />
+            <%= @invoice.billing_address_2 %>   <br />
+            <%= @invoice.billing_city %> <%= @invoice.billing_state %>  <br />
+            <%= @invoice.billing_zip %>            
+        </div>
+
+        <div class="right">
+            <div class="right" style="text-align:left;">
+                <h3>
+                    Black Stag Solutions, LLC
+                </h3>
+                210 Eleventh Ave. North   <br />
+                Ste. 324 <br />
+                Nashville, TN       <br />
+                37203 
+            </div>           
+        </div>        
+
+        <div style="clear:both;">   </div>
+    </div>
+
+    <!-- INVOICE DETAILS SECTION -->    
+    <div class="invoice_section">
+        <h3>  Details </h3>
+        <table class="subscription_detail">
+            <thead>
+                <tr>
+                    <th class="service_name">  Subscription  </th>
+                    <th>  Quantity      </th>
+                    <th>  Rate          </th>
+                    <th>  Total         </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% @invoice.brewery_apps_invoice_line_items.each do |x| %>
+                    <tr>
+                        <td class="service_name">   <%= x.get_subscription_description %>      </td>
+                        <td class="service_qty">   
+                            <%= x.billable_units %>
+                            <span style="font-size:12px">ce-day</span>  
+                        </td>
+                        <td class="service_rate">   
+                            $<%= x.billing_rate %><span style="font-size:12px">/ce-day</span> 
+                        </td>
+
+                        <td class="service_cost">   
+                            $<%= x.total %>
+                        </td>
+                    </tr>
+                <% end %>
+
+                <tr>
+                    <td colspan="4"> <br />    </td>
+                </tr>
+                <tr style="font-weight:bold;">
+                    <td>  </td>
+                    <td>  </td>
+                    <td style="border-top:1px solid #CCC; text-align:left"> Total: </td>
+                    <td style="border-top:1px solid #CCC; text-align:left"> $<%= @invoice.total %> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="clear:both">    </div>
+
+
+</div>
+
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -36,8 +36,10 @@
 			type: 'GET',		
 			datafields: [
 				{ name: 'a', type: 'string' },
-				{ name: 'b', type: 'string' },
+				{ name: 'b', type: 'string', type: 'number' },
 				{ name: 'c', type: 'string' }, 		
+				{ name: 'd', }, 		
+
 			], 
 			url: location.href
 		};
@@ -51,8 +53,16 @@
 		gridSettings['source'] = dataAdapter;
 		gridSettings['columns'] = [	
 			{ text: 'Bill Period', datafield: 'a', filtertype: 'checkedlist' },
-			{ text: 'Total', datafield: 'b' },
+			{ text: 'Total', datafield: 'b',cellsformat: 'c2' },
 			{ text: 'Status', datafield: 'c' },			
+	        
+	        { text: 'View', datafield: 'd', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+	            return 'View'
+	        }, buttonclick: function (row) {
+	            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+	            location.href = location.href + "/" + rowdata['d'];	           
+	        }}, 
+
 		]
 		
 		$(".jqxGrid").jqxGrid( gridSettings );	

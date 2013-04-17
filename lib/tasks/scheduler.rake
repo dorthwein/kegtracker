@@ -2,9 +2,11 @@ desc "Schedule Tasks"
 task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.now)
 	build_report.network_facts
-
+	build_report.charge_credit_card
+	build_report.process_billing
 end
-# test
+
+
 task :rebuild_cycle_facts => :environment do
 	AssetCycleFact.build_cycle_facts_from_time_line	
 end
@@ -15,8 +17,7 @@ task :process_payments => :environment do
 			payment_method = SpreedlyCore::PaymentMethod.find(x.payment_token.to_s)
 			if payment_method.valid?
 				purchase_transaction = payment_method.purchase(550)
-				print purchase_transaction.succeeded? # true
-			 	print 'fuck'
+				#print purchase_transaction.succeeded? # true
 			else
 			  print "Woops!\n" + payment_method.errors.join("\n")
 			end
@@ -231,28 +232,3 @@ task :correct_cross_brewer => :environment do
 		end
 	end	
 end
-
-
-
-task :purge_lipman => :environment do
-	Asset.where(:entity_id => '5061039bd920830200000003').delete
-	AssetActivityFact.where(:entity_id => '5061039bd920830200000003').delete
-	NetworkFact.where(:entity_id => '5061039bd920830200000003').delete
-	AssetCycleFact.where(:entity_id => '5061039bd920830200000003').delete
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
