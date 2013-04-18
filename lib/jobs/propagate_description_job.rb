@@ -1,4 +1,5 @@
 class PropagateDescriptionJob
+=begin
 	def initialize
 	end	
 	
@@ -80,4 +81,5 @@ class PropagateDescriptionJob
 		end
 	end		
 	handle_asynchronously :handle_code
+=end
 end

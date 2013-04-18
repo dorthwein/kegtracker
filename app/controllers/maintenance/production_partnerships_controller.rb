@@ -97,6 +97,7 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
 
   # DELETE /locations/1
   # DELETE /locations/1.json
+  # Inetentionally Destroy
   def destroy
     record = ProductionPartnership.find(params[:id])
 	  record.destroy

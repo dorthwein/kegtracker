@@ -43,6 +43,7 @@ settings.jqxGridProperties = {
 	autoshowcolumnsmenubutton:false,
 	rowsheight:35,
 	showfiltercolumnbackground: false,
+	selectionmode: 'multiplerowsextended',
 }
 
 system.simple_grid_height = '800px';

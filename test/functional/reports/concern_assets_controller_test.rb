@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LocationObserverTest < ActiveSupport::TestCase
+class Reports::ConcernAssetsControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

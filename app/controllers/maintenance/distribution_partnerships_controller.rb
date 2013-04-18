@@ -104,6 +104,7 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
 
   # DELETE /locations/1
   # DELETE /locations/1.json
+  # Intentionally Delete
   def destroy
     record = DistributionPartnership.find(params[:id])
     record.destroy

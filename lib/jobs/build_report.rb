@@ -202,23 +202,24 @@ class BuildReport
  				# Get Assets the entity owns
 	 			assets = entity.assets.where(:asset_type.ne => nil)
 	 			total_ces = BigDecimal.new(0)
-				
+				rate = BigDecimal.new(entity.kt_rate)
 				# KegTracker Pricing Calculation
 				if entity.keg_tracker == 1
-		 			rate = BigDecimal.new(entity.kt_rate)
+		 			
 		 			# For each asset type, get total CEs for assets of that type
 		 			assets.group_by{ |x| x.asset_type_id }.each do |x|	 			 				
 		 				asset_type = AssetType.find(x[0])
 		 				total_ces = total_ces + (BigDecimal.new(x[1].length.to_i) * BigDecimal.new(asset_type.measurement_unit_qty))
 		 			end
-					cost = rate * total_ces
-					billing_fact.update_attributes!(
-	 					:kt_assets => assets.map{|x| x._id},
-	 					:kt_ce_days => total_ces,
-	 					:kt_rate => rate,
-	 					:kt_charge => cost,
-					)
 				end
+				
+				cost = rate * total_ces
+				billing_fact.update_attributes!(
+ 					:kt_assets => assets.map{|x| x._id},
+ 					:kt_ce_days => total_ces,
+ 					:kt_rate => rate,
+ 					:kt_charge => cost,
+				)
 			end
 
 
@@ -309,15 +310,6 @@ class BuildReport
  		end
  	end
  end
-
-
-
-
-
-
-
-
-
 
 
 

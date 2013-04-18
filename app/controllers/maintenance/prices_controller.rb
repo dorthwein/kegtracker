@@ -114,6 +114,7 @@ class Maintenance::PricesController < ApplicationController
 
   # DELETE /Prices/1
   # DELETE /Prices/1.json
+  # Intentionally Destroy
   def destroy
     record = Price.find(params[:id])
     record.destroy

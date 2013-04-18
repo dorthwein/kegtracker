@@ -1,14 +1,11 @@
 class Asset
   include Mongoid::Document
   include Mongoid::Timestamps  
+  # 1 = Active, 0 = Deleted, 
 	field :record_status, type: Integer, default: 1	
 
 # Instead of changing key values - simply change key mapping before send 
 # harder on the system easier on bandwidth
-#
-#
-#
-#
 #
 # Fixed Details
 	field :netid, type: Integer
@@ -43,16 +40,32 @@ class Asset
 	belongs_to :product_entity, :class_name => 'Entity', index: true
 	field :product_entity_description, type: String # AKA Brewery
 	
-	# asset status: 0 = Empty, 1 = Full, 2 = In Market
+	# Asset Status: 0 = Empty, 1 = Full, 2 = In Market
 	field :asset_status, type: Integer, :default => 0
 	field :asset_status_description, type: String
+
+# 	Asset Status Key: 
+#		1 = To long @ Distributor	I/O
+# 		2 = @ Non-partner entity 	I/O
+#		3 = Lost 					I/O
+
+# 		4 = Damaged 				I/O
+#  		5 = Missed Scans			I/O
+
+	field :asset_overdue, type: Integer, :default => 0
+	field :asset_inactive, type: Integer, :default => 0
+
 
 	field :location_description, type: String			
 	belongs_to :location, index: true
 	
 	field :location_network_description, type: String		
 	belongs_to :location_network, :class_name => 'Network', index: true
-	
+
+	field :location_entity_description, type: String
+	belongs_to :location_entity, :class_name => 'Entity'
+	field :location_entity_arrival_time, type: Time
+
 	field :handle_code, type: Integer
 	field :handle_code_description, type: String
 
@@ -66,6 +79,7 @@ class Asset
 	# Life Cycle
 	field :last_action_time, :type => Time
 	field :fill_time, :type => Time
+
 	belongs_to :fill_location, :class_name => 'Location'
 	field :fill_location_description, type: String	
 	belongs_to :fill_network, :class_name => 'Network'
@@ -240,6 +254,9 @@ class Asset
 			return 'Unknown'	
 		end
 	end
+	def get_asset_concern_description
+
+	end
 
 	def get_handle_code_description
 		case self.handle_code.to_i
@@ -260,29 +277,46 @@ class Asset
 		end
 	end	
 
+	def days_at_location
+		# in days
+		if self.last_action_time
+			return (Time.new.to_i - self.last_action_time.to_i)/86400
+		else
+			return ' '
+		end
+	end
+
 	before_save :sync_descriptions	
 	def sync_descriptions
 		self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
 		self.invoice_number = self.invoice.number rescue nil
 		
 		self.location_network = self.location.network		
+		self.location_entity = self.location.entity
+
 #		self.fill_network = self.fill_location.network		
 		self.product_entity = self.product.entity rescue nil
 
 		# Check Descriptions
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description	
-		self.product_description = self.product.description
+		self.product_description = self.asset_status.to_i == 0 ? 'Empty' : self.product.description
 		
-		self.product_entity_description = self.product_entity.description
+		self.product_entity_description = self.asset_status.to_i == 0 ? 'Empty' : self.product_entity.description
 		self.asset_type_description = self.asset_type.description	
 		self.asset_status_description = self.get_asset_status_description		
 		self.handle_code_description = self.get_handle_code_description
 		self.location_description = self.location.description	
 		self.location_network_description = self.location_network.description			
 
-#		self.fill_network_description = self.fill_network.description
-#		self.pickup_network_description = self.pickup_network.description
+		
+		self.location_entity_description = self.location_entity.description	
+		
+		if self.asset_activity_fact
+			self.location_entity_arrival_time = self.asset_activity_fact.location_entity_arrival_time
+		else
+			self.location_entity_arrival_time = self.last_action_time
+		end
 	end	
 
 	after_save :after_save

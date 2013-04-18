@@ -28,6 +28,9 @@ class Ability
 		can [:read], Location, entity_id: user.entity_id
 		can [:read], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
 
+		can [:read], DistributionPartnership, entity_id: user.entity_id
+		can [:read], ProductionPartnership, entity_id: user.entity_id
+
 		can [:read], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
 		can [:read], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
 		can [:read], Asset, :entity_id => user.entity_id 	# Assets I own
@@ -59,6 +62,9 @@ class Ability
 		can [:create], Network #, network: user.entity.visible_networks
 		can [:create], Product #, product: user.entity.production_products
 		can [:create], Sku #, product: user.entity.production_products
+
+		can [:create], DistributionPartnership, entity_id: user.entity_id
+		can [:create], ProductionPartnership, entity_id: user.entity_id
 	end
 	
 	if user.operation == 3
@@ -68,6 +74,10 @@ class Ability
 		can [:update, :destroy], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
 		can [:update, :destroy], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
 		can [:update, :destroy], Asset, :entity_id => user.entity_id 	# Assets I own
+
+		can [:update, :destroy], DistributionPartnership, entity_id: user.entity_id
+		can [:update, :destroy], ProductionPartnership, entity_id: user.entity_id
+
 
 		can [:update, :destroy], Network, :entity_id => user.entity_id 
 		can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}

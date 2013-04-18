@@ -2,6 +2,9 @@ class BillingFact
   include Mongoid::Document
   include Mongoid::Timestamps  	
   
+# 1 = Active, 0 = Deleted, 
+	field :record_status, type: Integer, default: 1	
+  
 # Daily fact rendering services used for that day.
 	field :fact_time, type: Time
 	belongs_to :bill_to_entity, :class_name => 'Entity'

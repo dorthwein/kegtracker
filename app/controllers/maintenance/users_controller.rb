@@ -132,8 +132,8 @@ class Maintenance::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    user = User.find(params[:id])
-    user.destroy
+    record = User.find(params[:id])
+    record.update_attribute!(:record_status, 0)
 
     respond_to do |format|
       format.html { redirect_to users_url }

@@ -68,6 +68,7 @@ Cobalt::Application.routes.draw do
 		match 'assets/sku_summary_report_simple' => 'assets#sku_summary_report_simple', :via => [:get, :post]		
 
 		resources :assets	
+		resources :concern_assets	
 		resources :locations
 		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]
 		

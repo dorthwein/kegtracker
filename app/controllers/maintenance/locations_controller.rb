@@ -107,13 +107,29 @@ class Maintenance::LocationsController < ApplicationController
   end
 
   # DELETE /locations/1
-  # DELETE /locations/1.json
+  # DELETE /locations/1.json  
   def destroy
     location = Location.find(params[:id])
-    location.destroy
-
+    location.update_attribute!(:record_status, 0)
+    
     respond_to do |format|    
       format.json { head :no_content }
     end
   end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

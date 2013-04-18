@@ -33,6 +33,7 @@ $(document).ready(function(){
         datafields: [
             { name: 'entity_description' },
             { name: 'partner_description' }, 
+            { name: 'overdue_time' }, 
             { name: 'entity_name' },
             { name: 'entity_address_1' },
             { name: 'entity_address_2' },
@@ -76,12 +77,13 @@ $(document).ready(function(){
     gridSettings['columns'] = [             
         { text: 'Brewery', datafield: 'entity_description', filtertype: 'checkedlist' }, 
         { text: 'Distributor', datafield: 'partner_description', filtertype: 'checkedlist' }, 
+        { text: 'Max # Days', datafield: 'overdue_time' },
         { text: 'Dist. Address', datafield: 'partner_address_1' },
         { text: 'Dist. Address', datafield: 'partner_address_2' },
         { text: 'Dist. City', datafield: 'partner_city' },
         { text: 'Dist. State', datafield: 'partner_state', filtertype: 'checkedlist' },
         { text: 'Dist. Zip', datafield: 'partner_zip' },
-        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+        { text: 'View', datafield: '_id', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
             return 'View'
         }, buttonclick: function (row) {
             var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);

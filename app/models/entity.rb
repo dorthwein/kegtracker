@@ -6,13 +6,12 @@ class Entity
 	has_many :locations
 	has_many :products
 	has_many :networks
-	has_many :assets
+	has_many :assets, :inverse_of => :entity
 	has_many :network_memberships
 	has_many :skus
 	has_many :prices
 
-	has_many :network_facts, :inverse_of => :report_entity
-	
+	has_many :network_facts, :inverse_of => :report_entity	
 	has_many :distribution_partnerships #, :inverse_of => :partner
 #	has_many :distribution_partnerships, :inverse_of => :entity
 

@@ -29,12 +29,19 @@ class AssetActivityFact
   belongs_to :asset_cycle_fact, inverse_of: 'AssetCycleFact'
 
 # ALL BEING DEPRICATED
-  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
-  belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact',   :inverse_of => 'AssetActivityFact'
-  belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+#  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
+#  belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact',   :inverse_of => 'AssetActivityFact'
+#  belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+
+
   belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
 
+  belongs_to :location_entity,  :class_name => 'Entity'
+  field :location_entity_description, type: String
+  field :location_entity_arrival_time, type: Time
 
+#    self.location_entity = self.location.entity
+#    self.location_entity_description = self.location_entity.description 
 
 # Variable Details 
 
@@ -188,7 +195,7 @@ class AssetActivityFact
         :product => (self.prev_asset_activity_fact.product rescue nil),
         :asset_status => (self.prev_asset_activity_fact.asset_status rescue nil),
         :location => (self.prev_asset_activity_fact.location rescue nil),
-        :location_network => (self.prev_asset_activity_fact.location_network rescue nil),
+#        :location_network => (self.prev_asset_activity_fact.location_network rescue nil),
         :handle_code => (self.prev_asset_activity_fact.handle_code rescue nil),
         :user => (self.prev_asset_activity_fact.user rescue nil),
         :last_action_time => (self.prev_asset_activity_fact.fact_time rescue nil),
@@ -228,6 +235,8 @@ class AssetActivityFact
   before_save :sync
 	def sync	    
     self.location_network = self.location.network
+    self.location_entity = self.location.entity
+
     self.location_network_type = self.location_network.network_type rescue nil
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
     self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
@@ -235,6 +244,25 @@ class AssetActivityFact
     self.handle_code_description = self.get_handle_code_description
     self.location_description = self.location.description
     self.location_network_description = self.location_network.description
+    
+    self.location_entity_description = self.location_entity.description 
+    
+    # If different entity - Update possession_time
+    if self.prev_asset_activity_fact
+      if self.location_entity_id != self.prev_asset_activity_fact.location_entity_id
+        self.location_entity_arrival_time = self.fact_time
+        self.asset_overdue = 0
+        print 'New possession_time'
+      else
+        self.location_entity_arrival_time = self.prev_asset_activity_fact.fact_time
+        print ' NO CHANGE '
+      end
+    else
+      self.location_entity_arrival_time = self.fact_time
+      self.asset_overdue = 0
+      print 'First Activity Fact'
+    end
+
   end
 
 end

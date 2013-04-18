@@ -2,6 +2,9 @@ class BreweryAppsInvoice
   include Mongoid::Document
   include Mongoid::Timestamps  	
 
+# 1 = Active, 0 = Deleted, 
+	field :record_status, type: Integer, default: 1	
+
   	belongs_to :bill_to_entity, :class_name => 'Entity'
   	has_many :brewery_apps_invoice_line_items
   	

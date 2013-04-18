@@ -1,4 +1,4 @@
-class Reports::AssetsController < ApplicationController	
+class Reports::ConcernAssetsController < ApplicationController
 	before_filter :authenticate_user!	
 	layout "web_app"
 #	load_and_authorize_resource
@@ -10,25 +10,28 @@ class Reports::AssetsController < ApplicationController
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json {
-  				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets.map{ |x| {
-            a: x.entity_description,
-            b: x.product_entity_description,
-            c: x.tag_value,
-            d: x.asset_type_description,
-            e: x.asset_status_description,
-            f: x.product_description,
-            g: x.location_description,
-            h: x.location_entity_description,
-            i: x._id,
-            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
-            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
-            l: x.asset_cycle_fact_id,                    
-            m: x.days_at_location,
-#            n: x.asset_activity_fact.location_entity_arrival_time != nil ? x.asset_activity_fact.location_entity_arrival_time.to_i * 1000 : nil,
-          }});
+  				render json: current_user.entity.visible_assets.and(
+						:asset_overdue => 1
+  					).map{ |x| {
+			            a: x.entity_description,
+			            b: x.product_entity_description,
+			            c: x.tag_value,
+			            d: x.asset_type_description,
+			            e: x.asset_status_description,
+			            f: x.product_description,
+			            g: x.location_description,
+			            h: x.location_network_description,
+			            i: x._id,
+			            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
+			            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
+			            l: x.asset_cycle_fact_id,                    
+			            m: x.asset_overdue == 1 ? 'YES' : "NO",
+			            n: 'TBI', # x.asset_overdue == 1 ? 'YES' : "NO"
+			            o: x.location_entity_arrival_time != nil ? x.location_entity_arrival_time.to_i * 1000 : nil, 
+			        }};
 			  }
 		end
-	end  
+	end 
   	def show
 	    respond_to do |format|
 	      format.html {render :layout => 'popup'}
@@ -63,7 +66,8 @@ class Reports::AssetsController < ApplicationController
   def new
     respond_to do |format|
       format.html {render :layout => 'popup'}
-      format.json {         
+      format.json { 
+        
         record = Asset.new
         response = {}
         response[:jqxDropDownLists] = {}   

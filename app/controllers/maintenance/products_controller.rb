@@ -105,8 +105,8 @@ class Maintenance::ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    product = Product.find(params[:id])
-    product.destroy
+    record = Product.find(params[:id])
+    record.update_attribute!(:record_status, 0)
 
     respond_to do |format|    
       format.json { head :no_content }

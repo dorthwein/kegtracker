@@ -118,8 +118,8 @@ class Maintenance::NetworksController < ApplicationController
   # DELETE /networks/1
   # DELETE /networks/1.json
   def destroy
-    network = Network.find(params[:id])
-    network.destroy
+    record = Network.find(params[:id])
+    record.update_attribute!(:record_status, 0)
     respond_to do |format|
       format.json { head :no_content }
     end

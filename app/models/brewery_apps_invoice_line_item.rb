@@ -2,6 +2,9 @@ class BreweryAppsInvoiceLineItem
   include Mongoid::Document
   include Mongoid::Timestamps  	
 
+# 1 = Active, 0 = Deleted, 
+	field :record_status, type: Integer, default: 1	
+
 	belongs_to :entity
   # 1 = KegTracker, 2 = KegReg,  
 	belongs_to :brewery_apps_invoice

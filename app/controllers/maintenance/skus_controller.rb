@@ -123,7 +123,7 @@ class Maintenance::SkusController < ApplicationController
   # DELETE /skus/1.json
   def destroy
     record = Sku.find(params[:id])
-    record.destroy
+    record.update_attribute!(:record_status, 0)
 
     respond_to do |format|    
       format.json { head :no_content }

@@ -7,6 +7,10 @@ function openPopupWindow(url){
 function jqxIntialize(){
 	var theme = settings.theme		
 	// Grid Column show/hide
+
+// ***********************
+// jqxGrid Functions
+// ***********************	
 	if($('.jqxGrid').length && 	$(".jqxGridColumnListBox").length){		
 		var listSource = [];
 		$.each( $('.jqxGrid').jqxGrid('columns'), function(key, item){			
@@ -31,28 +35,6 @@ function jqxIntialize(){
 	    });	
 	}
 
-    $('.jqxWindow').jqxWindow({
-        showCollapseButton: false, 
-        resizable:false,
-        height: 550, 
-        width: '960px', 
-        draggable: false,
-        theme: theme,
-        autoOpen:false,
-    });
-
-	$('.jqxWindow').on('close', function (event) {	
-		$('.jqxWindowIFrame').attr('src', "");
-		$('.jqxWindowTitleText').html('<br />');
-		$('#content').removeClass('modal-blur'); 
-	 }); 
-
-	$('.jqxRecordLinkButton').on('click', function(){
-		var base_url = $(this).attr('data-url')
-		var id = $(this).data('data-id')
-		var url = system.server + base_url + id
-		window.location = url
-	})
 	$(".new").jqxButton({ theme: theme });
 	$(".new").click(function () {
 		var url = location.href
@@ -98,6 +80,7 @@ function jqxIntialize(){
 // The last parameter is optional and determines the url of the export server. By default, the exporter is hosted on the jQWidgets website.		
 	});
 	
+
 	$(".jqxFilterToggle").jqxToggleButton({ theme: theme});
 	$(".jqxFilterToggle").click(function () {
     	if ($(this).attr("disabled") != "disabled"){    		
@@ -116,9 +99,38 @@ function jqxIntialize(){
 	    }		           
 	});
 
+// ***********************
+// jqxWindow Functions
+// ***********************
+    $('.jqxWindow').jqxWindow({
+        showCollapseButton: false, 
+        resizable:false,
+        height: 550, 
+        width: '960px', 
+        draggable: false,
+        theme: theme,
+        autoOpen:false,
+    });
 
-	$(".jqxInput").jqxInput({height: '20px', width: '200px', minLength: 1, theme: theme });	
-	$(".jqxNumberInput").jqxNumberInput({height: '20px', digits: 4, width: '200px', minLength: 1, theme: theme});
+	$('.jqxWindow').on('close', function (event) {	
+		$('.jqxWindowIFrame').attr('src', "");
+		$('.jqxWindowTitleText').html('<br />');
+		$('#content').removeClass('modal-blur'); 
+	 }); 
+/*
+	$('.jqxRecordLinkButton').on('click', function(){
+		var base_url = $(this).attr('data-url')
+		var id = $(this).data('data-id')
+		var url = system.server + base_url + id
+		window.location = url
+	})
+*/	
+
+// ******************************
+// jqxInput Formatting Functions
+// ******************************
+	$(".jqxInput").jqxInput({height: '20px', width: '200px', theme: theme });	
+	$(".jqxNumberInput").jqxNumberInput({height: '20px', digits: 4, width: '200px', theme: theme});
 	$(".jqxNumberInput.currency").jqxNumberInput({decimalDigits: 2, symbol: '$'})	
 	$(".jqxButton").jqxButton({ theme: theme, width:75 });            
 
@@ -143,6 +155,9 @@ function jqxIntialize(){
 	    }
     });
 
+// ******************************
+// jqxValidator
+// ******************************
     var form_rules = []
     if($('#password').length > 0){
 	    form_rules.push({input: '#password', message:'Required!', action: 'keyup, blur', rule: function (input, commit) {
@@ -189,6 +204,5 @@ function jqxIntialize(){
 		id = '#' + value.id
 		form_rules.push({input: id, message: 'Required!', action: 'keyup, blur', rule: 'required'})
 	})
-
     $('.jqxValidator').jqxValidator({rtl:true, rules: form_rules });    
 }	

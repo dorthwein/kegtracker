@@ -1,6 +1,6 @@
 	<div class="toolbar">   
 	    <h3 class="left">
-	        Assets
+	        Concern Assets
 	    </h3>
 	    <h3 class="right">
 	        <%= current_user.entity.description %>
@@ -28,15 +28,11 @@ $(document).ready(function(){
       e: asset_status_description,
       f: product_description,
       g: location_description,
-      h: location_entity_description,,
+      h: location_network_description,
       i: _id,
       j: fill_time
       k: last_action_time.to_i,
-      l: asset_cycle_fact_id,  
-      m: location_entity_possession_time,       
-      n: asset_activity_fact.location_entity_arrivial_time
-
-      
+      l: asset_cycle_fact_id,         
 */	
 	var source =
 	{
@@ -50,13 +46,13 @@ $(document).ready(function(){
 			{ name: 'f', type: 'string' },
 			{ name: 'g', type: 'string' },
 			{ name: 'h', type: 'string' },
-			{ name: 'i'},
+			{ name: 'i' },
 			{ name: 'j', type: 'date' },
 			{ name: 'k', type: 'date' },
 			{ name: 'l'},
-			{ name: 'm', type: 'number'},
-//			{ name: 'n', type: 'date'},
-			
+			{ name: 'm', type: 'string' },
+			{ name: 'n', type: 'string' },
+			{ name: 'o', type: 'date' },
 		],
 		url: location.href,
 		updaterow: function (rowid, rowdata, commit) {
@@ -90,18 +86,29 @@ $(document).ready(function(){
 		{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist' },			
 		{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },			
 		{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
-		{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist' },			
-		{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Tag Value', datafield: 'c' },
+
+		{ text: 'Tag Value', datafield: 'c' },						
 		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },			
 		{ text: 'Location', datafield: 'g', filtertype: 'checkedlist' },
-		{ text: 'Cur. Holder', datafield: 'h', filtertype: 'checkedlist' },
-		{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
-//		{ text: 'Arrival @ Cur. Holder', datafield: 'n'},//filtertype: 'date', cellsformat: 'd'  },
-///location_entity_possession_time
+		{ text: 'Location Network', datafield: 'h', filtertype: 'checkedlist' },
+		{ text: 'Last Scene', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
+		{ text: 'Sent to Partner', datafield: 'o', filtertype: 'date', cellsformat: 'd'  },
+		{ text: 'Return Overdue', datafield: 'm', width:'150px', filtertype: 'checkedlist'},
+//		{ text: 'Past due product', datafield: 'n', width:'150px', filtertype: 'checkedlist'},
 
-		{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Cycle', datafield: 'l', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+		{ text: 'Resolve', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'Resolve'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			if(rowdata['l'] == ''){
+				var url = system.server + "/popup_record_not_found"
+			} else{
+				var url = system.server + "/reports/asset_cycles/" + rowdata['l'];
+			}
+			openPopupWindow(url)
+		}},	
+
+		{ text: 'Cycle', datafield: 'l', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'Cycle'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
@@ -113,8 +120,7 @@ $(document).ready(function(){
 			openPopupWindow(url)
 		}},	
 
-
-		{ text: 'View', datafield: 'i', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+		{ text: 'View', datafield: 'i', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
@@ -124,8 +130,7 @@ $(document).ready(function(){
 	]
 
 	$(".jqxGrid").jqxGrid( gridSettings );	
-	jqxIntialize()
-	 					
+	jqxIntialize();
 });
 
 
