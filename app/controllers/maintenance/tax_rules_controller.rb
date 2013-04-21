@@ -8,7 +8,7 @@ class Maintenance::TaxRulesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        taxt_rules = JqxConverter.jqxGrid(current_user.entity.taxt_rules)
+        taxt_rules = JqxConverter.jqxGrid(current_user.entity.tax_rules.where(record_status: 1))
         render json: taxt_rules
       }
     end
@@ -107,14 +107,47 @@ class Maintenance::TaxRulesController < ApplicationController
   # DELETE /TaxRules/1
   # DELETE /TaxRules/1.json
   def destroy
-    taxt_rule = TaxRule.find(params[:id])
-    taxt_rule.destroy
-
-    respond_to do |format|    
+    record = TaxRule.find(params[:id])
+    record.trash
+    respond_to do |format|
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = TaxRule.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = TaxRule.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

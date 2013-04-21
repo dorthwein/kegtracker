@@ -13,7 +13,7 @@ class Maintenance::UsersController < ApplicationController
       if current_user.system_admin == 1 
 			   users = JqxConverter.jqxGrid(User.all)
       else
-        users = JqxConverter.jqxGrid(current_user.entity.users)
+        users = JqxConverter.jqxGrid(current_user.entity.users.where(record_status: 1))
       end
       		render json: users 
 	    }
@@ -133,11 +133,29 @@ class Maintenance::UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     record = User.find(params[:id])
-    record.update_attribute!(:record_status, 0)
-
+    record.trash
     respond_to do |format|
-      format.html { redirect_to users_url }
       format.json { head :no_content }
+    end
+  end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = User.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = User.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
     end
   end
 end

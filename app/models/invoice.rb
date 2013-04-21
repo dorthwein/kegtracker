@@ -1,7 +1,8 @@
 class Invoice
   include Mongoid::Document
   include Mongoid::Timestamps  
-
+  include ExtendMongoid
+  
   field :record_status, type: Integer, default: 1
   
 	belongs_to :entity, index: true

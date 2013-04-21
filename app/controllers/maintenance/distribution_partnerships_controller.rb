@@ -7,8 +7,18 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {      	
-	      records = JqxConverter.jqxGrid(current_user.entity.distribution_partnerships)
+	      records = current_user.entity.distribution_partnerships.where(record_status: 1)
 	     	render json: records
+      }
+    end
+  end
+
+  def trash       
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json {       
+        records = current_user.entity.distribution_partnerships.where(record_status: 0)
+        render json: records
       }
     end
   end
@@ -83,7 +93,7 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
 #        else
 #        	entity_partnership.distribution_partnership = 1        	
 #        end               
-          record.save
+          record.update_attribute(:record_status, 1)
           render json: record
       }        
     end
@@ -107,9 +117,46 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # Intentionally Delete
   def destroy
     record = DistributionPartnership.find(params[:id])
-    record.destroy
+    record.trash
     respond_to do |format|    
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = DistributionPartnership.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = DistributionPartnership.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

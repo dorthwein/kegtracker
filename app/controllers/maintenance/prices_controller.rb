@@ -8,7 +8,7 @@ class Maintenance::PricesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        records = JqxConverter.jqxGrid(current_user.entity.prices)
+        records = JqxConverter.jqxGrid(current_user.entity.prices.where(record_status: 1))
         render json: records
       }
     end
@@ -114,14 +114,48 @@ class Maintenance::PricesController < ApplicationController
 
   # DELETE /Prices/1
   # DELETE /Prices/1.json
-  # Intentionally Destroy
   def destroy
     record = Price.find(params[:id])
-    record.destroy
-
-    respond_to do |format|    
+    record.trash
+    respond_to do |format|
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = Price.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = Price.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

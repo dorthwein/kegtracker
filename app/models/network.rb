@@ -1,6 +1,8 @@
 class Network
   include Mongoid::Document
   include Mongoid::Timestamps  
+  include ExtendMongoid
+
 
   field :record_status, type: Integer, default: 1
 
@@ -37,7 +39,6 @@ class Network
   has_many :barcode_makers
   belongs_to :entity, index: true  
   
-  has_many :network_memberships # Being Depricated
   has_many :locations
 
 
@@ -83,17 +84,7 @@ class Network
       self.smart_mode_out_location_description = self.smart_mode_out_location.description    
     end
 	end	
-=begin
-  def self.visible_networks options = {}
-    networks = []
-    networks = networks + options[:entity].networks        
-    
-    options[:entity].network_memberships.each do |x|
-      networks.push(x.network)
-    end
-    return networks
-  end
-=end
+
 
   def on_create
     if self.network_type == 1

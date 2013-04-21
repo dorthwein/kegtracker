@@ -1,6 +1,7 @@
 class InvoiceLineItem
 	include Mongoid::Document
 	include Mongoid::Timestamps  
+    include ExtendMongoid
 
 	field :record_status, type: Integer, default: 1
 	

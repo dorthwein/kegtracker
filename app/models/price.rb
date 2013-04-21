@@ -1,5 +1,7 @@
 class Price
   include Mongoid::Document
+  include ExtendMongoid
+
   	field :record_status, type: Integer, default: 1
   	
   	field :description, type: String

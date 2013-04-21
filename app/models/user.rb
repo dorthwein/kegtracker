@@ -1,5 +1,7 @@
 class User
   include Mongoid::Document
+  include ExtendMongoid
+    
   field :record_status, type: Integer, default: 1
 
 #  before_save :ensure_authentication_token

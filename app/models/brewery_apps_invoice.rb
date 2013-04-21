@@ -1,7 +1,8 @@
 class BreweryAppsInvoice
   include Mongoid::Document
   include Mongoid::Timestamps  	
-
+  include ExtendMongoid
+  
 # 1 = Active, 0 = Deleted, 
 	field :record_status, type: Integer, default: 1	
 

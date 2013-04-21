@@ -1,7 +1,6 @@
 class Gatherer < ApplicationController
 	  	attr_accessor :entity 
 	  	attr_accessor :networks
-	  	attr_accessor :network_memberships	
 
 	  	attr_accessor :entity_products
 	  	attr_accessor :production_products	  	
@@ -26,11 +25,7 @@ class Gatherer < ApplicationController
 		@production_products = Array.new		
 		@production_products = @production_products + @entity.products
 		# Get Products this entity has been allowed to produce
-		@entity.network_memberships.where(:product_production => true).each do |network_membership|
-			network_membership.network.entity.products.each do |product|
-				@production_products.push(product)
-			end
-		end					
+		
 		@production_products = @production_products.sort_by {|e| e['description'] }		
 	end
 
@@ -99,27 +94,7 @@ class Gatherer < ApplicationController
 		@networks = @networks + @entity.networks.sort_by {|e| e['description'] }	
 	end
 
-# *************************
-# Network Memberships
-# *************************	
-	def get_given_network_memberships
-		@network_memberships = Array.new			
-		get_entities.each do |entity|
-			entity.networks.each do | network|
-				@network_memberships = @network_memberships + network.network_memberships
-			end
-		end
-		@network_memberships
-	end	
-	
-	def get_received_network_memberships
-		@network_memberships = Array.new
-		get_entities.each do |entity|
-			@network_memberships = @network_memberships + entity.network_memberships
-		end
-		@network_memberships
-	end
-	
+
 # *************************
 # Locations
 # *************************

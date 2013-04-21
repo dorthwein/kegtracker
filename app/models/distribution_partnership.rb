@@ -1,5 +1,9 @@
+
+
 class DistributionPartnership
 	include Mongoid::Document
+	include ExtendMongoid
+  	include ExtendMongoid
 
 	belongs_to :entity, :inverse_of => :entity, index: true  	# Brewery
   	belongs_to :partner, :class_name => 'Entity', :inverse_of => :entity, index: true	# Distributor
@@ -23,6 +27,14 @@ class DistributionPartnership
 	field :entity_state, type: String
 	field :entity_zip, type: String
 
+#	def destroy
+#		self.record_status = 0
+#		self.save!
+#	end
+#	def restore
+#		self.record_status = 1
+#		self.save!
+#	end
 	
 	before_save :sync_descriptions	
 	def sync_descriptions

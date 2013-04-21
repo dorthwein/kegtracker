@@ -1,5 +1,7 @@
 class ProductionPartnership
 	include Mongoid::Document
+	include ExtendMongoid
+
 	field :record_status, type: Integer, default: 1
 
 	belongs_to :entity, :inverse_of => :entity, index: true  # Gives permissions right to Partner

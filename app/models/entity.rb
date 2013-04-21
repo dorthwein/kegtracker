@@ -1,13 +1,13 @@
 class Entity
   include Mongoid::Document
   include Mongoid::Timestamps  
+  include ExtendMongoid  
 	field :record_status, type: Integer, default: 1	
 	has_many :users
 	has_many :locations
 	has_many :products
 	has_many :networks
 	has_many :assets, :inverse_of => :entity
-	has_many :network_memberships
 	has_many :skus
 	has_many :prices
 

@@ -10,7 +10,7 @@ class Maintenance::LocationsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {                 
-          locations = JqxConverter.jqxGrid(current_user.entity.locations)
+          locations = JqxConverter.jqxGrid(current_user.entity.locations.where(record_status: 1))
           render json: locations
       }
     end
@@ -109,14 +109,34 @@ class Maintenance::LocationsController < ApplicationController
   # DELETE /locations/1
   # DELETE /locations/1.json  
   def destroy
-    location = Location.find(params[:id])
-    location.update_attribute!(:record_status, 0)
-    
-    respond_to do |format|    
+    record = Location.find(params[:id])
+    record.trash
+    respond_to do |format|
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = Location.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = Location.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
 
 
 

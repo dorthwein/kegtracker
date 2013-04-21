@@ -1,5 +1,7 @@
 class TaxRule
   include Mongoid::Document
+    include ExtendMongoid
+    
 	field :record_status, type: Integer, default: 1
 
 	has_and_belongs_to_many :prices

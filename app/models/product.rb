@@ -1,7 +1,8 @@
 class Product
   include Mongoid::Document
   include Mongoid::Timestamps  
-
+  include ExtendMongoid
+  
   field :record_status, type: Integer, default: 1
   
 	has_many :assets

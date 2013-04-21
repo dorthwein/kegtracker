@@ -53,16 +53,23 @@ function jqxIntialize(){
 
 	$(".delete").jqxButton({ theme: theme });            
 	$(".delete").click(function () {	
-		var rowindex = $('.jqxGrid').jqxGrid('getselectedrowindex');
-		var rowdata = $('.jqxGrid').jqxGrid('getrowdata', rowindex);		
+		var rowindexes = $('.jqxGrid').jqxGrid('getselectedrowindexes');
+		var ids = []
+		$.each(rowindexes, function(key, value){
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', value);
+			ids.push(rowdata['_id'])
+		})
+
+		alert(JSON.stringify(ids))
 		$.ajax({
 			type: "DELETE",
 			dataType : "JSON",
-			url: location.href + '/' + rowdata['_id'],
+			url: location.href + '/delete_multiple',
 			data: { 
-				_id: rowdata['_id'],
+				ids: ids,
 			},
 		}).done(function( data ) {
+			alert(JSON.stringify(data));
 			window.dataAdapter.dataBind();
 		});		        	
 	});

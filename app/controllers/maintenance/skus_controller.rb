@@ -10,7 +10,7 @@ class Maintenance::SkusController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        records = JqxConverter.jqxGrid(current_user.entity.skus)
+        records = JqxConverter.jqxGrid(current_user.entity.skus.where(record_status: 1))
         render json: records
       }
     end
@@ -123,10 +123,46 @@ class Maintenance::SkusController < ApplicationController
   # DELETE /skus/1.json
   def destroy
     record = Sku.find(params[:id])
-    record.update_attribute!(:record_status, 0)
-
-    respond_to do |format|    
+    record.trash
+    respond_to do |format|
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = Sku.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = Sku.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

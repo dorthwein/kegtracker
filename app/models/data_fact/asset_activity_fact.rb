@@ -251,7 +251,7 @@ class AssetActivityFact
     if self.prev_asset_activity_fact
       if self.location_entity_id != self.prev_asset_activity_fact.location_entity_id
         self.location_entity_arrival_time = self.fact_time
-        self.asset_overdue = 0
+        
         print 'New possession_time'
       else
         self.location_entity_arrival_time = self.prev_asset_activity_fact.fact_time
@@ -259,7 +259,6 @@ class AssetActivityFact
       end
     else
       self.location_entity_arrival_time = self.fact_time
-      self.asset_overdue = 0
       print 'First Activity Fact'
     end
 

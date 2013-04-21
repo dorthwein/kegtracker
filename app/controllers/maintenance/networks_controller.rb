@@ -8,7 +8,7 @@ class Maintenance::NetworksController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {       	
-        networks = JqxConverter.jqxGrid(current_user.entity.networks)
+        networks = JqxConverter.jqxGrid(current_user.entity.networks.where(record_status: 1))
         render json: networks                   
       }
     end
@@ -119,9 +119,46 @@ class Maintenance::NetworksController < ApplicationController
   # DELETE /networks/1.json
   def destroy
     record = Network.find(params[:id])
-    record.update_attribute!(:record_status, 0)
+    record.trash
     respond_to do |format|
       format.json { head :no_content }
     end
   end
+
+  def restore_multiple
+    respond_to do |format|    
+      records = Network.where(:id.in => params[:ids])      
+      records.restore
+      format.json { 
+        render json: records
+      }
+    end
+  end
+
+  def delete_multiple
+    respond_to do |format|    
+      records = Network.where(:id.in => params[:ids])      
+      records.trash
+      format.json { 
+        render json: records
+      }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

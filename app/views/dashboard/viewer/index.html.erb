@@ -27,9 +27,9 @@
 
 		<%= link_to '<h3> Asset Activity </h3><h4> by SKU </h4>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button left" %> 
 
-
+		<% if 1 == 0 %>
 		<%= link_to '<h3> Concern Assets </h3><h4> Damaged/Lost </h4>'.html_safe, :reports_concern_assets, :class => "dashboard button left" %> 
-
+		<% end %>
 		<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button left hidden" %> 
 		
 		<%= link_to '<h3> Inventory Report </h3><h4> by SKU</h4>'.html_safe, :reports_assets_sku_summary_report_simple, :class => "dashboard button left" %> 

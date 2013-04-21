@@ -101,3 +101,28 @@ module Cobalt
 #	config.mongoid.observers = :location_observer, :asset_type_observer, :entity_observer, :network_observer, :product_observer, :user_observer
   end
 end
+module ExtendMongoid
+    extend ActiveSupport::Concern
+    module ClassMethods
+        def restore
+            update_all(record_status: 1)
+        end
+        def trash
+            update_all(record_status: 0 )
+        end
+    end
+
+    module InstanceMethods
+        def restore
+            update_attribute(:record_status, 1)
+        end
+
+        def trash
+            update_attribute(:record_status, 0)
+        end
+        def trashed?
+            record_status == 0
+        end
+    end
+end
+

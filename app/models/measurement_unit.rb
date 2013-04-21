@@ -1,5 +1,7 @@
 class MeasurementUnit
   include Mongoid::Document
+  include ExtendMongoid
+  
   	field :record_status, type: Integer, default: 1
   	
   	has_many :asset_types

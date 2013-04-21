@@ -1,6 +1,7 @@
 class Asset
   include Mongoid::Document
   include Mongoid::Timestamps  
+  include ExtendMongoid
   # 1 = Active, 0 = Deleted, 
 	field :record_status, type: Integer, default: 1	
 
@@ -311,6 +312,7 @@ class Asset
 
 		
 		self.location_entity_description = self.location_entity.description	
+		self.asset_overdue = 0
 		
 		if self.asset_activity_fact
 			self.location_entity_arrival_time = self.asset_activity_fact.location_entity_arrival_time

@@ -8,7 +8,6 @@ Cobalt::Application.routes.draw do
 	end
 
 	namespace :maintenance do 		
-		match 'network_memberships/new_distributor_partnership' => 'network_memberships#new_distributor_partnership', :via => [:get, :post]	
 		
 		resources :rfid_antennas
 		resources :rfid_readers	  
@@ -23,25 +22,31 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/antenna_new' => 'rfid_readers#antenna_new', :via => [:get, :post]
 		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
 
-		resources :skus
-	  	resources :prices
-	  	resources :tax_rules 
-	  	resources :locations 
-		
-#		devise_for :users	  	
-	  	resources :users 
-	    resources :networks	  			  	
+		devise_for :users	  	
 
-	  	resources :network_memberships
-	  	
-	  	resources :distribution_partnerships
-	  	resources :production_partnerships
-	  	resources :leasing_partnerships
+		resources :distribution_partnerships, :locations, :prices, :tax_rules, :locations, :skus, :users, :networks, :production_partnerships, :leasing_partnerships, :products, :barcodes, :production, :barcode_makers do
+		  collection do
+		    delete 'delete_multiple'
+		    get 'delete_multiple' # Not needed
+			get 'trash'		    
+		  end
+		end
 
-	  	resources :products  	
-	  	resources :barcodes
-	  	resources :production 
-	    resources :barcode_makers  	
+
+
+#	  	resources :prices
+#	  	resources :tax_rules 
+#	  	resources :locations 		
+#		resources :skus 
+#	  	resources :users 
+#	    resources :networks	  			  	
+#	  	resources :distribution_partnerships
+#	  	resources :production_partnerships
+#	  	resources :leasing_partnerships
+#	  	resources :products  	
+#	  	resources :barcodes
+#	  	resources :production 
+#	    resources :barcode_makers  	
 		
 	    match 'barcode_maker/download' => 'barcode_makers#download', :via => [:get, :post]	
 	end  

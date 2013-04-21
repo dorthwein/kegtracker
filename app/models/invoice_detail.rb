@@ -1,6 +1,8 @@
 class InvoiceDetail
 # Being Depricated
 	include Mongoid::Document
+    include ExtendMongoid	
+    
 	field :record_status, type: Integer, default: 1
 	belongs_to :invoice
 	belongs_to :asset

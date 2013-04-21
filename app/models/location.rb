@@ -1,6 +1,8 @@
 class Location
   include Mongoid::Document
   include Mongoid::Timestamps  
+  include ExtendMongoid
+
   field :record_status, type: Integer, default: 1
   
   field :description, type: String    
