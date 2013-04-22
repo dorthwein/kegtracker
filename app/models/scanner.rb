@@ -16,7 +16,7 @@ class Scanner
 
 			obj = Scanner.preprocess_asset(obj)
 			
-			if obj[:auto_mode] == 1 && obj[:from_network] != obj[:to_network]
+			if obj[:auto_mode] == 1 && obj[:from_network] != obj[:to_network] && obj[:handle_code] != 3
 				obj = Scanner.auto_mode_process(obj)
 			end
 
@@ -142,9 +142,9 @@ class Scanner
 			obj[:asset].pickup(obj)				
 			print "Pickup \n"
 		
-#		when 3		# Add
-#			obj[:asset].add(obj)				
-#			print "Add \n"
+		when 3		# Register
+			obj[:asset].register(obj)				
+			print "Add \n"
 		
 		when 4		# Fill
 			obj[:asset].fill(obj)				
@@ -238,8 +238,7 @@ class Scanner
 
 	# Asset Type Override				
 		if !obj[:asset_type_id].nil?
-			obj[:asset].asset_type = AssetType.find(obj[:asset_type_id])
-		
+			obj[:asset].asset_type = AssetType.find(obj[:asset_type_id])		
 		end
 
 		obj[:to_network] = Location.find(obj[:location_id]).network

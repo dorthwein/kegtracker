@@ -22,17 +22,25 @@
 			</h4>
 		</div>
 		<% end -%>
-		<br />
+		<br />	
 		<div style="text-align:left">
 			<%= f.submit "Sign in", 'class' => 'jqxButton' %>
+			<button class="jqxButton right" id="demo_button"> Demo </button>
 		</div>
+
 	<% end %>
 		<div style="text-align:left; display:none">		
 			<%= render :partial => "devise/shared/links" %>
 		</div>
 </div>
 <script>
-$(document).ready(function(){
+$(document).ready(function(){	
 	jqxIntialize()
+	$('#demo_button').on('click', function(e){
+		e.preventDefault();
+		$('#user_password').val('demopassword')
+		$('#user_email').val('demo@breweryapps.com')		
+		$('#new_user').submit();
+	})
 });
 </script>

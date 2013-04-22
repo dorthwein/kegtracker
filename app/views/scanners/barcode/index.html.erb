@@ -156,6 +156,8 @@ $(document).ready(function(){
 		    	if(value == 4){
 					$('#product_id').jqxDropDownList({disabled: false});		    		
 					$('#asset_type_id').jqxDropDownList({disabled: false});		    		
+		    	} else if(value == 3){
+					$('#asset_type_id').jqxDropDownList({disabled: false});		    		
 		    	} else {
 		    		$('#product_id').jqxDropDownList({disabled: true});		    		
 		    		$('#asset_type_id').jqxDropDownList({disabled: true});		    		
@@ -260,7 +262,9 @@ $(document).ready(function(){
 		        },	        
 		        { input: '#asset_type_id', message: 'Asset Type Required!', action: 'keyup, blur',rule: function(input, commit) {
 			            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
-			                if (  $("#handle_code").jqxDropDownList('getSelectedItem').value == 4 ) {
+			            	var hc =  $("#handle_code").jqxDropDownList('getSelectedItem').value
+
+			                if (  hc == 4 || hc == 3 ) {
 				                if (  $("#asset_type_id").jqxDropDownList('getSelectedItem') != null){
 				                	return true;
 				                } else { return false;}		                

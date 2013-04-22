@@ -1,7 +1,7 @@
 class Maintenance::DistributionPartnershipsController < ApplicationController
   before_filter :authenticate_user!
   layout "web_app"
-#  load_and_authorize_resource
+  load_and_authorize_resource
 
   def index    		
     respond_to do |format|

@@ -59,7 +59,8 @@ class Asset
 
 	field :location_description, type: String			
 	belongs_to :location, index: true
-	
+	field :days_at_location, type: Integer
+
 	field :location_network_description, type: String		
 	belongs_to :location_network, :class_name => 'Network', index: true
 
@@ -167,6 +168,21 @@ class Asset
 
 #		self.process_asset_cycle_fact(options)
 #		self.add_to_invoice(options)
+	end
+
+
+	def register options
+		self.handle_code = 3
+		self.last_action_time = options[:time]
+		self.location_id = options[:location_id]
+
+		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+		self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
+			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
+			self.asset_cycle_fact.move(self.asset_activity_fact)
+		)
+		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
+		self.asset_activity_fact.save!
 	end
 
 	def fill options
@@ -278,7 +294,7 @@ class Asset
 		end
 	end	
 
-	def days_at_location
+	def calc_days_at_location
 		# in days
 		if self.last_action_time
 			return (Time.new.to_i - self.last_action_time.to_i)/86400
@@ -310,7 +326,7 @@ class Asset
 		self.location_description = self.location.description	
 		self.location_network_description = self.location_network.description			
 
-		
+		self.days_at_location = self.calc_days_at_location		
 		self.location_entity_description = self.location_entity.description	
 		self.asset_overdue = 0
 		

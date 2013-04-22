@@ -1,5 +1,6 @@
 class Reports::InvoiceController < ApplicationController
 	layout "web_app"
+	load_and_authorize_resource
 	def lookup
 		respond_to do |format|
 			format.html 

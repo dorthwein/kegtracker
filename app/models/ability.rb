@@ -25,64 +25,102 @@ class Ability
 		# Scanner		
 		
  	if user.operation == 1 || user.operation == 2 || user.operation == 3
-		can [:read], Location, entity_id: user.entity_id
-		can [:read], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
-
-		can [:read], DistributionPartnership, entity_id: user.entity_id
-		can [:read], ProductionPartnership, entity_id: user.entity_id
-
 		can [:read], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
 		can [:read], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
-		can [:read], Asset, :entity_id => user.entity_id 	# Assets I own
+		can [:read], Asset, :entity_id => user.entity_id 	# Assets I own		
+		can [:sku_summary_report_simple], Asset
+		if user.entity.keg_tracker == 1
+			
+			can [:asset_fill_to_fill_cycle_fact_by_delivery_network, :asset_fill_to_fill_cycle_fact_by_fill_network, :activity_summary_report_simple], Float
 
-		can [:read], AssetCycleFact, :product_id => user.entity.production_products		# Visible Products
-		can [:read], AssetCycleFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
-		can [:read], AssetCycleFact, :entity_id => user.entity_id 	# Assets I own
 
-		can [:read], AssetActivityFact, :product_id => user.entity.production_products		# Visible Products
-		can [:read], AssetActivityFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
-		can [:read], AssetActivityFact, :entity_id => user.entity_id 	# Assets I own
+			can [:read], Location, entity_id: user.entity_id
+			can [:read], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
 
-		can [:read], Network, :entity_id => user.entity_id
-		can [:read], Product, :_id => user.entity.production_products.map{|x| x._id}
-		can [:read], Scanner
-		can [:read], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+			can [:read], DistributionPartnership, entity_id: user.entity_id
+			can [:read], ProductionPartnership, entity_id: user.entity_id
 
-		# Viewing in Operations, Creation/Editing in Financial
-#		can [:read], Price, TBI
-		can [:read], Invoice, :entity_id => user.entity_id
-		can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
-		can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+
+			can [:read], AssetCycleFact, :product_id => user.entity.production_products		# Visible Products
+			can [:read], AssetCycleFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+			can [:read], AssetCycleFact, :entity_id => user.entity_id 	# Assets I own
+
+			can [:read], AssetActivityFact, :product_id => user.entity.production_products		# Visible Products
+			can [:read], AssetActivityFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+			can [:read], AssetActivityFact, :entity_id => user.entity_id 	# Assets I own
+
+			can [:read], Network, :entity_id => user.entity_id
+			can [:read], Product, :_id => user.entity.production_products.map{|x| x._id}
+			can [:read], Scanner
+			can [:read], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+
+			# Viewing in Operations, Creation/Editing in Financial
+	#		can [:read], Price, TBI
+			can [:read], Invoice, :entity_id => user.entity_id
+			can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+			can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+		end
 	end
 
 	if user.operation == 2 || user.operation == 3
-		can [:create], Location #, location: user.entity.visible_locations
 		can [:create], Asset #, asset: user.entity.visible_assets
-		can [:create], AssetCycleFact #, asset_cycle_fact: user.entity.visible_asset_cycle_facts				
-		can [:create], Network #, network: user.entity.visible_networks
-		can [:create], Product #, product: user.entity.production_products
-		can [:create], Sku #, product: user.entity.production_products
+		if user.entity.keg_tracker == 1
+			can [:create], Location #, location: user.entity.visible_locations
+			can [:create], AssetCycleFact #, asset_cycle_fact: user.entity.visible_asset_cycle_facts				
+			can [:create], Network #, network: user.entity.visible_networks
+			can [:create], Product #, product: user.entity.production_products
+			can [:create], Sku #, product: user.entity.production_products
 
-		can [:create], DistributionPartnership, entity_id: user.entity_id
-		can [:create], ProductionPartnership, entity_id: user.entity_id
+			can [:create], DistributionPartnership, entity_id: user.entity_id
+			can [:create], ProductionPartnership, entity_id: user.entity_id
+		end
 	end
-	
-	if user.operation == 3
-		can [:update, :destroy], Location, entity_id: user.entity_id
-		can [:update, :destroy], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
 
+	if user.operation == 3
 		can [:update, :destroy], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
 		can [:update, :destroy], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
 		can [:update, :destroy], Asset, :entity_id => user.entity_id 	# Assets I own
 
-		can [:update, :destroy], DistributionPartnership, entity_id: user.entity_id
-		can [:update, :destroy], ProductionPartnership, entity_id: user.entity_id
+		if user.entity.keg_tracker == 1
+			can [:update, :destroy], Location, entity_id: user.entity_id
+			can [:update, :destroy], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
 
+			can [:update, :destroy], DistributionPartnership, entity_id: user.entity_id
+			can [:update, :destroy], ProductionPartnership, entity_id: user.entity_id
 
-		can [:update, :destroy], Network, :entity_id => user.entity_id 
-		can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}
-		can [:update, :destroy], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+			can [:update, :destroy], Network, :entity_id => user.entity_id 
+			can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}
+			can [:update, :destroy], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+		end
 	end
+
+	
+
+# Financial Admin
+	# Financial
+		# Financials
+		# Price
+		# Invoices
+	if user.entity.keg_tracker == 1	
+		if user.financial == 1 || user.financial == 2 || user.financial == 3
+			can [:read], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+			can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+			can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+
+		end
+		if user.financial == 2 || user.financial == 3
+			can [:create], Invoice
+			can [:create], InvoiceAttachedAsset
+			can [:create], InvoiceLineItem
+		end
+
+		if user.financial == 3
+			can [:update, :destroy], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+			can [:update, :destroy], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+			can [:update, :destroy], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+		end
+	end
+
 
 
 
@@ -101,96 +139,7 @@ class Ability
 		can [:update], Entity, _id: user.entity_id
 	end
 
-# Financial Admin
-	# Financial
-		# Financials
-		# Price
-		# Invoices
-	if user.financial == 1 || user.financial == 2 || user.financial == 3
-		can [:read], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
-		can [:read], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
-		can [:read], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
 
-	end
-	if user.financial == 2 || user.financial == 3
-		can [:create], Invoice
-		can [:create], InvoiceAttachedAsset
-		can [:create], InvoiceLineItem
-
-	end
-	if user.financial == 3
-		can [:update, :destroy], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
-		can [:update, :destroy], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
-		can [:update, :destroy], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
-	end
-
-
-
-
-
-
-=begin
-	if user.location_maintenance == 1 || user.scanner_delivery_pickup == 1 || user.scanner_add == 1 || user.scanner_fill == 1 || user.scanner_move == 1
-		can [:view], Location
-		can [:view], Network
-		can [:manage], Asset
-	end
-	# View Product
-	if user.scanner_fill == 1 || user.product_maintenance == 1 
-		can [:view], Product
-	end	
-	# View User
-	if user.user_maintenance == 1
-		can [:view], User
-	end
-	can [:view], User, :user_id => user
-
-	# ***************
-	# Maintenance 
-	# ***************	
-
-	# Location
-	if user.location_maintenance == 1
-		can [:manage, :maintenance_menu], Location, :network_id => user.entity.networks.map { |network| network.id }
-		can [:create], Location
-		can [:view, :maintenance_menu], Network
-		can [:view, :maintenance_menu], Entity		
-	end
-
-	# Products
-	if user.product_maintenance == 1
-		can [:manage, :maintenance_menu], Product, :entity_id => user.entity._id
-	end
-		
-	# User
-	if user.user_maintenance == 1
-		can [:manage, :maintenance_menu], User, :entity_id => user.entity._id
-	end
-	
-	# Network Membership
-	if user.network_maintenance == 1
-		can [:manage, :maintenance_menu], NetworkMembership, :network_id => user.entity.networks.map { |network| network.id }
-		can [:create], NetworkMembership
-		can [:view, :maintenance_menu], Entity
-		can [:view, :maintenance_menu], Network
-		
-		can [:manage, :maintenance_menu], Network, :_id => user.entity.networks.map { |network| network.id }
-		can [:create], Network
-		can [:view, :maintenance_menu], Entity
-	end
-	# Production
-	if user.production_maintenance == 1
-#		can [:manage, :maintenance_menu], Production
-	end
-	# Barcodes
-	if user.barcode_maker_maintenance == 1
-		can [:manage, :barcode_maker_maintenance], BarcodeMaker
-	end
-	
-	# ***************
-	# System
-	# ***************	
-=end
 	if user.system_admin == 1
 		can [:system_admin, :manage], :all
 	end

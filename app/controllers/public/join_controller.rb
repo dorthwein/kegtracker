@@ -7,16 +7,25 @@ class Public::JoinController < ApplicationController
     	end
 	end
 	
+	# Reponds to Post
 	def create
 		respond_to do |format|          
-		  format.json { 
-		  	if Registration.create(params[:registration])
-		  		response = {:success => true}
-		  	else
-		  		response = {:success => false}
-		  	end
-		  	render json: response
-		  }        
+			format.json { 				
+				user = User.where(:email => params[:user][:email]).first
+				if user.nil?
+					user = User.create!(params[:user])
+					entity = Entity.create!(params[:entity])
+					user.entity_id = entity._id
+					entity.keg_tracker = 1
+				end
+
+				if user.save! && entity.save!
+			  		response = {:success => true}
+			  	else
+			  		response = {:success => false}
+			  	end
+			  	render json: response
+		  	}        
 		end	
 	end
 end

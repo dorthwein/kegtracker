@@ -164,7 +164,7 @@ Cobalt::Application.routes.draw do
 #		resources :contact 
 		resources :join 
 
-		#match 'join' => 'join#index', :via => [:get, :post]		
+#		match 'join' => 'join#index', :via => [:get, :post]		
 		match 'order' => 'order#index', :via => [:get, :post]				
 		match 'members' => 'members#index', :via => [:get, :post]						
 		match 'about' => 'about#index', :via => [:get, :post]								

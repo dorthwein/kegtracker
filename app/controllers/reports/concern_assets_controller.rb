@@ -1,7 +1,7 @@
 class Reports::ConcernAssetsController < ApplicationController
 	before_filter :authenticate_user!	
 	layout "web_app"
-#	load_and_authorize_resource
+	load_and_authorize_resource :class => 'Asset'
 # **********************************
 # Asset Reports
 # **********************************

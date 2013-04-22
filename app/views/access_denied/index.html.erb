@@ -1,3 +1,19 @@
-	<div style="margin:50px auto 0px auto; text-align:center;">
-		You don't have permission to view this information.  Please talk to the account owner or call us here @ BreweryApps
+
+<% if current_user.entity.keg_tracker == 1 %>
+	<h2 style="margin:50px auto 0px auto; text-align:center;">
+		Woops! You don't have permission to see this.  <br /> <br />
+		
+	</h2>
+	<div style="margin:0px auto 0px auto; text-align:center;">
+		Please contact the account owner or call us here @ BreweryApps
 	</div>
+<% else %>
+
+	<h2 style="margin:50px auto 0px auto; text-align:center;">
+		Woops! KegTracker isn't activated for your account.  <br /> <br />
+		
+	</h2>
+	<div style="margin:0px auto 0px auto; text-align:center;">
+		<%= link_to 'Click here to manage your account settings.', :account_profiles %>  
+	</div>	
+<% end %>

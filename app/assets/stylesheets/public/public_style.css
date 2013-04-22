@@ -1,8 +1,6 @@
 
 
 body.public {
-
-	
 	font-family: sans-serif;
 	color:#333;
 	letter-spacing: 3px;
@@ -61,3 +59,18 @@ h1.public {
 	min-width:960px;
 	text-align: center;
 }
+a:link, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color:#d14836 ;
+
+}  /* selected link */
+
+
+
+
+
+
+
+
+
+

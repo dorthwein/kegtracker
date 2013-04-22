@@ -19,7 +19,7 @@
 
 	</script>	
 
-    <meta name="viewport" content="width=960, user-scalable=yes" />   
+    <meta name="viewport" content="width=960, user-scalable=yes" />
 </head>
 <body class="public" data-role="none"> 
 	<div id="<%= params[:controller].to_s.gsub('/', '_') %>" class="public_container">		
@@ -35,24 +35,27 @@
 				<tbody>
 					<tr>						
 						<td width="20%">	
-							<%= link_to image_tag("abouticon.png"), :public_home %> 
-							<h5> About Us	</h5>
+							<%= link_to image_tag("public_home_icon.png"), :public_home %> 
+							<h5> Home	</h5>
 						</td>
-						<td width="20%">	
-							<%= link_to image_tag("kegsearchicon.png"), new_user_session_path %>
-							<h5> KegSearch	</h5>
+						<td width="20%">								
+							<%= link_to image_tag("abouticon.png"), new_user_session_path %>							
+							<h5> FAQ	</h5>
 						</td>
+
 						<td width="20%">
 							<%= link_to image_tag("kegtrackericon.png"), new_user_session_path %>
 							<h5> KegTracker	</h5>
 						</td>
+
 						<td width="20%">	
-							<%= link_to image_tag("kegregicon.png"), new_user_session_path %>							
-							<h5> KegReg	</h5>
+							<%= link_to image_tag("playicon.png"), new_user_session_path %>
+							<h5> Demo	</h5>
 						</td>
+
 						<td width="20%">	
-							<%= link_to image_tag("mailicon.png"), :public_contact %> 							
-							<h5> Contact	</h5>
+							<%= link_to image_tag("join_icon.png"), :public_join_index %> 							
+							<h5> Sign Up	</h5>
 						</td>
 
 					</tr>
@@ -63,5 +66,5 @@
 		</div>
 
 	</div>
-</body>
+	</body>
 </html>

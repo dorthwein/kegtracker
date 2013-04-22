@@ -1,7 +1,8 @@
 class Reports::AssetsController < ApplicationController	
 	before_filter :authenticate_user!	
 	layout "web_app"
-#	load_and_authorize_resource
+	load_and_authorize_resource
+  #load_and_authorize_resource :class => 'NetworkFact'
 # **********************************
 # Asset Reports
 # **********************************

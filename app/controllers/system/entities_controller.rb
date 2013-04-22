@@ -40,8 +40,7 @@ class System::EntitiesController < ApplicationController
   def new
     respond_to do |format|
       format.html {render :layout => 'popup'}      
-      format.json {          
-        
+      format.json {                  
         record = Entity.new
         response = {}
         response[:jqxDropDownLists] = {}        

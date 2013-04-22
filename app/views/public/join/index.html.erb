@@ -1,113 +1,199 @@
-<div id="public_content">
-	<div class="public_text_frame left">
-		<div class="left">
-			<h4> Beta Registration </h4>
-			<table class="jqxValidator">
-				<tbody>
-					<tr>
-						<td> 	<label class="left" style="clear:both"> Brewery Name </label>						</td>
-						<td>	<input type="text" id="brewery_name"		data-role="none" 	 class="left input" />	</td>
-					</tr>
-					<tr>
-						<td> 	<label class="left" style="clear:both"> Contact Name </label>						</td>
-						<td>	<input type="text" id="contact_name"		data-role="none" 	 class="left input" />	</td>
-					</tr>
+<style>
+	p {
+		padding:0 0 0 10px;
+	}
+</style>
 
-					<tr>	
-						<td>	<label class="left" style="clear:both"> E-mail </label>    							</td>
-						<td>	<input type="text" id="contact_email"		data-role="none" 	 class="left input" />	</td>
-					</tr>
+<div class="jqxValidator" style="width:45%; text-align:left; float: left;">
+	<h3> User </h3> 
+	<table style="">
+		<tbody>
+			<tr>
+				<th colspan="2"> </th>			
+			</tr>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Phone </label>    							</td>
-						<td>	<input type="text" id="contact_phone"		data-role="none" 	 class="left input" />	</td>
-					</tr>
+			<tr>
+				<td>	<b> First Name* </b>	</td>
+				<td>	<input type="text" id="first_name" class="jqxInput required" />	</td>
+			</tr>
+			<tr>
+				<td>
+					<b> Last Name* </b>
+				</td>
+				<td>
+					<input type="text" id="last_name" class="jqxInput required" />
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					<b> Phone </b>
+				</td>
+				<td>
+					<input type="text" id="office_phone" class="jqxInput" />
+				</td>
+			</tr>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Street </label>   						 	</td>
-						<td>	<input type="text" id="street"				data-role="none" 	 class="left input" />	</td>
-					</tr>	
+			<tr>	
+				<td>	
+					<b> E-Mail/Login* </b>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> City </label>    							</td>
-						<td>	<input type="text" id="city"				data-role="none" 	 class="left input" />	</td>
-					</tr>
+				</td>
+				<td>
+					<input type="text" id="email" class="jqxInput required" />
+				</td>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> State </label>    							</td>
-						<td>	<input type="text" id="state"				data-role="none" 	 class="left input" />	</td>
-					</tr>
+			</tr>
+			<tr>
+				<td>
+					<b> Password* </b>
+				</td>
+				<td>
+					<input type="password" id="password" class="jqxInput required" />	
+				</td>
+			</tr>	
+			<tr>	
 
-					<tr>	
-						<td>	<label class="left" style="clear:both"> Zip </label>    							</td>
-						<td>	<input type="number" id="zip"					data-role="none" 	 class="left input" />	</td>
-					</tr>
+				<td>
+					<b> Confirm Password* </b>
+				</td>
+				<td>
+					<input type="password" class="jqxInput required" id="password_confirmation" />
+				</td>
+			</tr>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Interested in RFID </label>   			 	</td>
-						<td>	<div id="rfid_interest" class="left dropdown"> </div>	</td>
-					</tr>
+			<tr>
+				<th colspan="2"> <h3> Brewery </h3> </th>			
+			</tr>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Number of Distributors </label>  		  	</td>
-						<td>	<input type="number" id="distributor_count"	data-role="none"  	 class="left input" />	</td>
-					</tr>
+			<tr>
+				<td>	<b> Brewery Name* </b>	</td>
+				<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			</tr>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Number of Asssets </label>    				</td>
-						<td>	<input type="number" id="asset_count"			data-role="none" 	 class="left input">    	</td>
-					</tr>
+			<tr>
+				<td>
+					<b> Address </b>
 
-					<tr>	
-						<td>	<label class="left" style="clear:both"> Additional Information </label>  							</td>
-						<td>	<textarea id="notes"	data-role="none" 	 class="left input"> </textarea>	</td>
-					</tr>					
-					<tr>
-						<td>	<label class="left" style="clear:both"> Do you agree to Terms of Use? </label>   			 	</td>
-						<td>	<div id="terms_of_use" class="left dropdown"> 				</div>
-								<br />
-								<span style="font-size:12px"> <%= link_to('View Terms of Use', public_terms_of_use_path) %> </span>
+				</td>
+				<td>
+					<input type="text" id="name" class="jqxInput" data-role="none" />
+				</td>
+			</tr>	
+			<tr>	
+				<td>	
+					<b> Street </b>
 
-						</td>
-					</tr>
+				</td>
+				<td>
+					<input type="text" id="street" class="jqxInput" data-role="none" />
+				</td>
 
-				</tbody>
-			</table>
+			</tr>
+			<tr>
+				<td>
+					<b> City </b>
+				</td>
+				<td>
+					<input type="text" id="city" class="jqxInput" data-role="none" />	
+				</td>
+			</tr>	
+			<tr>	
 
-			<button id="submit_registration" class="input	" data-role="none"> Register </button>
-			
-		</div>
-	</div>	
-	<div class="public_text_frame right">
-		<div class="left">
-			<h4> About the Beta </h4>
-			<p>
-				The CraftNet system is currently accepting Beta Testers to test and use the CraftNet system free of charge. 
-				What this means is that we think the system will provide you with a great value, but it isn't quite ready enough that we feel comfortable charging you for it.
-			</p>
+				<td>
+					<b> State </b>
+				</td>
+				<td>
+					<input type="text" class="jqxInput" id="state" data-role="none" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> Zip </b>
+				</td>
+				<td>
+					<input type="text" id="zip" class="jqxInput" data-role="none" />
+				</td>
+			</tr>
+			<tr> 
+				<td> <br /> </td>
+				<td> <br /> </td>
+			</tr>
+			<tr>
+			<td> </td>		
+				<td style="text-align:right;">
+					<button id="register" class="right jqxButton" data-role="none"> Register	</button>	
+				</td>
 
-			<br />
-			<h4> Since its beta, does it work? </h4>
-			<p>
-				The system does work and its core features are fully functional, however we expect there to be a few bugs here and there as we put the final touches on.
-			</p>
-
-			<br />
-			<h4> Once I've signed up, whats next? </h4>
-			<p>
-				Once your registered we'll be giving you call to prorperally set-up your account.  This will be a 5 - 10 minute phone call to get to know you and your business.  
-			</p>
-			<h4> What kind of support does the beta have? </h4>
-			<p>
-				Beta testers will recieve full support free of charge via phone and e-mail.  
-			</p>	
-			<br />		
-			<h4> Are there any costs associted with the Beta Test? </h4>
-			<p>
-				Yes.  To use the system you will need a 2D barcode scanner, internet connection, computer, and CraftNet Barcode Stickers.  <br /> <br />
-				You may order the barecode stickers directly through us or we can send you a file free of charge with all the information you need to have them locally printed.
-			</p>			
-		</div>
-	</div>	
-	<div style="clear:both">	</div>
+			</tr>
+		</tbody>
+	</table>
 </div>
+<div style="width:55%; float:left; text-align:left;"> 
+	<h3>What do I do after I register? </h3>
+	<p>	
+		Once you register, you'll be able to login and start tracking your kegs.  If you have a 2D barcode scanner, you can use a computer.  If not, download KegTracker from the <%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %> or Android app stores!
+	</p>
+
+	<h3> When does billing start? </h3>
+	<p>	
+		Billing will start at the end of your 30 day free trial.  You can submit your billing information once you login.
+	</p>
+
+	<h3> I'd like to use RFID tags.  How do I get started?</h3>
+	<p>	
+		To get started with an RFID implementation, e-mail us at drew@breweryapps.com!
+
+	</p>
+
+
+</div>
+<script>
+$(document).ready(function(){    
+    jqxIntialize()
+
+    $('#register').on('click', function(){
+		
+    	if(	$('.jqxValidator').jqxValidator('validate') ){
+			$.ajax({
+				type: "POST",
+				dataType: "JSON",
+				url: location.href,
+				context: document.body,
+				data: {
+					user: {
+						first_name: $('#first_name').val(),
+						last_name: $('#last_name').val(),
+						office_phone: $('#office_phone').val(),
+						email: $('#email').val(),
+						password: $('#password').val(),
+						password_confirmation: $('#password_confirmation').val()
+					},
+					entity: {
+						description: $('#description').val(),
+						name: $('#name').val(),
+						street: $('#street').val(),
+						state: $('#state').val(),
+						zip: $('#zip').val()
+					},
+				}
+			}).done(function(data) {
+				if(data['success'] == true){
+					location.href = system.server + '/users/sign_in'
+				}
+				alert(JSON.stringify(data));
+			});    		
+
+    	}
+
+    })
+                        
+});
+</script>
+
+
+
+
+
+
+
+
