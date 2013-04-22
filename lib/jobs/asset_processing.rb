@@ -7,7 +7,6 @@ class AssetProcessing
 		Entity.all.each do |entity|
 			entity.distribution_partnerships.each do |distributor_partnership|
 				entity.visible_assets.where()
-
 				distributor_partnership.concern_time
 			end
 			# Get Entity Distributor Partnerships

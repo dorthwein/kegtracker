@@ -335,6 +335,8 @@ class Asset
 		else
 			self.location_entity_arrival_time = self.last_action_time
 		end
+		
+		
 	end	
 
 	after_save :after_save

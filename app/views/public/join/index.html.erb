@@ -118,10 +118,15 @@
 				<td> <br /> </td>
 				<td> <br /> </td>
 			</tr>
-			<tr>
-			<td> </td>		
-				<td style="text-align:right;">
-					<button id="register" class="right jqxButton" data-role="none"> Register	</button>	
+			<tr>			
+			
+				<td colspan="2" style="text-align:right; font-size:10px">
+					<div style="float:left; width:75%; text-align:left;">
+						By clicking register you agree to the <%= link_to 'Terms and Conditions of Use listed here', :public_terms_of_use %>
+					</div>
+					<div style="width:20%; float:left;">
+						<button id="register" class="right jqxButton" data-role="none"> Register	</button>	
+					</div>
 				</td>
 
 			</tr>

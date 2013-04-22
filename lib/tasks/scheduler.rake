@@ -20,8 +20,7 @@ task :thirty_day_build => :environment do
 end
 
 
-
-task :check_for_overdue_assets => :environment do
+task :check_for_overdue_assets => :environment do	
 	Entity.all.each do |entity|
 		entity.distribution_partnerships.each do |distribution_partnership|
 			stagnant_date = Time.new - (distribution_partnership.overdue_time * 84000)
