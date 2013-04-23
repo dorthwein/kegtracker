@@ -1,11 +1,6 @@
-	<div class="toolbar">   
-	    <h3 class="left">
-	        Concern Assets
-	    </h3>
-	    <h3 class="right">
-	        <%= current_user.entity.description %>
-	    </h3>
-	</div>
+    <div class="toolbar">   
+        <%= report_select_menu %>
+    </div>
 
 	<div class="full sidebar">
 		<input type="button" value="Excel" class='excelExport' data-role="none"/>		
@@ -28,7 +23,7 @@ $(document).ready(function(){
       e: asset_status_description,
       f: product_description,
       g: location_description,
-      h: location_network_description,
+      h: location_entity_description,
       i: _id,
       j: fill_time
       k: last_action_time.to_i,
@@ -90,9 +85,9 @@ $(document).ready(function(){
 		{ text: 'Tag Value', datafield: 'c' },						
 		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },			
 		{ text: 'Location', datafield: 'g', filtertype: 'checkedlist' },
-		{ text: 'Location Network', datafield: 'h', filtertype: 'checkedlist' },
+		{ text: 'Current Holder', datafield: 'h', filtertype: 'checkedlist' },
 		{ text: 'Last Scene', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Sent to Partner', datafield: 'o', filtertype: 'date', cellsformat: 'd'  },
+		{ text: 'Date Sent', datafield: 'o', filtertype: 'date', cellsformat: 'd'  },
 		{ text: 'Return Overdue', datafield: 'm', width:'150px', filtertype: 'checkedlist'},
 //		{ text: 'Past due product', datafield: 'n', width:'150px', filtertype: 'checkedlist'},
 

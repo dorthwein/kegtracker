@@ -29,6 +29,8 @@ function jqxGridFullWindowHeight(){
 	return height	
 } //	 '800px'
 
+
+
 // Default Grid Settings
 settings.jqxGridProperties = {
 	groupable: true,
@@ -52,14 +54,9 @@ system.simple_grid_width = '958px';
 system.popup_settings = 'width=800,height=500, menubar=no, titlebar=no, toolbar=no, status=no';
 
 system.server = 'http://' + window.location.host;
-// system.server = 'http://www.craft-net.com/';
-// system.server = 'http://localhost:3000/';
-// system.server = 'http://192.68.1.74:3000/';
-// Background Processes
-// ***************************
-// Prevent Cacheing
-// ***************************
-$(document).ready(function(){
+
+$(document).ready(function(){	
+// Load Menu Bar
 	$("#jqxMenu").jqxMenu({ 	
 		width: '100%', 
 		height: 30,
@@ -71,4 +68,18 @@ $(document).ready(function(){
 		animationHideDuration: 0,
 		animationShowDelay: 0 
 	});	
+	$('#report_select_menu').val(location.href)
+
+	$("#report_select_menu").on('change', function(){
+		location.href = $(this).val()
+	})
 })
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,4 @@
 
-
 body.public {
 	font-family: sans-serif;
 	color:#333;
@@ -53,10 +52,9 @@ h1.public {
 	padding:10px;
 }
 .public_container {
-	max-width: 80%;
 	margin: 0px auto;
-	max-width: 1024px;
-	min-width:960px;
+	
+	width:960px;
 	text-align: center;
 }
 a:link, a:visited, a:hover, a:active {

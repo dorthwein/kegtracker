@@ -4,10 +4,11 @@ function openPopupWindow(url){
 	$('#content').addClass('modal-blur');
 }
 
+
+
 function jqxIntialize(){
 	var theme = settings.theme		
 	// Grid Column show/hide
-
 // ***********************
 // jqxGrid Functions
 // ***********************	

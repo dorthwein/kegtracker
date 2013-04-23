@@ -1,12 +1,16 @@
-class Reports::ConcernAssetsController < ApplicationController
+class Reports::OverdueAssetsController < ApplicationController
 	before_filter :authenticate_user!	
 	layout "web_app"
 	load_and_authorize_resource :class => 'Asset'
 # **********************************
 # Asset Reports
 # **********************************
-	def index    
 
+# Overdue
+# Old Product
+# 
+
+	def index    
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json {
@@ -20,7 +24,7 @@ class Reports::ConcernAssetsController < ApplicationController
 			            e: x.asset_status_description,
 			            f: x.product_description,
 			            g: x.location_description,
-			            h: x.location_network_description,
+			            h: x.location_entity_description,
 			            i: x._id,
 			            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
 			            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,

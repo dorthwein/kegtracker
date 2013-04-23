@@ -267,6 +267,26 @@ MENU STYLING
 
 }
 
+.select_menu {
+    
+    text-align: left;
+    text-shadow:none;
+    
+    padding:0 10px;
+    background: #d14836;
+    height: 25px;
+    -webkit-appearance: none;
+    border-radius: 10px;
+    border:none;    
+    color:#FFF;
+
+
+
+}
+
+
+
+
 
 
 
