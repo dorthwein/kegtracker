@@ -27,7 +27,7 @@
 	    </script>
 	    <meta name="viewport" content="width=960, user-scalable=yes" />   
 	</head>
-	<body> 
+	<body style="display:none"> 
 		<div id="header" style="top:0; left: 0; height:30px; width:100%;">
 			<% if !user_signed_in? %>			
 	        <div id="jqxMenu">
@@ -64,11 +64,15 @@
 								Assets
 								<ul>
 									<li>
-										<%= link_to 'Browse', :reports_assets %>
+										<%= link_to 'Assets Report', :reports_assets %>
 									</li>
 
 									<li>
-										<%= link_to 'Inventory Report', :reports_assets_sku_summary_report_simple %>
+										<%= link_to 'Overdue Assets Report', :reports_assets %>
+									</li>
+
+									<li>
+										<%= link_to 'Inventory By SKU Summary Report', :reports_assets_sku_summary_report_simple %>
 									</li>
 									<li>
 										<%= link_to 'Active Asset Cycles', :reports_asset_cycles %>
@@ -103,15 +107,15 @@
 								<!-- Broad float wide reporting --> 
 								<ul>
 									<li>
-										<%= link_to 'Cycles by Distribution Network', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network %> 
+										<%= link_to 'Asset Cycle Summary by SKU by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network %> 
 									</li>
 
 
 									<li>
-										<%= link_to 'Cycles by Production Network', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network %> 
+										<%= link_to 'Asset Cycle Summary by SKU by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network %> 
 									</li>
 									<li>
-										<%= link_to 'Activity by Network', :reports_float_activity_summary_report_simple %> 									
+										<%= link_to 'Daily Scan Activity Summary Report', :reports_float_activity_summary_report_simple %> 									
 									</li>
 									
 								</ul>							

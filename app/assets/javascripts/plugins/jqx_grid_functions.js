@@ -15,7 +15,13 @@ function jqxIntialize(){
 	if($('.jqxGrid').length && 	$(".jqxGridColumnListBox").length){		
 		var listSource = [];
 		$.each( $('.jqxGrid').jqxGrid('columns'), function(key, item){			
-			listSource.push({ label: item.text, value: item.datafield, checked:true })
+			if(item['hidden'] == true)
+				var check = false
+			else {
+				var check = true
+			}
+
+			listSource.push({ label: item.text, value: item.datafield, checked:check })
 		})
 
 	    $(".jqxGridColumnListBox").jqxListBox({
@@ -79,7 +85,7 @@ function jqxIntialize(){
 	// NEW BUTTON
 	$(".excelExport").jqxButton({ theme: theme});
 	$(".excelExport").click(function () {	
-		$(".jqxGrid").jqxGrid('exportdata', 'csv', 'BreweryApps', true, null, false, system.server + '/system/export/jqx_csv.csv');
+		$(".jqxGrid").jqxGrid('exportdata', 'csv', 'BreweryApps', true, null, true, system.server + '/system/export/jqx_csv.csv');
 
 // The first parameter of the export method determines the export’s type – ‘xls’, ‘xml’, ‘html’, ‘json’, ‘tsv’ or ‘csv’.
 // The second parameter is the file’s name.

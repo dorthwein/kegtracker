@@ -35,6 +35,8 @@ class Asset
 
 	field :invoice_number, type: String
 
+	field :batch_number, type: String
+
 	belongs_to :product, index: true	
 	field :product_description, type: String		
 
@@ -196,6 +198,7 @@ class Asset
 		self.fill_location_id = options[:location_id]	
 		self.fill_count = self.fill_count.to_i + 1	
 
+		self.batch_number = options[:batch_number]
 
 		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
 		if !self.asset_activity_fact.nil? && !self.asset_cycle_fact.nil?
@@ -221,6 +224,7 @@ class Asset
 		self.location_id = options[:location_id]
 
 		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+
 		self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
 			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
 			self.asset_cycle_fact.move(self.asset_activity_fact)

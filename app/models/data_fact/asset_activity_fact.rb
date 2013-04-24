@@ -20,13 +20,15 @@ class AssetActivityFact
 
 # Asset Details
   belongs_to :asset
-  
+  field :batch_number, type: String
+
   belongs_to :entity      # Asset Owner
   belongs_to :product
   belongs_to :asset_type
   belongs_to :sku
   
   belongs_to :asset_cycle_fact, inverse_of: 'AssetCycleFact'
+
 
 # ALL BEING DEPRICATED
 #  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
@@ -121,6 +123,7 @@ class AssetActivityFact
   #                 :network => self.network, Possible Depricated
   #                 :fill_network => self.fill_network,
                   :user => asset.user,
+                  :batch_number => asset.batch_number
   #                 :fill_time => asset.fill_time,                
                 }
     AssetActivityFact.create(details)
@@ -200,6 +203,7 @@ class AssetActivityFact
         :user => (self.prev_asset_activity_fact.user rescue nil),
         :last_action_time => (self.prev_asset_activity_fact.fact_time rescue nil),
         :fill_count => (self.prev_asset_activity_fact.fill_count rescue 0),
+        :batch_number => (self.prev_asset_activity_fact.batch_number rescue nil),
       }
       self.asset.update_attributes(asset_rollback)              
     end

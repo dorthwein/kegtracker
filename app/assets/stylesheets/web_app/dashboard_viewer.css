@@ -34,3 +34,21 @@
 	color: #FFF;
 	text-shadow:none;
 }
+
+div.dashboard.full {	
+	width: 1200px;
+	margin: 50px auto;
+}
+div.dashboard.slot {
+	width:575px;
+	margin: 10px 10px;
+	padding: 0 0px;	
+	background: #CCC;
+	min-height: 300px;	
+}
+div.dashboard.slot.right {
+	clear:right;
+}
+div.dashboard.slot.left {
+	clear:left;
+}

@@ -69,10 +69,10 @@ $(document).ready(function(){
 		animationShowDelay: 0 
 	});	
 	$('#report_select_menu').val(location.href)
-
 	$("#report_select_menu").on('change', function(){
 		location.href = $(this).val()
 	})
+	$('body').show()
 })
 
 

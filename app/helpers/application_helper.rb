@@ -6,17 +6,17 @@ html = <<select_box
 			<label style="font-size:14px; font-weight:bolder"> Reports </label> <br />
 			<select id="report_select_menu" class="select_menu link">	
 				<optgroup label="Asset Reports">				
-					<option value="#{reports_assets_sku_summary_report_simple_url}" class="indent"> 
-						Inventory By SKU Summary Report
-					</option>
 				
 
 
 					<option value="#{reports_assets_url}" class="indent"> 
 						Asset Report				
 					</option>
+				
+					<option value="#{reports_assets_sku_summary_report_simple_url}" class="indent"> 
+						Inventory By SKU Summary Report
+					</option>
 					
-
 					<option value="#{reports_overdue_assets_url}" class="indent"> 
 						Overdue Asset Return Report		
 					</option>
@@ -25,9 +25,6 @@ html = <<select_box
 					<option value="#{reports_float_activity_summary_report_simple_url}" class="indent"> 
 						Daily Scan Activity Summary Report
 					</option>
-				</optgroup>
-
-				<optgroup label="Asset Cycle Reports">
 					<option value="#{reports_float_asset_fill_to_fill_cycle_fact_by_fill_network_url}" class="indent"> 
 						Asset Cycle Summary by SKU by Production Channel Report 
 					</option>

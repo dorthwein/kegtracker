@@ -259,6 +259,7 @@ class Scanner
 		scan_params[:auto_mode] = scan['auto_mode'].to_i	
 
 		scan_params[:invoice_number] = scan['invoice_number']
+		scan_params[:batch_number] = scan['batch_number']
 		scan_params[:time] = Time.at(scan['time'].to_i)
 
 		scan['product_id'] ? scan_params[:product_id] = scan['product_id'] : nil

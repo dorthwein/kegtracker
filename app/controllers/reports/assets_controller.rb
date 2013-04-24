@@ -25,6 +25,8 @@ class Reports::AssetsController < ApplicationController
             k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
             l: x.asset_cycle_fact_id,                    
             m: x.days_at_location,
+            n: x.batch_number,
+            o: x.invoice_number,
 #            n: x.asset_activity_fact.location_entity_arrival_time != nil ? x.asset_activity_fact.location_entity_arrival_time.to_i * 1000 : nil,
           }});
 			  }

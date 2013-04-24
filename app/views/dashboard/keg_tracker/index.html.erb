@@ -1,0 +1,98 @@
+<div class="full dashboard">
+	<div class="dashboard slot left">	
+		<div class="keg_status">	</div>
+<!--
+		<b> Keg Status </b>
+		<br />		# Full Kegs		
+		<br />		# In Market Kegs
+		<br />		# Empty Kegs
+
+		<br /> <br />
+
+		<b> Concern Kegs Count </b>
+		<br /> # Overdue
+		<br /> # Old Product
+		<br /> # Stagnant
+-->		
+	</div>		
+
+	<div class="dashboard slot right">	
+		<div class="keg_status">	</div>
+	</div>
+
+	<div class="dashboard slot left">	
+		<div class="keg_status">	</div>
+	</div>		
+
+	<div class="dashboard slot right">	
+		<div class="keg_status">	</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+/*      
+	Datafields Mapping
+      a: entity_description,
+      b: product_entity_description,
+      c: tag_value,
+      d: asset_type_description,
+      e: asset_status_description,
+      f: product_description,
+      g: location_description,
+      h: location_entity_description,,
+      i: _id,
+      j: fill_time
+      k: last_action_time.to_i,
+      l: asset_cycle_fact_id,  
+      m: location_entity_possession_time,       
+      n: asset_activity_fact.location_entity_arrivial_time
+
+      
+*/	
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'a', type: 'string' },
+			{ name: 'b', type: 'string' },		
+		],
+		url: location.href,
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}		
+	};
+/*
+	On grid load - get total # rows
+*/
+
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){		
+			 	
+		},
+		loadComplete: function (data) { 
+			 
+		},
+		loadError: function (xhr, status, error) { }      
+	});
+//	window.dataAdapter = dataAdapter
+
+ 
+	// Initialize Grid
+	var gridSettings = {theme: 'metro', width:'100%', height:'100%'} //settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: ' ', datafield: 'a' },			
+		{ text: ' ', datafield: 'f' },
+	]
+
+	$(".keg_status").jqxGrid( gridSettings );	
+	jqxIntialize()
+	 					
+});
+</script>

@@ -63,6 +63,7 @@ Cobalt::Application.routes.draw do
 	
   	namespace :dashboard do 
 		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
+		match 'keg_tracker' => 'keg_tracker#index', :via => [:get, :post]  	
   	end
 
 	namespace :reports do 

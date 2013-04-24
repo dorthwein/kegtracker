@@ -21,12 +21,13 @@ class AssetCycleFact
 	field :end_time, type: Time
 # TBI	field :return_to_brewery_time, type: Time
 	
+	field :batch_number, type: String
 	
 	belongs_to :start_asset_activity_fact, class_name: 'AssetActivityFact' #, 		:inverse_of => 'AssetActivityFact'
   	belongs_to :fill_asset_activity_fact, class_name: 'AssetActivityFact' #, 		:inverse_of => 'AssetActivityFact'
   	belongs_to :pickup_asset_activity_fact, class_name: 'AssetActivityFact' #, 	:inverse_of => 'AssetActivityFact'
   	belongs_to :delivery_asset_activity_fact, class_name: 'AssetActivityFact' #, 	:inverse_of => 'AssetActivityFact'
-# TBI	belongs_to :return_to_brewery_asset_activity_fact, class_name: 'AssetActivityFact' #, 	:inverse_of => 'AssetActivityFact'
+	# TBI	belongs_to :return_to_brewery_asset_activity_fact, class_name: 'AssetActivityFact' #, 	:inverse_of => 'AssetActivityFact'
 	belongs_to :end_asset_activity_fact, class_name: 'AssetActivityFact' #, 		:inverse_of => 'AssetActivityFact'  	
 
 	field :cycle_networks, type: Array
@@ -89,6 +90,8 @@ class AssetCycleFact
 		self.fill_time = asset_activity_fact.fact_time
 	  	self.fill_asset_activity_fact = asset_activity_fact
   		self.fill_network = asset_activity_fact.location_network
+  		print 'BATCH FUCK' + asset_activity_fact.batch_number.to_s
+  		self.batch_number = asset_activity_fact.batch_number
 		self.general_attributes asset_activity_fact
 
 		self.save!
@@ -134,7 +137,7 @@ class AssetCycleFact
 		  :asset_type => asset.asset_type,
 	      :entity => asset.entity,
 	      :product => asset.product,
-	      :fill_count => asset.fill_count.to_i,
+	      :fill_count => asset.fill_count.to_i,	      
 		}
 		asset_cycle_fact = AssetCycleFact.create(details)
 		asset_cycle_fact.start(asset.asset_activity_fact)
@@ -203,7 +206,7 @@ class AssetCycleFact
 		i = 0 
 		AssetActivityFact.all.asc(:fact_time).each do |x|
 			i = i + 1
-			print i.to_s + "\n"
+			
 			case x.handle_code.to_i
 		    when 1
 				n = AssetCycleFact.where(asset_id: x.asset_id).lte(start_time: x.fact_time).desc(:start_time).first
@@ -268,7 +271,6 @@ class AssetCycleFact
 					x.save!
 				end
 		    end			
-#			print x.fact_time.to_s + " \n"
 		end
 
 		i = 0
@@ -280,7 +282,7 @@ class AssetCycleFact
 				x.save!
 			else 
 				i = i + 1
-				print i.to_s + "\n"
+
 			end
 		end
 	end
