@@ -14,12 +14,13 @@
 		</div>
 	</div>
 
+	<% if current_user.entity.keg_tracker == 1 %>
 	<div class="scanner input_toggle_group left">	
 		<h5> Add to Invoice	</h5>
 		<div id="toggle_invoice" class="flip_switch scanner">
 		</div>
 	</div>
-
+	<% end %>
 	<div class="scanner input_toggle_group left">	
 		<h5> Correction	</h5>
 		<div id="toggle_correction" class="flip_switch scanner">

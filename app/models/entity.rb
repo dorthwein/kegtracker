@@ -215,10 +215,14 @@ class Entity
 # Locations				  #
 ###########################
 	def visible_locations
-		Location.any_of(
-			{ entity_id: self._id	},
-			{ :network_id.in => self.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5 }		
-		)
+		if self.keg_tracker == 1
+			return Location.any_of(
+				{ entity_id: self._id	},
+				{ :network_id.in => self.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5 }		
+			)
+		else
+			return self.locations
+		end
 	end        
 
 

@@ -27,11 +27,7 @@ class Api::V1::MobileAppController < ApplicationController
 		  	user = User.where(:authentication_token => params[:auth_token]).first		  	
 		  	response = {db: {sync: {}} }
 		  	
-			if user.operation > 0
-		  		response[:keg_tracker] = user.entity.keg_tracker
-		  	else
-				response[:keg_tracker] = 0
-		  	end
+		  	response[:keg_tracker] = user.entity.keg_tracker
 
 		  	response[:db][:sync][:processed_scans] = params[:scan_ids]
 		  	response[:db][:sync][:asset_types] = AssetType.gte(updated_at: last_sync)
