@@ -24,8 +24,15 @@ class Api::V1::MobileAppController < ApplicationController
 			
 			last_sync = Time.parse(params[:last_sync]) rescue (Time.parse('2000-01-01T09:22:54-05:00'))
 
-		  	user = User.where(:authentication_token => params[:auth_token]).first
-		  	response = {db: {sync: {}} }		 
+		  	user = User.where(:authentication_token => params[:auth_token]).first		  	
+		  	response = {db: {sync: {}} }
+		  	
+			if user.operation > 0
+		  		response[:keg_tracker] = user.entity.keg_tracker
+		  	else
+				response[:keg_tracker] = 0
+		  	end
+
 		  	response[:db][:sync][:processed_scans] = params[:scan_ids]
 		  	response[:db][:sync][:asset_types] = AssetType.gte(updated_at: last_sync)
 		  	response[:db][:sync][:locations] = user.entity.visible_locations.map{|x| {  
