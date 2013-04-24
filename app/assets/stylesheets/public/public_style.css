@@ -2,7 +2,7 @@
 body.public {
 	font-family: sans-serif;
 	color:#333;
-	letter-spacing: 3px;
+	letter-spacing: 3px;	
 }
 #header.public {
 	position: fixed;
@@ -17,8 +17,9 @@ body.public {
 	color: #FFF;
 
 }
-p {
+p,li {
 	padding-left: 50px;
+	color:#333;
 }
 #header.public a:link, #header a:visited, #header a:hover, #header a:active {
 	color: #FFF;
