@@ -31,6 +31,7 @@ n: pickup_time
 o: end_time
 p: cycle_complete_description
 q: _id
+r: batch_number
 */
 	var source =
 	{
@@ -52,8 +53,8 @@ q: _id
 			{ name: 'n', type: 'date'},
 			{ name: 'o', type: 'date'},
 			{ name: 'p', type: 'string'},
-
-			{ name: 'q'}		
+			{ name: 'q'},
+			{ name: 'r', type: 'string'},
 			
 			
 		],
@@ -86,16 +87,19 @@ q: _id
 	gridSettings['source'] = dataAdapter;
 	gridSettings['columns'] = [
 		{ text: 'Product', datafield: 'f', filtertype:'checkedlist'},
-		{ text: 'Brewery', datafield: 'g', filtertype:'checkedlist'},
+		{ text: 'Brewery', datafield: 'g', filtertype:'checkedlist', hidden:true},
 		{ text: 'Size', datafield: 'h', filtertype:'checkedlist'},
-		{ text: 'Start', datafield: 'a', filtertype:'checkedlist'},
-		{ text: 'Start Date', datafield: 'k', filtertype: 'date', cellsformat: 'd'},
-		{ text: 'Fill', datafield: 'b', filtertype:'checkedlist'},
+		{ text: 'Batch #', datafield: 'r'},
+		{ text: 'Start', datafield: 'a', filtertype:'checkedlist', hidden:true},
+		{ text: 'Start Date', datafield: 'k', filtertype: 'date', cellsformat: 'd', hidden:true},
+		{ text: 'Fill Network', datafield: 'b', filtertype:'checkedlist', hidden:true},
 		{ text: 'Fill Date', datafield: 'l', filtertype: 'date', cellsformat: 'd'},
-		{ text: 'Delivery', datafield: 'c', filtertype:'checkedlist'},
+		
+		{ text: 'Delivery Network', datafield: 'c', filtertype:'checkedlist'},
 		{ text: 'Delivery Date', datafield: 'm', filtertype: 'date', cellsformat: 'd'},
-		{ text: 'Pickup', datafield: 'd', filtertype:'checkedlist'},
+		{ text: 'Pickup Network', datafield: 'd', filtertype:'checkedlist', hidden:true},
 		{ text: 'Pickup Date', datafield: 'n', filtertype: 'date', cellsformat: 'd'},
+		{ text: 'End Date', datafield: 'o', filtertype: 'date', cellsformat: 'd', hidden:true, hidden:true},
 		{ text: 'Complete', datafield: 'p', filtertype: 'checkedlist', width: '100px' },
 
 		{ text: 'View', datafield: 'q', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {

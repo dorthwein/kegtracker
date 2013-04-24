@@ -29,7 +29,8 @@ class Reports::CompletedAssetCyclesController < ApplicationController
             o: x.end_time != nil ? x.end_time.to_i * 1000 : nil,
 
             p: x.cycle_complete_description,
-            q: x._id
+            q: x._id,
+            r: x.batch_number,
           }})
         }
     end
