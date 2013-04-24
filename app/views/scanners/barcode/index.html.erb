@@ -147,6 +147,11 @@
 			theme: theme, 
 			animationType: 'none',
 		});
+		
+		// Blur to prevent scan changing dropdown value		
+		$(".scanner.dropdown").bind('select', function (event) {			
+			$(this).blur()
+		})
 
 // *********************
 // Get Scanner Options
@@ -469,7 +474,7 @@
 		// *****************************
 		function scanner_on(){
 			$(document).unbind('keydown');	// Unbinding incase previously bound to prevent multiple sends
-			$(document).keydown(function(event) {				
+			$(document).keydown(function(event) {								
 				$('#scan_input').focus();
 				console.log('scanned: ' + event.keyCode);
 				if(event.keyCode == '13'){
