@@ -59,6 +59,42 @@ select_box
 
 		return html.html_safe # .to_s
 	end
+	def public_menu
+html = <<html
+		<table>
+			<tbody>
+				<tr>						
+					<td>	
+						#{link_to image_tag("public_home_icon.png"), :public_home}
+						<h5> Home	</h5>
+					</td>
+					<td>								
+						#{link_to image_tag("abouticon.png"), :public_about_keg_tracker}							
+						<h5> FAQ	</h5>
+					</td>
+
+					<td>
+						#{link_to image_tag("products_icon.png"), :public_products}
+						<h5> Products	</h5>
+					</td>
+
+					<td>	
+						#{link_to image_tag("playicon.png"), new_user_session_path}
+						<h5> Demo	</h5>
+					</td>
+
+					<td>	
+						#{link_to image_tag("join_icon.png"), :public_join_index}
+						<h5> Sign Up	</h5>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+html
+
+	return html.html_safe
+	end
 end
 
 #	value="#{accounting_invoices_url}"

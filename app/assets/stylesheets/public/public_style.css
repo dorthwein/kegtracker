@@ -47,7 +47,7 @@ body {
 	}
 	#content_header {
 		width:1160px;
-		margin: auto;
+		margin: 15px auto;
 	}
 		#content_header h1.page_title {
 			width:1050px;
@@ -56,8 +56,26 @@ body {
 			padding: 0px 0 0 0;
 			vertical-align: bottom;
 			
-			margin-left:10px;
+			margin:0 0 0px 10px;
 		}
+		
+		#content_header img {
+			width:50px;
+		}
+		
+		#content_header h5 { 
+			margin: 0px;
+		}
+		
+		#content_header table{
+			float:right;
+			margin:00px auto;
+		}
+			#content_header td{
+				text-align: center;
+				margin: auto;
+			}
+
 		#header a:link, #header a:visited, #header a:hover, #header a:active {
 			color: #FFF;
 			text-decoration: none;
@@ -73,19 +91,6 @@ body {
 		text-align: center;
 		width:100%;		
 	}
-
-		#footer h5 { 
-			margin: 0px;
-		}
-		#footer table{
-
-			width: 1060px;
-			margin:auto;
-		}
-			#footer td{
-				text-align: center;
-				margin: auto;
-			}
 
 
 
