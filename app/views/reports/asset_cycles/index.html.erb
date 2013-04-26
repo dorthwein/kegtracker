@@ -97,11 +97,12 @@ r: batch_number
 		
 		{ text: 'Delivery Network', datafield: 'c', filtertype:'checkedlist'},
 		{ text: 'Delivery Date', datafield: 'm', filtertype: 'date', cellsformat: 'd'},
-		{ text: 'Pickup Network', datafield: 'd', filtertype:'checkedlist', hidden:true},
+		{ text: 'Pickup Network', datafield: 'd', filtertype:'checkedlist'},
 		{ text: 'Pickup Date', datafield: 'n', filtertype: 'date', cellsformat: 'd'},
 		{ text: 'End Date', datafield: 'o', filtertype: 'date', cellsformat: 'd', hidden:true, hidden:true},
 		{ text: 'Complete', datafield: 'p', filtertype: 'checkedlist', width: '100px' },
 
+/*
 		{ text: 'View', datafield: 'q', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'View'
 		}, buttonclick: function (row) {
@@ -109,6 +110,7 @@ r: batch_number
 			var url = location.href + "/" + rowdata['q'] + "/edit"						
 			openPopupWindow(url)
 		}},	
+*/		
 	]
 
 	$(".jqxGrid").jqxGrid( gridSettings );	
