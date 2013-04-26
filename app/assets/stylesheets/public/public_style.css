@@ -47,7 +47,7 @@ body {
 	}
 	#content_header {
 		width:1160px;
-		margin: 15px auto;
+		margin: 5px auto;
 	}
 		#content_header h1.page_title {
 			width:1050px;
@@ -60,11 +60,12 @@ body {
 		}
 		
 		#content_header img {
-			width:50px;
+			width:40px;
 		}
 		
-		#content_header h5 { 
+		#content_header h6 { 
 			margin: 0px;
+
 		}
 		
 		#content_header table{

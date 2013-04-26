@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 	end	
 	def layout_by_resource
 		if devise_controller?
-	  		"web_app"
+	  		"public"
 		else
 			"application"
 		end 

@@ -1,37 +1,53 @@
-<div style="text-align:center; margin:10% auto; width:175px;">
-	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-		<div style="text-align:left">
-			<h4 style="margin:20px 0 0 0;">
-				<%= f.label :email, 'E-mail:' %><br />
-			</h4>
-			<%= f.email_field :email, 'class' => 'jqxInput required' %>
-		</div>
+<div id="content_header">
+	<%= image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;') %>
+	<h1 class="page_title">	
+		<span class="left">
+	    	Brewery Apps
+	    </span>
+		<span class="right">
+	    	Welcome
+	    </span>		
+	</h1>
+	<%= public_menu %>
+	<div style="clear:both"></div>	
+</div>
 
-		<div style="text-align:left">
-			<h4 style="margin:20px 0 0 0;">
-				<%= f.label :password, 'Password:' %><br />
-			</h4>				
-			<%= f.password_field :password, 'class' => 'jqxInput required' %>
-		</div>
+<div id="content_body">
+	<div style="text-align:center; margin:10% auto; width:175px;">
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			<div style="text-align:left">
+				<h4 style="margin:20px 0 0 0;">
+					<%= f.label :email, 'E-mail:' %><br />
+				</h4>
+				<%= f.email_field :email, 'class' => 'jqxInput required' %>
+			</div>
 
-		<% if devise_mapping.rememberable? -%>
-		<div style="text-align:left; display:none;">
-			<h4 style="margin:10px 0 0 0;">
-				<%= f.check_box :remember_me, 'class' => 'jqxCheckBox' %> 
-				<%= f.label :remember_me %>
-			</h4>
-		</div>
-		<% end -%>
-		<br />	
-		<div style="text-align:left">
-			<%= f.submit "Sign in", 'class' => 'jqxButton' %>
-			<button class="jqxButton right" id="demo_button"> Demo </button>
-		</div>
+			<div style="text-align:left">
+				<h4 style="margin:20px 0 0 0;">
+					<%= f.label :password, 'Password:' %><br />
+				</h4>				
+				<%= f.password_field :password, 'class' => 'jqxInput required' %>
+			</div>
 
-	<% end %>
+			<% if devise_mapping.rememberable? -%>
+			<div style="text-align:left; display:none;">
+				<h4 style="margin:10px 0 0 0;">
+					<%= f.check_box :remember_me, 'class' => 'jqxCheckBox' %> 
+					<%= f.label :remember_me %>
+				</h4>
+			</div>
+			<% end -%>
+			<br />	
+			<div style="text-align:left">
+				<%= f.submit "Sign in", 'class' => 'jqxButton' %>
+				<button class="jqxButton right" id="demo_button"> Demo login</button>
+			</div>
+
+		<% end %>
 		<div style="text-align:left; display:none">		
 			<%= render :partial => "devise/shared/links" %>
 		</div>
+	</div>
 </div>
 <script>
 $(document).ready(function(){	
