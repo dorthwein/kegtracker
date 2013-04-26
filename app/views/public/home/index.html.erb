@@ -1,38 +1,158 @@
+<style>
+	h1 {
 
-<table style="width:100%; margin-top:40px">
-	<tbody>
-		<tr>
-			<td style="width:50%; text-align:middle">	
-				<h1> The what... </h1>
-			</td>
-			<td rowspan="2" style="padding:0 10px"> 
-				<%= image_tag('brewery_apps_logo.png', :style => 'width:300px;') %>
-			</td>
-			<td style="width:50%; text-align:middle">	
-				<h1>...and the why	</h1>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:middle; vertical-align:top">		
-				BreweryApps develops tools for the Craft Beer industry with three things in mind - Simplicity, Scalability, and Affordability. Simplicity in deploying and using the system. Scalability in being able to meet and address the challenges Craft Brewers face. Affordability in being priced for your scale.
-			</td>
-			<td style="text-align:middle; vertical-align:top">		
-				The revival of American Craft Beer and the values it represents - Dedication, Individualism, and Community - are simply things that make the world a better place. Simply put, we want to be a part of helping those ideals succeed by developing great tools to support your business.
-			</td>
-		</tr>
-	</tbody>
-</table>
+	}
+	h3 {
+		margin:10px 0 5px 50px; 	
+	}
+	#upper_table table {
+		width:100%;
+	}
+	#upper_table td {		
+		padding:0 10px;
+		vertical-align: top;
+		
+	}
+
+	#lower_table table {
+		width:100%;
+		
+	}
+	#lower_table td {
+		width:24%;
+		padding:0 2%;
+		vertical-align: top;
+		text-align: center;
+	}
+	h1, p {
+		margin: 0;
+		padding: 0;
+	}
+	p{
+		line-height: 200%;
+		text-align: justify; 
+
+
+	}
+
+</style>
+<div id="content_header">
+	<%= image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;') %>
+	<h1 class="page_title">	
+		<span class="left">
+	    	Brewery Apps
+	    </span>
+		<span class="right">
+	    	Welcome
+	    </span>
+
+	</h1>
+	<div style="clear:both"></div>	
+</div>
+
+<div id="content_body">
+	<div style="display:inline-block; clear:both; width:100%;">
+			<table id="upper_table">
+				<tr>
+					<td>  
+						<div style="width:525px"> 
+							<h1> 	Do you know 						</h1>
+							<h3> 	WHO your KEGS are hanging out with? </h3>
+							<h3>	WHAT your KEGS have been doing?		</h3>
+							<h3>	WHERE your KEGS are?				</h3>
+							<h3>	WHEN your KEGS go out?				</h3>
+							<h3>	WHY your KEGS missing?				</h3>
+						</div>
+
+						<h2 style="text-align:center;">	
+							<%= link_to 'Don\'t be a deadbeat brewer <br /> Click here to start tracking your kegs today!'.html_safe, :public_join_index %>
+						</h2>
+					</td>
+					<td> 
+						<div style="padding:10px; background:#333;">
+							<%= image_tag('kegimage.png', :style => 'height:250px') %>
+						</div>					
+					</td>
+				</tr>
+			</table>
 
 	
-<div style="text-align:middle">
-	<h1>
-		Keg Tracking by Industry Folk for Industry Folk
-	</h1>
 
-	<p style="padding:0px">
-		The BreweryApps KegTracker system is something new and incredible for the Craft Brewer and Keg Leaser. It gives our industry a simple way to manage a keg float while gathering the critical information needed to make informed business decisions. KegTracker takes complex technologies, like RFID tags and 2D Barcodes, and makes them simple and easy to use.
-	</p>
-	<p style="padding:0px">
-		BreweryApps' KegTracker brings extremely powerful tools to all sizes and types of Craft Breweries in a scalable and affordable way. Getting started with the system costs as little as a 2D barcode scanner, an internet connection, and a computer - Mac or PC.
-	</p>
+
+	<div class="seperator" style="height:50px">	</div>
+	<div style="display:inline-block; clear:both; width:100%;">
+		<table id="lower_table">
+			<tr>
+				<td> 
+					<h1> What </h1>					
+				</td>
+
+				<td>  
+					<h1> Why	</h1>
+				</td>
+
+
+				<td> 
+					<h1>Who	</h1>
+				</td>
+			</tr>
+			<tr>
+				<td>	
+					<p>
+						Keg Tracker is something new and incredible for the Craft Brewer and Keg Leaser.  Keg Tracker takes complex technologies, like RFID tags and 2D Barcodes, and makes them simple and easy to use.  All you need to get started with the syste is an iOS or Android device, an internet connection, and a computer - Mac or PC.
+					</p>
+				</td>
+				<td>	
+					<p>
+						The revival of American Craft Beer and the values it represents - Dedication, Individualism, and Community - are simply things that make the world a better place. Simply put, we want to be a part of helping those ideals succeed by developing great tools to support your business.
+					</p>
+
+				</td>
+				<td>	
+					<p>	
+						Brewery Apps develops tools for the Craft Beer industry with three things in mind - Simplicity, Scalability, and Affordability. Simplicity in deploying and using the system. Scalability in being able to meet and address the challenges Craft Brewers face. Affordability in being priced for your scale.
+					</p>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<table style="width:100%; display:none;">
+		<tbody>
+			<tr>
+				<td style="width:50%; text-align:left">	
+					
+				</td>
+				<td rowspan="2" style="padding:0 10px"> 
+
+						
+				</td>
+				<td style="width:50%; text-align:right">	
+					
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:middle; vertical-align:top">	
+				</td>
+				<td style="text-align:middle; vertical-align:top">		
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+		
+	<div style="text-align:center; display:none;">
+		<h1>
+			Keg Tracking by Industry Folk for Industry Folk
+		</h1>
+
+		<p style="padding:0px">
+			
+		</p>
+	</div>
+
+
 </div>
+
+
+

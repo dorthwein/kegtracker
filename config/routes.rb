@@ -164,10 +164,8 @@ Cobalt::Application.routes.draw do
 		resources :join 
 
 #		match 'join' => 'join#index', :via => [:get, :post]		
-		match 'order' => 'order#index', :via => [:get, :post]				
-		match 'members' => 'members#index', :via => [:get, :post]						
 		match 'about' => 'about#index', :via => [:get, :post]								
-		match 'pricing' => 'pricing#index', :via => [:get, :post]								
+		match 'products' => 'products#index', :via => [:get, :post]								
 		match 'terms_of_use' => 'terms_of_use#index', :via => [:get, :post]										
 	end
   	root :to => 'home#index'

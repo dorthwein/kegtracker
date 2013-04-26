@@ -4,155 +4,165 @@
 	}
 </style>
 
-<h1 style="text-align:left;">
-    KegTracker Sign Up 
-</h1>
-<div class="jqxValidator" style="width:45%; text-align:left; float: left;">
-	<table style="">
-		<tbody>
-			<tr>
-				<th colspan="2"> </th>			
-			</tr>
-
-			<tr>
-				<td>	<b> First Name* </b>	</td>
-				<td>	<input type="text" id="first_name" class="jqxInput required" />	</td>
-			</tr>
-			<tr>
-				<td>
-					<b> Last Name* </b>
-				</td>
-				<td>
-					<input type="text" id="last_name" class="jqxInput required" />
-				</td>
-			</tr>	
-			<tr>
-				<td>
-					<b> Phone </b>
-				</td>
-				<td>
-					<input type="text" id="office_phone" class="jqxInput" />
-				</td>
-			</tr>
-
-			<tr>	
-				<td>	
-					<b> E-Mail/Login* </b>
-
-				</td>
-				<td>
-					<input type="text" id="email" class="jqxInput required" />
-				</td>
-
-			</tr>
-			<tr>
-				<td>
-					<b> Password* </b>
-				</td>
-				<td>
-					<input type="password" id="password" class="jqxInput required" />	
-				</td>
-			</tr>	
-			<tr>	
-
-				<td>
-					<b> Confirm Password* </b>
-				</td>
-				<td>
-					<input type="password" class="jqxInput required" id="password_confirmation" />
-				</td>
-			</tr>
-
-			<tr>
-				<th colspan="2"> <h3><br /> </h3> </th>			
-			</tr>
-
-			<tr>
-				<td>	<b> Brewery Name* </b>	</td>
-				<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
-			</tr>
-
-			<tr>
-				<td>
-					<b> Address </b>
-
-				</td>
-				<td>
-					<input type="text" id="name" class="jqxInput" data-role="none" />
-				</td>
-			</tr>	
-			<tr>	
-				<td>	
-					<b> Street </b>
-
-				</td>
-				<td>
-					<input type="text" id="street" class="jqxInput" data-role="none" />
-				</td>
-
-			</tr>
-			<tr>
-				<td>
-					<b> City </b>
-				</td>
-				<td>
-					<input type="text" id="city" class="jqxInput" data-role="none" />	
-				</td>
-			</tr>	
-			<tr>	
-
-				<td>
-					<b> State </b>
-				</td>
-				<td>
-					<input type="text" class="jqxInput" id="state" data-role="none" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<b> Zip </b>
-				</td>
-				<td>
-					<input type="text" id="zip" class="jqxInput" data-role="none" />
-				</td>
-			</tr>
-			<tr> 
-				<td> <br /> </td>
-				<td> <br /> </td>
-			</tr>
-			<tr>			
-			
-				<td colspan="2" style="text-align:right; font-size:10px">
-					<div style="float:left; width:75%; text-align:left;">
-						By clicking register you agree to the <%= link_to 'Terms and Conditions of Use listed here', :public_terms_of_use %>
-					</div>
-					<div style="width:20%; float:left;">
-						<button id="register" class="right jqxButton" data-role="none"> Register	</button>	
-					</div>
-				</td>
-
-			</tr>
-		</tbody>
-	</table>
+<div id="content_header">
+    <%= image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;') %>
+    <h1 class="page_title"> 
+        <span class="left">
+            Brewery Apps
+        </span>
+        <span class="right">
+            Join
+        </span>
+        
+    </h1>
+    <div style="clear:both"></div>  
 </div>
+<div id="content_body">
+	<div class="jqxValidator" style="width:45%; text-align:left; float: left;">
+		<table style="">
+			<tbody>
+				<tr>
+					<th colspan="2"> </th>			
+				</tr>
 
-<div style="width:55%; float:left; text-align:left;"> 
-	<h3 style="margin-top:0px">What do I do after I register? </h3>
-	<p>	
-		Once you register, you'll be able to login and start tracking your kegs.  If you have a 2D barcode scanner, you can use a computer.  If not, download KegTracker from the <%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %> or Android app stores!
-	</p>
+				<tr>
+					<td>	<b> First Name* </b>	</td>
+					<td>	<input type="text" id="first_name" class="jqxInput required" />	</td>
+				</tr>
+				<tr>
+					<td>
+						<b> Last Name* </b>
+					</td>
+					<td>
+						<input type="text" id="last_name" class="jqxInput required" />
+					</td>
+				</tr>	
+				<tr>
+					<td>
+						<b> Phone </b>
+					</td>
+					<td>
+						<input type="text" id="office_phone" class="jqxInput" />
+					</td>
+				</tr>
 
-	<h3> When does billing start? </h3>
-	<p>	
-		Billing will start at the end of your 30 day free trial.  You can submit your billing information once you login.
-	</p>
+				<tr>	
+					<td>	
+						<b> E-Mail/Login* </b>
 
-	<h3> I'd like to use RFID tags.  How do I get started?</h3>
-	<p>	
-		To get started with an RFID implementation, e-mail us at drew@breweryapps.com!
+					</td>
+					<td>
+						<input type="text" id="email" class="jqxInput required" />
+					</td>
 
-	</p>
+				</tr>
+				<tr>
+					<td>
+						<b> Password* </b>
+					</td>
+					<td>
+						<input type="password" id="password" class="jqxInput required" />	
+					</td>
+				</tr>	
+				<tr>	
 
+					<td>
+						<b> Confirm Password* </b>
+					</td>
+					<td>
+						<input type="password" class="jqxInput required" id="password_confirmation" />
+					</td>
+				</tr>
+
+				<tr>
+					<th colspan="2"> <h3><br /> </h3> </th>			
+				</tr>
+
+				<tr>
+					<td>	<b> Brewery Name* </b>	</td>
+					<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+				</tr>
+
+				<tr>
+					<td>
+						<b> Address </b>
+
+					</td>
+					<td>
+						<input type="text" id="name" class="jqxInput" data-role="none" />
+					</td>
+				</tr>	
+				<tr>	
+					<td>	
+						<b> Street </b>
+
+					</td>
+					<td>
+						<input type="text" id="street" class="jqxInput" data-role="none" />
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<b> City </b>
+					</td>
+					<td>
+						<input type="text" id="city" class="jqxInput" data-role="none" />	
+					</td>
+				</tr>	
+				<tr>	
+
+					<td>
+						<b> State </b>
+					</td>
+					<td>
+						<input type="text" class="jqxInput" id="state" data-role="none" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b> Zip </b>
+					</td>
+					<td>
+						<input type="text" id="zip" class="jqxInput" data-role="none" />
+					</td>
+				</tr>
+				<tr> 
+					<td> <br /> </td>
+					<td> <br /> </td>
+				</tr>
+				<tr>			
+				
+					<td colspan="2" style="text-align:right; font-size:10px">
+						<div style="float:left; width:75%; text-align:left;">
+							By clicking register you agree to the <%= link_to 'Terms and Conditions of Use listed here', :public_terms_of_use %>
+						</div>
+						<div style="width:20%; float:left;">
+							<button id="register" class="right jqxButton" data-role="none"> Register	</button>	
+						</div>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div style="width:55%; float:left; text-align:left;"> 
+		<h3 style="margin-top:0px">What do I do after I register? </h3>
+		<p>	
+			Once you register, you'll be able to login and start tracking your kegs.  If you have a 2D barcode scanner, you can use a computer.  If not, download KegTracker from the <%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %> or <%= link_to 'Android', 'https://play.google.com/store/apps/details?id=com.breweryapps.KegTracker&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5icmV3ZXJ5YXBwcy5LZWdUcmFja2VyIl0.' %> app stores!
+		</p>
+		<h3> When does billing start? </h3>
+		<p>	
+			Billing will start at the end of your 30 day free trial.  You can submit your billing information once you login.
+		</p>
+
+		<h3> I'd like to use RFID tags.  How do I get started?</h3>
+		<p>	
+			To get started with an RFID implementation, e-mail us at drew@breweryapps.com!
+
+		</p>
+	</div>
 
 </div>
 <script>

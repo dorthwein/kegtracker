@@ -1,47 +1,104 @@
-
-body.public {
+body {
 	font-family: sans-serif;
 	color:#333;
-	letter-spacing: 3px;	
 }
-#header.public {
-	position: fixed;
-	top:0;
-	left:0;
+.right { float:right; clear:right;}
+.left {float:left; clear:left;}
+.seperator { width:100%; display:inline-block; height:10px; }
+#container {
+	padding:30px 0 200px 0;
+	margin: auto;
 	width:100%;
-	height:20px;
-	padding:5px 20px;
-	background-color: #2d2d2d;
-	vertical-align: center;
-	text-align: left;
-	color: #FFF;
-
+	display: inline-block;
+	
 }
+/******************************
+ HEADER
+******************************/
+	#header {
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:20px;
+		padding:5px 20px;
+		background-color: #2d2d2d;
+		vertical-align: center;
+		text-align: left;
+		color: #FFF;
+		letter-spacing: 3px;	
+	}
+
+
+/******************************
+ SIDE BAR
+******************************/
+
+/******************************
+ CONTENT
+******************************/
+	#content_body {	
+		margin: auto;
+		width:1060px;
+		
+		padding:0px 0px 0px 110px;
+
+
+	}
+	#content_header {
+		width:1160px;
+		margin: auto;
+	}
+		#content_header h1.page_title {
+			width:1050px;
+			border-bottom: 1px solid #CCC;	
+			float:left;
+			padding: 0px 0 0 0;
+			vertical-align: bottom;
+			
+			margin-left:10px;
+		}
+		#header a:link, #header a:visited, #header a:hover, #header a:active {
+			color: #FFF;
+			text-decoration: none;
+		}
+
+
+/******************************
+ FOOTER
+******************************/
+	#footer {
+		position: fixed;
+		bottom:10px;
+		text-align: center;
+		width:100%;		
+	}
+
+		#footer h5 { 
+			margin: 0px;
+		}
+		#footer table{
+
+			width: 1060px;
+			margin:auto;
+		}
+			#footer td{
+				text-align: center;
+				margin: auto;
+			}
+
+
+
+/*
 p,li {
 	padding-left: 50px;
 	color:#333;
 }
-#header.public a:link, #header a:visited, #header a:hover, #header a:active {
-	color: #FFF;
-	text-decoration: none;
-}
 
-#content.public {
-	margin-top:0px;
-	padding:10px;
-}
+
 h1.public {
 	font-size: 30px;
 	font-weight: normal;
-}
-.horizontal h5.public {
-	font-weight: normal;
-	margin:0 50px 30px 50px;
-	text-align: center;
-}
-.public h5 {
-	margin:0px;
-	font-weight: 900;
 }
 
 #info.public {
@@ -53,20 +110,16 @@ h1.public {
 	padding:10px;
 }
 .public_container {
-	margin: 0px auto;
+	margin: 0px auto 200px auto;
 	
 	width:960px;
 	text-align: center;
 }
+*/
 a:link, a:visited, a:hover, a:active {
 	text-decoration: none;
 	color:#d14836 ;
-
 }  /* selected link */
-
-
-
-
 
 
 
