@@ -217,11 +217,7 @@ MENU STYLING
 	float:right;	
 
 }
-#dashboard_div {
-	width:100%;
-	text-align: center;
-	margin:auto;
-}
+
 #chart4 {
 	height:300px;
 	width:100%;
