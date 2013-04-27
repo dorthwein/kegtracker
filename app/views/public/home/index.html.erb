@@ -53,12 +53,13 @@
 
 
 	li {
-		padding: 10px 0;
+		padding: 5px 0;
 	}
 
 </style>
 <div id="content_header">
-	<%= image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;') %>
+
+	<%= link_to image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;'), :public_home  %>
 	<h1 class="page_title">	
 		<span class="left">
 	    	Brewery Apps
@@ -79,6 +80,7 @@
 				<li>  Find out how long each SKU takes to complete a life cycle		</li>
 				<li>  Know exactly what kegs are at what distributor with what product 		</li>
 				<li> Track assets by Batch Number, Delivery Invoice, Fill Date, Product, and much more </li>
+				<li> <%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %> & <%= link_to 'Android', 'https://play.google.com/store/apps/details?id=com.breweryapps.KegTracker&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5icmV3ZXJ5YXBwcy5LZWdUcmFja2VyIl0.' %> Mobile Apps </li>
 				<li> Only $0.04/ce/month - <%= link_to('sign up now', :public_join_index) %> 	</li>
 			</ul>
 			
@@ -86,6 +88,7 @@
 			<ul>
 				<li> Keep track of exactly how many kegs you have	</li>
 				<li> Register your kegs so consumers, distributors, and other brewers can find your contact information when they find your keg			</li>
+				<li> Use Keg Tracker <%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %> or <%= link_to 'Android', 'https://play.google.com/store/apps/details?id=com.breweryapps.KegTracker&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5icmV3ZXJ5YXBwcy5LZWdUcmFja2VyIl0.' %> app to scan your kegs in </li>
 				<li> Free 1 time registration - <%= link_to('sign up now', :public_join_index) %> 	</li>
 		</div>
 

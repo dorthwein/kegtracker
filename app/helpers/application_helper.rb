@@ -7,8 +7,6 @@ html = <<select_box
 			<select id="report_select_menu" class="select_menu link">	
 				<optgroup label="Asset Reports">				
 				
-
-
 					<option value="#{reports_assets_url}" class="indent"> 
 						Asset Report				
 					</option>
@@ -20,7 +18,6 @@ html = <<select_box
 					<option value="#{reports_overdue_assets_url}" class="indent"> 
 						Overdue Asset Return Report		
 					</option>
-
 
 					<option value="#{reports_float_activity_summary_report_simple_url}" class="indent"> 
 						Daily Scan Activity Summary Report

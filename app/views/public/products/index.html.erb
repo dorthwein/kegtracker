@@ -54,7 +54,8 @@
 
 </style>
 <div id="content_header">
-	<%= image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;') %>
+	<%= link_to image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;'), :public_home  %>
+
 	<h1 class="page_title">	
 		<span class="left">
 	    	Brewery Apps
@@ -70,9 +71,16 @@
 
 <div id="content_body">
 	<div class="product">
-		<h2>	Keg Tracker		</h2>		
+		<h2>	
+			Keg Tracker		
+		</h2>		
+
+
 		<div class="icon_container">
 			<%= image_tag("kegtrackericon.png", :style => "width:200px;") %>
+			<span style="font-size:13px; font-weight:normal;">
+				<%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %>,  <%= link_to 'Android', 'https://play.google.com/store/apps/details?id=com.breweryapps.KegTracker&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5icmV3ZXJ5YXBwcy5LZWdUcmFja2VyIl0.' %>
+			</span>
 		</div>
 				
 		<div class="details">
@@ -113,16 +121,19 @@
 				<p>				
 					Effectively manage your keg float with our comprehensive reporting tools.
 				</p>
-			</div>			
-			
-		</div>
+			</div>						
+		</div>		
 	</div>	
-
+	<div style="float:right; clear:both;">	<%= link_to 'Sign up now!', :public_join_index %> </div>
+	
 	<div class="seperator" style="height:50px"></div>
 	<div class="product"> 
 		<h2>	Keg Registration		</h2>
 		<div class="icon_container">
 			<%= image_tag("kegregicon.png", :style => "width:200px;") %>
+			<span style="font-size:13px; font-weight:normal;">
+				<%= link_to 'iOS', 'https://itunes.apple.com/us/app/kegtracker/id630701415?mt=8' %>,  <%= link_to 'Android', 'https://play.google.com/store/apps/details?id=com.breweryapps.KegTracker&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5icmV3ZXJ5YXBwcy5LZWdUcmFja2VyIl0.' %>
+			</span>			
 		</div>
 		
 		<div class="details">
@@ -164,7 +175,11 @@
 		</div>		
 
 	</div>	
+	<div style="float:right; clear:both;">	<%= link_to 'Sign up now!', :public_join_index %> </div>
+
+
 	<div class="seperator"></div>
+
 </div>
 
 
