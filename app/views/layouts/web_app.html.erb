@@ -28,15 +28,16 @@
 	    <meta name="viewport" content="width=960, user-scalable=yes" />   
 	</head>
 	<body style="display:none"> 
-		<div id="header" style="top:0; left: 0; height:30px; width:100%;">
+		<%= main_menu %>
+		<div id="header" style="top:0; left: 0; height:30px; width:100%; display:none;">
 			<% if !user_signed_in? %>			
+					
+
 	        <div id="jqxMenu">
 	            <ul>                				
 					<li> <%= link_to 'Home', root_path %> </li>								
 				</ul>
 			</div>
-
-
 			<% else %> 			
 			<div id="jqxMenu">
 	            <ul>                					
@@ -192,9 +193,7 @@
 						<span style="margin-right:30px"><%= current_user.email %> </span>
 					</div>
 				</ul>				
-			</div>
-			<input id="quick_search" data-role="none" disabled="true" style="width:100%; position:relative; top:-3px; color:#ccc;" value=" Quick search coming soon" />
-		
+			</div>		
 			<% end %>							
 	        
 			<div style="clear:both"> </div>	

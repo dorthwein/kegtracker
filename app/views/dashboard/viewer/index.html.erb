@@ -5,7 +5,7 @@
 	    	Brewery Apps
 	    </span>
 		<span class="right">
-	    	Products
+	    	<%= current_user.entity.description %>
 	    </span>
 	    
 	</h1>
@@ -13,8 +13,7 @@
 	<div style="clear:both"></div>	
 </div>
 <div id="content_body">
-	<div class="dashboard content container">
-		<h1> <%= current_user.entity.description %> </h1>
+	<div class="dashboard content container">		
 		<div class="dashboard button-group">					
 			<h2> Scanning </h2>
 			<%= link_to '<h3> Barcode Scanner </h3>'.html_safe, :scanners_barcode, :class => "dashboard button" %> 
@@ -23,7 +22,6 @@
 
 			<a href="#" class="dashboard button hidden"> <h3> Order Barcodes <h3> <h4> (Comming Soon) </h4></a>
 		</div>
-
 
 
 
@@ -79,6 +77,7 @@
 <script>
 $(document).ready(function(){
 	var theme =  settings.theme // settings.theme
+	$('#demo_link').hide()
 	url = system.server + $('.ui-page-active').attr('data-url');
     // LEFT OFF HERE!! BUILDING AJAX JSON CALLBACK TO PAGE FOR FILTER DATA
     $(".dashboard.button").jqxButton({ theme: theme, width:'30%', height:50 });                

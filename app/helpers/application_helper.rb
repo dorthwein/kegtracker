@@ -78,7 +78,7 @@ html = <<html
 						<h6> Products	</h5>
 					</td>
 
-					<td>	
+					<td id="demo_link">	
 						#{link_to image_tag("playicon.png"), new_user_session_path}
 						<h6> Demo	</h5>
 					</td>
@@ -95,6 +95,188 @@ html
 
 	return html.html_safe
 	end
+
+	def main_menu
+		if user_signed_in? && current_user.system_admin == 1
+system = <<html			
+			<li> System 
+				<ul>
+					<li> #{link_to 'Entities', :system_entities } </li>
+					<li> #{link_to 'Registrations', :system_registrations } </li>
+					<li> Networks (Disabled) </li>
+					<li> #{link_to 'Entity Types', :system_entity_types } </li>
+					<li> #{link_to 'Product Types', :system_product_types } </li>
+					<li> #{link_to 'Asset Types', :system_asset_types } </li>
+					<li> #{link_to 'Unit Sizes', :system_measurement_units } </li>
+					<li> #{link_to 'Asset State', :system_asset_states } </li>
+					<li> #{link_to 'Handle Codes', :system_handle_codes } </li>
+				</ul>
+			</li>							
+html
+		end 
+		if !user_signed_in?
+html = <<html
+		<div id="header" style="top:0; left: 0; height:30px; width:100%;">			
+	        <div id="jqxMenu">
+	            <ul>    	            
+					<li> #{link_to 'Log in', new_user_session_path } </li>								
+				</ul>
+			</div>
+		</div>
+html
+		else
+html = <<html
+		<div id="header" style="top:0; left: 0; height:30px; width:100%;">						
+			<div id="jqxMenu">
+	            <ul>                					
+					<li>
+						Home
+						<ul>
+							<li> #{link_to 'Dashboard', :dashboard_viewer } </li>
+							<li> #{link_to 'Account', :account_profiles }   </li>
+							<li> #{link_to 'Sign out', destroy_user_session_path, :method => :delete } </li>
+						</ul>					
+					</li>					
+					<li> 
+						Reporting 
+						<ul>
+							<li> 	
+								Invoices
+								<ul>
+									<li> 
+										#{link_to 'Lookup', :accounting_invoices }  
+									</li>
+								</ul>
+							</li>
+
+							<li> 	
+								Assets
+								<ul>
+									<li>
+										#{link_to 'Assets Report', :reports_assets }
+									</li>
+
+									<li>
+										#{link_to 'Overdue Assets Report', :reports_assets }
+									</li>
+
+									<li>
+										#{link_to 'Inventory By SKU Summary Report', :reports_assets_sku_summary_report_simple }
+									</li>
+									<li>
+										#{link_to 'Active Asset Cycles', :reports_asset_cycles }
+									</li>
+
+									<li>
+										#{link_to 'Completed Asset Cycles', :reports_completed_asset_cycles }
+									</li>
+
+								</ul>							
+							</li>
+
+							<li> 	
+								Locations
+								<ul>
+									<li>
+										#{link_to 'Browse', :reports_locations }
+									</li>
+								</ul>							
+							</li>
+							<li style="display:none;"> 	
+								Network
+								<ul>
+									<li>
+										#{link_to 'Performance Scorecard', :reports_network_performance_scorecard_report } 																		
+									</li>
+								</ul>							
+							</li>
+								
+							<li> 	
+								Activity
+								<!-- Broad float wide reporting --> 
+								<ul>
+									<li>
+										#{link_to 'Asset Cycle Summary by SKU by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network } 
+									</li>
+
+
+									<li>
+										#{link_to 'Asset Cycle Summary by SKU by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network } 
+									</li>
+									<li>
+										#{link_to 'Daily Scan Activity Summary Report', :reports_float_activity_summary_report_simple } 									
+									</li>
+									
+								</ul>							
+							</li>							
+						</ul>
+					</li>					
+					<li> 
+						Scanners
+						<ul>	
+							<li> #{link_to 'Barcode Scanner', :scanners_barcode } </li>
+							<li> #{link_to 'RFID Readers', :scanners_rfid_readers } </li>
+							<li> #{link_to 'Invoice Manifest', :accounting_invoices } </li>
+
+						</ul>							
+					</li>
+					<li> 
+						Maintenance
+						<ul>
+							<li> #{link_to 'Users', :maintenance_users } </li>
+							<li>
+								Distribution
+								<ul>
+									<li> #{link_to 'Distributors', :maintenance_distribution_partnerships } </li>
+										<!-- Breweries allows to produce my beers -->
+									<li style="display:none"> #{link_to 'Brewery Partners', :maintenance_distribution_partnerships } 
+									</li>
+								</ul>
+							</li>
+							<li>
+								Products
+								<ul>
+									<li> #{link_to 'SKUs', :maintenance_skus } 
+									</li>		
+
+									<li> #{link_to 'Products', :maintenance_products } 
+									</li>				
+									<li> 										
+										#{link_to 'Contract Breweries', :maintenance_production_partnerships } 
+									</li>		
+								</ul>
+							<li> 
+								Locations
+								<ul>
+									<li> #{link_to 'Networks', :maintenance_networks } </li>
+									<li> #{link_to 'Locations', :maintenance_locations } </li>
+								</ul>
+							</li>
+							<li>
+								Scanning
+								<ul>
+									<li> #{link_to 'Print Barcodes', :new_maintenance_barcode_maker } </li>
+									<li> #{link_to 'RFID', :maintenance_rfid_readers } </li>
+								</ul>
+							</li>	
+						</ul>
+					</li>
+					#{system}
+					<div style="float:right; width:33%; text-align:right; padding:5px 0px 5px 0px;" class="right"> 
+						<span style="margin-right:30px">#{current_user.email } </span>
+					</div>
+				</ul>				
+			</div>
+			
+	        
+			<div style="clear:both"> </div>	
+		</div>
+html
+		end
+		return html.html_safe
+	end
+
+
 end
 
 #	value="#{accounting_invoices_url}"
