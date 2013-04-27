@@ -10,13 +10,14 @@
 
     <button class='jqxFilterToggle' data-role="none"> Filter Off </button>
 
-
+	<%= form_tag("entities/distributor_upload", :method => "post", :multipart => true) do %>	
 	<!-- Distributor Upload -->
-	<input type="button" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
+		<input type="submit" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
 
-	<input id="fileupload" type="file" name="files[]" data-url="<%= request.fullpath %>/distributor_upload" multiple />
-	
-	<div id="progress" class="bar"> </div>	
+		 <%= file_field_tag 'csv_file' %>
+
+		
+	<% end %>
     <div class="jqxGridColumnListBox">  </div>
 </div>
 <div class="full display">
@@ -100,22 +101,31 @@ $(document).ready(function(){
     $(".jqxGrid").jqxGrid( gridSettings );  
     
 	$("#distributor_upload_button").jqxButton({ theme: settings.theme,});                        
-	$("#distributor_upload_button").click(function () {		
-		console.log('upload started');
-	    $('#fileupload').fileupload({
-	        dataType: 'json',
+/*
+	$("#distributor_upload_button").click(function () {				
+	    url = location.href + '/distributor_upload'
+	    alert(url);
+	    $('#fileupload').fileupload({	        
+	        url: url,
+	        type: 'POST',
 	        done: function (e, data) {
-
 	        	alert('Complete');
 //	            $.each(data.result.files, function (index, file) {
 //	                $('<p/>').text(file.name).appendTo(document.body);
 //	            });
 	        }
-	    });
-
-
-
+	    });		
 	});
+*/
 	jqxIntialize()
 });
 </script>
+
+
+
+
+
+
+
+
+

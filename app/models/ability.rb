@@ -139,9 +139,8 @@ class Ability
 		can [:update], Entity, _id: user.entity_id
 	end
 
-
 	if user.system_admin == 1
-		can [:system_admin, :manage], :all
+		can [:distributor_upload, :system_admin, :manage], :all
 	end
 
 

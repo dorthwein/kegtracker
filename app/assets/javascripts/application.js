@@ -15,5 +15,6 @@
 //= require jquery.js
 //= require jquery_ujs
 //= require plugins/jquery.ui.widget.js
+//= require plugins/jquery.fileupload.js
 //= require plugins/jquery.iframe-transport.js
 //= require_tree .

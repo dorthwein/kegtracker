@@ -1,7 +1,7 @@
 class System::EntitiesController < ApplicationController
 	before_filter :authenticate_user!	
   layout "web_app"
-  load_and_authorize_resource
+  #load_and_authorize_resource
 
   # GET /entities
   # GET /entities.json
@@ -107,12 +107,17 @@ class System::EntitiesController < ApplicationController
   end
 
   def distributor_upload
-    file = params[:files][0].tempfile
+    file = params[:csv_file].tempfile
     
     # 0 = FULL, 
     # 1 = DESCRIPTION, 
     # 2 = City,
     # 3 = State,
+
+#  File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'w') do |file|
+#     file.write(uploaded_io.read)
+#  end
+
     CSV.foreach(file) do |row|
         entity = Entity.where(:description => row[1]).first
         print entity.to_s + "fuck"
@@ -130,6 +135,7 @@ class System::EntitiesController < ApplicationController
     end
 
     respond_to do |format|    
+      format.html { redirect_to :system_entities }             
       format.json { 
         render json: {:success => true }
       }
