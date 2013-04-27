@@ -7,13 +7,14 @@
 	padding-bottom:30px;
 	padding-right:30px;	
 }
+
 .dashboard.content h2 {		
 	width:100%;	
 	display: inline-block;
 	margin:15px 10px 5px -15px;
 	font-size:18px;
-
 }
+
 .dashboard.button-group {
 	width:100%;
 	margin-bottom:20px;
@@ -40,6 +41,7 @@ div.dashboard.full {
 	width: 1200px;
 	margin: 50px auto;
 }
+
 div.dashboard.slot {
 	width:575px;
 	margin: 10px 10px;
