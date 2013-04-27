@@ -2,12 +2,18 @@
 	h1 {
 
 	}
+
+
 	h3 {
 		margin:10px 0 5px 50px; 	
 	}
+
+
 	#upper_table table {
 		width:100%;
 	}
+
+
 	#upper_table td {		
 		padding:0 10px;
 		vertical-align: top;
@@ -18,21 +24,36 @@
 		width:100%;
 		
 	}
+
+
 	#lower_table td {
 		width:24%;
 		padding:0 2%;
 		vertical-align: top;
 		text-align: center;
 	}
+
+
 	h1, p {
-		margin: 0;
+		margin: 10px 0;
 		padding: 0;
 	}
+
+
 	p{
 		line-height: 200%;
 		text-align: justify; 
+	}
 
 
+	ul {
+		margin:5px inherit;
+		list-style: upper-roman;
+	}
+
+
+	li {
+		padding: 10px 0;
 	}
 
 </style>
@@ -52,6 +73,39 @@
 
 <div id="content_body">
 	<div style="display:inline-block; clear:both; width:100%;">
+		<div style="width:70%; float:left">
+			<h1> <%= link_to('Keg Tracker', :public_products) %>  </h1>
+			<ul>
+				<li>  Find out how long each SKU takes to complete a life cycle		</li>
+				<li>  Know exactly what kegs are at what distributor with what product 		</li>
+				<li> Track assets by Batch Number, Delivery Invoice, Fill Date, Product, and much more </li>
+				<li> Only $0.04/ce/month - <%= link_to('sign up now', :public_join_index) %> 	</li>
+			</ul>
+			
+			<h1> <%= link_to('Keg Registration', :public_products) %>  </h1>
+			<ul>
+				<li> Keep track of exactly how many kegs you have	</li>
+				<li> Register your kegs so consumers, distributors, and other brewers can find your contact information when they find your keg			</li>
+				<li> Free 1 time registration - <%= link_to('sign up now', :public_join_index) %> 	</li>
+		</div>
+
+		<div style="text-align:left; margin:20px 0 0 0; padding:5px; float:right;">		
+			<div>
+				<h3 style="padding:0; margin: 5px 0">
+					Find a lost keg's owner
+				</h3>
+				<input type="text" placeholder="Coming Soon" id="find_keg_input" style="width:100%" />
+				<br />
+				<button class="jqxButton" style="float:right; margin:5px 0px;"> Search </button>
+			</div>
+
+			<div style="padding:10px; margin:20px 0 0 0 ; width:225px; float:right; background:#333;">
+				<%= image_tag('kegimage.png', :style => 'width:100%') %>
+			</div>					
+
+		</div>
+
+<!--		
 		<table id="upper_table">
 			<tr>
 				<td>  
@@ -75,8 +129,8 @@
 			</tr>
 		</table>
 
-
-		<div class="seperator" style="height:50px">	</div>
+-->
+		<div class="seperator" style="height:10px">	</div>
 		<div style="display:inline-block; clear:both; width:100%;">
 		<table id="lower_table">
 			<tr>
@@ -147,9 +201,13 @@
 			
 		</p>
 	</div>
-
-
 </div>
-
+<script>
+$(document).ready(function(){ 
+  	$('#find_keg_input').jqxInput({width: '100%', theme:'metro', height:25, disabled:true })
+    jqxIntialize()
+    $('.jqxButton').jqxButton({disabled:true})
+})
+</script>
 
 
