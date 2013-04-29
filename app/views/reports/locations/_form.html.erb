@@ -90,9 +90,80 @@
 		</tr>
 		<tr>
 			<td colspan="4">
-				<div id="asset_id" class="jqxGrid localLoad">	</div>
+				<div id="assets" class="jqxGrid">	</div>
 			</td>
 		</tr>
 
 	</tbody>
 </table>	
+<script>
+	$(document).ready(function(){	
+		var source = {
+			datatype: "json",
+			type: "GET",
+			datafields: [
+				{ name: 'a', type: 'string' },
+				{ name: 'b', type: 'string' },
+				{ name: 'c', type: 'string' },
+				{ name: 'd', type: 'string' },
+				{ name: 'e', type: 'string' },
+				{ name: 'f', type: 'string' },
+				{ name: 'g', type: 'string' },
+				{ name: 'h', type: 'string' },
+				{ name: 'i'},
+				{ name: 'j', type: 'date' },
+				{ name: 'k', type: 'date' },
+				{ name: 'l'},
+				{ name: 'm', type: 'number'},
+				{ name: 'n', type: 'string'},			
+				{ name: 'o', type: 'string'},			], 
+			root: "jqxGrid",
+			url: location.href,
+		};		
+		var dataAdapter = new $.jqx.dataAdapter(source, {
+			loadComplete: function (data) {},
+			loadError: function (xhr, status, error) { }      
+		});
+		// Initiate grid
+		var gridSettings = settings.jqxGridProperties
+		gridSettings['height'] = 140;
+		gridSettings['filterable'] = true;
+		gridSettings['groupable'] = false;
+		gridSettings['source'] = dataAdapter;
+		gridSettings['columns'] = [	
+			{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },	
+			{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },			
+			{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
+			{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },	
+			{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },					
+			{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd', hidden:true },
+			{ text: 'Tag Value', datafield: 'c', hidden: true },
+
+			{ text: 'Location', datafield: 'g', filtertype: 'checkedlist', hidden:true },
+			{ text: 'Cur. Holder', datafield: 'h', filtertype: 'checkedlist', hidden:true },
+			{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
+			{ text: 'Batch Number', datafield: 'n'},
+			{ text: 'Invoice Number', datafield: 'o'},
+
+
+
+			{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
+
+		]
+		
+		$(".jqxGrid").jqxGrid( gridSettings );	
+		
+	})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

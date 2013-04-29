@@ -1,87 +1,62 @@
-<div id="public_content">
-	<div class="public_text_frame left" style="display:none">
-		<div class="left">
-			<h4> Get Addtional Information! </h4>
-			<table class="">
-				<tbody>
-					<tr>
-						<td> 	<label class="left" style="clear:both"> Brewery Name </label>						</td>
-						<td>	<input type="text" id="brewery_name"		data-role="none" 	 class="left input" />	</td>
-					</tr>
-					<tr>
-						<td> 	<label class="left" style="clear:both"> Contact Name </label>						</td>
-						<td>	<input type="text" id="contact_name"		data-role="none" 	 class="left input" />	</td>
-					</tr>
+<style>
+	#contacts td {
+		padding: 10px 0 30px 20px;
+		vertical-align: top;
+	}
+	#contacts h3 {
+		margin:5px 0;
+	}
+	#contacts tr {
 
-					<tr>	
-						<td>	<label class="left" style="clear:both"> E-mail </label>    							</td>
-						<td>	<input type="text" id="contact_email"		data-role="none" 	 class="left input" />	</td>
-					</tr>
+	}
+</style>
+<div id="content_header">
+	<%= link_to image_tag('brewery_apps_logo.png', :style => 'width:100px; float:left;'), :public_home  %>
+	<h1 class="page_title">	
+		<span class="left">
+	    	Brewery Apps
+	    </span>
+		<span class="right">
+	    	Contact
+	    </span>		
+	</h1>
+	<%= public_menu %>
+	<div style="clear:both"></div>	
+</div>
 
-					<tr>
-						<td>	<label class="left" style="clear:both"> Phone </label>    							</td>
-						<td>	<input type="text" id="contact_phone"		data-role="none" 	 class="left input" />	</td>
-					</tr>
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> Street </label>   						 	</td>
-						<td>	<input type="text" id="street"				data-role="none" 	 class="left input" />	</td>
-					</tr>	
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> City </label>    							</td>
-						<td>	<input type="text" id="city"				data-role="none" 	 class="left input" />	</td>
-					</tr>
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> State </label>    							</td>
-						<td>	<input type="text" id="state"				data-role="none" 	 class="left input" />	</td>
-					</tr>
-
-					<tr>	
-						<td>	<label class="left" style="clear:both"> Zip </label>    							</td>
-						<td>	<input type="number" id="zip"					data-role="none" 	 class="left input" />	</td>
-					</tr>
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> Interested in RFID </label>   			 	</td>
-						<td>	<div id="rfid_interest" class="left dropdown"> </div>	</td>
-					</tr>
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> Number of Distributors </label>  		  	</td>
-						<td>	<input type="number" id="distributor_count"	data-role="none"  	 class="left input" />	</td>
-					</tr>
-
-					<tr>
-						<td>	<label class="left" style="clear:both"> Number of Asssets </label>    				</td>
-						<td>	<input type="number" id="asset_count"			data-role="none" 	 class="left input">    	</td>
-					</tr>
-
-					<tr>	
-						<td>	<label class="left" style="clear:both"> Additional Information </label>  							</td>
-						<td>	<textarea id="notes"	data-role="none" 	 class="left input"> </textarea>	</td>
-					</tr>					
-				</tbody>
-			</table>
-
-			<button id="submit_registration" class="input	" data-role="none"> Send </button>
-			
-		</div>
-	</div>	
-	<div class="public_text_frame right">
-		<p style="width:50%; margin:50px auto 10px auto">
-			If you have any questions, would like to try one of our solutions for free, or just want some honest feedback about how to solve a challenging brewery problem...
-		</p>
-		<h4> Give us a call @  <br /> 314-435-9698 </h4>
-		OR
-		<div style="width:60%; margin:auto">
-			<h4 style="float:left;"> E-mail Drew @ <br /> drew@breweryapps.com </h4>		
-			<h4 style="float:right"> E-mail Danny @ <br /> danny@breweryapps.com </h4>
-		</div>
-
-
-		
-	</div>	
-	<div style="clear:both">	</div>
+<div id="content_body">
+	<table id="contacts">
+		<tr>
+			<td>	
+				<%= image_tag 'drew.png', :style => 'width:200px; border:1px solid #CCC' %>
+			</td>
+			<td>	
+				<h3> Drew Montgomery </h3>
+				<div> Austin, TX </div>
+				<div> Brewery Relations </div>
+				<div> (561) 762-6969 </div>
+				<div> drew@breweryapps.com </div>
+<!--
+				<p>
+					Drew got his start in our industry by opening two bars in Austin, TX, (name bar 1 & bar 2).  Prior to that he worked as an X in the investment banking world.  Drew earned his bachelor's degree in X from X University and his Masters of Accounting from X University.  Among Drew's favorite activities are long walks on the beach, flamingo dancing, and cultivating jilly jabbers.  Drew is originally from West Palm Beach, FL and now calls Austin, TX home.
+				</p>
+-->				
+			</td>
+		</tr>
+		<tr> 
+			<td>	
+				<%= image_tag 'danny.png', :style => 'width:200px; border:1px solid #CCC' %>
+			</td>
+			<td>	
+				<h3> Danny Orthwein </h3>
+				<div> Nashville, TN </div>
+				<div> Product Development </div>
+				<div> (314) 435-9698 </div>
+				<div> danny@breweryapps.com </div>
+				<p>
+					Danny comes to Brewery Apps from the R.S. Lipman Company, a beer distributor in Nashville, TN,  where he pioneered their Keg Lease program to support local/regional craft breweries.  Danny earned his bachelor's degree from Indiana University - Bloomington.  Danny enjoys the outdoors, audiobooks, and following the latest tech trends.  Danny is originally from St. Louis, MO and now calls Nashville, TN home.
+				</p>
+			</td>
+		</tr>
+	</table>
 </div>

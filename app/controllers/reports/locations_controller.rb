@@ -34,11 +34,27 @@ class Reports::LocationsController < ApplicationController
 	        record = Location.find(params[:id])
 	        response = {}
 	        response[:jqxDropDownLists] = {}        
-	        
+	        response[:jqxGrid] = {}
 	        response[:record] = record              
 	        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
 	        response[:jqxDropDownLists][:location_type] = JqxConverter.jqxDropDownList(Location.location_types)
-  			 response[:jqxGrid] = JqxConverter.jqxGrid(current_user.entity.visible_assets.where(location: record))
+  			  response[:jqxGrid] = current_user.entity.visible_assets.where(location: record).map{|x| {
+            a: x.entity_description,
+            b: x.product_entity_description,
+            c: x.tag_value,
+            d: x.asset_type_description,
+            e: x.asset_status_description,
+            f: x.product_description,
+            g: x.location_description,
+            h: x.location_entity_description,
+            i: x._id,
+            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
+            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
+            l: x.asset_cycle_fact_id,                    
+            m: x.days_at_location,
+            n: x.batch_number,
+            o: x.invoice_number,
+          }}
 
 	        render json: response 
 	      }

@@ -38,7 +38,7 @@ function show_popup(){
 		type: "GET",
 		dataType : "JSON",
 		data: params,
-	}).done(function( data ) {			
+	}).done(function( data ) {	
 		$.each($('.jqxDropDownList'), function(key, value){
 			element = $('#' + value.id)				
 			$(element).jqxDropDownList({source: data['jqxDropDownLists'][value.id]});
@@ -78,12 +78,9 @@ function show_popup(){
 		$.each($('.jqxRecordLinkButton'), function(key, value){
 			element = $('#' + value.id + '.jqxRecordLinkButton')
 			$(element).data('data-id', data['jqxRecordLinkButton'][value.id])
-		});		
-		 
-
+		});				 
 	})
 
-		
 	$(".save").jqxButton({disabled:true})
 	$(".cancel").click(function () {
 //		window.parent.dataAdapter.dataBind();					

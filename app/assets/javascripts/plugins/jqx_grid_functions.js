@@ -131,14 +131,14 @@ function jqxIntialize(){
 		$('.jqxWindowTitleText').html('<br />');
 		$('#content').removeClass('modal-blur'); 
 	 }); 
-/*
+
 	$('.jqxRecordLinkButton').on('click', function(){
 		var base_url = $(this).attr('data-url')
 		var id = $(this).data('data-id')
 		var url = system.server + base_url + id
 		window.location = url
 	})
-*/	
+
 
 // ******************************
 // jqxInput Formatting Functions

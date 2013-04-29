@@ -96,3 +96,53 @@
 		</tr>	
 	</tbody>
 </table>	
+<script>
+$(document).ready(function(){
+	var theme = settings.theme
+	var url =  location.href  + '/asset_activity_facts.json';
+	var source = {
+		datatype: "json",
+		type: "GET",
+		datafields: [
+			{name: 'handle_code_description', type: 'string'}, 
+			{name: 'location_description', type: 'string'}, 
+			{name: 'location_network_description', type: 'string'}, 
+			{name: 'fact_time', type: 'date'},
+		], 
+		root: 'jqxGrid',
+		url: location.href,
+	};
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){
+			 	
+		},
+		loadComplete: function (data) {			
+			 
+		},
+		loadError: function (xhr, status, error) { }
+
+	});
+	//	window.dataAdapter = dataAdapter
+	// 	Initialize Grid
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['height'] = 150;
+	gridSettings['groupable'] = false;
+	gridSettings['columns'] = [
+		{text: 'Action', datafield: 'handle_code_description', filtertype:' checkedlist'},
+		{text: 'Location', datafield: 'location_description', filtertype:' checkedlist'},
+		{text: 'Network', datafield: 'location_network_description', filtertype:' checkedlist'},
+		{text: 'Date', datafield: 'fact_time', filtertype:' date', cellsformat:'d'},		
+	]
+	$(".jqxGrid").jqxGrid( gridSettings );	
+
+	var base_url = $(".view_record").attr('data-url')
+	var asset_id = $(".view_record").attr('id')
+	
+	asset_url = system.server + base_url + asset_id + '/edit'
+	$(".view_record").on('click', function(){		
+		window.parent.$(".jqxWindowIFrame").attr('src',asset_url);		   	
+	})
+});
+</script>

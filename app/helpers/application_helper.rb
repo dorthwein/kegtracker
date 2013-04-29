@@ -52,8 +52,6 @@ html = <<select_box
 		</div>
 		<div style="clear:both"></div>
 select_box
-
-
 		return html.html_safe # .to_s
 	end
 	def public_menu
@@ -79,6 +77,11 @@ html = <<html
 						#{link_to image_tag("playicon.png"), new_user_session_path}
 						<h6> Demo	</h5>
 					</td>
+					<td>	
+						#{link_to image_tag("mailicon.png"), :public_contact}
+						<h6> Contact	</h5>
+					</td>
+
 
 					<td>	
 						#{link_to image_tag("join_icon.png"), :public_join_index}

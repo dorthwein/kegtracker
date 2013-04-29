@@ -52,7 +52,7 @@ class Reports::AssetCyclesController < ApplicationController
   			   response[:jqxDropDownLists][:product_entity_id] = JqxConverter.jqxDropDownList([record.product.entity])
   			   response[:jqxDropDownLists][:asset_type_id] = JqxConverter.jqxDropDownList([record.asset_type])
   			   response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([record.asset.entity])
-
+           response[:jqxGrid] = current_user.entity.visible_asset_activity_facts.where(:asset_cycle_fact => record)
 	        render json: response 
 	      }
 	    end    

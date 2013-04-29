@@ -11,6 +11,7 @@
 	<div class="<%= 'popup popup_' + params[:action].to_s %>" data-url="<%= request.path %>">	
 		<div id="content" class="popup" data-role="content" style="margin:0px; padding:0px; position:relative;">			
 		<!-- Main Content -->	
+		
 			<%= yield %>												
 		</div>
 	</div>

@@ -10,7 +10,7 @@ function edit_popup(){
 		type: "GET",
 		dataType : "JSON",
 		data: params,
-	}).done(function( data ) {			
+	}).done(function( data ) {
 		$.each($('.jqxDropDownList'), function(key, value){			
 			element = $('#' + value.id)				
 			$(element).jqxDropDownList({source: data['jqxDropDownLists'][value.id]});
@@ -37,7 +37,6 @@ function edit_popup(){
 			element = $('#' + value.id)			
 			$(element).jqxDateTimeInput('setDate', new Date(data['record'][value.id])); 
 		});
-
 
 		$.each($('.jqxToggle'), function(key, value){
 			element = $('#' + value.id)
