@@ -27,7 +27,7 @@
 		<div class="dashboard button-group">
 			<h2> Browse / Lookup</h2>	
 			<%= link_to '<h3> Invoice Manifests </h3>'.html_safe, :accounting_invoices, :class => "dashboard button" %> 
-			<%= link_to '<h3> Assets </h3><h4> Current State</h4>'.html_safe, :reports_assets, :class => "dashboard button" %> 
+			<%= link_to '<h3> Assets </h3><h4> Current State</h4>'.html_safe, :maintenance_assets, :class => "dashboard button" %> 
 			<%= link_to '<h3> Locations </h3><h4> Current State</h4>'.html_safe, :reports_locations, :class => "dashboard button" %> 			
 			<%= link_to '<h3> Asset Cycles </h3><h4> Active</h4>'.html_safe, :reports_asset_cycles, :class => "dashboard button" %> 
 			<%= link_to '<h3> Asset Cycles </h3><h4> Completed </h4>'.html_safe, :reports_completed_asset_cycles, :class => "dashboard button" %> 
@@ -45,7 +45,7 @@
 			<%= link_to '<h3> Asset Activity </h3><h4> by SKU </h4>'.html_safe, :reports_float_activity_summary_report_simple, :class => "dashboard button" %> 
 
 			
-			<%= link_to '<h3> Overdue Assets </h3>'.html_safe, :reports_overdue_assets, :class => "dashboard button" %> 
+			<%= link_to '<h3> Overdue Assets </h3>'.html_safe, :maintenance_overdue_assets, :class => "dashboard button" %> 
 			
 			<%= link_to '<h3> Network Scorecard </h3>'.html_safe, :reports_network_performance_scorecard_report, :class => "dashboard button hidden" %> 
 			

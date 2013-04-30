@@ -3,19 +3,19 @@ module ApplicationHelper
 
 html = <<select_box
 		<div style="float:right; padding:10px">
-			<label style="font-size:14px; font-weight:bolder"> Reports </label> <br />
+			<!-- <label style="font-size:14px; font-weight:bolder"> Reports </label> <br /> -->
 			<select id="report_select_menu" class="select_menu link">	
 				<optgroup label="Asset Reports">				
 				
-					<option value="#{reports_assets_url}" class="indent"> 
-						Asset Report				
+					<option value="#{maintenance_assets_url}" class="indent"> 
+						Asset Maintenance				
 					</option>
 				
 					<option value="#{reports_assets_sku_summary_report_simple_url}" class="indent"> 
 						Inventory By SKU Summary Report
 					</option>
 					
-					<option value="#{reports_overdue_assets_url}" class="indent"> 
+					<option value="#{maintenance_overdue_assets_url}" class="indent"> 
 						Overdue Asset Return Report		
 					</option>
 
@@ -54,6 +54,8 @@ html = <<select_box
 select_box
 		return html.html_safe # .to_s
 	end
+
+
 	def public_menu
 html = <<html
 		<table>
@@ -95,8 +97,15 @@ html
 
 	return html.html_safe
 	end
-
-	def main_menu
+	def main
+html = <<html 
+	<div id="header">
+		#{link_to 'System', :system_entities } 
+	</div>
+html
+		return html.html_safe
+	end
+	def web_app_menu
 		if user_signed_in? && current_user.system_admin == 1
 system = <<html			
 			<li> System 
@@ -116,7 +125,7 @@ html
 		end 
 		if !user_signed_in?
 html = <<html
-		<div id="header" style="top:0; left: 0; height:30px; width:100%;">			
+		<div id="header" style="">			
 	        <div id="jqxMenu">
 	            <ul>    	            
 					<li> #{link_to 'Log in', new_user_session_path } </li>								
@@ -126,7 +135,7 @@ html = <<html
 html
 		else
 html = <<html
-		<div id="header" style="top:0; left: 0; height:30px; width:100%;">						
+		<div id="header">						
 			<div id="jqxMenu">
 	            <ul>                					
 					<li>
@@ -140,24 +149,12 @@ html = <<html
 					<li> 
 						Reporting 
 						<ul>
-							<li> 	
-								Invoices
-								<ul>
-									<li> 
-										#{link_to 'Lookup', :accounting_invoices }  
-									</li>
-								</ul>
-							</li>
 
 							<li> 	
 								Assets
 								<ul>
 									<li>
-										#{link_to 'Assets Report', :reports_assets }
-									</li>
-
-									<li>
-										#{link_to 'Overdue Assets Report', :reports_overdue_assets }
+										#{link_to 'Overdue Assets Report', :maintenance_overdue_assets }
 									</li>
 
 									<li>
@@ -224,6 +221,31 @@ html = <<html
 						Maintenance
 						<ul>
 							<li> #{link_to 'Users', :maintenance_users } </li>
+							<li> 	
+								Invoices
+								<ul>
+									<li> 
+										#{link_to 'Lookup', :accounting_invoices }  
+									</li>
+								</ul>
+							</li>
+
+							<li> 	
+								Assets
+								<ul>
+									<li>
+										#{link_to 'All Assets', :maintenance_assets }
+									</li>
+
+									<li>
+										#{link_to 'Overdue Assets', :maintenance_overdue_assets }
+									</li>
+
+									<li>
+										#{link_to 'Asset Cycles', :reports_asset_cycles }
+									</li>
+								</ul>							
+							</li>
 							<li>
 								Distribution
 								<ul>
@@ -252,13 +274,6 @@ html = <<html
 									<li> #{link_to 'Locations', :maintenance_locations } </li>
 								</ul>
 							</li>
-							<li>
-								Scanning
-								<ul>
-									<li> #{link_to 'Print Barcodes', :new_maintenance_barcode_maker } </li>
-									<li> #{link_to 'RFID', :maintenance_rfid_readers } </li>
-								</ul>
-							</li>	
 						</ul>
 					</li>
 					#{system}

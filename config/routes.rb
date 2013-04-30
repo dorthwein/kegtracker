@@ -7,8 +7,7 @@ Cobalt::Application.routes.draw do
 		end
 	end
 
-	namespace :maintenance do 		
-		
+	namespace :maintenance do 				
 		resources :rfid_antennas
 		resources :rfid_readers	  
 		match 'rfid_readers/reader_save' => 'rfid_readers#reader_save', :via => [:get, :post]
@@ -23,12 +22,11 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
 
 		devise_for :users	  	
-
-		resources :distribution_partnerships, :locations, :prices, :tax_rules, :locations, :skus, :users, :networks, :production_partnerships, :leasing_partnerships, :products, :barcodes, :production, :barcode_makers do
+		resources :distribution_partnerships, :assets, :overdue_assets, :locations, :prices, :tax_rules, :locations, :skus, :users, :networks, :production_partnerships, :leasing_partnerships, :products, :barcodes, :production, :barcode_makers do
 		  collection do
 		    delete 'delete_multiple'
 		    get 'delete_multiple' # Not needed
-			get 'trash'		    
+			get 'trash'		    # Not Implemented
 		  end
 		end
 
@@ -73,11 +71,10 @@ Cobalt::Application.routes.draw do
 		match 'assets/sku_summary_report_advanced' => 'assets#sku_summary_report_advanced', :via => [:get, :post]
 		match 'assets/sku_summary_report_simple' => 'assets#sku_summary_report_simple', :via => [:get, :post]		
 
-		resources :assets	
-		resources :overdue_assets	
+#		resources :assets	
+#		resources :overdue_assets	
 		resources :locations
-		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]
-		
+		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]		
 		resources :asset_cycles do 
 			resources :asset_activity_facts
 		end

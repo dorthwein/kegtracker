@@ -59,7 +59,7 @@ $(document).ready(function(){
 // Load Menu Bar
 	$("#jqxMenu").jqxMenu({ 	
 		width: '100%', 
-		height: 30,
+		height: '100%',
 		width:'100%',
 		enableHover:true,
 		autoOpen: true,
