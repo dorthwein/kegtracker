@@ -11,9 +11,9 @@ class BillingFact
 	field :bill_to_entity_description, type: String
 	
 	field :kt_assets, type: Array
-	field :kt_ce_days, type: BigDecimal
-	field :kt_rate, type: BigDecimal
-	field :kt_charge, type: BigDecimal
+	field :kt_ce_days, type: BigDecimal, default: 0
+	field :kt_rate, type: BigDecimal, default: 0
+	field :kt_charge, type: BigDecimal, default: 0
 
 	field :paid, type: Integer, default: 0
 
