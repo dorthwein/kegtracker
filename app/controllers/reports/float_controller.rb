@@ -78,8 +78,11 @@ class Reports::FloatController < ApplicationController
 				fact_time_start = Time.now - (86400 * 180)
 	        	fact_time_end = Time.now - (86500)
 				
+    	    	
 
-			  source = current_user.entity.network_facts.gt(:fill_life_cycle_completed_cycles.gt => 0, :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end)	          
+#			  source = current_user.entity.network_facts.where(:delivery_life_cycle_completed_cycles.gt => 0, :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end)	          
+
+			  source = current_user.entity.network_facts.where(:fill_life_cycle_completed_cycles.gt => 0, :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end)	          
 #	          source = current_user.entity.visible_assets		          
 	          render json: GoogleChartApi.table(source, cols)
 		  	}
