@@ -11,8 +11,8 @@ class BreweryAppsInvoiceLineItem
 	belongs_to :brewery_apps_invoice
 	field :subscription_code, type: Integer
 
-	field :billable_units, type: BigDecimal
-	field :billing_rate, type: BigDecimal
+	field :billable_units, type: BigDecimal, default: 0
+	field :billing_rate, type: BigDecimal, default: 0
 	field :total, type: BigDecimal, default: 0.00
 
 	def get_subscription_description
