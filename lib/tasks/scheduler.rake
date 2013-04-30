@@ -1,4 +1,10 @@
 desc "Schedule Tasks"
+task :billing_test => :environment do 
+	build_report = BuildReport.new(Time.now)
+	build_report.charge_credit_card
+	build_report.process_billing
+end
+
 task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.now)
 	build_report.network_facts

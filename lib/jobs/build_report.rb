@@ -179,8 +179,7 @@ class BuildReport
 	end
 
  	def process_billing
- 		print 'billing disabled'
-=begin
+
  		Entity.all.each do |entity| 			
  		# Get Current Invoice
  			current_billing_month = @date.month
@@ -309,8 +308,7 @@ class BuildReport
 					end 			
 	 			end
 	 		end
- 		end
-=end 		
+ 		end		
  	end
  end
 
