@@ -67,7 +67,6 @@ function jqxIntialize(){
 			ids.push(rowdata['_id'])
 		})
 
-		alert(JSON.stringify(ids))
 		$.ajax({
 			type: "DELETE",
 			dataType : "JSON",
@@ -75,8 +74,7 @@ function jqxIntialize(){
 			data: { 
 				ids: ids,
 			},
-		}).done(function( data ) {
-			alert(JSON.stringify(data));
+		}).done(function( data ) {			
 			window.dataAdapter.dataBind();
 		});		        	
 	});
