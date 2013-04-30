@@ -194,7 +194,11 @@ task :save_all => :environment do
 			print "Asset Type Saved \n"
 		end
 	end
-
+	NetworkFact.all.each do |x|
+		if x.save!
+			print "Network Fact Saved \n"
+		end
+	end
 	
 end
 task :save_network_facts => :environment do

@@ -74,7 +74,12 @@ class Reports::FloatController < ApplicationController
 				{:id => :fill_life_cycle_completed_cycles, label: '# Cycles', type: 'number'},
 				{:id => :fact_time, label: 'Date', type: 'date'},
 	          ]
-			  source = current_user.entity.network_facts.gt(fill_life_cycle_completed_cycles: 0)	          
+				
+				fact_time_start = Time.now - (86400 * 180)
+	        	fact_time_end = Time.now - (86500)
+				
+
+			  source = current_user.entity.network_facts.gt(:fill_life_cycle_completed_cycles.gt => 0, :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end)	          
 #	          source = current_user.entity.visible_assets		          
 	          render json: GoogleChartApi.table(source, cols)
 		  	}
@@ -113,9 +118,14 @@ class Reports::FloatController < ApplicationController
 				{:id => :delivery_life_cycle_completed_cycles, label: '# Cycles', type: 'number'},
 				{:id => :fact_time, label: 'Date', type: 'date'},
 	          ]
-			  source = current_user.entity.network_facts.gt(delivery_life_cycle_completed_cycles: 0)	          
+
+    	    	fact_time_start = Time.now - (86400 * 180)
+	        	fact_time_end = Time.now - (86500)
+
+
+			  	source = current_user.entity.network_facts.where(:delivery_life_cycle_completed_cycles.gt => 0, :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end)	          
 #	          source = current_user.entity.visible_assets		          
-	          render json: GoogleChartApi.table(source, cols)
+	          	render json: GoogleChartApi.table(source, cols)
 		  	}
 				#.map{|x| {
 					

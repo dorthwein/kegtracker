@@ -157,7 +157,7 @@ html = <<html
 									</li>
 
 									<li>
-										#{link_to 'Overdue Assets Report', :reports_assets }
+										#{link_to 'Overdue Assets Report', :reports_overdue_assets }
 									</li>
 
 									<li>

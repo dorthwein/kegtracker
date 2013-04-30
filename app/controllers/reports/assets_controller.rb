@@ -163,12 +163,14 @@ class Reports::AssetsController < ApplicationController
           {:id => :total_quantity, label: 'Total',  type: 'number' },
           {:id => :fact_time, label: 'Date', type: 'date'},
         ]
+        fact_time_start = Time.now - (86400 * 180)
+        fact_time_end = Time.now - (86500)
 
         source = current_user.entity.network_facts.any_of(
-          {:empty_quantity.gt => 0},
-          {:full_quantity.gt => 0},
-          {:market_quantity.gt => 0},
-          {:total_quantity.gt => 0},
+          {:empty_quantity.gt => 0,   :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end},
+          {:full_quantity.gt => 0,    :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end},
+          {:market_quantity.gt => 0,  :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end},
+          {:total_quantity.gt => 0,   :fact_time.gt => fact_time_start, :fact_time.lt => fact_time_end},
         )
         render json: GoogleChartApi.table(source, cols)
 	    }
