@@ -149,8 +149,7 @@ class Reports::AssetsController < ApplicationController
 	def sku_summary_report_simple
 		respond_to do |format|  
 			format.html
-	    format.json {
-  			
+	    format.json {  
         cols = [
           {:id => :location_network_description, label: 'Location Network', type: 'string'},    
           {:id => :product_entity_description, label: 'Brewer', type: 'string'},    
@@ -175,6 +174,8 @@ class Reports::AssetsController < ApplicationController
 		end
 	end	
 end
+
+
 
 
 

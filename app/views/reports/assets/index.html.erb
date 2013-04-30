@@ -14,6 +14,7 @@
 
 <script>
 $(document).ready(function(){
+
 /*      
 	Datafields Mapping
       a: entity_description,
@@ -82,11 +83,11 @@ $(document).ready(function(){
 	var gridSettings = settings.jqxGridProperties
 	gridSettings['source'] = dataAdapter;
 	gridSettings['columns'] = [
-		{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },		
-		{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },			
+		{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },
+		{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },
 		{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
-		{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },	
-		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },					
+		{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },
+		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },
 		{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd'  },
 		{ text: 'Tag Value', datafield: 'c', hidden:true },
 
@@ -95,8 +96,6 @@ $(document).ready(function(){
 		{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
 		{ text: 'Batch Number', datafield: 'n'},
 		{ text: 'Invoice Number', datafield: 'o', hidden:true},
-
-
 
 		{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
 		{ text: 'Cycle', datafield: 'l', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
