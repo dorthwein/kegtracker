@@ -77,20 +77,20 @@ class Ability
 	end
 
 	if user.operation == 3
-		can [:update, :destroy], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
-		can [:update, :destroy], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
-		can [:update, :destroy], Asset, :entity_id => user.entity_id 	# Assets I own
+		can [:update, :destroy, :delete_multiple], Asset, :product_id => user.entity.production_products.map{|x| x._id}		# Visible Products
+		can [:update, :destroy, :delete_multiple], Asset, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+		can [:update, :destroy, :delete_multiple], Asset, :entity_id => user.entity_id 	# Assets I own
 
 		if user.entity.keg_tracker == 1
-			can [:update, :destroy], Location, entity_id: user.entity_id
-			can [:update, :destroy], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
+			can [:update, :destroy, :delete_multiple], Location, entity_id: user.entity_id
+			can [:update, :destroy, :delete_multiple], Location, :network_id.in => user.entity.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5
 
-			can [:update, :destroy], DistributionPartnership, entity_id: user.entity_id
-			can [:update, :destroy], ProductionPartnership, entity_id: user.entity_id
+			can [:update, :destroy, :delete_multiple], DistributionPartnership, entity_id: user.entity_id
+			can [:update, :destroy, :delete_multiple], ProductionPartnership, entity_id: user.entity_id
 
-			can [:update, :destroy], Network, :entity_id => user.entity_id 
-			can [:update, :destroy], Product, :_id => user.entity.production_products.map{|x| x._id}
-			can [:update, :destroy], Sku, :product_id => user.entity.production_products.map{|x| x._id}
+			can [:update, :destroy, :delete_multiple], Network, :entity_id => user.entity_id 
+			can [:update, :destroy, :delete_multiple], Product, :_id => user.entity.production_products.map{|x| x._id}
+			can [:update, :destroy, :delete_multiple], Sku, :product_id => user.entity.production_products.map{|x| x._id}
 		end
 	end
 
@@ -115,9 +115,9 @@ class Ability
 		end
 
 		if user.financial == 3
-			can [:update, :destroy], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
-			can [:update, :destroy], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
-			can [:update, :destroy], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
+			can [:update, :destroy, :delete_multiple], Invoice, :_id => user.entity.visible_invoices.map{|x| x._id}
+			can [:update, :destroy, :delete_multiple], InvoiceAttachedAsset, :_id => user.entity.visible_invoice_attached_assets.map{|x| x._id}
+			can [:update, :destroy, :delete_multiple], InvoiceLineItem, :_id => user.entity.visible_invoice_line_items.map{|x| x._id}
 		end
 	end
 
@@ -135,7 +135,7 @@ class Ability
 		can [:create], User
 	end
 	if user.account == 3
-		can [:update, :destroy], User, :entity_id => user.entity_id
+		can [:update, :destroy, :delete_multiple], User, :entity_id => user.entity_id
 		can [:update], Entity, _id: user.entity_id
 	end
 
