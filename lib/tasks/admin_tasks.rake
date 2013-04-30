@@ -1,4 +1,5 @@
-desc "Schedule Tasks"
+desc "Admin Tasks"
+=begin
 task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.now)
 	build_report.network_facts
@@ -37,7 +38,7 @@ task :thirty_day_build => :environment do
 		a.network_facts
 	end	
 end
-
+=end
 task :invoice_detail_to_attached_asset => :environment do
 	Invoice.all.each do |x|
 		x.invoice_detail_to_attached_asset
