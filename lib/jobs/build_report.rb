@@ -209,8 +209,9 @@ class BuildReport
 		 			
 		 			# For each asset type, get total CEs for assets of that type
 		 			assets.group_by{ |x| x.asset_type_id }.each do |x|	 			 				
-		 				asset_type = AssetType.find(x[0])
-		 				total_ces = total_ces + (BigDecimal.new(x[1].length.to_i) * BigDecimal.new(asset_type.measurement_unit_qty))
+		 				asset_type = AssetType.find(x[0])		 						 		
+		 				total_ces = total_ces +  (BigDecimal.new(x[1].length.to_i) * asset_type.measurement_unit_qty )
+		 				
 		 			end
 				end
 				
@@ -227,7 +228,7 @@ class BuildReport
 		# KEGTRACKER LINE ITEMS	
 			subscription_code = 1
 			keg_tracker_billable_units = BigDecimal.new(0)
-			keg_tracker_rate = BigDecimal.new(entity.kt_rate)
+			keg_tracker_rate = entity.kt_rate
 			keg_tracker_total = BigDecimal.new(0)
 
 			current_invoice.billing_facts.where(:paid => 0).each do |x|
