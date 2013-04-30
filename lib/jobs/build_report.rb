@@ -232,8 +232,8 @@ class BuildReport
 			keg_tracker_total = BigDecimal.new(0)
 
 			current_invoice.billing_facts.where(:paid => 0).each do |x|
-				keg_tracker_billable_units = keg_tracker_billable_units + BigDecimal.new(x.kt_ce_days)
-				keg_tracker_total = keg_tracker_total + BigDecimal.new(x.kt_charge)
+				keg_tracker_billable_units = keg_tracker_billable_units + x.kt_ce_days
+				keg_tracker_total = keg_tracker_total + x.kt_charge
 			end
 			keg_tracker_total = keg_tracker_total.round(2)
 
@@ -258,7 +258,7 @@ class BuildReport
 		# TOTAL INVOICE
 			invoice_total = BigDecimal.new(0)
 			current_invoice.brewery_apps_invoice_line_items.each do |x|
-				invoice_total = invoice_total + BigDecimal.new(x.total)
+				invoice_total = invoice_total + x.total
 			end
 			invoice_total = invoice_total.round(2)
 			# Fill in current_invoice details
