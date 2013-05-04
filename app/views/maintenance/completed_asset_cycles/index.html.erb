@@ -1,0 +1,128 @@
+    <div class="full display">
+        <div class="toolbar">
+            <h3 class="left">   Completed Asset Cycle Maintenance    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+<!--                	
+                    <button class='new'> New </button>
+                    <button class='delete'> Delete </button>
+-->                    
+                    <button class='excelExport'> Excel </button>       
+                    <button class='jqxFilterToggle'> Filter Off </button>
+                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
+                </div>
+                <div id="gridOptionsExtended">
+                    <div class="jqxGridColumnListBox">  </div>                
+                </div>
+            </div>
+        </div>        
+        <div class="jqxGrid full display">  </div>
+    </div>
+<script>
+$(document).ready(function(){
+/*
+a: start_network_description
+b: fill_network_description
+c: delivery_network_description
+d: pickup_network_description
+e: end_network_description
+f: product_description
+g: product_entity_description
+h: asset_type_description
+i: asset_status_description
+j: handle_code_description
+k: start_time
+l: fill_time
+m: delivery_time
+n: pickup_time
+o: end_time
+p: cycle_complete_description
+q: _id
+*/
+	var source =
+	{
+		datatype: "json",
+		datafields: [
+			{ name: 'a', type: 'string'},
+			{ name: 'b', type: 'string'},
+			{ name: 'c', type: 'string'},
+			{ name: 'd', type: 'string'},
+			{ name: 'e', type: 'string'},
+			{ name: 'f', type: 'string'},
+			{ name: 'g', type: 'string'},
+			{ name: 'h', type: 'string'},
+			{ name: 'i', type: 'string'},
+			{ name: 'j', type: 'string'},
+			{ name: 'k', type: 'date'},
+			{ name: 'l', type: 'date'},
+			{ name: 'm', type: 'date'},
+			{ name: 'n', type: 'date'},
+			{ name: 'o', type: 'date'},
+			{ name: 'p', type: 'string'},
+			{ name: 'q'},
+			{ name: 'r', type: 'string'},
+
+			
+			
+		],
+		url: parseUrl(location),
+		updaterow: function (rowid, rowdata, commit) {
+			// synchronize with the server - send update command
+			// call commit with parameter true if the synchronization with the server is successful 
+			// and with parameter false if the synchronization failder.		
+			commit(true);
+		}
+		
+	};
+/*
+	On grid load - get total # rows
+*/
+
+
+	window.dataAdapter = new $.jqx.dataAdapter(source, {
+		beforeSend: function(jqXHR, settings){		
+			 	
+		},
+		loadComplete: function (data) { 
+			 
+		},
+		loadError: function (xhr, status, error) { }      
+	});
+//	window.dataAdapter = dataAdapter
+	// Initialize Grid
+	var gridSettings = settings.jqxGridProperties
+	gridSettings['source'] = dataAdapter;
+	gridSettings['columns'] = [
+		{ text: 'Product', datafield: 'f', filtertype:'checkedlist'},
+		{ text: 'Brewery', datafield: 'g', filtertype:'checkedlist', hidden:true},
+		{ text: 'Size', datafield: 'h', filtertype:'checkedlist'},
+		{ text: 'Batch #', datafield: 'r'},
+		{ text: 'Start', datafield: 'a', filtertype:'checkedlist', hidden:true},
+		{ text: 'Start Date', datafield: 'k', filtertype: 'date', cellsformat: 'd', hidden:true},
+		{ text: 'Fill Network', datafield: 'b', filtertype:'checkedlist', hidden:true},
+		{ text: 'Fill Date', datafield: 'l', filtertype: 'date', cellsformat: 'd'},
+		
+		{ text: 'Delivery Network', datafield: 'c', filtertype:'checkedlist'},
+		{ text: 'Delivery Date', datafield: 'm', filtertype: 'date', cellsformat: 'd'},
+		{ text: 'Pickup Network', datafield: 'd', filtertype:'checkedlist'},
+		{ text: 'Pickup Date', datafield: 'n', filtertype: 'date', cellsformat: 'd'},
+		{ text: 'End Date', datafield: 'o', filtertype: 'date', cellsformat: 'd'},
+		{ text: 'Complete', datafield: 'p', filtertype: 'checkedlist', width: '100px' },
+
+	
+		{ text: 'View', datafield: 'q', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+			return 'View'
+		}, buttonclick: function (row) {
+			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+			var url = parseUrl(location) + "/" + rowdata['q'] + "/edit"
+			openPopupWindow(url)
+		}},	
+	
+	]
+
+	$(".jqxGrid").jqxGrid( gridSettings );	
+	jqxIntialize()
+	 					
+});
+</script>
