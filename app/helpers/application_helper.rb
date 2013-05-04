@@ -339,16 +339,10 @@ html = <<html
 	                </ul>
 	            </div>
 	        </div>
-	        
-	        <div class="section expandable"> 
-	            <h4 class="title"> Scanning </h4> 
-	            <div class="content">   
-	                <ul>   
-	                    <li>    #{ link_to 'Scanner', :scanners_barcode }    </li>
-	                    <li>    #{ link_to 'RFID', :scanners_rfid_readers }  </li>        
-	                </ul>
-	            </div>            
+	        <div class="section"> 				
+				<h4 class="title" style="font-weight:normal"> #{ link_to 'Scanner', :scanners_barcode }  </h4>
 	        </div>
+	        
 	    </div>
 
 html
