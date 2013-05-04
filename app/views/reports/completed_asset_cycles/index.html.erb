@@ -62,7 +62,7 @@ q: _id
 			
 			
 		],
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -111,7 +111,7 @@ q: _id
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = location.href + "/" + rowdata['q'] + "/edit"
+			var url = parseUrl(location) + "/" + rowdata['q'] + "/edit"
 			openPopupWindow(url)
 		}},	
 	

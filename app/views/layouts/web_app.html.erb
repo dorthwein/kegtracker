@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta name="viewport" content="width=960, user-scalable=no" /> 
+
 	<head>
 	  <title>Brewery Apps</title>
+
+    <link rel="apple-touch-icon" href="/assets/brewery_apps_logo.png"/>
+
 	  <%= stylesheet_link_tag    "web_app_manifest"%>
 	  <%= javascript_include_tag "application" %>
+	  <%= javascript_include_tag "web_app" %>
 	  <%= csrf_meta_tags %>
 		<script type="text/javascript">
 
@@ -18,53 +26,41 @@
 		  })();
 
 		</script>	  
-
 	    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	    <script type="text/javascript">
 	      // Load the Visualization API and the piechart package.
 			google.load('visualization', '1.0', {'packages':['corechart', 'table', 'controls']});
 	//		google.setOnLoadCallback(drawChart);
 	    </script>
-	    <meta name="viewport" content="width=960, user-scalable=yes" />   
+
 	</head>
 
-
-
-
-
-
-
-
-
-
-	<body style="display:none"> 
-		<%= web_app_menu %>
+	<body> 		
 		<div id="content">
+			<%= side_navigation_bar %> 
 		<!-- Main Content -->	
-			 <%= yield %>
+			<div id="page_view">
+			 	<%= yield %>
+			</div>
+
+    
+
+		<div id="modal_box" style="position: absolute; left: 50%; display:none;">
+			<div style="position: relative; left: -50%;">
+				<div id="modal_title">	
+					<br />
+				</div>
+				<div id="modal_content" style="background:#FFF">		
+					
+				</div>
+			</div>						
 		</div>
 
 		<div id="footer" style="position:fixed; bottom:0px">
 			<span style="float:left; padding:0px 0px 0px 10px"> Brewery Apps</span>
 			<span style="float:right; padding: 0px 10px 0px 0px"> Black Stag Solutions, LLC </span>
 		</div>
-
 		<!-- JQX Modal Window --> 	
-		<div class="jqxWindow" style="display:none">
-			<div class="jqxWindowTitle">	
-				<span class="jqxWindowTitleText">
-					<br />	
-				</span>
-			</div>
-			<div class="jqxWindowContent" style="background:#FFF">		
-	<!--		
-				<div class="jqxWindowIFrame">
-				</div>
-	-->				
-				<iframe width="100%" height="99%" src="" class="jqxWindowIFrame"> </iframe>
-
-			</div>
-		</div>
 	</body>
 </html>
 

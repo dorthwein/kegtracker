@@ -1,27 +1,28 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
-	
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
-<table class="popup jqxValidator">
+
+<table class="popup">
 	<tbody>
 		<tr>
-			<th colspan="4"> <h3> Login </h3> </th>			
+			<th colspan="4"> <h3> User </h3> </th>			
 		</tr>
 
+
 		<tr>
-			<td>
-				<b> Email/Login </b>
+			<td>				
+				<b> E-Mail </b>
 			</td>
 			<td>
-				<input type="text" id="email" class="jqxInput required" data-role="none" />
+				<%= text_field(:user, :email, :class => 'required') %>				
 			</td>
 			<td>	
 				<b> Entity </b>
 			</td>
-			<td>	
-				<div id="entity_id" class="jqxDropDownList required ">		
-              	</div>
+			<td>				
+				<%= select(:user, :entity_id, @entities.map{|x| [x.description, x._id]}, :include_blank => true, :class => 'required') %>		
 			</td>
 
 		</tr>
@@ -30,13 +31,14 @@
 				<b> Change Password </b>
 			</td>
 			<td>
-				<input type="password" class="jqxInput" id="password" data-role="none" />
-			</td>
+				<%= password_field(:user, :password) %>
+			
+			</td>	
 			<td>
 	            <b> Confirm Password </b>
 	        </td>
 	        <td>
-				<input type="password" id="password_confirmation" class="jqxInput" data-role="none" />
+	        	<%= password_field(:user, :password_confirmation) %>				
 			</td>
 		</tr>
 		<tr>
@@ -47,14 +49,14 @@
 				<b > First Name </b>
 			</td>
 		 	<td>
-		 		<input type="text" id="first_name" class="jqxInput" data-role="none" />
+		 		<%= text_field(:user, :first_name) %>				
 		 	</td>
 		
 			<td>
 				<b> Last Name </b>
 			</td>
 			<td>
-				<input type="text" id="last_name" class="jqxInput" data-role="none" />	            				
+				<%= text_field(:user, :last_name) %>				
 			</td>
 		</tr>
 		<tr>
@@ -62,13 +64,13 @@
 				<b> Office Phone </b>
 			</td>
 			<td>
-				<input type="text" id="office_phone" class="jqxInput" data-role="none" />	
+				<%= text_field(:user, :office_phone) %>				
 			</td>
 			<td>
 				<b> Cell Phone </b>
 			</td>
 			<td>
-				<input type="text" id="cell_phone" class="jqxInput" data-role="none" />
+				<%= text_field(:user, :cell_phone) %>				
 			</td>
 		</tr>		
 		<tr>
@@ -79,26 +81,22 @@
                 <b> Operations </b>
             </td>
             <td>
-              	<div id="operation" class="jqxDropDownList required">
-              		Off
-              	</div>
-            </td>
+            	
+				<%= select(:user, :operation, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				         
+			</td>
             <td>	            
                 <b> Financials </b>
             </td>
             <td>
-              	<div id="financial" class="jqxDropDownList required">
-              		Off
-              	</div>
+            	<%= select(:user, :financial, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				
             </td>
+        </tr>
         <tr>
         	<td>
                 <b> Account Admin </b>
             </td>
             <td>
-              	<div id="account" class="jqxDropDownList required">
-              		Off
-              	</div>
+              	<%= select(:user, :account, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				
             </td>
             <td>
 
@@ -108,4 +106,4 @@
         </tr>
 	</tbody>
 </table>	
-
+<% end %>

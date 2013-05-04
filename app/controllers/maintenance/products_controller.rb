@@ -1,6 +1,6 @@
 class Maintenance::ProductsController < ApplicationController
   before_filter :authenticate_user!
-  layout "web_app"
+  
   load_and_authorize_resource
   # GET /products
   # GET /products.json
@@ -16,21 +16,17 @@ class Maintenance::ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    @record = Product.find(params[:id])        
+    @product_types = ProductType.all
+    @entities = [current_user.entity]
+
     respond_to do |format|
-      record = Product.find(params[:id])        
-      if can? :update, record 
+      if can? :update, @record 
         format.html {redirect_to :action => 'edit'}
       else
         format.html {render :layout => 'popup'}
         format.json { 
-      
-
           response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-
           render json: response 
         }
       end
@@ -40,17 +36,14 @@ class Maintenance::ProductsController < ApplicationController
   # GET /products/new
   # GET /products/new.json
   def new
+    @record = Product.new    
+    @product_types = ProductType.all
+    @entities = [current_user.entity]
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = Product.new
+      format.json {         
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-
         render json: response 
       }
     end    
@@ -58,16 +51,14 @@ class Maintenance::ProductsController < ApplicationController
 
   # GET /products/1/edit
   def edit
+    @record = Product.find(params[:id])        
+    @product_types = ProductType.all
+    @entities = [current_user.entity]
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
       format.json { 
-        record = Product.find(params[:id])
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:product_type_id] = JqxConverter.jqxDropDownList(ProductType.all)
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-
         render json: response 
       }        
     end
@@ -76,26 +67,21 @@ class Maintenance::ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    record = Product.new(params[:record])
-    respond_to do |format|
-      if record.save
-        format.html 
-        format.json {  render json: {} }
-      else
-        format.html { render action: "new" }
-        format.json {  render json: {} }
-      end
+    @record = Product.new(params[:product])
+    @record.save!
+    respond_to do |format|    
+      format.html { head :no_content}
+      format.json {  render json: {} }
     end
   end
 
   # PUT /products/1
   # PUT /products/1.json
   def update
-    record = Product.find(params[:id])
-    record.update_attributes(params[:record])
+    @record = Product.find(params[:id])
+    @record.update_attributes(params[:product])
     
     respond_to do |format|
-      format.html
       format.json {
         render json: {}
       }
@@ -105,8 +91,8 @@ class Maintenance::ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    record = Product.find(params[:id])
-    record.trash
+    @record = Product.find(params[:id])
+    @record.trash
     respond_to do |format|
       format.json { head :no_content }
     end
@@ -114,20 +100,20 @@ class Maintenance::ProductsController < ApplicationController
 
   def restore_multiple
     respond_to do |format|    
-      records = Product.where(:id.in => params[:ids])      
-      records.restore
+      @records = Product.where(:id.in => params[:ids])      
+      @records.restore
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 
   def delete_multiple
     respond_to do |format|    
-      records = Product.where(:id.in => params[:ids])      
-      records.trash
+      @records = Product.where(:id.in => params[:ids])      
+      @records.trash
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end

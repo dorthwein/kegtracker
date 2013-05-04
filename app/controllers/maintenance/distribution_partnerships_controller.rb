@@ -1,14 +1,13 @@
 class Maintenance::DistributionPartnershipsController < ApplicationController
   before_filter :authenticate_user!
-  layout "web_app"
   load_and_authorize_resource
 
   def index    		
     respond_to do |format|
       format.html # index.html.erb
       format.json {      	
-	      records = current_user.entity.distribution_partnerships.where(record_status: 1)
-	     	render json: records
+	      @records = current_user.entity.distribution_partnerships.where(record_status: 1)
+	     	render json: @records
       }
     end
   end
@@ -17,8 +16,8 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {       
-        records = current_user.entity.distribution_partnerships.where(record_status: 0)
-        render json: records
+        @records = current_user.entity.distribution_partnerships.where(record_status: 0)
+        render json: @records
       }
     end
   end
@@ -27,18 +26,16 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # GET /locations/1.json
   def show
     respond_to do |format|
-      record = DistributionPartnership.find(params[:id])     
-      if can? :update, record 
+      @record = DistributionPartnership.find(params[:id])
+      @entities = [current_user.entity]  
+      @partners = Entity.distribution_entities
+
+      if can? :update, @record 
         format.html {redirect_to :action => 'edit'}
       else       
         format.html {render :layout => 'popup'}
         format.json { 
-        response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])    
-          response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-
+          response = {}
           render json: response 
         }
       end
@@ -48,15 +45,14 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.json
   def new
+    @record = DistributionPartnership.new        
+    @entities = [current_user.entity]  
+    @partners = Entity.distribution_entities
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
       format.json { 
-        record = DistributionPartnership.new        
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
         render json: response 
       }
     end
@@ -64,16 +60,14 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
 
   # GET /locations/1/edit
   def edit    
+    @record = DistributionPartnership.find(params[:id])     
+    @entities = [current_user.entity]  
+    @partners = Entity.distribution_entities
+
     respond_to do |format|      
       format.html {render :layout => 'popup'}
       format.json { 
-        record = DistributionPartnership.find(params[:id])
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])    
-        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.distribution_entities)
-
         render json: response 
       }        
     end
@@ -84,17 +78,9 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-      	record = DistributionPartnership.find_or_create_by(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id])
-#        entity_partnership = EntityPartnership.where(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id]).first
-#        if entity_partnership.nil?
-        	# If nil, create
-#        	entity_partnership = EntityPartnership.new(  params[:record])
-#          entity_partnership.distribution_partnership = 1
-#        else
-#        	entity_partnership.distribution_partnership = 1        	
-#        end               
-          record.update_attribute(:record_status, 1)
-          render json: record
+      	@record = DistributionPartnership.find_or_create_by(:entity_id => params[:distribution_partnership][:entity_id], :partner_id => params[:distribution_partnership][:partner_id])
+        @record.update_attribute(:record_status, 1)
+        render json: @record
       }        
     end
   end
@@ -102,10 +88,9 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # PUT /locations/1
   # PUT /locations/1.json
   def update	
-    record = DistributionPartnership.find(params[:id])
-    record.update_attributes(params[:record])    
-    respond_to do |format|
-      format.html
+    @record = DistributionPartnership.find(params[:id])
+    @record.update_attributes(params[:distribution_partnership])    
+    respond_to do |format|    
       format.json {
         render json: {}
       }
@@ -116,8 +101,8 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
   # DELETE /locations/1.json
   # Intentionally Delete
   def destroy
-    record = DistributionPartnership.find(params[:id])
-    record.trash
+    @record = DistributionPartnership.find(params[:id])
+    @record.trash
     respond_to do |format|    
       format.json { head :no_content }
     end
@@ -125,20 +110,20 @@ class Maintenance::DistributionPartnershipsController < ApplicationController
 
   def restore_multiple
     respond_to do |format|    
-      records = DistributionPartnership.where(:id.in => params[:ids])      
-      records.restore
+      @records = DistributionPartnership.where(:id.in => params[:ids])      
+      @records.restore
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 
   def delete_multiple
     respond_to do |format|    
-      records = DistributionPartnership.where(:id.in => params[:ids])      
-      records.trash
+      @records = DistributionPartnership.where(:id.in => params[:ids])      
+      @records.trash
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end

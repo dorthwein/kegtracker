@@ -99,7 +99,7 @@
 <script>
 $(document).ready(function(){
 	var theme = settings.theme
-	var url =  location.href  + '/asset_activity_facts.json';
+	var url =  parseUrl(location)  + '/asset_activity_facts.json';
 	var source = {
 		datatype: "json",
 		type: "GET",
@@ -110,7 +110,7 @@ $(document).ready(function(){
 			{name: 'fact_time', type: 'date'},
 		], 
 		root: 'jqxGrid',
-		url: location.href,
+		url: parseUrl(location),
 	};
 
 	window.dataAdapter = new $.jqx.dataAdapter(source, {

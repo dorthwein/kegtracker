@@ -183,7 +183,6 @@ $(document).ready(function(){
 				type: "POST",
 				dataType: "JSON",
 				url: location.href,
-				context: document.body,
 				data: {
 					user: {
 						first_name: $('#first_name').val(),
@@ -204,6 +203,8 @@ $(document).ready(function(){
 			}).done(function(data) {
 				if(data['success'] == true){
 					location.href = system.server + '/users/sign_in'
+				}else {
+					alert('Sorry e-mail is taken.  Please try a different e-mail or contact us here at Brewery Apps - help@breweryapps.com')
 				}				
 			});    		
 

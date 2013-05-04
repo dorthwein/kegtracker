@@ -6,7 +6,6 @@ html = <<select_box
 			<!-- <label style="font-size:14px; font-weight:bolder"> Reports </label> <br /> -->
 			<select id="report_select_menu" class="select_menu link">	
 				<optgroup label="Asset Reports">				
-				
 					<option value="#{maintenance_assets_url}" class="indent"> 
 						Asset Maintenance				
 					</option>
@@ -28,10 +27,10 @@ html = <<select_box
 					<option value="#{reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network_url}" class="indent"> 
 						Asset Cycle Summary by SKU by Distribution Channel Report 
 					</option>
-					<option value="#{reports_asset_cycles_url}" class="indent"> 
+					<option value="#{maintenance_asset_cycles_url}" class="indent"> 
 						Active Asset Cycles Report
 					</option>
-					<option value="#{reports_completed_asset_cycles_url}" class="indent"> 
+					<option value="#{maintenance_completed_asset_cycles_url}" class="indent"> 
 						Completed Asset Cycles Report
 					</option>
 				</optgroup>
@@ -95,17 +94,23 @@ html = <<html
 		</table>
 html
 
-	return html.html_safe
-	end
-	def main
-html = <<html 
-	<div id="header">
-		#{link_to 'System', :system_entities } 
-	</div>
-html
 		return html.html_safe
 	end
 	def web_app_menu
+html = <<html
+		<div id="header" style="display:none;">
+			<div style="text-align:left; width:40%; float:left;">
+				 #{current_user.entity.description}	
+			</div>
+			<div style="text-align:right; width:40%; float:right;">
+				#{ link_to image_tag('brewery_apps_logo.png', :style => 'height:25px;'), :public_home }
+			</div>
+		</div>
+html
+		return html.html_safe
+	end
+
+	def display_menu
 		if user_signed_in? && current_user.system_admin == 1
 system = <<html			
 			<li> System 
@@ -154,58 +159,36 @@ html = <<html
 								Assets
 								<ul>
 									<li>
-										#{link_to 'Overdue Assets Report', :maintenance_overdue_assets }
-									</li>
-
-									<li>
 										#{link_to 'Inventory By SKU Summary Report', :reports_assets_sku_summary_report_simple }
 									</li>
+
 									<li>
-										#{link_to 'Active Asset Cycles', :reports_asset_cycles }
+										#{link_to 'Asset Cycle Summary by SKU by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network } 
 									</li>
 
 									<li>
-										#{link_to 'Completed Asset Cycles', :reports_completed_asset_cycles }
+										#{link_to 'Asset Cycle Summary by SKU by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network } 
 									</li>
 
-								</ul>							
+								</ul>
 							</li>
 
 							<li> 	
 								Locations
 								<ul>
 									<li>
-										#{link_to 'Browse', :reports_locations }
+
 									</li>
 								</ul>							
 							</li>
-							<li style="display:none;"> 	
+							<li> 	
 								Network
 								<ul>
 									<li>
-										#{link_to 'Performance Scorecard', :reports_network_performance_scorecard_report } 																		
+
 									</li>
 								</ul>							
 							</li>
-								
-							<li> 	
-								Activity
-								<!-- Broad float wide reporting --> 
-								<ul>
-									<li>
-										#{link_to 'Asset Cycle Summary by SKU by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network } 
-									</li>
-
-
-									<li>
-										#{link_to 'Asset Cycle Summary by SKU by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network } 
-									</li>
-									<li>
-										#{link_to 'Daily Scan Activity Summary Report', :reports_float_activity_summary_report_simple } 									
-									</li>
-									
-								</ul>							
-							</li>							
 						</ul>
 					</li>					
 					<li> 
@@ -235,14 +218,17 @@ html = <<html
 								<ul>
 									<li>
 										#{link_to 'All Assets', :maintenance_assets }
-									</li>
+									</li>						
 
 									<li>
 										#{link_to 'Overdue Assets', :maintenance_overdue_assets }
 									</li>
 
 									<li>
-										#{link_to 'Asset Cycles', :reports_asset_cycles }
+										#{link_to 'Active Asset Cycles', :maintenance_asset_cycles }
+									</li>
+									<li>
+										#{link_to 'Compelted Asset Cycles', :maintenance_completed_asset_cycles }
 									</li>
 								</ul>							
 							</li>
@@ -255,19 +241,13 @@ html = <<html
 									</li>
 								</ul>
 							</li>
-							<li>
-								Products
-								<ul>
-									<li> #{link_to 'SKUs', :maintenance_skus } 
-									</li>		
+							
+								
+						
+							<li> #{link_to 'SKUs', :maintenance_skus } </li>		
 
-									<li> #{link_to 'Products', :maintenance_products } 
-									</li>				
-									<li> 										
-										#{link_to 'Contract Breweries', :maintenance_production_partnerships } 
-									</li>		
-								</ul>
-							<li> 
+							<li> #{link_to 'Products', :maintenance_products } </li>				
+
 								Locations
 								<ul>
 									<li> #{link_to 'Networks', :maintenance_networks } </li>
@@ -288,6 +268,90 @@ html = <<html
 		</div>
 html
 		end
+		return html.html_safe
+	end
+
+	def side_navigation_bar
+html = <<html
+	    <div class="full sidebar">
+	        <div class="section first"> 
+				#{ link_to image_tag('brewery_apps_logo.png', :style => 'width:58px;margin:auto;'), :dashboard_viewer }	        				
+	        </div>
+
+	        <div class="section"> 				
+				<h4 class="title"> #{link_to 'Sign out', destroy_user_session_path, :method => :delete } </h4>
+	        </div>
+
+	        <div class="section expandable"> 
+	            <h4 class="title"> Home </h4> 
+	            <div class="content">   
+	                <ul>   
+	                    <li>    #{ link_to 'Dashboard', :dashboard_viewer }    </li>
+	                    <li>    #{ link_to 'Account', :account_profiles }  </li>
+	                </ul>
+	            </div>
+	        </div>
+	        
+	        <div class="section expandable"> 
+	            <h4 class="title"> Maintenance </h4> 
+	            <div class="content">   
+	                <ul>   
+	                    <li>    #{ link_to 'Users', :maintenance_users }    </li>
+	                    <li>    #{ link_to 'Invoices', :accounting_invoices }  </li>
+
+	                    <li class="expandable">    
+	                        <div class="title"> Assets </div>
+	                        <ul class="content">
+	                            <li>  #{ link_to 'All', :maintenance_assets } </li>
+	                            <li>  #{ link_to 'Overdue', :maintenance_overdue_assets } </li>
+	                            <li>  #{ link_to 'Active Cycles', :maintenance_asset_cycles } </li>
+	                            <li>  #{ link_to 'Completed Cycles', :maintenance_completed_asset_cycles } </li>
+	                        </ul>
+	                    </li>
+
+	                    <li>    #{ link_to 'Distributors', :maintenance_distribution_partnerships }  </li>  
+
+	                    <li>    #{ link_to 'Contract Brewers', :maintenance_production_partnerships }  </li>  
+
+
+                        <li>  #{ link_to 'Products', :maintenance_products } </li>
+                        <li>  #{ link_to 'SKUs', :maintenance_skus } </li>                            
+
+	                    <li>    #{ link_to 'Locations', :maintenance_locations }  </li>  
+	                    <li>    #{ link_to 'Networks', :maintenance_networks }  </li>                     
+	                </ul>
+	            </div>            
+	        </div>
+	        
+	        <div class="section expandable"> 
+	            <h4 class="title"> Reports </h4> 
+	            <div class="content">   
+	                <ul>   
+	                    <li class="expandable">    
+	                        <div class="title"> Assets </div>
+	                        <ul class="content">
+									<li> #{link_to 'Asset Summary', :reports_assets_sku_summary_report_simple } </li>
+									<li> #{link_to 'Asset Cycle by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network }  </li>
+									<li> #{link_to 'Asset Cycle by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network }  </li>
+	                        </ul>
+	                    </li>
+
+	                </ul>
+	            </div>
+	        </div>
+	        
+	        <div class="section expandable"> 
+	            <h4 class="title"> Scanning </h4> 
+	            <div class="content">   
+	                <ul>   
+	                    <li>    #{ link_to 'Scanner', :scanners_barcode }    </li>
+	                    <li>    #{ link_to 'RFID', :scanners_rfid_readers }  </li>        
+	                </ul>
+	            </div>            
+	        </div>
+	    </div>
+
+html
 		return html.html_safe
 	end
 

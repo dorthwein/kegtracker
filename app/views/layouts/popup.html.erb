@@ -1,30 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>BreweryApps</title>
-  <%= stylesheet_link_tag    "web_app_manifest"%>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-    <meta name="viewport" content="width=960, user-scalable=yes" />   
-</head>
-<body> 
-	<div class="<%= 'popup popup_' + params[:action].to_s %>" data-url="<%= request.path %>">	
-		<div id="content" class="popup" data-role="content" style="margin:0px; padding:0px; position:relative;">			
-		<!-- Main Content -->	
-		
-			<%= yield %>												
-		</div>
+
+<div class="<%= 'popup popup_' + params[:action].to_s %>" data-url="<%= request.path %>">	
+	<div id="content" class="popup" data-role="content" style="margin:0px; padding:0px; position:relative;">			
+	<!-- Main Content -->	
+	
+		<%= yield %>												
 	</div>
-</body>
-</html>
+</div>
 <script>
 	$(document).ready(function(){
+		
 		<% if params[:action].to_s == 'new' %>
-			new_popup()
+//			new_popup()
 		<% elsif params[:action].to_s == 'edit' %>
-			edit_popup()
+//			edit_popup()
+			$('input[type=button].excelExport').attr('disabled', 'false');
 		<% elsif params[:action].to_s == 'show' %>
-			show_popup()
+			$('input, select').attr('disabled', 'true');
+			$('input.excelExport').attr('disabled', 'false');
 		<% end %>
 	})
 </script>

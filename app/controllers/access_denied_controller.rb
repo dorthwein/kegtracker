@@ -4,9 +4,10 @@ class AccessDeniedController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {render :layout => 'popup'}
     end
   end		
+
   def popup_record_not_found
     respond_to do |format|
       format.html {render :layout => 'popup'}

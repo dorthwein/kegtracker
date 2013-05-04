@@ -1,4 +1,5 @@
 class Reports::AssetCyclesController < ApplicationController
+=begin
 	before_filter :authenticate_user!	
 	layout "web_app"
 	load_and_authorize_resource :class => "AssetCycleFact"
@@ -76,4 +77,5 @@ class Reports::AssetCyclesController < ApplicationController
       format.json { head :no_content }
     end
   end
+=end
 end

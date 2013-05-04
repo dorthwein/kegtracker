@@ -1,6 +1,5 @@
 class Maintenance::UsersController < ApplicationController
-  before_filter :authenticate_user!
-  layout "web_app"
+  before_filter :authenticate_user!  
   load_and_authorize_resource
 
   # GET /users
@@ -8,7 +7,7 @@ class Maintenance::UsersController < ApplicationController
   def index
 #	redirect_to maintenance_users_path
     respond_to do |format|
-   		format.html # index.html.erb
+   		format.html 
     	format.json { 	
       if current_user.system_admin == 1 
 			   users = JqxConverter.jqxGrid(User.all)
@@ -24,23 +23,21 @@ class Maintenance::UsersController < ApplicationController
   # GET /users/1.json
   def show
     respond_to do |format|
-        record = User.find(params[:id])
-        if can? :update, record 
+        @record = User.find(params[:id])
+        if current_user.system_admin == 1 
+          @entities = Entity.all
+        else
+          @entities = [current_user.entity]
+        end
+
+        @user_permission_options = User.get_permission_options
+
+        if can? :update, @record 
           format.html {redirect_to :action => 'edit'}
         else       
           format.html {render :layout => 'popup'}
           format.json {                         
             response = {}
-            response[:jqxDropDownLists] = {}        
-            response[:record] = record
-            if current_user.system_admin == 1 
-              response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
-            else
-              response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-            end
-            response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
-            response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
-            response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
             render json: response 
           }
       end      
@@ -51,21 +48,17 @@ class Maintenance::UsersController < ApplicationController
   # GET /users/new.json
   def new
     respond_to do |format|
-      format.html {render :layout => 'popup'}
-      format.json {         
-        record = User.new
-        response = {}
-        response[:jqxDropDownLists] = {}                
-        response[:record] = record              
-        if current_user.system_admin == 1 
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
-        else
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        end
-        response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
-        response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
-        response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
+      @record = User.new
+      if current_user.system_admin == 1 
+        @entities = Entity.all
+      else
+        @entities = [current_user.entity]
+      end
+      @user_permission_options = User.get_permission_options
 
+      format.html {render :layout => 'popup'}
+      format.json {                 
+        response = {}
         render json: response 
       }
     end    
@@ -73,58 +66,50 @@ class Maintenance::UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @record = User.find(params[:id])
+    if current_user.system_admin == 1 
+      @entities = Entity.all
+    else
+      @entities = [current_user.entity]
+    end
+    @user_permission_options = User.get_permission_options
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
-      format.json { 
-        record = User.find(params[:id])
+      format.json {         
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        
-        if current_user.system_admin == 1 
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList(Entity.all)
-        else
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        end
-        response[:jqxDropDownLists][:operation] = JqxConverter.jqxDropDownList(User.get_permission_options)
-        response[:jqxDropDownLists][:account] = JqxConverter.jqxDropDownList(User.get_permission_options)
-        response[:jqxDropDownLists][:financial] = JqxConverter.jqxDropDownList(User.get_permission_options)
-
         render json: response 
-      }        
+      }
     end
   end
 
   # POST /users
   # POST /users.json
   def create      
-    record = User.new(params[:record])
-    respond_to do |format|
-      if record.save
-        format.html 
+    @record = User.new(params[:user])
+    @record.save!
+    respond_to do |format|    
+        format.html { head :no_content }
         format.json {  render json: {} }
-      else
-        format.html { render action: "new" }
-        format.json {  render json: {} }
-      end
     end
   end
 
   # PUT /users/1
   # PUT /users/1.json
-  def update        
+  def update
+    @record = User.find(params[:id])      
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+
     respond_to do |format|
  		format.json { 		
-			if params[:record][:password].blank?
-				params[:record].delete(:password)
-				params[:record].delete(:password_confirmation)
-			end
-			record = User.find(params[:id])			
-			if record.update_attributes(params[:record])		
-	 	  		render json: {:success => true } 
-	 	  	else
-				render json: {:success => false, :message => 'User information invalid, please change user e-mail & password' } 
-	 	  	end
+      if @record.update_attributes(params[:user])    
+          render json: {:success => true } 
+      else
+          render json: {:success => false, :message => 'User information invalid, please change user e-mail & password' } 
+      end
  	  	}
     end
   end
@@ -132,8 +117,8 @@ class Maintenance::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    record = User.find(params[:id])
-    record.trash
+    @record = User.find(params[:id])
+    @record.trash
     respond_to do |format|
       format.json { head :no_content }
     end
@@ -141,20 +126,20 @@ class Maintenance::UsersController < ApplicationController
 
   def restore_multiple
     respond_to do |format|    
-      records = User.where(:id.in => params[:ids])      
-      records.restore
+      @records = User.where(:id.in => params[:ids])      
+      @records.restore
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 
   def delete_multiple
     respond_to do |format|    
-      records = User.where(:id.in => params[:ids])      
-      records.trash
+      @records = User.where(:id.in => params[:ids])      
+      @records.trash
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end

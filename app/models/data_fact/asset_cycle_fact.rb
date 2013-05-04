@@ -11,6 +11,7 @@ class AssetCycleFact
 # Fact Details 
 	belongs_to :entity, index: true      # Asset Owner
 	belongs_to :product, index: true		# Asset Product
+	belongs_to :product_entity, class_name: 'Entity'
 	belongs_to :asset_type
   	belongs_to :asset, index: true  
   
@@ -169,8 +170,10 @@ class AssetCycleFact
 
 
 		# Check Descriptions		
-		self.product_description = self.product.description		
-		self.product_entity_description = self.product.entity.description
+		self.product_entity = self.product.entity
+		self.product_entity_description = self.product_entity.description
+		
+		self.product_description = self.product.description				
 		self.asset_type_description = self.asset_type.description	
 
 		if self.cycle_complete == 1

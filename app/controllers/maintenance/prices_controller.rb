@@ -1,7 +1,8 @@
 class Maintenance::PricesController < ApplicationController
-  before_filter :authenticate_user!
-  layout "web_app"
+=begin
+  before_filter :authenticate_user!  
   load_and_authorize_resource
+
   # GET /Prices
   # GET /Prices.json
   def index
@@ -141,6 +142,7 @@ class Maintenance::PricesController < ApplicationController
       }
     end
   end
+=end
 end
 
 

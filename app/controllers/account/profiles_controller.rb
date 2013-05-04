@@ -1,6 +1,5 @@
 class Account::ProfilesController < ApplicationController
 	before_filter :authenticate_user!	
-	layout "web_app"
 	def show
 		# If Token Exists - Then this is just after a save event
 		if !params[:token].nil?

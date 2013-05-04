@@ -1,4 +1,4 @@
-
+	
 <% if current_user.entity.keg_tracker == 1 %>
 	<h2 style="margin:50px auto 0px auto; text-align:center;">
 		Woops! You don't have permission to see this.  <br /> <br />
@@ -6,6 +6,8 @@
 	</h2>
 	<div style="margin:0px auto 0px auto; text-align:center;">
 		Please contact the account owner or call us here @ BreweryApps
+		<br /> <br />
+		<%= button_tag "Close",:type => 'button',:class => "cancel" %>		
 	</div>
 <% else %>
 
@@ -15,5 +17,8 @@
 	</h2>
 	<div style="margin:0px auto 0px auto; text-align:center;">
 		<%= link_to 'Click here to manage your account settings.', :account_profiles %>  
+		<br /> <br />
+		<%= button_tag "Close",:type => 'button',:class => "cancel" %>
 	</div>	
 <% end %>
+

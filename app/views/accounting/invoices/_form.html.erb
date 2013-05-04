@@ -1,6 +1,7 @@
+<%= form_for([:accounting, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
 <table class="popup jqxValidator">
 	<tbody>
@@ -13,51 +14,52 @@
 				<b> Invoice # </b>	
 			</td>
 			<td>	
-				<input type="text" id="invoice_number" class="jqxInput required" data-role="none" />	
+				<%= text_field(:invoice, :invoice_number, :class => 'required') %>
 			</td>
 			<td>
 				<b>	Date </b>
 			</td>
 
 			<td>
-				<div id="date" class='jqxDateTimeInput'>	</div>				
+				<%= date_select(:invoice, :date, {:order => [:month, :day, :year]}, {:class => "required date"} ) %>			
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<b> Entity </b>
+				<b> Bill From </b>
 			</td>
 			<td>
-				<div id="entity_id" class="jqxDropDownList required "> 
-				</div>
+				<%= select(:invoice, :entity_id, @entities.map{|x| [x.description, x._id]}, :class => 'required') %>		
 			</td>
 			<td>
             	<b> Bill To </b>
             </td>
             <td>
-          		<div id="bill_to_entity_id" class="jqxDropDownList required ">				
+				<%= select(:invoice, :bill_to_entity_id, @bill_to_entities.map{|x| [x.description, x._id]}, :class => 'required') %>
           	</td>	
 		</tr>
 		<tr>
 			<th colspan="4"> <h3> Add to Invoice </h3> </th>			
 		</tr>
+		<% end %>
 
 		<tr id="add_to_invoice">
-			<td colspan="4">									
-
+			<td colspan="4">
 
 				<b style="margin:5px 0 5px 0"> Qty </b>
-				<input type="number" id="quantity" class="" data-role="none" />		
+				<input type="number" id="quantity" class="" data-role="none" />						
+
+				<%= select_tag(:sku_id, options_for_select(@skus.map{|x| [x.description, x._id]}), :class => 'required') %>		
 
 				<div id="sku_id" class="jqxDropDownList" style="margin:5px 0 5px 0"> </div>	
+
 
 				<input type="button" style="margin:5px 5px 5px 0;" value="Add Item" id="add_invoice_line_item" class='jqxButton' data-resource="invoice_line_items" data-role="none"/>   			
 		
 				<input type="button" style="margin:5px 5px 5px 0;" value="Delete" id="delete_invoice_line_item" class='jqxButton' data-role="none"/>				
 
-				<div id="invoice_line_items" class="jqxGrid">	</div>
+				<div id="invoice_line_items" class="">	</div>
 			</td>
 		</tr>
 	</tbody>
 </table>	
-

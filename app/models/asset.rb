@@ -310,7 +310,7 @@ class Asset
 	before_save :sync_descriptions	
 	def sync_descriptions
 		self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
-		self.invoice_number = self.invoice.number rescue nil
+		self.invoice_number = self.invoice.invoice_number rescue nil
 		
 		self.location_network = self.location.network		
 		self.location_entity = self.location.entity

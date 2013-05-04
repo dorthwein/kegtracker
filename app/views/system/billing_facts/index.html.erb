@@ -29,7 +29,7 @@ $(document).ready(function(){
 			{ name: 'kt_charge', type: 'number' },			
 			{ name: 'paid', type: 'string' }
 		], 
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -65,7 +65,7 @@ $(document).ready(function(){
             return 'View'
         }, buttonclick: function (row) {
             var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-            var url = location.href + "/" + rowdata['_id']            
+            var url = parseUrl(location) + "/" + rowdata['_id']            
             openPopupWindow(url);           
         }}, 
 */        

@@ -1,9 +1,16 @@
 Cobalt::Application.routes.draw do 	
   	match 'access_denied' => 'access_denied#index', :via => [:get, :post]  	
 	match 'popup_record_not_found' => 'access_denied#popup_record_not_found', :via => [:get, :post]  	  	
+
+
 	namespace :accounting do 		
 		resources :invoices do
 			resources :invoice_line_items
+			collection do
+				delete 'delete_multiple'
+			    get 'delete_multiple' # Not needed
+				get 'trash'		    # Not Implemented
+			end
 		end
 	end
 
@@ -22,6 +29,12 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/antenna_delete' => 'rfid_readers#antenna_delete', :via => [:get, :post]
 
 		devise_for :users	  	
+		
+		resources :asset_cycles do 
+			resources :asset_activity_facts
+		end
+		
+		resources :completed_asset_cycles
 		resources :distribution_partnerships, :assets, :overdue_assets, :locations, :prices, :tax_rules, :locations, :skus, :users, :networks, :production_partnerships, :leasing_partnerships, :products, :barcodes, :production, :barcode_makers do
 		  collection do
 		    delete 'delete_multiple'
@@ -139,10 +152,9 @@ Cobalt::Application.routes.draw do
 		match 'barcode' => 'barcode#index', :via => [:get, :post]
 		
 		match 'barcode/find_invoice' => 'barcode#find_invoice', :via => [:get, :post]	  
-		match 'barcode/scan' => 'barcode#scan', :via => [:get, :post]  
-		
+		match 'barcode/scan' => 'barcode#scan', :via => [:get, :post]  		
 	end
-
+	
 
 #  resources :reports
 

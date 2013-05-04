@@ -1,26 +1,25 @@
-<div class="toolbar">   
-    <h3 class="left" style="width:40%;">
-        Asset Maintenance
-    </h3>
-    
-    <%= report_select_menu %>
-    
-	
-</div>
+    <div class="full display">
+        <div class="toolbar">
+            <h3 class="left">   Asset Maintenance    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+<!--
+                    <button class='new'> New </button>
+                    <button class='delete'> Delete </button>
+-->
 
-<div class="full sidebar">
-	<input type="button" value="Delete" class='delete' data-role="none"/>
-	<input type="button" value="Excel" class='excelExport' data-role="none"/>		
-
-
-	<button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
-
-	<div class="jqxGridColumnListBox">	</div>
-</div>
-<div class="full display">
-	<div class="jqxGrid full display"></div>
-</div>
-
+                    <button class='excelExport'> Excel </button>       
+                    <button class='jqxFilterToggle'> Filter Off </button>
+                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
+                </div>
+                <div id="gridOptionsExtended">
+                    <div class="jqxGridColumnListBox">  </div>                
+                </div>
+            </div>
+        </div>        
+        <div class="jqxGrid full display">  </div>
+    </div>
 <script>
 $(document).ready(function(){
 
@@ -63,7 +62,7 @@ $(document).ready(function(){
 			{ name: 'n', type: 'string'},			
 			{ name: 'o', type: 'string'},			
 		],
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -114,7 +113,7 @@ $(document).ready(function(){
 			if(rowdata['l'] == ''){
 				var url = system.server + "/popup_record_not_found"
 			} else{
-				var url = system.server + "/reports/asset_cycles/" + rowdata['l'];
+				var url = system.server + "/maintenance/asset_cycles/" + rowdata['l'];			
 			}
 			openPopupWindow(url)
 		}},	
@@ -124,7 +123,7 @@ $(document).ready(function(){
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = location.href + "/" + rowdata['i'] + "/edit"						
+			var url = parseUrl(location) + "/" + rowdata['i'] + "/edit"						
 			openPopupWindow(url)
 		}},	
 	]

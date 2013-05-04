@@ -1,3 +1,8 @@
+.full.sidebar .jqxTree {
+	width:100%;
+	border:none;
+	background: inherit;
+}
 #jqxMenu {
 /* background:#F8F8F8; */
 	width:33%;
@@ -42,6 +47,7 @@
 	text-shadow:none;
 	font-weight: normal;
 }
+
 .jqxWindowTitle.jqx-window-header.jqx-window-header-metro.jqx-widget-header.jqx-widget-header-metro.jqx-disableselect.jqx-disableselect-metro.jqx-rc-t.jqx-rc-t-metro {
 	background:#2d2d2d;
 }
@@ -85,29 +91,39 @@ input[type="button"].jqx-input-metro.jqx-fill-state-disabled-metro{
 
 }
 
-.jqx-button-metro.jqx-fill-state-disabled-metro, .jqxFilterToggle {
+.jqx-button-metro.jqx-fill-state-disabled-metro {
 	border:none;
 	border-radius: 10px;
 }
-.jqxGrid.jqx-widget-content-metro, .jqxFilterToggle {
+.jqxGrid.jqx-widget-content-metro{
 	border:none;
 	border-radius: 10px;
 }
 
 
-.jqxWindowIFrame {
-	border:none;
-	margin:0;
+#modal_box {
+	position: absolute;
+	top:5%;
+	left:35%;
+	width:960px;
+	z-index: 10001;
 }
-.jqxWindow {
-	border:1px solid #ccc;
 
-}
-.jqxWindowContent {
-	padding: 0;
-	background-color: #eee;
-}
-.jqxExpander {	
+	#modal_content {
+		padding: 5px;
+		background-color: #eee;
+		border-right:1px solid #ccc;
+		border-left:1px solid #ccc;
+		border-bottom:1px solid #ccc;
+	}
+
+	#modal_title {
+		height:25px;
+		background: #333;
+		border:1px solid #333;
+	}
+
+.jqxExpander {
 	border-bottom: 1px solid #CCC;
 }
 

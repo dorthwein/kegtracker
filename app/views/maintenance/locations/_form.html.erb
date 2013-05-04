@@ -1,8 +1,9 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
-<table class="popup jqxValidator">
+<table class="popup">
 	<tbody>
 		<tr>
 			<th colspan="4"> <h3> Details </h3> </th>			
@@ -10,12 +11,14 @@
 
 		<tr>
 			<td>	<b> Description </b>	</td>
-			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>	
+				<%= text_field(:location, :description, :class => 'required') %>				
 			<td>
 				<b>	Account # </b>
 			</td>
+
 			<td>
-				<input type="text" id="externalID" class="jqxInput" data-role="none" />	            
+				<%= text_field(:location, :externalID) %>				
 			</td>
 		</tr>
 		<tr>
@@ -23,14 +26,13 @@
 				<b> Network </b>
 			</td>
 			<td>
-				<div id="network_id" class="jqxDropDownList required "> 
-				</div>
+				<%= select(:location, :network_id, @networks.map{|x| [x.description, x._id]}, :class => 'required') %>		
 			</td>
 			<td>
             	<b> Location Type </b>
             </td>
             <td>
-          		<div id="location_type" class="jqxDropDownList required ">					
+				<%= select(:location, :location_type, @location_types.map{|x| [x[:description], x[:_id]]}, :class => 'required') %>		
           	</td>	
 		</tr>
 	
@@ -40,14 +42,15 @@
 
 			</td>
 			<td>
-				<input type="text" id="name" class="jqxInput" data-role="none" />
+
+				<%= text_field(:location, :name) %>				
 			</td>
 			<td>	
 				<b> Street </b>
 
 			</td>
 			<td>
-				<input type="text" id="street" class="jqxInput" data-role="none" />
+				<%= text_field(:location, :street) %>				
 			</td>
 
 		</tr>
@@ -56,13 +59,13 @@
 				<b> City </b>
 			</td>
 			<td>
-				<input type="text" id="city" class="jqxInput" data-role="none" />	
+				<%= text_field(:location, :city) %>				
 			</td>
 			<td>
 				<b> State </b>
 			</td>
 			<td>
-				<input type="text" class="jqxInput" id="state" data-role="none" />
+				<%= text_field(:location, :state) %>				
 			</td>
 		</tr>
 		<tr>
@@ -72,9 +75,10 @@
 				<b> Zip </b>
 			</td>
 			<td>
-				<input type="text" id="zip" class="jqxInput" data-role="none" />
+				<%= text_field(:location, :zip) %>				
 			</td>
 		</tr>
 
 	</tbody>
 </table>	
+<% end %>

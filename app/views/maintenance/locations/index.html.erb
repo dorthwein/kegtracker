@@ -1,27 +1,22 @@
-<div class="toolbar">   
-    <h3 class="left">
-        Location Maintenance
-    </h3>
-    <h3 class="right">
-        <%= current_user.entity.description %>
-    </h3>
-</div>
-
-<div class="full sidebar">
-
-   	<input type="button" value="New" class='new' data-role="none"/>
-	<input type="button" value="Delete" class='delete' data-role="none"/>
-    <input type="button" value="Excel" class='excelExport' data-role="none"/>       
-    <button class=' jqxFilterToggle' data-role="none"> Filter Off </button>
-
-
-
-    <div class="jqxGridColumnListBox">  </div>
-</div>
-<div class="full display">
-    <div class="jqxGrid full display"></div>
-</div>
-
+    <div class="full display">
+        <div class="toolbar">
+            <h3 class="left">   Location Maintenance    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+                    <button class='new'> New </button>
+                    <button class='delete'> Delete </button>
+                    <button class='excelExport'> Excel </button>       
+                    <button class='jqxFilterToggle'> Filter Off </button>
+                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
+                </div>
+                <div id="gridOptionsExtended">
+                    <div class="jqxGridColumnListBox">  </div>                
+                </div>
+            </div>
+        </div>        
+        <div class="jqxGrid full display">  </div>
+    </div>
 <script>
 $(document).ready(function(){        
     var source =
@@ -39,7 +34,7 @@ $(document).ready(function(){
             { name: 'location_type_description'},
             { name: '_id'}
         ], 
-        url: location.href,
+        url: parseUrl(location),
     };
 
     window.dataAdapter = new $.jqx.dataAdapter(source, {
@@ -71,8 +66,8 @@ $(document).ready(function(){
         { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
             return 'View'
         }, buttonclick: function (row) {
-            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-            var url = location.href + "/" + rowdata['_id']                      
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);            
+            var url = parseUrl(location) + "/" + rowdata['_id']                      
             openPopupWindow(url)
         }}, 
     ]

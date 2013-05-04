@@ -15,7 +15,7 @@ $(document).ready(function(){
 			{name: 'invoice_attached_asset_count', type: 'number'},				
 			{name: '_id'},	
 		], 
-		url: location.href.substring(0, location.href.length - 4) + 'invoice_line_items',
+		url: parseUrl(location).substring(0, parseUrl(location).length - 4) + 'invoice_line_items',
 	};
 
 	window.dataAdapter = new $.jqx.dataAdapter(source, {

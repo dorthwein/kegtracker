@@ -1,8 +1,10 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
-<table class="popup jqxValidator">
+
+<table class="popup">
 	<tbody>
 		<tr>
 			<th colspan="4"> <h3> Details </h3> </th>			
@@ -10,27 +12,27 @@
 
 		<tr>
 			<td>	<b> Product </b>	</td>
-			<td>	
-				<div class="jqxDropDownList required" id="product_id">	</div>	
+			<td>
+				<%= select(:sku, :product_id, @products.map{|x| [x.description, x._id]}, :class => 'required') %>						
 			</td>
 			<td>	<b> Entity </b> </td>
 			<td>	
-				<div class="jqxDropDownList required" id="entity_id">	</div>	
+				<%= select(:sku, :entity_id, @entities.map{|x| [x.description, x._id]}, :class => 'required') %>					
 			</td>
 
 		</tr>
 		<tr>
 			<td>	<b> Item #	</b>		</td>
 			<td>	
-				<input class="jqxInput" type="text"  id="item_number" data-role="none" />	
+				<%= text_field(:sku, :item_number, :class => '') %>			
 			</td>	
 			<td>	<b> Primary Asset Type  </b> </td>
 			<td>	
-				<div class="jqxDropDownList required" id="primary_asset_type_id">	</div>	
+
+				<%= select(:sku, :primary_asset_type_id, @primary_asset_types.map{|x| [x.description, x._id]}, :include_blank => true, :class => 'required') %>						
 			</td>
-
-
 		</tr>
+
 		<tr>
 			<td> 					</td>
 			<td> <b> 	Container Type	</b> </td>
@@ -40,43 +42,45 @@
 		<tr>
 			<td>	<b> Unit </b>	 	</td>
 			<td>	
-				<div class="jqxDropDownList " id="tier_1_asset_type_id">	
+				<%= select(:sku, :tier_1_asset_type_id, @tier_1_asset_types.map{|x| [x.description, x._id]}, :class => '') %>				
 				</div>	
 			</td>
 			<td>	
-				<input class="jqxInput" type="number" id="tier_1_qty_per_tier_2" data-role="none" />	
-			</td>		
-			<td>	
-				<input class="jqxInput" type="text"  id="tier_1_upc" data-role="none" /> 
+				<%= number_field(:sku, :tier_1_qty_per_tier_2, :class => '') %>		
+			</td>
+			<td>
+				<%= text_field(:sku, :tier_1_upc, :class => '') %>		
+				
 			</td>		
 		</tr>
 
 		<tr>
 			<td>	<b> Consumer Pack </b>	 	</td>
 			<td>	
-				<div class="jqxDropDownList " id="tier_2_asset_type_id">	
-				</div>	
+				<%= select(:sku, :tier_2_asset_type_id, @tier_2_asset_types.map{|x| [x.description, x._id]}, :class => '') %>								
 			</td>
 			<td>	
-				<input class="jqxInput" type="number" id="tier_2_qty_per_tier_3" data-role="none" />	
+				<%= number_field(:sku, :tier_2_qty_per_tier_3, :class => '') %>		
 			</td>		
 			<td>	
-				<input class="jqxInput" type="text"  id="tier_2_upc" data-role="none" />
+				<%= text_field(:sku, :tier_2_upc, :class => '') %>		
 			</td>		
 		</tr>
 
 		<tr>
 			<td>	<b> Case </b>	 	</td>
 			<td>	
-				<div class="jqxDropDownList " id="tier_3_asset_type_id">		</div>	
+				<%= select(:sku, :tier_3_asset_type_id, @tier_3_asset_types.map{|x| [x.description, x._id]}, :class => '') %>						
 			</td>
 			<td>	
-				<input class="jqxInput" type="number"  id="tier_3_qty_per_tier_4" data-role="none" />	
+				<%= number_field(:sku, :tier_3_qty_per_tier_4, :class => '') %>		
+	
 			</td>		
 			<td>	
-				<input class="jqxInput" type="text"  id="tier_3_upc" data-role="none" />
+				<%= text_field(:sku, :tier_3_upc, :class => '') %>		
 			</td>		
 		</tr>
 
 	</tbody>
 </table>	
+<% end %>

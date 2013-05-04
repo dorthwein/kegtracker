@@ -1,6 +1,7 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
 <table class="popup jqxValidator">
 	<tbody>
@@ -9,18 +10,21 @@
 		</tr>
 		<tr>
 			<td>	<b> Description </b>	</td>
-			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>	
+				<%= text_field(:network, :description, :class => 'required') %>			
+			</td>
 			<td>	</td>
 			<td>	</td>
 		</tr>
 		<tr>
 			<td>	<b> Entity </b>	 	</td>
-			<td>	
-				<div id="entity_id" class="jqxDropDownList required "> </div>			
+			<td>
+				<%= select(:network, :entity_id, @entities.map{|x| [x.description, x._id]}, :class => 'required') %>		
+		
 			</td>		
 			<td>	<b> Network Type </b>	 	</td>
-			<td>	
-				<div class="jqxDropDownList required " id="network_type"> </div>
+			<td>
+				<%= select(:network, :network_type, @network_types.map{|x| [x[:description], x[:_id]]}, :class => 'required') %>		
 			</td>		
 		</tr>
 
@@ -29,6 +33,8 @@
 				<b> In Bound Location </b>
 			</td>
 			<td>
+				<%= select(:network, :smart_mode_in_location_id, @locations.map{|x| [x.description, x._id]}, :class => 'required') %>		
+
 				<div id="smart_mode_in_location_id" class="jqxDropDownList "> 
 
 			</td>			
@@ -36,8 +42,7 @@
 				<b> Out Bound Location </b>
 			</td>
 			<td>
-				<div id="smart_mode_out_location_id" class="jqxDropDownList "> 
-				</div>										
+				<%= select(:network, :smart_mode_out_location_id, @locations.map{|x| [x.description, x._id]}, :class => 'required') %>		
 			</td>
 		</tr>
 		<tr>
@@ -45,18 +50,15 @@
 				<b> Product </b>
 			</td>
 			<td>
-				<div id="smart_mode_product_id" class="jqxDropDownList "> 
-				</div>
+				<%= select(:network, :smart_mode_product_id, @products.map{|x| [x.description, x._id]}, :class => 'required') %>		
 			</td>
 			<td>
                 <b> Auto Mode </b>
             </td>
             <td>
-              	<div id="auto_mode" class="jqxToggle">
-              		Off
-              	</div>
+				<%= select(:network, :auto_mode, [['On', 1], ['Off', 0]], :class => 'required') %>		
             </td>
         </tr>
-
 	</tbody>
 </table>	
+<% end %>

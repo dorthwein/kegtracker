@@ -1,14 +1,13 @@
 class Maintenance::ProductionPartnershipsController < ApplicationController
   before_filter :authenticate_user!
-  layout "web_app"
   load_and_authorize_resource
 
   def index    		
     respond_to do |format|
       format.html # index.html.erb
       format.json {      		
-	      records = JqxConverter.jqxGrid(current_user.entity.production_partnerships.where(record_status: 1))
-      	render json: records
+	      @records = JqxConverter.jqxGrid(current_user.entity.production_partnerships.where(record_status: 1))
+      	render json: @records
       }
     end
   end
@@ -16,18 +15,17 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
+    @record = ProductionPartnership.find(params[:id])
+    @entities = [current_user.entity]
+    @partners = Entity.production_entities
+
     respond_to do |format|
-      record = ProductionPartnership.find(params[:id])        
-      if can? :update, record 
+      if can? :update, @record 
         format.html {redirect_to :action => 'edit'}
       else           
         format.html {render :layout => 'popup'}
         format.json {           
           response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-          response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
           render json: response 
         }
       end
@@ -37,33 +35,29 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.json
   def new
+    @record = ProductionPartnership.new
+    @entities = [current_user.entity]
+    @partners = Entity.production_entities
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
-      format.json { 
-        
-        record = ProductionPartnership.new
+      format.json {
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
-        render json: response 
+        render json: response
       }
     end
   end
 
   # GET /locations/1/edit
   def edit
+    @record = ProductionPartnership.find(params[:id])
+    @entities = [current_user.entity]
+    @partners = Entity.production_entities
+
     respond_to do |format|
       format.html {render :layout => 'popup'}
       format.json { 
-        record = ProductionPartnership.find(params[:id])
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])
-        response[:jqxDropDownLists][:partner_id] = JqxConverter.jqxDropDownList(Entity.production_entities)
-
         render json: response 
       }        
     end
@@ -74,9 +68,9 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   def create
     respond_to do |format|          
       format.json { 
-        record = ProductionPartnership.find_or_create_by(:entity_id => params[:record][:entity_id], :partner_id => params[:record][:partner_id])
-        record.save
-        render json: record
+        @record = ProductionPartnership.find_or_create_by(:entity_id => params[:production_partnership][:entity_id], :partner_id => params[:production_partnership][:partner_id])
+        @record.save!
+        render json: @record
       }        
     end
   end
@@ -84,8 +78,8 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # PUT /locations/1
   # PUT /locations/1.json
   def update
-    record = ProductionPartnership.find(params[:id])
-    record.update_attributes(params[:record])
+    @record = ProductionPartnership.find(params[:id])
+    @record.update_attributes(params[:production_partnership])
     
     respond_to do |format|
       format.html
@@ -99,8 +93,8 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
   # DELETE /locations/1.json
   # Inetentionally Destroy
   def destroy
-    record = ProductionPartnership.find(params[:id])
-    record.trash
+    @record = ProductionPartnership.find(params[:id])
+    @record.trash
     respond_to do |format|
       format.json { head :no_content }
     end
@@ -108,20 +102,20 @@ class Maintenance::ProductionPartnershipsController < ApplicationController
 
   def restore_multiple
     respond_to do |format|    
-      records = ProductionPartnership.where(:id.in => params[:ids])      
-      records.restore
+      @records = ProductionPartnership.where(:id.in => params[:ids])      
+      @records.restore
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 
   def delete_multiple
     respond_to do |format|    
-      records = ProductionPartnership.where(:id.in => params[:ids])      
-      records.trash
+      @records = ProductionPartnership.where(:id.in => params[:ids])      
+      @records.trash
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end

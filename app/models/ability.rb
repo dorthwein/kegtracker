@@ -41,9 +41,9 @@ class Ability
 			can [:read], ProductionPartnership, entity_id: user.entity_id
 
 
-			can [:read], AssetCycleFact, :product_id => user.entity.production_products		# Visible Products
-			can [:read], AssetCycleFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
-			can [:read], AssetCycleFact, :entity_id => user.entity_id 	# Assets I own
+			can [:read, :update], AssetCycleFact, :product_id.in => user.entity.production_products.map{|x| x._id}			# Visible Products
+			can [:read, :update], AssetCycleFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
+			can [:read, :update], AssetCycleFact, :entity_id => user.entity_id 	# Assets I own
 
 			can [:read], AssetActivityFact, :product_id => user.entity.production_products		# Visible Products
 			can [:read], AssetActivityFact, :location_network_id.in => user.entity.networks.map{|x| x._id}		#  Networks I controll
@@ -132,11 +132,12 @@ class Ability
 		can [:read], User, :entity_id => user.entity_id
 	end
 	if user.account == 2 || user.account == 3
-		can [:create], User
+		
 	end
 	if user.account == 3
-		can [:update, :destroy, :delete_multiple], User, :entity_id => user.entity_id
+		can [:update, :destroy, :delete_multiple, :create], User, :entity_id => user.entity_id
 		can [:update], Entity, _id: user.entity_id
+
 	end
 
 	if user.system_admin == 1

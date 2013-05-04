@@ -174,7 +174,6 @@ class Scanner
 
 	def self.invoice_process obj
 		invoice = Invoice.find_or_create_by(invoice_number: obj[:invoice_number], entity: obj[:user].entity )
-
 #		invoice = Invoice.find(obj[:invoice_id])
 		invoice.attach_asset(obj)
 		#return obj

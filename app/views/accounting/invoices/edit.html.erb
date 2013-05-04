@@ -4,6 +4,7 @@
 <%= render 'form' %>
 <script>
 	$(document).ready(function(){		
+		var url = parseUrl(location) +'/<%= @record._id %>' +  '/invoice_line_items';		
 		var source = {
 			datatype: "json",
 			type: "GET",
@@ -13,10 +14,10 @@
 				{name: 'invoice_attached_asset_count', type: 'number'},				
 				{name: '_id'},	
 			], 
-			url: location.href.substring(0, location.href.length - 4) + 'invoice_line_items',
+			url: url,
 		};
 
-		window.dataAdapter = new $.jqx.dataAdapter(source, {
+		invoice_line_item_data_adapter = new $.jqx.dataAdapter(source, {
 			beforeSend: function(jqXHR, settings){
 				 	
 			},
@@ -29,7 +30,7 @@
 		//	window.dataAdapter = dataAdapter
 		// 	Initialize Grid
 
-		$(".jqxGrid").jqxGrid({
+		$("#invoice_line_items").jqxGrid({
 			// Grid Options
 			groupable: false,
 			sortable: true,       
@@ -40,7 +41,7 @@
 			width: '100%',
 			groupsexpandedbydefault: false,
 			height:  200,
-			source: dataAdapter,	
+			source: invoice_line_item_data_adapter,	
 			columnsresize: true,
 			altrows: true,		
 			columns: [
@@ -55,32 +56,31 @@
 		
 		$('#add_invoice_line_item').click(function () {
 			 		
-	        var params = {record: {}}
-			
-			params['record']['sku_id'] = $('#sku_id').jqxDropDownList('getSelectedItem').value
+	        var params = {record: {}}			
+			params['record']['sku_id'] = $('#sku_id').val();
 			params['record']['quantity'] = $('#quantity').val()
-
+		
 			$.ajax({
 				type: "POST",
 				dataType : "JSON",
-				url: location.href.substring(0, location.href.length - 4) + 'invoice_line_items',
+				url: url,
 				data: params,
 			}).done(function( data ) {						
-				window.dataAdapter.dataBind();
+				invoice_line_item_data_adapter.dataBind();
 			})
-			 
+	 
 		});
 
 		$("#delete_invoice_line_item").click(function () {
-			var rowindex = $('.jqxGrid').jqxGrid('getselectedrowindex');
-			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', rowindex);		
+			var rowindex = $('#invoice_line_items').jqxGrid('getselectedrowindex');
+			var rowdata = $('#invoice_line_items').jqxGrid('getrowdata', rowindex);		
 
 			$.ajax({
 				type: "DELETE",
 				dataType : "JSON",
-				url: location.href.substring(0, location.href.length - 4) + 'invoice_line_items/' + rowdata['_id'],
+				url: url + '/' + rowdata['_id'],
 			}).done(function( data ) {
-				window.dataAdapter.dataBind();
+				invoice_line_item_data_adapter.dataBind();
 			});		        	
 		});
 		$(".save").click(function () {

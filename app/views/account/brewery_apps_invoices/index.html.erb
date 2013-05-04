@@ -41,7 +41,7 @@
 				{ name: 'd', }, 		
 
 			], 
-			url: location.href
+			url: parseUrl(location)
 		};
 		var dataAdapter = new $.jqx.dataAdapter(grid_source, {
 
@@ -60,7 +60,7 @@
 	            return 'View'
 	        }, buttonclick: function (row) {
 	            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-	            location.href = location.href + "/" + rowdata['d'];	           
+	            parseUrl(location) = parseUrl(location) + "/" + rowdata['d'];	           
 	        }}, 
 
 		]

@@ -143,7 +143,7 @@ class Entity
 #############################
 # Products 					#
 #############################
-	def production_products	
+	def production_products
 		partner_entities = ProductionPartnership.where(:partner_id => self._id).map{|x| x.entity_id}
 		Product.any_of(
 			{ entity_id: self._id }, 	# Products I own			
@@ -194,8 +194,6 @@ class Entity
 		self.networks.where(:network_type => 3)
 	end
 
-
-
 	def asset_activity_facts		
 		AssetActivityFact.any_of({:location_network.in => self.networks.map{|x| x}},{:product.in => self.entity_products },{:entity => self })
 	end
@@ -232,12 +230,14 @@ class Entity
 	def network_score_card
 		
 	end
+
 	def visible_invoices
 		Invoice.where(entity_id: self._id)
 	end
 	def visible_invoice_attached_assets
 		InvoiceAttachedAsset.where(:invoice_id.in => self.visible_invoices.map{|x| x._id})
 	end
+
 	def visible_invoice_line_items
 		InvoiceLineItem.where(:invoice_id.in => self.visible_invoices.map{|x| x._id})
 	end

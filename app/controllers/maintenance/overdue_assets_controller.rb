@@ -1,6 +1,6 @@
 class Maintenance::OverdueAssetsController < ApplicationController
 	before_filter :authenticate_user!	
-	layout "web_app"
+	
 	load_and_authorize_resource :class => 'Asset'
 # **********************************
 # Asset Reports
@@ -9,7 +9,6 @@ class Maintenance::OverdueAssetsController < ApplicationController
 # Overdue
 # Old Product
 # 
-
 	def index    
 		respond_to do |format|		
 		  	format.html # index.html.erb
@@ -36,34 +35,23 @@ class Maintenance::OverdueAssetsController < ApplicationController
 			  }
 		end
 	end 
-  	def show
-	    respond_to do |format|
-	      format.html {render :layout => 'popup'}
-	      format.json { 
-	        
-		      record = Asset.find(params[:id])        
-		      response = {}
-	    	  response[:jqxDropDownLists] = {}            
-	      	  response[:jqxRecordLinkButton] = {}
-	      
-	      response[:record] = record  
-	      if !record.invoice.nil?
-	      	response[:record][:invoice_date] = record.invoice.date
-	      else
-	      	response[:record][:invoice_date] = nil				   
-	      end
-			response[:jqxRecordLinkButton][:asset_cycle_fact_id] = JqxConverter.jqxRecordLinkButton(record.asset_cycle_fact_id)
-			response[:jqxDropDownLists][:product_id] = JqxConverter.jqxDropDownList([record.product])
-			response[:jqxDropDownLists][:product_entity_id] = JqxConverter.jqxDropDownList([record.product.entity])
-			response[:jqxDropDownLists][:asset_type_id] = JqxConverter.jqxDropDownList([record.asset_type])
-			response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([record.entity])
+  
+  def show
+    @record = Asset.find(params[:id])        
+    @products = [@record.product]
+    @product_entities = [@record.product.entity]
+    @asset_types = [@record.asset_type]
+    @entities = [@record.entity]
+    @invoice = @record.invoice
 
-#	        response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
-
-	        render json: response 
-	      }
-	    end    
-  	end
+    respond_to do |format|
+      format.html {render :layout => 'popup'}
+      format.json {           
+        response = {}
+        render json: response 
+      }
+    end    
+  end
 
   # GET /Assets/new
   # GET /Assets/new.json
@@ -91,23 +79,7 @@ class Maintenance::OverdueAssetsController < ApplicationController
   def edit
     record = Asset.find(params[:id])
     respond_to do |format|
-      if  1 == 0 # can? :update, record
-        format.html {render :layout => 'popup'}
-        format.json { 
-          response = {}
-          response[:jqxDropDownLists] = {}                  
-          response[:record] = record 
-
-          response[:jqxDropDownLists][:sku_id] = JqxConverter.jqxDropDownList(current_user.entity.skus)                                        
-          response[:jqxDropDownLists][:base_Asset_tier] = JqxConverter.jqxDropDownList(Asset.base_Asset_tiers)
-          response[:jqxDropDownLists][:entity_id] = JqxConverter.jqxDropDownList([current_user.entity])        
-#          response[:jqxDropDownLists][:bill_to_entity_id] = JqxConverter.jqxDropDownList(current_user.entity.related_entities)
-
-          render json: response 
-        }        
-      else
-        format.html {redirect_to :action => 'show'}
-      end
+      format.html {redirect_to :action => 'show'}      
     end
   end
 

@@ -1,25 +1,28 @@
-<div class="toolbar">   
-    <h3 class="left" style="width:40%;">
-        Inventory by SKU Summary Report
-    </h3>
-    <%= report_select_menu %>
-</div>
-
-<div id="dashboard_div" style="text-align:center;">
-    <div class="full sidebar">
-
-        <div class="categoryControlContainer" id="categoryControl1"> </div>
-        <div class="categoryControlContainer" id="categoryControl2"> </div>
-        <div class="categoryControlContainer" id="categoryControl3"> </div>
-        <div class="categoryControlContainer" id="categoryControl4"> </div>
-        <div class="categoryControlContainer" id="categoryControl5"> </div>
-        <div class="categoryControlContainer" id="categoryControl6"> </div>
-        <div class="categoryControlContainer" id="categoryControl7"> </div>
-        <div class="categoryControlContainer" id="categoryControl8"> </div>
-    
-    </div>
+<div id="dashboard_div">         
     <div class="full display" style="font-size:10px;">
-        <div id="charts" style="padding:0 1% 0 1%; width:98%">
+        <div class="toolbar">
+            <h3 class="left">   Inventory Summary Report    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+                    <button class='excelExport'> Excel </button>       
+                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
+                </div>
+                <div id="gridOptionsExtended">
+                    <div class="categoryControlContainer" id="categoryControl1"> </div>
+                    <div class="categoryControlContainer" id="categoryControl2"> </div>
+                    <div class="categoryControlContainer" id="categoryControl3"> </div>
+                    <div class="categoryControlContainer" id="categoryControl4"> </div>
+                    <div class="categoryControlContainer" id="categoryControl5"> </div>
+                    <div class="categoryControlContainer" id="categoryControl6"> </div>
+                    <div class="categoryControlContainer" id="categoryControl7"> </div>
+                    <div class="categoryControlContainer" id="categoryControl8"> </div>
+
+                </div>
+            </div>
+        </div>     
+
+        <div id="charts" style="padding:5px 1% 0 1%; width:98%">
             <div id='column_select'> 
                 <div style="padding:4px 16px;" data-column="5" id="empty_quantity">
                     Empty </div>
@@ -50,6 +53,7 @@
                 <!-- Dataset -->    
             </div>            
         </div>
+        mark    
     </div>
 </div>
 <script>
@@ -60,7 +64,7 @@ $(document).ready(function(){
     $('#column_select').jqxButtonGroup('setSelection', 3);
 
     $.ajax({
-        url: location.href + '.json',
+        url: parseUrl(location) + '.json',
         dataType: 'TEXT',
     }).done(function(JSONData) {
     // Build main DataTable (dataset)
@@ -332,6 +336,7 @@ $(document).ready(function(){
             drawCharts();
         });
 
-    });                 
+    });          
+    jqxIntialize();       
 });
 </script>

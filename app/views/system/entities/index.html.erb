@@ -45,7 +45,7 @@ $(document).ready(function(){
 			{ name: 'kt_rate' },
 			{ name: '_id' },
 		], 
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -86,14 +86,14 @@ $(document).ready(function(){
             return 'View'
         }, buttonclick: function (row) {
             var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-            location.href = location.href + "/" + rowdata['_id'] + '/billing_facts'
+            parseUrl(location) = parseUrl(location) + "/" + rowdata['_id'] + '/billing_facts'
         }}, 
 
         { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
             return 'View'
         }, buttonclick: function (row) {
             var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-            var url = location.href + "/" + rowdata['_id']            
+            var url = parseUrl(location) + "/" + rowdata['_id']            
             openPopupWindow(url);           
         }}, 
 
@@ -103,7 +103,7 @@ $(document).ready(function(){
 	$("#distributor_upload_button").jqxButton({ theme: settings.theme,});                        
 /*
 	$("#distributor_upload_button").click(function () {				
-	    url = location.href + '/distributor_upload'
+	    url = parseUrl(location) + '/distributor_upload'
 	    alert(url);
 	    $('#fileupload').fileupload({	        
 	        url: url,

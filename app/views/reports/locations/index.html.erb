@@ -52,7 +52,7 @@ l: current_user.entity.visible_assets.where(location_id: x._id).count,
 			{ name: 'k' },
 			{ name: 'l', type: 'integer'},
 		], 
-		url: location.href
+		url: parseUrl(location)
 	};
 	var dataAdapter = new $.jqx.dataAdapter(grid_source, {
 
@@ -78,7 +78,7 @@ l: current_user.entity.visible_assets.where(location_id: x._id).count,
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = location.href + "/" + rowdata['k'] + "/edit"						
+			var url = parseUrl(location) + "/" + rowdata['k'] + "/edit"						
 			openPopupWindow(url)
 		}},	
 

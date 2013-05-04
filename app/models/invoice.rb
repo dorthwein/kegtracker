@@ -1,6 +1,7 @@
 class Invoice
   include Mongoid::Document
   include Mongoid::Timestamps  
+  include Mongoid::MultiParameterAttributes  
   include ExtendMongoid
   
   field :record_status, type: Integer, default: 1
@@ -9,7 +10,7 @@ class Invoice
 	belongs_to :bill_to_entity, :class_name => 'Entity', index: true	# Billed to Entity - in-active
 
 	field :invoice_number, type: String	
-	field :date, :type => Time
+	field :date, :type => Time, default: Time.new
 	field :invoice_type, type: Integer
 
 	field :entity_description, type: String
@@ -17,12 +18,10 @@ class Invoice
 	field :total_value, type: BigDecimal
 
 	field :invoice_status, type: Integer # To be implemented
-
 	has_many :invoice_line_items
 	has_many :invoice_attached_assets
 
 	has_many :invoice_details # To be depricated
-
 
 	def invoice_detail_to_attached_asset
 		self.invoice_details.each do |x|
@@ -50,8 +49,7 @@ class Invoice
 
 	def attach_asset options
 		# Options: asset, asset_activity_fact
-		invoice_attached_asset_record = self.invoice_attached_assets.find_or_create_by(asset_id: options[:asset]._id)
-
+		invoice_attached_asset_record = self.invoice_attached_assets.find_or_create_by(asset_id: options[:asset]._id)		
 		invoice_attached_asset_record.update_attributes(
 			invoice_id: self._id,
 			asset_activity_fact_id: options[:asset].asset_activity_fact._id,
@@ -59,11 +57,12 @@ class Invoice
     		asset_type_id: options[:asset].asset_activity_fact.asset_type_id,
     		sku_id: options[:asset].asset_activity_fact.sku_id,
 			asset_id: options[:asset].asset_activity_fact.asset_id,    
-		)		
-
+		)
+		options[:asset].invoice_id = self._id
+		options[:asset].save!
 		invoice_attached_asset_record.save!
 		self.update_line_item_attached_assets_count
-	end	
+	end
 
 	def update_line_item_attached_assets_count 
   		self.invoice_line_items.each do |x|

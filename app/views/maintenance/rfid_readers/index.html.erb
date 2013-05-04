@@ -111,7 +111,7 @@ $(document).ready(function(){
 			{ name: '_id' },
 			{ name: 'network_id' },
 		], 
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -169,7 +169,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/reader_select',
+			url: parseUrl(location) + '/reader_select',
 			data: { 
 				_id: rowdata['_id']
 			},
@@ -193,7 +193,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/antenna_select',
+			url: parseUrl(location) + '/antenna_select',
 			data: { 
 				_id: value
 			},
@@ -239,7 +239,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/antenna_new',
+			url: parseUrl(location) + '/antenna_new',
 			data: { 
 				_id: rowdata['_id'],
 			},
@@ -256,7 +256,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/antenna_delete',
+			url: parseUrl(location) + '/antenna_delete',
 			data: { 
 				_id: item.value,
 			},
@@ -283,7 +283,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/antenna_save',
+			url: parseUrl(location) + '/antenna_save',
 			data: { 
 				_id: item.value,
 				physical_location: physical_location,
@@ -303,7 +303,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/reader_save',
+			url: parseUrl(location) + '/reader_save',
 			data: { 
 				_id: rowdata['_id'],
 				reader_name: $("#reader_name").val(),
@@ -329,7 +329,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/reader_new',
+			url: parseUrl(location) + '/reader_new',
 			data: { },
 		}).done(function( data ) {
 			dataAdapter.dataBind();
@@ -345,7 +345,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			dataType : "JSON",
-			url: location.href + '/reader_delete',
+			url: parseUrl(location) + '/reader_delete',
 			data: { 
 				_id: rowdata['_id'],
 			},

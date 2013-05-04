@@ -4,6 +4,7 @@
   <title>Brewery Apps</title>
   <%= stylesheet_link_tag "public_manifest"  %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "public" %>
   <%= csrf_meta_tags %>
 	<script type="text/javascript">
 
@@ -22,11 +23,11 @@
     <meta name="viewport" content="width=980, user-scalable=yes" />
 </head>
 <body data-role="none"> 
-	<%= web_app_menu %>
+	<%= display_menu %>
 
 	<div id="container">
 
-	<!-- Main Content -->	
+	<!-- Main Content Public -->	
 		<%= yield %>						
 	</div>
 	<div id="footer" style="position:fixed; bottom:0px">

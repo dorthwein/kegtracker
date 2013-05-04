@@ -1,7 +1,9 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
+
 <table class="popup jqxValidator">
 	<tbody>
 		<tr>
@@ -10,17 +12,16 @@
 
 		<tr>
 			<td>	<b> Contractee </b>	 	</td>
-			<td>											
-              	<div id="entity_id" class="jqxDropDownList required ">						              		
-              	</div>
+			<td>					
+				<%= select(:production_partnership, :entity_id, @entities.map{|x| [x.description, x._id]}, :class => 'required') %>								
 			</td>		
 			
 			<td>	<b> Production Brewer </b>	</td>
 			<td>	
-				<div id="partner_id" class="jqxDropDownList required ">						              		
-				</div>			
+				<%= select(:production_partnership, :partner_id, @partners.map{|x| [x.description, x._id]}, :class => 'required') %>
 			</td>
 		</tr>
 
 	</tbody>
 </table>	
+<% end %>

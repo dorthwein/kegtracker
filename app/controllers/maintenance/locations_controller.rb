@@ -1,11 +1,9 @@
 class Maintenance::LocationsController < ApplicationController
   before_filter :authenticate_user!
-  layout "web_app"
   load_and_authorize_resource
 
   # GET /locations
   # GET /locations.json
-
   def index    		
     respond_to do |format|
       format.html # index.html.erb
@@ -20,21 +18,17 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
+    @record = Location.find(params[:id])
+    @networks = current_user.entity.networks
+    @location_types = Location.location_types    
+
     respond_to do |format|
-      record = Location.find(params[:id])        
-      if can? :update, record 
+      if can? :update, @record 
         format.html {redirect_to :action => 'edit'}
       else           
         format.html {render :layout => 'popup'}      
-        format.json {          
-        
-
+        format.json {                
           response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
-          response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
-
           render json: response 
         }
       end
@@ -44,17 +38,14 @@ class Maintenance::LocationsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.json
   def new
+    @record = Location.new
+    @networks = current_user.entity.networks
+    @location_types = Location.location_types
+
     respond_to do |format|
       format.html {render :layout => 'popup'}      
       format.json {          
-        
-        record = Location.new
         response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
-        response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
-        response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
-
         render json: response 
       }
     end
@@ -62,16 +53,15 @@ class Maintenance::LocationsController < ApplicationController
 
   # GET /locations/1/edit
   def edit    
-    respond_to do |format|
+    @record = Location.find(params[:id])
+    @networks = current_user.entity.networks
+    @location_types = Location.location_types    
+    
+      respond_to do |format|
         format.html {render :layout => 'popup'}
         format.json { 
-          record = Location.find(params[:id])
           response = {}
           response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          response[:jqxDropDownLists][:network_id] = JqxConverter.jqxDropDownList(current_user.entity.networks)
-          response[:jqxDropDownLists][:location_type] = location_types = JqxConverter.jqxDropDownList(Location.location_types)
-
           render json: response 
         }        
     end
@@ -80,26 +70,23 @@ class Maintenance::LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    record = Location.new(params[:record])
+    @record = Location.new(params[:location]) 
+    @record.entity_id = current_user.entity._id
+
+    @record.save!
     respond_to do |format|
-      if record.save
-        format.html 
+        format.html { head :no_content }
         format.json {  render json: {} }
-      else
-        format.html { render action: "new" }
-        format.json {  render json: {} }
-      end
     end
   end
 
   # PUT /locations/1
   # PUT /locations/1.json
-  def update    
-    record = Location.find(params[:id])
-    record.update_attributes(params[:record])
-    
+  def update
+    @record = Location.find(params[:id])
+    @record.update_attributes(params[:location])    
     respond_to do |format|
-      format.html
+#      format.html
       format.json {
         render json: {}
       }
@@ -109,8 +96,8 @@ class Maintenance::LocationsController < ApplicationController
   # DELETE /locations/1
   # DELETE /locations/1.json  
   def destroy
-    record = Location.find(params[:id])
-    record.trash
+    @record = Location.find(params[:id])
+    @record.trash
     respond_to do |format|
       format.json { head :no_content }
     end
@@ -118,38 +105,21 @@ class Maintenance::LocationsController < ApplicationController
 
   def restore_multiple
     respond_to do |format|    
-      records = Location.where(:id.in => params[:ids])      
-      records.restore
+      @records = Location.where(:id.in => params[:ids])      
+      @records.restore
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 
   def delete_multiple
     respond_to do |format|    
-      records = Location.where(:id.in => params[:ids])      
-      records.trash
+      @records = Location.where(:id.in => params[:ids])      
+      @records.trash
       format.json { 
-        render json: records
+        render json: @records
       }
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

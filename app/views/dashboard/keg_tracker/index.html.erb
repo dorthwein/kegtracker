@@ -58,7 +58,7 @@ $(document).ready(function(){
 			{ name: 'a', type: 'string' },
 			{ name: 'b', type: 'string' },		
 		],
-		url: location.href,
+		url: parseUrl(location),
 		updaterow: function (rowid, rowdata, commit) {
 			// synchronize with the server - send update command
 			// call commit with parameter true if the synchronization with the server is successful 
@@ -66,6 +66,7 @@ $(document).ready(function(){
 			commit(true);
 		}		
 	};
+
 /*
 	On grid load - get total # rows
 */

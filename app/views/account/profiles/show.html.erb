@@ -1,237 +1,252 @@
-<div class="limited container">    
-    <div class="jqxExpander" style="display:none;">
-        <div>
-            <h3 class=""> Account </h3>
-        </div>
-        <div> 
-            Account Information
+    <div class="full display">
+        <div class="toolbar">
+            <h3 class="left">   Account Settings    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+
+
+                </div>
+                <div id="gridOptionsExtended">
+
+                </div>
+            </div>
         </div>        
-    </div>    
-    
-    <div class="jqxExpander">
+
+
         <div>
-            <h3> 
-                Billing
-            </h3>
-        </div>
-        <div class="jqxValidator">
-            <% if !params['token'].nil? %>
-                <span> Creditcard information updated </span>                
-                <br /><br />
-            <% elsif !params['error'].nil? %>
-                <span> <%= "Woops!\n" + params['error'] %>  </span>
-                <br /><br />
-            <% elsif current_user.entity.card_ending.nil? %>
-                <span> No card on file </span>
-                <br /><br />
-            <% else %>
-                <span> Billing to card ending in <%= current_user.entity.card_ending %>  </span>
-                <br /><br />
-            <% end %>
-<!--        <div id="payment"> payment </div>-->
-
-            <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
-                <div style="width:45%; float:left;">         
-                    <h4> Credit Card Information</h4>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>    
-                                    <input id="credit_card_first_name" name="credit_card[first_name]" type="text" class="jqxInput required" />
-                                    <input id="credit_card_last_name" name="credit_card[last_name]" type="text" class="jqxInput required" />
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td> 
-                                    <input id="credit_card_number" name="credit_card[number]" type="text" class="jqxInput required" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="credit_card_month" name="credit_card[month]" type="text" class="jqxInput required" />
-                                    <span style="font-size:15px">/</span>
-                                    <input id="credit_card_year" name="credit_card[year]" type="text" class="jqxInput required" />
-                                </td>
-                            </tr>
-                            <tr>                                
-                                <td>
-                                    <input id="credit_card_verification_value" name="credit_card[verification_value]" type="text" class="jqxInput required" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <%= link_to 'Billing History', :account_brewery_apps_invoices %>
-                                </td>
-                            </tr>                            
-                        </tbody>
-                    </table>
-
-                    <input name="redirect_url" type="hidden" value="http://localhost:3000/account/profiles" />
-                    
-                    <input name="api_login" type="hidden" value="<%= ENV['SPREEDLYCORE_API_LOGIN'] %>" />
-                </div>    
-                <div style="width:45%; float:right;">         
-                    <h4>   
-                        Billing Address 
-                    </h4>                
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input id="credit_card_address1" class="jqxInput required" name="credit_card[address1]" type="text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="credit_card_address2" class="jqxInput" name="credit_card[address2]" type="text" />    
-                                </td>
-                            </tr>
-                            <tr>
-
-                                <td>
-                                    <input id="credit_card_city" class="jqxInput required" name="credit_card[city]" type="text" />
-                                    <input id="credit_card_state" class="jqxInput required" name="credit_card[state]" type="text" />
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="credit_card_zip" class="jqxInput required" name="credit_card[zip]" type="text" />    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="submit" id="credit_card_submit" class="right">  Update Billing Info   </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-
-
-
-                </div>                
-            </form>
-        </div>
-    </div>
-
-
-    <div class="jqxExpander">
-        <div>
-            <h3 class=""> Keg Tracker </h3>
-        </div>
-        <div> 
-            <div style="width:45%;" class="left">
-                <div class="product_detail">
-                    <h4>    Complete asset tracking </h4>
-                    <p>
-                        Monitor your keg assets throughout the supply chain by size, product, location, and sku.
-                    </p>
+        <div class="limited container">    
+            <div class="jqxExpander" style="display:none;">
+                <div>
+                    <h3 class=""> Account </h3>
+                </div>
+                <div> 
+                    Account Information
                 </div>        
-                <div class="product_detail">
-                    <h4>    Pricing </h4>
-                    <p>
-                        <table>
-                            <tr>
-                                <td style="width:30%;"> <b> Subscription </b> </td>
-                                <td> Case Equivalents Tracked per Day (ce-day)</td>
-                            </tr>
-                            <tr>
-                                <td> <b> Rate </b></td>
-                                <td> $0.0013/ce-day </td>
-                            </tr>
-                            <tr>
-                            </tr>
-                        </table>
-                    </p>
-                </div>
-
-            </div>
-            <div style="width:45%;" class="right">
-                <div class="product_detail">
-                    <h4>    Mobile, Desktop, & RFID   </h4>
-                    <p>
-                        Use any combination of smartphones, desktop computers, or RFID equipment to scan and track your assets.
-                    </p>
-                </div>
-
-                <div class="product_detail">
-                    <h4>    Interactive reporting   </h4>
-                    <p>
-                        Effectively manage your keg float with our comprehensive reporting tools. 
-                    </p>    
-                </div>
-                <div class="product_detail">
-                    <% if current_user.entity.keg_tracker == 1 %>
-                        <button class="jqxButton" id="keg_tracker_button" value="0"> Deactivate Keg Tracker  </button>
-                    <% else %>
-                        <button class="jqxButton" id="keg_tracker_button" value="1"> Activate Keg Tracker  </button>
-                    <% end %>
-                </div>
-            </div>
+            </div>    
             
-        </div>    
-    </div>
+            <div class="jqxExpander">
+                <div>
+                    <h3> 
+                        Billing
+                    </h3>
+                </div>
+                <div class="jqxValidator" style="max-width:960px;"> 
+                    <% if !params['token'].nil? %>
+                        <span> Creditcard information updated </span>                
+                        <br /><br />
+                    <% elsif !params['error'].nil? %>
+                        <span> <%= "Woops!\n" + params['error'] %>  </span>
+                        <br /><br />
+                    <% elsif current_user.entity.card_ending.nil? %>
+                        <span> No card on file </span>
+                        <br /><br />
+                    <% else %>
+                        <span> Billing to card ending in <%= current_user.entity.card_ending %>  </span>
+                        <br /><br />
+                    <% end %>
+        <!--        <div id="payment"> payment </div>-->
+
+                    <form action="https://spreedlycore.com/v1/payment_methods" method="POST">                    
+                        <div style="width:45%; float:left;">         
+                            <h4> Credit Card Information</h4>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>    
+                                            <input id="credit_card_first_name" name="credit_card[first_name]" type="text" class="jqxInput required" />
+                                            <input id="credit_card_last_name" name="credit_card[last_name]" type="text" class="jqxInput required" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td> 
+                                            <input id="credit_card_number" name="credit_card[number]" type="text" class="jqxInput required" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="credit_card_month" name="credit_card[month]" type="text" class="jqxInput required" />
+                                            <span style="font-size:15px">/</span>
+                                            <input id="credit_card_year" name="credit_card[year]" type="text" class="jqxInput required" />
+                                        </td>
+                                    </tr>
+                                    <tr>                                
+                                        <td>
+                                            <input id="credit_card_verification_value" name="credit_card[verification_value]" type="text" class="jqxInput required" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <%= link_to 'Billing History', :account_brewery_apps_invoices %>
+                                        </td>
+                                    </tr>                            
+                                </tbody>
+                            </table>
+
+                            <input name="redirect_url" type="hidden" value="http://localhost:3000/account/profiles" />
+                            
+                            <input name="api_login" type="hidden" value="<%= ENV['SPREEDLYCORE_API_LOGIN'] %>" />
+                        </div>    
+                        <div style="width:45%; float:right;">         
+                            <h4>   
+                                Billing Address 
+                            </h4>                
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input id="credit_card_address1" class="jqxInput required" name="credit_card[address1]" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="credit_card_address2" class="jqxInput" name="credit_card[address2]" type="text" />    
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <input id="credit_card_city" class="jqxInput required" name="credit_card[city]" type="text" />
+                                            <input id="credit_card_state" class="jqxInput required" name="credit_card[state]" type="text" />
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="credit_card_zip" class="jqxInput required" name="credit_card[zip]" type="text" />    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="submit" id="credit_card_submit" class="right">  Update Billing Info   </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>                
+                        </div>                
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="jqxExpander">
+                <div>
+                    <h3 class=""> Keg Tracker </h3>
+                </div>
+                <div style="max-width:960px;"> 
+                    <div style="width:45%;" class="left">
+                        <div class="product_detail">
+                            <h4>    Complete asset tracking </h4>
+                            <p>
+                                Monitor your keg assets throughout the supply chain by size, product, location, and sku.
+                            </p>
+                        </div>        
+                        <div class="product_detail">
+                            <h4>    Pricing </h4>
+                            <p>
+                                <table>
+                                    <tr>
+                                        <td style="width:30%;"> <b> Subscription </b> </td>
+                                        <td> Case Equivalents Tracked per Day (ce-day)</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <b> Rate </b></td>
+                                        <td> $0.0013/ce-day </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                </table>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div style="width:45%;" class="right">
+                        <div class="product_detail">
+                            <h4>    Mobile, Desktop, & RFID   </h4>
+                            <p>
+                                Use any combination of smartphones, desktop computers, or RFID equipment to scan and track your assets.
+                            </p>
+                        </div>
+
+                        <div class="product_detail">
+                            <h4>    Interactive reporting   </h4>
+                            <p>
+                                Effectively manage your keg float with our comprehensive reporting tools. 
+                            </p>    
+                        </div>
+                        <div class="product_detail">
+                            <% if current_user.entity.keg_tracker == 1 %>
+                                <button class="jqxButton" id="keg_tracker_button" value="0"> Deactivate Keg Tracker  </button>
+                            <% else %>
+                                <button class="jqxButton" id="keg_tracker_button" value="1"> Activate Keg Tracker  </button>
+                            <% end %>
+                        </div>
+                    </div>
+                    
+                </div>    
+            </div>
 
 
 
-    <div class="jqxExpander">
-        <div>
-            <h3 class=""> Keg Registration </h3>
+            <div class="jqxExpander">
+                <div>
+                    <h3 class=""> Keg Registration </h3>
+                </div>
+                <div style="max-width:960px;"> 
+                    <div style="width:45%;" class="right">
+
+                        <div class="product_detail ">
+                            <h4>    Lost Keg Return   </h4>
+                            <p>
+                                Consumers, KegTracker Customers, and our Distributor Partners will be able to find your contact information when they type in your a given kegs serial number.
+                            </p>
+                        </div>
+                        <div class="product_detail">
+                            <h4>    Keg Registration </h4>
+                            <p>
+                                Keep an accurate count of your current keg float and allow other Brewery Apps affialiates to find your contact information incase your keg is lost.
+                            </p>
+                        </div>        
+
+
+                    </div>
+                    <div style="width:45%;" class="left">
+                        <div class="product_detail">
+                            <h4>    Participate within our partner network    </h4>
+                            <p>
+                                Keg Tracker customers & distributor partners will be able to scan and handle your assets.  If a participating partner does scan your asset, its last known location will be reflected in your keg asset inventory.
+                            </p>    
+                        </div>                
+
+
+                        <div class="product_detail">
+                            <h4>    Pricing </h4>
+                            <p>
+                                <table>
+                                    <tr>
+                                        <td style="width:30%;"> <b> Subscription </b> </td>
+                                        <td> 1 Time Sign Up </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <b> Rate </b></td>
+                                        <td> FREE </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                </table>
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+            </div>
         </div>
-        <div> 
-            <div style="width:45%;" class="right">
-
-                <div class="product_detail ">
-                    <h4>    Lost Keg Return   </h4>
-                    <p>
-                        Consumers, KegTracker Customers, and our Distributor Partners will be able to find your contact information when they type in your a given kegs serial number.
-                    </p>
-                </div>
-                <div class="product_detail">
-                    <h4>    Keg Registration </h4>
-                    <p>
-                        Keep an accurate count of your current keg float and allow other Brewery Apps affialiates to find your contact information incase your keg is lost.
-                    </p>
-                </div>        
-
-
-            </div>
-            <div style="width:45%;" class="left">
-                <div class="product_detail">
-                    <h4>    Participate within our partner network    </h4>
-                    <p>
-                        Keg Tracker customers & distributor partners will be able to scan and handle your assets.  If a participating partner does scan your asset, its last known location will be reflected in your keg asset inventory.
-                    </p>    
-                </div>                
-
-
-                <div class="product_detail">
-                    <h4>    Pricing </h4>
-                    <p>
-                        <table>
-                            <tr>
-                                <td style="width:30%;"> <b> Subscription </b> </td>
-                                <td> 1 Time Sign Up </td>
-                            </tr>
-                            <tr>
-                                <td> <b> Rate </b></td>
-                                <td> FREE </td>
-                            </tr>
-                            <tr>
-                            </tr>
-                        </table>
-                    </p>
-                </div>
-            </div>
-        </div>    
     </div>
-</div>
+    </div>
 <script>
     $(document).ready(function(){
         var theme = settings.theme
-        url = location.href;
+        url = parseUrl(location);
         // Inputs
         jqxIntialize();
         var month_rule = {input: '#credit_card_month', message:'Invalid month please use "MM" format', action: 'keyup, blur', rule: function (input, commit) {
@@ -251,7 +266,7 @@
             }
         }}
 
-        var rules = $('.jqxValidator').jqxValidator('rules');
+        var rules =  [] //$('.jqxValidator').jqxValidator('rules');
         rules.push(month_rule);
         rules.push(year_rule);
         $('.jqxValidator').jqxValidator({rules: rules})
@@ -309,6 +324,6 @@
         $("#credit_card_zip").jqxInput({placeHolder: 'Zip', width:'80px'});
 
         $("#credit_card_submit").jqxButton({ theme: theme, width:150, height:25 });
-
+        
     });
 </script>

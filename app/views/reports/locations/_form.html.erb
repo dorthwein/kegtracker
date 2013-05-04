@@ -118,7 +118,7 @@
 				{ name: 'n', type: 'string'},			
 				{ name: 'o', type: 'string'},			], 
 			root: "jqxGrid",
-			url: location.href,
+			url: parseUrl(location),
 		};		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
 			loadComplete: function (data) {},

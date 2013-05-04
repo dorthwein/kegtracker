@@ -46,7 +46,7 @@ $(document).ready(function(){
 			window.parent.dataAdapter.dataBind();					
 //			window.parent.$('.jqxWindow').jqxWindow('close');
 	//		window.opener.dataAdapter.dataBind();				
-			document.location.href = url + '/' + data['_id'] + '/edit';
+			document.parseUrl(location) = url + '/' + data['_id'] + '/edit';
 			 
 		})
 	});
