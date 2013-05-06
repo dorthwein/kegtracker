@@ -78,6 +78,9 @@ Cobalt::Application.routes.draw do
   	end
 
 	namespace :reports do 
+		namespace :assets do 
+			resources :overview
+		end
 #		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
 		
 		# Asset
@@ -86,13 +89,15 @@ Cobalt::Application.routes.draw do
 
 #		resources :assets	
 #		resources :overdue_assets	
-		resources :locations
-		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]		
-		resources :asset_cycles do 
-			resources :asset_activity_facts
-		end
+#		resources :locations
+#		match 'locations/location_assets' => 'locations#location_assets', :via => [:get, :post]		
 		
-		resources :completed_asset_cycles
+
+#		resources :asset_cycles do 
+#			resources :asset_activity_facts
+#		end
+		
+#		resources :completed_asset_cycles
 
 
 #		match 'asset/browse' => 'asset#browse', :via => [:get, :post]		
@@ -105,20 +110,20 @@ Cobalt::Application.routes.draw do
 #		match "location/browse/asset_select" => 'location#browse_asset_select', :via => [:get, :post]				
 
 		# Network
-		match 'network/in_out_asset_report_advanced' => 'network#in_out_asset_report_advanced', :via => [:get, :post]
-		match 'network/in_out_asset_report_simple' => 'network#in_out_asset_report_simple', :via => [:get, :post]		
+#		match 'network/in_out_asset_report_advanced' => 'network#in_out_asset_report_advanced', :via => [:get, :post]
+#		match 'network/in_out_asset_report_simple' => 'network#in_out_asset_report_simple', :via => [:get, :post]		
 
-		match 'network/performance_scorecard_report' => 'network#performance_scorecard_report', :via => [:get, :post]
+#		match 'network/performance_scorecard_report' => 'network#performance_scorecard_report', :via => [:get, :post]
 		
 		# Float
 		match 'float/asset_fill_to_fill_cycle_fact_by_fill_network' => 'float#asset_fill_to_fill_cycle_fact_by_fill_network', :via => [:get, :post]	
 		match 'float/asset_fill_to_fill_cycle_fact_by_delivery_network' => 'float#asset_fill_to_fill_cycle_fact_by_delivery_network', :via => [:get, :post]	
 
-		match 'float/activity_summary_report_simple' => 'float#activity_summary_report_simple', :via => [:get, :post]
-		match 'float/activity_summary_report_advanced' => 'float#activity_summary_report_advanced', :via => [:get, :post]
+#		match 'float/activity_summary_report_simple' => 'float#activity_summary_report_simple', :via => [:get, :post]
+#		match 'float/activity_summary_report_advanced' => 'float#activity_summary_report_advanced', :via => [:get, :post]
 
 		# Invoice
-		match 'invoice/lookup' => 'invoice#lookup', :via => [:get, :post]
+#		match 'invoice/lookup' => 'invoice#lookup', :via => [:get, :post]
 	end
 	
 	namespace :system do

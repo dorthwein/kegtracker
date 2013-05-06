@@ -26,6 +26,9 @@ class Location
   field :location_type, type: Integer, :default => 6
   field :location_type_description, type: String
 
+  # 0 = Private, 1 = Partners, 
+  field :scope, type: Integer, :default => 0
+
   has_many :assets
   
   # Relations
@@ -35,9 +38,8 @@ class Location
   # De-normalized
   field :entity_description, type: String
   field :network_description, type: String
-
   def self.location_types
-    response = [ 
+    response = [
         {:description => 'Inventory', :_id => 1},
         {:description => 'Empty Assets', :_id => 2},
         {:description => 'Market', :_id => 3},

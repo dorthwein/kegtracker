@@ -28,6 +28,7 @@ a:hover, a:hover { color: #444; font-weight: 900;}
  	position: fixed;
  	z-index: 1000;	
 }
+
 	#header div {
 		padding:5px 10px 0 10px;
 		font-weight: normal;
@@ -96,6 +97,9 @@ a:hover, a:hover { color: #444; font-weight: 900;}
 .expandable .title {
 	font-weight: normal;
 }
+	.section h4 {
+		font-weight: normal;
+	}
 
 
 .full.sidebar {
@@ -160,13 +164,6 @@ a:hover, a:hover { color: #444; font-weight: 900;}
 			background-image: -moz-linear-gradient(center top,#f9f9f9,#f2f2f2);	
 			padding:5px inherit;
 			text-align: center;
-		}
-
-		.full.sidebar div.section div.sTitle {		
-			height:100%;
-			padding:10px;
-			font-size: 14px;
-			vertical-align: middle;
 		}
 
 

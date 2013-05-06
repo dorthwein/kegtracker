@@ -247,7 +247,6 @@ html = <<html
 							<li> #{link_to 'SKUs', :maintenance_skus } </li>		
 
 							<li> #{link_to 'Products', :maintenance_products } </li>				
-
 								Locations
 								<ul>
 									<li> #{link_to 'Networks', :maintenance_networks } </li>
@@ -278,20 +277,53 @@ html = <<html
 				#{ link_to image_tag('brewery_apps_logo.png', :style => 'width:58px;margin:auto;'), :dashboard_viewer }	        				
 	        </div>
 
+
 	        <div class="section"> 				
-				<h4 class="title"> #{link_to 'Sign out', destroy_user_session_path, :method => :delete } </h4>
+				<h4 class="title"> #{ link_to 'Home', :dashboard_viewer }  </h4>
+	        </div>
+
+	        <div class="section"> 				
+				<h4 class="title">  #{ link_to 'Account', :account_profiles }  </h4>
+	        </div>
+	        <div class="section"> 				
+				<h4 class="title"> #{ link_to 'Scanner', :scanners_barcode }  </h4>
 	        </div>
 
 	        <div class="section expandable"> 
-	            <h4 class="title"> Home </h4> 
+	            <h4 class="title"> Reports </h4> 
 	            <div class="content">   
 	                <ul>   
-	                    <li>    #{ link_to 'Dashboard', :dashboard_viewer }    </li>
-	                    <li>    #{ link_to 'Account', :account_profiles }  </li>
+
+	                    <li class="expandable">
+	                        <div class="title"> Assets </div>
+	                        <ul class="content">
+	                        	<!-- Inventory Count over time # summation of assets then can add dimensions -->
+									<li> #{link_to 'Overview', :reports_assets_overview_index } </li>
+
+								<!-- Losses -->
+									<li> #{link_to 'Loss', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network }  </li>
+								
+								<!-- # Assets Overdue -->
+									<li> #{link_to 'Overdue', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network }  </li>
+
+								<!-- Asset Flow -->
+									<li> #{link_to 'Flow', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network }  </li>
+	                        </ul>
+	                    </li>
+
+
+	                    <li class="expandable">    
+	                        <div class="title"> Asset Cycles </div>
+	                        <ul class="content">	                        
+									<li> #{link_to 'Overview', :reports_assets_sku_summary_report_simple } </li>
+									
+									<li> #{link_to '', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network }  </li>
+	                        </ul>
+	                    </li>
 	                </ul>
 	            </div>
 	        </div>
-	        
+
 	        <div class="section expandable"> 
 	            <h4 class="title"> Maintenance </h4> 
 	            <div class="content">   
@@ -323,24 +355,9 @@ html = <<html
 	            </div>            
 	        </div>
 	        
-	        <div class="section expandable"> 
-	            <h4 class="title"> Reports </h4> 
-	            <div class="content">   
-	                <ul>   
-	                    <li class="expandable">    
-	                        <div class="title"> Assets </div>
-	                        <ul class="content">
-									<li> #{link_to 'Asset Summary', :reports_assets_sku_summary_report_simple } </li>
-									<li> #{link_to 'Asset Cycle by Distribution Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_delivery_network }  </li>
-									<li> #{link_to 'Asset Cycle by Production Channel Report', :reports_float_asset_fill_to_fill_cycle_fact_by_fill_network }  </li>
-	                        </ul>
-	                    </li>
 
-	                </ul>
-	            </div>
-	        </div>
 	        <div class="section"> 				
-				<h4 class="title" style="font-weight:normal"> #{ link_to 'Scanner', :scanners_barcode }  </h4>
+				<h4 class="title"> #{link_to 'Sign out', destroy_user_session_path, :method => :delete } </h4>
 	        </div>
 	        
 	    </div>

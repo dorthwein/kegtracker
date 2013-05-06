@@ -12,7 +12,6 @@ class Maintenance::LocationsController < ApplicationController
           render json: locations
       }
     end
-
   end
 
   # GET /locations/1

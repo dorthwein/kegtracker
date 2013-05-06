@@ -1,44 +1,4 @@
 desc "Admin Tasks"
-=begin
-task :ten_minute_build => :environment do
-	build_report = BuildReport.new(Time.now)
-	build_report.network_facts
-	build_report.charge_credit_card
-	build_report.process_billing
-end
-
-
-task :rebuild_cycle_facts => :environment do
-	AssetCycleFact.build_cycle_facts_from_time_line	
-end
-
-task :process_payments => :environment do
-	Entity.all.each do |x|
-		if !x.payment_token.nil?			
-			payment_method = SpreedlyCore::PaymentMethod.find(x.payment_token.to_s)
-			if payment_method.valid?
-				purchase_transaction = payment_method.purchase(550)
-				#print purchase_transaction.succeeded? # true
-			else
-			  print "Woops!\n" + payment_method.errors.join("\n")
-			end
-		end
-	end
-end
-
-task :thirty_day_build => :environment do
-	start = Time.now - 2592000 
-	last = Time.now # + 86400
-	current = start
-	while current < last
-		current = current + 86400
-		print current.to_s + "\n"		
-		a = BuildReport.new(current)	
-		print '--- Day Completed'
-		a.network_facts
-	end	
-end
-=end
 task :invoice_detail_to_attached_asset => :environment do
 	Invoice.all.each do |x|
 		x.invoice_detail_to_attached_asset
