@@ -1,0 +1,181 @@
+<div id="dashboard_div">         
+    <div class="full display" style="font-size:10px;">
+        <div class="toolbar">
+            <h3 class="left">   Assets Overview Report    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+                    <!--
+                    <button class='excelExport'> Excel </button>       
+                -->
+
+                </div>
+                <div id="gridOptionsExtended">
+
+
+                </div>
+            </div>
+        </div>     
+        <div style="padding:10px;">
+            <div class="categoryControlContainer" id="categoryControl1"> </div>
+            <div class="categoryControlContainer" id="categoryControl2"> </div>
+            <div class="categoryControlContainer" id="categoryControl3"> </div>
+            <div class="categoryControlContainer" id="categoryControl4"> </div>
+            <div class="categoryControlContainer" id="categoryControl5"> </div>
+            <div class="categoryControlContainer" id="categoryControl6"> </div>
+            <div class="categoryControlContainer" id="categoryControl7"> </div>
+            <div class="categoryControlContainer" id="categoryControl8"> </div>
+        </div>
+        <div id="charts" style="">        
+            <div id="chart1" style="width:55%; float:left; ">  
+                <!-- CHART 1 -->
+            </div>            
+            <div style="width:45%; float:right;">
+                <div>
+                    <div id="chart2" style="width:50%; float:left;">
+                    </div>
+                    <div id="chart3" style="width:50%; float:left;">
+                    </div>
+                </div>
+                <div>
+                    <div id="chart4" style="width:50%; float:left;">
+                    </div>
+                    <div id="chart5" style="width:50%; float:left;">
+                    </div>
+                </div>
+
+            </div>
+        <div id="table_chart" style="width:100%; height:250px; clear:both; margin:35px 0 25px 0;">            
+        </div>
+
+        </div>
+        
+    </div>
+</div>
+<script>
+
+// prepare the data
+$(document).ready(function(){    
+    var dataTable;
+    var dashTable = new google.visualization.ChartWrapper({
+        'chartType': 'Table',
+        'containerId': 'table_chart',
+        'options': {
+            width: '100%',
+            height: 300,
+            legend: 'right',
+            cssClassNames: {
+                headerRow: 'headerRow',
+                tableRow: 'tableRow',
+                oddTableRow: 'oddTableRow',
+                selectedTableRow: 'selectedTableRow',
+                hoverTableRow: 'hoverTableRow',
+                headerCell: 'headerCell',
+                tableCell: 'tableCell',
+                rowNumberCell: 'rowNumberCell',
+            }                
+        }
+    });
+
+    // Add Dashboard Controls/Filters
+    var filters = [
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl1', 'Asset Holder') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl2', 'Location') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl3', 'City') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl4', 'State') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl5', 'Product') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl6', 'Brewer') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl7', 'Size') ),
+        new google.visualization.ControlWrapper( g_chart_api.CategoryFilter('categoryControl8', 'Status') ),
+    ]    
+    var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div')
+    );
+
+    dashboard.bind(filters, dashTable);    
+    google.visualization.events.addListener(dashboard, 'ready', drawCharts)
+    // On Change
+
+    $.ajax({
+        url: parseUrl(location) + '.json',
+        dataType: 'TEXT',
+    }).done(function(JSONData) {
+        dataTable = new google.visualization.DataTable(JSONData);    
+        dashboard.draw(dataTable);
+    });          
+
+// Draw Charts Function
+    function drawCharts(){
+        var graphData = dashTable.getDataTable();        
+        var geoChartColumns = [         
+            {column: 9, label: '# Assets'},            
+            {column: 10, label: 'CE'},
+        ]
+        
+        var geoChartOptions = {
+            region: 'US',
+            displayMode: 'markers',
+            colorAxis: {colors: ['red', 'green']},
+            resolution: 'provinces',
+        };
+        g_chart_api.GeoChart(graphData, 3, geoChartColumns, 'chart1', geoChartOptions );
+
+
+        
+
+
+        // Asset Status CE
+        var pie1ChartColumns = [{column: 10, label: 'CE'}]
+        g_chart_api.PieChart(graphData, 6, pie1ChartColumns, 'chart2', {title:'Asset Status by CEs'}  );
+        
+
+        // Asset Status QTY
+        var pie2ChartColumns = [{column: 9, label: '# Assets'}]
+        g_chart_api.PieChart(graphData, 6, pie2ChartColumns, 'chart3', {title:'Asset Status by # Assets'} );
+
+
+
+        // Product
+        var pie3ChartColumns = [{column: 10, label: '# CE'}]
+        g_chart_api.PieChart(graphData, 5, pie3ChartColumns, 'chart4', {title:'Size by CEs'} );
+
+
+        // Product
+        var pie4ChartColumns = [{column: 9, label: '# Assets'}]
+        g_chart_api.PieChart(graphData, 5, pie4ChartColumns, 'chart5', {title:'Size by # Assets'}   );        
+
+    }
+
+
+
+
+/*
+    var rtime;
+    var timeout = false;
+    var delta = 100;
+    $(window).resize(function() {
+        rtime = new Date();
+        if (timeout === false) {
+            timeout = true;
+            setTimeout(resizeend, delta);
+        }
+    });
+
+    function resizeend() {
+        if (new Date() - rtime < delta) {
+            setTimeout(resizeend, delta);
+        } else {
+            timeout = false;
+            dashTable.draw()
+        }               
+    }    
+*/    
+    jqxIntialize();       
+});
+
+// Window Rezier
+
+
+
+</script>
+
