@@ -204,8 +204,6 @@ class AssetActivityFact
     if self.asset_status.to_i == 0
       self.product = nil
       self.batch_number = nil
-
-      self.invoice = nil
     end
 #    self.product_description = self.asset_status.to_i == 0 ? 'Empty' : self.product.description
 #    self.product_entity_description = self.asset_status.to_i == 0 ? 'Empty' : self.product_entity.description
