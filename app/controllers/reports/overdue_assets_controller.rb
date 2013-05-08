@@ -8,34 +8,33 @@ class Reports::OverdueAssetsController < ApplicationController
 
 # Overdue
 # Old Product
-# 
-
-	def index    
-		respond_to do |format|		
-		  	format.html # index.html.erb
-		  	format.json {
-  				render json: current_user.entity.visible_assets.and(
-						:asset_overdue => 1
-  					).map{ |x| {
-			            a: x.entity_description,
-			            b: x.product_entity_description,
-			            c: x.tag_value,
-			            d: x.asset_type_description,
-			            e: x.asset_status_description,
-			            f: x.product_description,
-			            g: x.location_description,
-			            h: x.location_entity_description,
-			            i: x._id,
-			            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
-			            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
-			            l: x.asset_cycle_fact_id,                    
-			            m: x.asset_overdue == 1 ? 'YES' : "NO",
-			            n: 'TBI', # x.asset_overdue == 1 ? 'YES' : "NO"
-			            o: x.location_entity_arrival_time != nil ? x.location_entity_arrival_time.to_i * 1000 : nil, 
-			        }};
-			  }
-		end
-	end 
+  	def index    
+  		respond_to do |format|		
+  		  	format.html # index.html.erb
+  		  	format.json {
+    				render json: current_user.entity.visible_assets.and(
+  						:asset_overdue => 1
+    					).map{ |x| {
+  			            a: x.entity_description,
+  			            b: x.product_entity_description,
+  			            c: x.tag_value,
+  			            d: x.asset_type_description,
+  			            e: x.asset_status_description,
+  			            f: x.product_description,
+  			            g: x.location_description,
+  			            h: x.location_entity_description,
+  			            i: x._id,
+  			            j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
+  			            k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
+  			            l: x.asset_cycle_fact_id,                    
+  			            m: x.asset_overdue == 1 ? 'YES' : "NO",
+  			            n: 'TBI', # x.asset_overdue == 1 ? 'YES' : "NO"
+  			            o: x.location_entity_arrival_time != nil ? x.location_entity_arrival_time.to_i * 1000 : nil, 
+  			        }};
+  			  }
+  		end
+  	end
+    
   	def show
 	    respond_to do |format|
 	      format.html {render :layout => 'popup'}

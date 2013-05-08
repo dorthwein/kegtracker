@@ -20,7 +20,8 @@ class Reports::Assets::OverviewController < ApplicationController
 			        {:id => :fact_time, label: 'Date', type: 'date'},
 		        ]
 
-		        source = current_user.entity.visible_daily_facts
+		        @date = Time.new
+		        source = current_user.entity.visible_daily_facts.between(fact_time: @date.beginning_of_day..@date.end_of_day)
 		        render json: GoogleChartApi.table(source, cols)
 		    }		
 		end
