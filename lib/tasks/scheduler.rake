@@ -8,7 +8,7 @@ end
 task :ten_minute_build => :environment do
 	build_report = BuildReport.new(Time.now)
 	build_report.daily_facts
-	build_report.network_facts 	# Depricated
+#	build_report.network_facts 	# Depricated
 
 	build_report.charge_credit_card
 	build_report.process_billing
@@ -24,7 +24,7 @@ task :thirty_day_build => :environment do
 		a = BuildReport.new(current)	
 		print '--- Day Completed'		
 		a.daily_facts
-		a.network_facts	# Depreicated
+#		a.network_facts	# Depreicated
 	end	
 end
 
