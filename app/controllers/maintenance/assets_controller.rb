@@ -23,7 +23,7 @@ class Maintenance::AssetsController < ApplicationController
             i: x._id,
             j: x.fill_time != nil ? x.fill_time.to_i * 1000 : nil,
             k: x.last_action_time != nil ? x.last_action_time.to_i * 1000 : nil,
-            l: x.asset_cycle_fact_id,                    
+#            l: x.asset_cycle_fact_id,                    
             m: x.days_at_location,
             n: x.batch_number,
             o: x.invoice_number,

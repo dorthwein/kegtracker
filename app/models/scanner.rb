@@ -8,20 +8,19 @@ class Scanner
 			obj = Scanner.parse_scan(scan)	# Parse Scan
 			obj = Scanner.find_asset(obj)	# Find/Create Asset						
 
-			obj = Scanner.check_correction(obj)
+#			obj = Scanner.check_correction(obj)
 
 			if obj[:correction] == 1
 				obj = Scanner.rollback_scan(obj)
 			end
 
-			obj = Scanner.preprocess_asset(obj)
-			
-			if obj[:auto_mode] == 1 && obj[:from_network] != obj[:to_network] && obj[:handle_code] != 3
+			obj = Scanner.preprocess_asset(obj)			
+			if obj[:auto_mode] == 1 && obj[:from_network] != obj[:to_network] # && obj[:handle_code] != 3
+				print 'auto mode'
 				obj = Scanner.auto_mode_process(obj)
 			end
-
 			obj = Scanner.normal_process(obj)
-			
+
 			if obj[:invoice_number] != '' && !obj[:invoice_number].nil?
 				Scanner.invoice_process(obj)
 			end
@@ -30,7 +29,7 @@ class Scanner
 			processed_scans.push(Scanner.snap_shot(obj))
 		end
 		return processed_scans
-	end	
+	end
 
 	# Rollback logic needs to be moved to various models
 	def self.rollback_scan obj
@@ -60,9 +59,6 @@ class Scanner
 	def self.auto_mode_process obj		
 		obj = Scanner.auto_mode_from_brewery(obj)
 		obj = Scanner.auto_mode_to_brewery(obj)
-		obj = Scanner.auto_mode_to_distributor(obj)
-		obj = Scanner.auto_mode_to_market(obj)
-		obj = Scanner.auto_mode_from_market(obj)
 		obj[:asset].save!
 		return obj
 	end
@@ -72,11 +68,14 @@ class Scanner
 		if obj[:from_network].network_type == 1
 			if obj[:asset].asset_status != 1
 				# If not full - fill				
-				obj[:asset].fill({ 	
+				obj[:asset].move({ 	
 					:time => obj[:time] - 1,
 					:location_id => obj[:from_network].smart_mode_out_location._id,
 					:product_id => obj[:from_network].smart_mode_product._id,
-					:correction => obj[:correction]
+					:correction => obj[:correction],
+					:user_id => obj[:user_id],
+					:handle_code => obj[:handle_code]
+#					:handle_code => obj[:handle_code],
 				})
 			end
 		end
@@ -84,89 +83,53 @@ class Scanner
 	end
 
 	def self.auto_mode_to_brewery obj
-		if obj[:to_network].network_type == 1 && obj[:handle_code] != 4
-			obj[:handle_code] = 2
-			if obj[:asset].product.entity != obj[:to_network].entity
-				obj[:asset].product = nil
-			end
-=begin
-			if obj[:asset].asset_status != 0
-				# If not empty - pickup				
-				obj[:asset].pickup({ 	
-					:time => obj[:time] - 1,
-					:location_id => obj[:from_network].smart_mode_out_location._id,
-					:correction => obj[:correction]
-				})
-			end
-=end
+		if obj[:to_network].network_type == 1 # && obj[:handle_code] != 4
+			obj[:location_id] = obj[:to_network].smart_mode_in_location._id
 		end
+#			if obj[:asset].asset_status != 0
+#				# If not empty - pickup				
+#				obj[:asset].pickup({ 	
+#					:time => obj[:time] - 1,
+#					:location_id => obj[:from_network].smart_mode_out_location._id,
+#					:correction => obj[:correction]
+#				})
+#			end
+#		end
 		return obj
 	end	
 
-	def self.auto_mode_to_distributor obj
-		if obj[:to_network].network_type == 2 && obj[:to_network].auto_mode == 1
+#	def self.auto_mode_to_distributor obj
+#		if obj[:to_network].network_type == 2 && obj[:to_network].auto_mode == 1
 			# If asset full, change to delivery
-			if obj[:asset].asset_status == 1
-				obj[:handle_code] = 1
+#			if obj[:asset].asset_status == 1
+		#		obj[:handle_code] = 1
 			# If asset in market, change to pickup
-			elsif obj[:asset].asset_status == 2
-				obj[:handle_code] = 2
-			end
-		end
-		return obj
-	end
+#			elsif obj[:asset].asset_status == 2
+		#		obj[:handle_code] = 2
+#			end
+#		end
+#		return obj
+#	end
 		
 
-	def self.auto_mode_to_market obj
+#	def self.auto_mode_to_market obj
 		# Change HC to delivery
-		if obj[:to_network].network_type == 3 # && obj[:to_network].auto_mode == 1		
-			obj[:handle_code] = 1
-		end
-		return obj		
-	end
+#		if obj[:to_network].network_type == 3 # && obj[:to_network].auto_mode == 1		
+#			obj[:handle_code] = 1
+#		end
+#		return obj		
+#	end
 
-	def self.auto_mode_from_market obj
-		if obj[:from_network].network_type == 3 # && obj[:to_network].auto_mode == 1		
-			obj[:handle_code] = 2
-		end
-		return obj
-	end
+#	def self.auto_mode_from_market obj
+#		if obj[:from_network].network_type == 3 # && obj[:to_network].auto_mode == 1		
+#			obj[:handle_code] = 2
+#		end
+#		return obj
+#	end
+
 
 	def self.normal_process obj
-		case obj[:handle_code].to_i
-		when 1 		# Delivery
-			obj[:asset].deliver(obj)				
-			print "Delivery \n"				
-		
-		when 2		# Pickup
-			obj[:asset].pickup(obj)				
-			print "Pickup \n"
-		
-		when 3		# Register
-			obj[:asset].register(obj)				
-			print "Add \n"
-		
-		when 4		# Fill
-			obj[:asset].fill(obj)				
-			print "Fill \n"
-		
-		when 5		# Move
-			obj[:asset].move(obj)				
-			print "Move \n"
-
-		when 6		# RFNet
-			obj[:asset].rfnet(obj)				
-#			if obj[:asset].location_network_id.to_s != Location.find(obj[:location_id]).network_id.to_s
-#				obj[:asset].move(obj)				
-#
-#				print "RFNet \n" + obj[:asset].location_network.description.to_s
-#			end
-		when 7		# Audit
-			obj[:asset].process_audit
-			print "Audit \n"			
-		else
-			print "HC Error \n"
-		end
+		obj[:asset].move(obj)
 		obj[:asset].save!
 		return obj
 	end
@@ -185,21 +148,22 @@ class Scanner
 		if obj[:correction] == 1
 			print "Correction Toggled On \n"
 		end
-
 		# Same Location within last day minutes but not a fill		
-		if obj[:asset].location._id.to_s == obj[:location_id] && (obj[:handle_code].to_i != 4 || obj[:handle_code].to_i != obj[:asset].handle_code.to_i) && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)			
-			print "Same Location within 15 minutes Correction \n"
-			obj[:correction] = 1	
+		if obj[:asset].user_id.to_s == obj[:user_id] && obj[:asset].last_action_time.to_i > (obj[:time].to_i - (60 * 60 * 1))
+			print "Same User within 1 Hour \n"
+			obj[:correction] = 1
+
 		end
-		if obj[:handle_code].to_i == 6 
+
+		if obj[:asset].location._id.to_s == obj[:location_id] && obj[:asset].last_action_time.to_i > (obj[:time].to_i - 86400)
+			print "Same Location within 1 day correction \n"
+			obj[:correction] = 1
+		end		
+		if obj[:handle_code].to_i == 6
 			obj[:correction] = 0
 			print "RFNet - deffering to RF Logic \n"
 		end	
 		# Fill action within last day & asset current full
-		if obj[:handle_code].to_i == 4 && obj[:asset].asset_status.to_i == 1 && obj[:asset].fill_time.to_i > (obj[:time].to_i - 86400)
-			print "Fill Correction \n"
-			obj[:correction] = 1			
-		end
 		return obj
 	end
 
@@ -236,10 +200,6 @@ class Scanner
 		obj[:asset].user = obj[:user] # User.where(:email => obj[:email]).first		
 
 	# Asset Type Override				
-		if !obj[:asset_type_id].nil?
-			obj[:asset].asset_type = AssetType.find(obj[:asset_type_id])		
-		end
-
 		obj[:to_network] = Location.find(obj[:location_id]).network
 		obj[:from_network] = obj[:asset].location.network || obj[:to_network]
 		obj[:asset].save!

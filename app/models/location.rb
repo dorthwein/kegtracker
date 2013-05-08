@@ -28,6 +28,7 @@ class Location
 
   # 0 = Private, 1 = Partners, 
   field :scope, type: Integer, :default => 0
+  field :scope_description, type: String
 
   has_many :assets
   
@@ -38,14 +39,15 @@ class Location
   # De-normalized
   field :entity_description, type: String
   field :network_description, type: String
+
   def self.location_types
     response = [
         {:description => 'Inventory', :_id => 1},
         {:description => 'Empty Assets', :_id => 2},
         {:description => 'Market', :_id => 3},
-        {:description => 'Production', :_id => 4},
-        {:description => 'Partner', :_id => 5},
-        {:description => 'General Area', :_id => 6},        
+#        {:description => 'Production', :_id => 4},
+#        {:description => 'Partner', :_id => 5},
+#        {:description => 'General Area', :_id => 6},
     ]
     return response
   end
@@ -70,13 +72,15 @@ class Location
 	before_save :sync_descriptions
 	def sync_descriptions
     self.entity = self.network.entity
+    self.scope_description = self.scope == 0 ? 'Private' : self.scope == 1 ? 'Public' : ' '
+
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description		
     self.location_type_description = self.get_location_type_description
 
     self.asset_count = Asset.where(:location => self).count
 	end
-
 #  index({ entity_id: 1 }, { name: "entity_index" })          
 #  index({ network_id: 1 }, { name: "network_index" })  
 end
+

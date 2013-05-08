@@ -32,6 +32,7 @@ $(document).ready(function(){
             { name: 'state' },                  
             { name: 'zip' },                    
             { name: 'location_type_description'},
+            { name: 'scope_description'},
             { name: '_id'}
         ], 
         url: parseUrl(location),
@@ -55,7 +56,7 @@ $(document).ready(function(){
         { text: 'Act #', datafield: 'externalID' },
         { text: 'Location', datafield: 'description' },
         { text: 'Network', datafield: 'network_description', filtertype: 'checkedlist' }, 
-
+        { text: 'Scope', datafield: 'scope_description', filtertype: 'checkedlist' },   
         { text: 'Name', datafield: 'name' },
         { text: 'Address', datafield: 'street' },
         { text: 'City', datafield: 'city' },

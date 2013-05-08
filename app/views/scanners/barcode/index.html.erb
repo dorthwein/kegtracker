@@ -10,15 +10,9 @@
 	        </div>
 	    </div>
 	</div>    
-	<br /><br /><br /><br /><br /><br />
+	<br /><br /><br />
 
-	<div id="simple_container" class="scanner" user="<%= current_user._id %>">
-		<div class="scanner input_toggle_group left">	
-			<h5> Auto Mode	</h5>
-			<div id="toggle_auto_mode" class="flip_switch scanner">
-			</div>
-		</div>
-
+	<div id="scanner" user="<%= current_user._id %>">
 		<% if current_user.entity.keg_tracker == 1 %>
 		<div class="scanner input_toggle_group left">	
 			<h5> Add to Invoice	</h5>
@@ -39,39 +33,30 @@
 		</div>
 		
 		<div class="left">
-			<div class="scanner input_group left">
-				<h2> Action </h2>
-				<div id="handle_code" class="scanner dropdown">
-				</div>
-			</div>
 
+<!--
 			<div class="scanner input_group left">
 				<h2> Network </h2>
 				<div id="location_network_id" class="scanner dropdown">
 				</div>
 			</div>
-
+-->
 			<div class="scanner input_group left">
-				<h2> Location </h2>
-				<div id="location_id" class="scanner dropdown">
-				</div>
+				<h2> Location </h2>				
+				<%= select_tag(:location_id, options_for_select(@locations), :include_blank => true, :style => 'width:200px;') %>
+			</div>
+			<div class="scanner input_group left">
+				<h2> Asset Type </h2>
+				<%= select_tag(:asset_type_id, options_for_select(@asset_types), :include_blank => true, :style => 'width:200px;') %>				
 			</div>
 			<div class="clear"></div>
 			<div class="scanner input_group left">
-				<h2> Asset Type </h2>
-				<div id="asset_type_id" class="scanner dropdown">
-				</div>
-			</div>
-			<div class="scanner input_group left">
 				<h2> Product </h2>
-				<div id="product_id" class="scanner dropdown">
-				</div>
+				<%= select_tag(:product_id, options_for_select(@products), :include_blank => true, :style => 'width:200px;') %>				
 			</div>
 			<div class="scanner input_group left">
 				<h2> Batch Number </h2>
-				
-				<input id="batch_number" class="scanner" />
-				
+				<%= text_field_tag(:batch_number, '', :placeHolder => 'Leave blank to exclude', :style => 'width:200px') %>
 			</div>
 
 		</div>
@@ -85,9 +70,9 @@
 			<div class="jqxGrid" class="scanner right"></div>
 		</div>
 
-		<div class="scanner left" style="margin:30px 0 10px 30px; width:100%;">
+		<div style="padding:20px 0 0 0; clear:both;">
 			<span style="float:left"> Connect barcode scanner to begin scanning. </span> <br />
-			<%= text_field_tag :scan_input, '', {'data-role' => 'none'} %>
+			<%= text_field_tag :scan_input, '', :placeHolder => 'Scan Barcode...' %>
 		</div>
 		<div class="clear"></div>	
 	</div>
@@ -135,7 +120,7 @@
 
 		$("#invoice_number").jqxInput({ placeHolder: "Invoice #", height: 20, width: 150, theme: theme});
 		
-		$("#batch_number").jqxInput({ placeHolder: "Batch #", height: 23, width: 200, theme: theme, disabled:true});
+//		$("#batch_number").jqxInput({ placeHolder: "Batch #", height: 23, width: 200, theme: theme, disabled:true});
 
 		$("#find_invoice").jqxButton({height: 20, width: 80, theme: theme});		
 		$("#find_invoice").click(function () {		
@@ -159,167 +144,104 @@
 			$(this).blur()
 		})
 
-// *********************
-// Get Scanner Options
-// *********************	
-		$.ajax({
-			url: parseUrl(location),
-			type: "POST",
-			dataType : "JSON",		
-		}).done(function( data ) {				
-			$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_on']});
-		    $("#handle_code").bind('select', function (event) {
-			    var args = event.args;
-			    if (args) {
-			        // index represents the item's index.                
-			        var index = args.index;
-			        var item = args.item;
-			        // get item's label and value.
-			        var label = item.label;
-			        var value = item.value;
-			    	if(value == 4){
-						$('#product_id').jqxDropDownList({disabled: false});		    
-						$('#batch_number').jqxInput({disabled:false});
-						$('#asset_type_id').jqxDropDownList({disabled: false});		    		
-			    	} else if(value == 3){
-						$('#asset_type_id').jqxDropDownList({disabled: false});		    		
-			    	} else {
-			    		$('#product_id').jqxDropDownList({disabled: true});		    	
-			    		$('#asset_type_id').jqxDropDownList({disabled: true});		    
-			    		$('#batch_number').jqxInput({disabled:true});		
-			    	}
-			    }                        	        
-		    });
+		// Load Flip Switches
+	    $('.flip_switch.scanner').jqxSwitchButton({ height: 20, width: 75, theme: 'fresh', checked: false });
+	    window.toggle_correction = 0	
 
-			$('#asset_type_id').jqxDropDownList({source: data['asset_types'], disabled: true});
-			$('#location_network_id').jqxDropDownList({source: data['location_networks']});
-			$('#product_id').jqxDropDownList({source: data['products'], disabled: true});
-		
-		    $('.flip_switch.scanner').jqxSwitchButton({ height: 20, width: 75, theme: 'fresh', checked: false });
-		    $('#toggle_auto_mode').jqxSwitchButton({checked: true});
-			window.toggle_auto_mode = 1
-		    window.toggle_correction = 0	
-
-		    $("#location_network_id").bind('select', function (event) {
-			    var args = event.args;
-			    if (args) {
-			        // index represents the item's index.                
-			        var index = args.index;
-			        var item = args.item;
-			        // get item's label and value.
-			        var label = item.label;
-			        var value = item.value;
-			    	$('#location_id').jqxDropDownList({source: data['locations_by_network'][value]});        
-			    }                        	        
-		    });
 		// ********************	    
 		// Invoice Toggle
 		// ********************	
-			$('#toggle_invoice').bind('checked', function (event) { 
-				$('#scan_invoice').show()
-				$(".jqxGrid").jqxGrid('render');
-				window.toggle_invoice = 1
-			}); 
-			$('#toggle_invoice').bind('unchecked', function (event) { 
-				$('#scan_invoice').hide()
-				window.toggle_invoice = 0	
-			}); 		
-		// ********************	    
-		// Auto Mode Toggle
-		// ********************	
-			$('#toggle_auto_mode').bind('checked', function (event) { 
-				$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_on']});
-				window.toggle_auto_mode = 1
-			}); 
-			$('#toggle_auto_mode').bind('unchecked', function (event) { 
-				$('#handle_code').jqxDropDownList({source: data['handle_codes_auto_mode_off']});		
-				window.toggle_auto_mode = 0	
+		$('#toggle_invoice').bind('checked', function (event) { 
+			$('#scan_invoice').show()
+			$(".jqxGrid").jqxGrid('render');
+			window.toggle_invoice = 1
+		}); 
+		$('#toggle_invoice').bind('unchecked', function (event) { 
+			$('#scan_invoice').hide()
+			window.toggle_invoice = 0	
+		}); 		
+		$('#toggle_correction').bind('checked', function (event) { 
+			window.toggle_correction = 1
+		}); 
+		$('#toggle_correction').bind('unchecked', function (event) { 
+			window.toggle_correction = 0
+		}); 
 
-			}); 
-
+// *********************
+// Get Scanner Options
+// *********************	
 		// ********************
 		// Correction Toggle
 		// ********************	
-			$('#toggle_correction').bind('checked', function (event) { 
-				window.toggle_correction = 1
+		$('#scanner').jqxValidator({
+		 	rules: [
+		 		// Email Rules
+		        { input: '#scan_input', message: 'Scan Required', action: 'keyup, blur', rule: 'required' },
+		        // First/Last Name
 
-			}); 
-			$('#toggle_correction').bind('unchecked', function (event) { 
-				window.toggle_correction = 0
+		        { input: '#location_id', message: 'Required!', action: 'keyup, blur',rule: function(input, commit){		        		            			            
+			            if (  input.val() != '') {
+			                return true;		                
+			            }
+			           	return false;		           
+		        	}
+		        },
+		        { input: '#product_id', message: 'Required!', action: 'keyup, blur',rule: function(input, commit){
+	        		if ($('#asset_type_id').val() != ''){
+			            if (  input.val() != ''){
+			                return true;		                
+			            } else { return false }				            
+	        		} else { return true }
+		        }},	        
 
-			}); 
-			$('#simple_container').jqxValidator({
-			 	rules: [
-			 		// Email Rules
-			        { input: '#scan_input', message: 'Scan Required', action: 'keyup, blur', rule: 'required' },
-			        // First/Last Name
+		        { input: '#asset_type_id', message: 'Required!', action: 'keyup, blur',rule: function(input, commit) {
+	        		if ($('#product_id').val() != ''){
+			            if (  input.val() != '') {
+			                return true;		                
+			            } else { return false }
+	        		} else { return true }
+		        }},		        
+/*		        
+		        { input: '#location_network_id', message: 'Network Required!', action: 'keyup, blur',rule: function(input, commit){
+			            if (  $("#location_network_id").jqxDropDownList('getSelectedItem') != null) {
+			                return true;		                
+			            }
+			           	return false;		           
+		        	}
+		        },
 
-			        { input: '#location_id', message: 'Location Required!', action: 'keyup, blur',rule: function(input, commit){		        		            
-				            if (  $("#location_id").jqxDropDownList('getSelectedItem') != null) {
-				                return true;		                
-				            }
-				           	return false;		           
-			        	}
-			        },
-			        { input: '#location_network_id', message: 'Network Required!', action: 'keyup, blur',rule: function(input, commit){
-				            if (  $("#location_network_id").jqxDropDownList('getSelectedItem') != null) {
-				                return true;		                
-				            }
-				           	return false;		           
-			        	}
-			        },
+		        { input: '#handle_code', message: 'Action Required!', action: 'keyup, blur',rule: function(input, commit){
+			            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
+			                return true;		                
+			            }
+			           	return false;		           
+		        	}
+		        },
 
-			        { input: '#handle_code', message: 'Action Required!', action: 'keyup, blur',rule: function(input, commit){
-				            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
-				                return true;		                
-				            }
-				           	return false;		           
-			        	}
-			        },
-			        { input: '#product_id', message: 'Product Required!', action: 'keyup, blur',rule: function(input, commit){
-				            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
-				                if (  $("#handle_code").jqxDropDownList('getSelectedItem').value == 4 ) {
-				                	if( $("#product_id").jqxDropDownList('getSelectedItem') != null){			                		
-				                		return true;
-				                	} else { return false; }
-				            	} else {return true;}			           	
-			        		}
-			        	}
-			        },	        
-			        { input: '#asset_type_id', message: 'Asset Type Required!', action: 'keyup, blur',rule: function(input, commit) {
-				            if (  $("#handle_code").jqxDropDownList('getSelectedItem') != null) {
-				            	var hc =  $("#handle_code").jqxDropDownList('getSelectedItem').value
 
-				                if (  hc == 4 || hc == 3 ) {
-					                if (  $("#asset_type_id").jqxDropDownList('getSelectedItem') != null){
-					                	return true;
-					                } else { return false;}		                
-					            } else {return true;}
-							} 
-			        	}
-			        },
-			        { input: '#invoice_number', message: 'Invoice # Required!', action: 'keyup, blur',rule: function(input, commit) {			            			            
-				            if(window.toggle_invoice == 1 ){			            	
-				                if (  $("#invoice_number").val().length > 0){
-				                	return true;
-				                } else { return false; }		                
-							}
-							return true;  
-			        	}
-			        }	 		        	 
+*/			        
 
-				],
-				theme: theme
-			});
-			 
+		        { input: '#invoice_number', message: 'Invoice # Required!', action: 'keyup, blur',rule: function(input, commit) {			            		            
+			            if(window.toggle_invoice == 1 ){			            	
+			                if (  $("#invoice_number").val().length > 0){
+			                	return true;
+			                } else { return false; }		                
+						}
+						return true;  
+		        	}
+		        }     
+			],
+			theme: theme
 		});
+		 
 
-		$("#scan_input").jqxInput({placeHolder: "Scan Barcode...", height: 25, minLength: 1, theme: theme });	
+
+//		$("#scan_input").jqxInput({placeHolder: "Scan Barcode...", height: 25, minLength: 1, theme: theme });	
 
 		/* SCAN SUBMIT */
 		pgFunc = {};		// clear page function
 		var	params = {};		// Default scan options
-		params.scanner = {};		
+		params.scanner = {};
 		pgFunc = {
 			scanSubmit : function(obj){		
 				var scan = {};
@@ -336,9 +258,11 @@
 					}
 					return true;
 				}			
-				// VALIDATE
-				if( $('#simple_container').jqxValidator('validate')	){
+				// VALIDATE				
+				if( $('#scanner').jqxValidator('validate')	){
+					
 					// Check if T2 Format
+					
 					if((obj.split("-").length - 1) == 4 ){
 						obj = JSON.stringify(obj.split("-"))
 	//					alert(obj);
@@ -381,29 +305,32 @@
 					}			
 					scan.tag = tag;
 					
-					scan.user_id = $('#simple_container').attr('user');
+					scan.user_id = $('#scanner').attr('user');
 
-					scan.location_id = $('#location_id').jqxDropDownList('getSelectedItem').value;
-					scan.handle_code = $('#handle_code').jqxDropDownList('getSelectedItem').value;
-					
-					scan.auto_mode = window.toggle_auto_mode;
+					scan.location_id = $('#location_id').val()					
+					scan.auto_mode = 1 // Depricated - double check before deleting
 					scan.correction = window.toggle_correction;
 					
 					scan.version = "s1";
-
 					if($("#invoice_number").val().length > 0){
 						scan.invoice_number = $("#invoice_number").val()
 					}
 
-					if($('#handle_code').jqxDropDownList('getSelectedItem').value == 4){
-						scan.product_id = $('#product_id').jqxDropDownList('getSelectedItem').value;	
-						scan.asset_type_id = $('#asset_type_id').jqxDropDownList('getSelectedItem').value;			
-
-						if($("#batch_number").val().length > 0){
-							scan.batch_number = $("#batch_number").val()
-						}
+					if( $('#product_id').val() != '' ){
+						scan.product_id = $('#product_id').val()	
 					}
 					
+					if( $('#asset_type_id').val() != '' ){
+						scan.asset_type_id = $('#asset_type_id').val()
+					}
+
+					if($("#batch_number").val() > 0){
+						scan.batch_number = $("#batch_number").val()
+					}
+
+
+	
+
 					scan.time = + new Date / 1000;
 					var url = system.server + '/scanners/barcode/scan.json';				
 					$('#scan_input').val("");									

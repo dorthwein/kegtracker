@@ -20,6 +20,8 @@ gem 'axlsx'
 gem 'delayed_job_mongoid'
 gem 'spreedly-core-ruby'
 gem 'oj'
+gem 'useragent'
+
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -8,15 +8,15 @@ class AssetActivityFact
 
 # Fact Details 
   field :fact_time, :type => Time
-  field :handle_code, type: Integer, :default => 5
-  
+
   has_one :invoice_attached_asset
 
   belongs_to :location
 
-  field :handle_code_description, type: String
+# Field :handle_code_description, type: String
   field :location_description, type: String
   field :location_network_description, type: String
+  field :location_type, type: Integer
 
 # Asset Details
   belongs_to :asset
@@ -27,47 +27,26 @@ class AssetActivityFact
   belongs_to :asset_type
   belongs_to :sku
   
-  belongs_to :asset_cycle_fact, inverse_of: 'AssetCycleFact'
+#  belongs_to :asset_cycle_fact, inverse_of: 'AssetCycleFact'
+  belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
+  belongs_to :next_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
 
-
-# ALL BEING DEPRICATED
-#  belongs_to :fill_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
-#  belongs_to :pickup_asset_activity_fact, :class_name => 'AssetActivityFact',   :inverse_of => 'AssetActivityFact'
-#  belongs_to :delivery_asset_activity_fact, :class_name => 'AssetActivityFact', :inverse_of => 'AssetActivityFact'
-
-
-  belongs_to :prev_asset_activity_fact, :class_name => 'AssetActivityFact',     :inverse_of => 'AssetActivityFact'
+  field :next_asset_activity_fact_time, type: Time
+  field :days_at_location, type: Integer
 
   belongs_to :location_entity,  :class_name => 'Entity'
   field :location_entity_description, type: String
+  
   field :location_entity_arrival_time, type: Time
-
-#    self.location_entity = self.location.entity
-#    self.location_entity_description = self.location_entity.description 
+  field :location_entity_departure_time, type: Time
 
 # Variable Details 
-
-# Life Cycle  
-  field :fill_time, :type => Time   # Depricated
   field :fill_count, type: Integer
-
   field :asset_status, type: Integer, :default => 0  
   field :location_network_type, type: Integer
 
-  field :cycle_length, type: Integer, :default => 0 # Depricated
-  field :completed_cycle_length, type: Integer, :default => 0 # Depricated
-
-# Networks  
-# belongs_to :network    # Possibly Depricated  
-  belongs_to :prev_location_network, :class_name => 'Network' # Depricated? - Check Scanning
-  belongs_to :location_network, :class_name => 'Network'
-  
+  belongs_to :location_network, :class_name => 'Network'  
   belongs_to :user  
-  belongs_to :fill_network, :class_name => 'Network'          # Depricated
-  belongs_to :delivery_network, :class_name => 'Network'      # Depricated
-  belongs_to :pickup_network, :class_name => 'Network'        # Depricated
-
-# Activity
 
 # Reporting
   def get_asset_status_description
@@ -87,52 +66,27 @@ class AssetActivityFact
     end
   end
 
-  def get_handle_code_description
-    case self.handle_code.to_i
-    when 1
-      return 'Delivery' 
-    when 2
-      return 'Pickup'
-    when 3
-      return 'Add'
-    when 4
-      return 'Fill'
-    when 5
-      return 'Move'
-    when 6
-      return 'RFNet'
-    when 7
-      return 'Audit'
-    end
-  end
-
   def self.create_from_asset asset
     details = {
-                  :asset_id => asset._id,
-                  :asset_status => asset.asset_status,
-                  :asset_type_id => asset.asset_type_id,                                   
-                  :entity_id => asset.entity_id,
+      :asset_id => asset._id,
+      :asset_status => asset.asset_status,
+      :asset_type_id => asset.asset_type_id,                                   
+      :entity_id => asset.entity_id,
+      :product_id => asset.product_id,
+      :fact_time => asset.last_action_time,
 
-                  :product => asset.product,
-                  :handle_code => asset.handle_code.to_i,                  
-                  :fact_time => asset.last_action_time,
-                  :fill_count => asset.fill_count.to_i,
-                  
-                  :location_id => asset.location_id,
-                  :location_network_id => asset.location_network_id,
-  #                 :network => self.network, Possible Depricated
-  #                 :fill_network => self.fill_network,
-                  :user => asset.user,
-                  :batch_number => asset.batch_number
-  #                 :fill_time => asset.fill_time,                
-                }
+      :location_id => asset.location_id,
+      :location_network_id => asset.location_network_id,
+      :user_id => asset.user_id,
+      :batch_number => asset.batch_number
+    }
     AssetActivityFact.create(details)
   end
 
 	# Temp migration file etc...
+=begin
   def sync_to_asset_cycle_fact
       cycle_fact = AssetCycleFact.where(fill_asset_activity_fact: self.fill_asset_activity_fact).first_or_create!
-
       self.asset_cycle_fact_id = cycle_fact._id
   
       cycle_fact.entity_id = self.entity_id
@@ -179,7 +133,23 @@ class AssetActivityFact
       cycle_fact.save!      
       self.save!
   end
-  
+=end
+  def set_asset_status
+    unless self.location.nil?
+      case self.location.location_type 
+      when 1
+        self.asset_status = 1
+      when 2
+        self.asset_status = 0
+      when 3
+        self.asset_status = 2
+      end 
+    else 
+#      self.destroy
+    end
+  end
+
+
   def trash
     self.update_attributes(record_status: 0)
   end
@@ -196,43 +166,19 @@ class AssetActivityFact
         :asset_activity_fact => (self.prev_asset_activity_fact rescue nil),
         :asset_type => (self.prev_asset_activity_fact.asset_type rescue nil),
         :product => (self.prev_asset_activity_fact.product rescue nil),
-        :asset_status => (self.prev_asset_activity_fact.asset_status rescue nil),
+
+ 
         :location => (self.prev_asset_activity_fact.location rescue nil),
-#        :location_network => (self.prev_asset_activity_fact.location_network rescue nil),
-        :handle_code => (self.prev_asset_activity_fact.handle_code rescue nil),
         :user => (self.prev_asset_activity_fact.user rescue nil),
         :last_action_time => (self.prev_asset_activity_fact.fact_time rescue nil),
-        :fill_count => (self.prev_asset_activity_fact.fill_count rescue 0),
         :batch_number => (self.prev_asset_activity_fact.batch_number rescue nil),
+
       }
       self.asset.update_attributes(asset_rollback)              
     end
 
     # Find items attached to an invoice and remove it
     self.invoice_attached_asset.delete rescue nil
-    
-    # Find asset cycle fact and correct it
-    if self.asset_cycle_fact.fill_asset_activity_fact == self
-        self.asset_cycle_fact.update_attributes(fill_asset_activity_fact: nil, fill_time: nil, fill_network: nil)    
-    end
-
-    if self.asset_cycle_fact.pickup_asset_activity_fact == self
-        self.asset_cycle_fact.update_attributes(pickup_asset_activity_fact: nil, pickup_time: nil, pickup_network: nil)
-    end
-
-    if self.asset_cycle_fact.delivery_asset_activity_fact == self
-        self.asset_cycle_fact.update_attributes(delivery_asset_activity_fact: nil, delivery_time: nil, delivery_network: nil)
-    end
-
-    if self.asset_cycle_fact.end_asset_activity_fact == self
-        self.asset_cycle_fact.update_attributes(end_asset_activity_fact: nil, end_time: nil,  end_network: nil)
-    end
-
-    if self.asset_cycle_fact.start_asset_activity_fact == self
-        self.asset_cycle_fact.destroy
-    end
-
-    # Delete self 
     print 'Asset Rollback'
   end
 
@@ -240,34 +186,73 @@ class AssetActivityFact
 	def sync	    
     self.location_network = self.location.network
     self.location_entity = self.location.entity
-
     self.location_network_type = self.location_network.network_type rescue nil
     self.prev_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).lt(fact_time: self.fact_time).desc(:fact_time).first._id
-    self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
+    self.next_asset_activity_fact_id = AssetActivityFact.where(:asset => self.asset).gt(fact_time: self.fact_time).asc(:fact_time).first._id
 
-    self.handle_code_description = self.get_handle_code_description
-    self.location_description = self.location.description
-    self.location_network_description = self.location_network.description
     
+    self.next_asset_activity_fact.nil? ? nil :  self.next_asset_activity_fact_time = self.next_asset_activity_fact.fact_time 
+
+
+    self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
+#    self.handle_code_description = self.get_handle_code_description
+    self.location_description = self.location.description
+    self.location_network_description = self.location_network.description    
     self.location_entity_description = self.location_entity.description 
     
+    self.set_asset_status
+    if self.asset_status.to_i == 0
+      self.product = nil
+      self.batch_number = nil
+      self.invoice_number = nil
+      self.invoice = nil
+    end
+#    self.product_description = self.asset_status.to_i == 0 ? 'Empty' : self.product.description
+#    self.product_entity_description = self.asset_status.to_i == 0 ? 'Empty' : self.product_entity.description
+
+
     # If different entity - Update possession_time
+    if self.next_asset_activity_fact
+      # Moved From Location
+      days = ((self.next_asset_activity_fact.fact_time.to_i - self.fact_time.to_i)/86400).to_i
+      self.days_at_location = days  
+      # Entity Change hands
+      if self.location_entity_id != self.next_asset_activity_fact.location_entity_id
+        self.location_entity_departure_time = self.fact_time        
+
+      else
+        self.location_entity_departure_time = nil
+
+      end
+    end
+    
     if self.prev_asset_activity_fact
       if self.location_entity_id != self.prev_asset_activity_fact.location_entity_id
-        self.location_entity_arrival_time = self.fact_time
-        
-        print 'New possession_time'
+        self.location_entity_arrival_time = self.fact_time        
+
       else
         self.location_entity_arrival_time = self.prev_asset_activity_fact.fact_time
-        print ' NO CHANGE '
       end
     else
       self.location_entity_arrival_time = self.fact_time
-      print 'First Activity Fact'
+
     end
-
+  
   end
-
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

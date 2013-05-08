@@ -18,9 +18,9 @@ class BreweryAppsInvoiceLineItem
 	def get_subscription_description
 		case self.subscription_code.to_i
 		when 1
-			return 'KegTracker'	
+			return 'Keg Tracker'	
 		when 2
-			return 'KegReg'
+			return 'Keg Registration'
 		end
 	end	  
 end

@@ -162,7 +162,13 @@ class Entity
 			  	{ :entity_id => self._id }
 		   	)
 	end
-
+	def visible_daily_facts
+		DailyFact.any_of(
+			{ :location_entity_id => self._id},
+			{ :product_entity => self._id},
+			{ :asset_entity => self._id},
+		)
+	end
 	def visible_asset_activity_facts
 		AssetActivityFact.any_of( 
 				{ :location_network_id.in => self.networks.map{|x| x._id} },

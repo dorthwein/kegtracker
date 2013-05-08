@@ -3,29 +3,29 @@ class Reports::LocationsController < ApplicationController
   	layout "web_app"
   	load_and_authorize_resource
 
-	def index    
-		respond_to do |format|		
-		  	format.html # index.html.erb
-		  	format.json { 
-  				records = JqxConverter.jqxGrid(current_user.entity.visible_locations.map{|x| {
-            a: x.externalID,
-            b: x.description,
-            c: x.network_description,
-            d: x.name,
-            e: x.street,
-            f: x.city,
-            g: x.state,
-            h: x.zip,
-#            i: x.location_type,
-            j: x.location_type_description,
-            k: x._id,
-            l: current_user.entity.visible_assets.where(location_id: x._id).count,
+  	def index    
+  		respond_to do |format|		
+  		  	format.html # index.html.erb
+  		  	format.json { 
+    				records = JqxConverter.jqxGrid(current_user.entity.visible_locations.map{|x| {
+              a: x.externalID,
+              b: x.description,
+              c: x.network_description,
+              d: x.name,
+              e: x.street,
+              f: x.city,
+              g: x.state,
+              h: x.zip,
+  #            i: x.location_type,
+              j: x.location_type_description,
+              k: x._id,
+              l: current_user.entity.visible_assets.where(location_id: x._id).count,
 
-          }})
-				  render json: records
-		  	}
-		end
-	end
+            }})
+  				  render json: records
+  		  	}
+  		end
+  	end
   	def show
 	    respond_to do |format|
 	      format.html {render :layout => 'popup'}

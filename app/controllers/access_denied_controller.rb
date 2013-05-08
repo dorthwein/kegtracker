@@ -1,5 +1,4 @@
-class AccessDeniedController < ApplicationController
-  before_filter :authenticate_user!
+class AccessDeniedController < ApplicationController  
   layout "web_app"
 
   def index
@@ -13,5 +12,9 @@ class AccessDeniedController < ApplicationController
       format.html {render :layout => 'popup'}
     end
   end		
-
+  def bad_browser
+    respond_to do |format|
+      format.html {render :layout => 'public'}
+    end
+  end
 end

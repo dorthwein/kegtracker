@@ -21,7 +21,6 @@ class GoogleChartApi
           render json: GoogleChartApi.table(source, cols)
 			  }
 =end			  
-
 	def self.table source, columns
 		data_table = {}
 		data_table['cols'] = columns
@@ -34,7 +33,14 @@ class GoogleChartApi
 					row_cells.push(	{
 						v: "Date(#{  x[v[:id]].to_i * 1000  })"
 					})
-				else				
+
+				elsif v[:type] == 'number' && !x[v[:id]].nil?
+					row_cells.push(
+						{v: x[v[:id]].to_f	}
+					)				
+				else
+
+					#row_cells.push({v: 1.2})				
 					row_cells.push({v: x[v[:id]]})				
 				end
 

@@ -57,7 +57,7 @@ $(document).ready(function(){
 			{ name: 'i'},
 			{ name: 'j', type: 'date' },
 			{ name: 'k', type: 'date' },
-			{ name: 'l'},
+//			{ name: 'l'},
 			{ name: 'm', type: 'number'},
 			{ name: 'n', type: 'string'},			
 			{ name: 'o', type: 'string'},			
@@ -76,15 +76,13 @@ $(document).ready(function(){
 
 
 	window.dataAdapter = new $.jqx.dataAdapter(source, {
-		beforeSend: function(jqXHR, settings){		
-			 	
+		beforeSend: function(jqXHR, settings){					 	
 		},
-		loadComplete: function (data) { 
-			 
+		loadComplete: function (data) { 			 
 		},
 		loadError: function (xhr, status, error) { }      
 	});
-//	window.dataAdapter = dataAdapter
+	//	window.dataAdapter = dataAdapter
 
  
 	// Initialize Grid
@@ -92,45 +90,32 @@ $(document).ready(function(){
 	gridSettings['source'] = dataAdapter;
 	gridSettings['columns'] = [
 		{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },
+
+
 		{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },
 		{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
 		{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },
 		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },
 		{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Tag Value', datafield: 'c', hidden:true },
+		{ text: 'Tag Value', datafield: 'c' },//, hidden:true },
 
 		{ text: 'Location', datafield: 'g', filtertype: 'checkedlist' },
 		{ text: 'Cur. Holder', datafield: 'h', filtertype: 'checkedlist' },
 		{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
 		{ text: 'Batch Number', datafield: 'n'},
 		{ text: 'Invoice Number', datafield: 'o', hidden:true},
-
 		{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Cycle', datafield: 'l', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-			return 'Cycle'
-		}, buttonclick: function (row) {
-			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			if(rowdata['l'] == ''){
-				var url = system.server + "/popup_record_not_found"
-			} else{
-				var url = system.server + "/maintenance/asset_cycles/" + rowdata['l'];			
-			}
-			openPopupWindow(url)
-		}},	
-
-
 		{ text: 'View', datafield: 'i', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
 			return 'View'
 		}, buttonclick: function (row) {
 			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
 			var url = parseUrl(location) + "/" + rowdata['i'] + "/edit"						
 			openPopupWindow(url)
-		}},	
+		}},		
 	]
-
-	$(".jqxGrid").jqxGrid( gridSettings );	
+	$(".jqxGrid").jqxGrid( gridSettings );
 	jqxIntialize()
-	 					
+
 });
 
 </script>

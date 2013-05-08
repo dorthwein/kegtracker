@@ -1,8 +1,176 @@
 class BuildReport
 	attr_accessor :date	
 	def initialize(report_date)
-		@date = report_date.beginning_of_day + 43200
+		@date = report_date.beginning_of_day + 10
 	end
+
+	def daily_facts
+#		belongs_to :location
+#		belongs_to :asset_entity, :class_name => 'Entity' 	# Asset Owner
+#		belongs_to :product
+#		belongs_to :asset_type, :class_name => 'AssetType' 
+
+#		field :location_network_type, type: Integer
+#		field :asset_status, type: Integer
+#		field :fact_time, type: Time
+
+# Prep Stage
+
+#		locations = asset_activity_facts.group_by{|x| x.location}.map{|x| x[0]._id}
+#		asset_entities = asset_activity_facts.group_by{|x| x.entity}.map{|x| x[0]._id}
+#		products = asset_activity_facts.group_by{|x| x.product}.map{|x| x[0]._id}
+#		asset_types = asset_activity_facts.group_by{|x| x.asset_type}.map{|x| x[0]._id}		
+#		asset_status = asset_activity_facts.group_by{|x| x.asset_status}.map{|x| x[0]}		
+		
+#:location_id => a,
+#:asset_entity => b,
+#:product_id => c,
+#:asset_type_id => d,
+#:asset_status => f,
+
+		asset_activity_facts = AssetActivityFact.any_of(
+			{ :next_asset_activity_fact_time.gt => @date },
+			{ :next_asset_activity_fact_time => nil, :fact_time.lt => @date }
+		).desc(:fact_time)
+
+
+		# ****************		
+		# Asset Counts
+		# ****************
+		total_ce = BigDecimal.new(0)
+		total_qty = 0
+		by_location = asset_activity_facts.group_by{|x| x.location_id}		
+		by_location.each do |a|
+			
+			by_asset_entity = a[1].group_by{|x| x.entity_id}
+			by_asset_entity.each do |b|
+
+				by_product = b[1].group_by{|x| x.product_id}
+				by_product.each do |c|
+
+					by_asset_type = c[1].group_by{|x| x.asset_type_id}
+					by_asset_type.each do |d|
+						
+						by_asset_status = d[1].group_by{|x| x.asset_status}
+						by_asset_status.each do |f|
+						##############################
+							# Qty Assets								
+							qty = f[1].count
+							total_qty = total_qty + qty
+							
+							# Case Equivalent								
+							unless f[1].nil? || d[0].nil?
+								asset_type = AssetType.find(d[0])
+								ce = asset_type.measurement_unit_qty * f[1].count
+								total_ce = total_ce + ce
+								#print f[1].count.to_s + "\n"
+							else
+								ce = 0
+							end
+
+							# Find Fact
+							unless f[1].count == 0 || f[1].nil?
+								daily_fact = DailyFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).find_or_create_by(
+									:location_id => a[0],
+									:asset_entity => b[0],
+									:product_id => c[0],
+									:asset_type_id => d[0],
+									:asset_status => f[0],
+								)
+								daily_fact.update_attributes(
+									:quantity => qty,
+									:fact_time => @date,
+									:case_equivalent => ce,
+								)
+							end
+						##############################
+						end					
+					end
+				end
+			end
+		end
+
+		one_year_back = @date.beginning_of_day - (86400 * 365)
+		# Go Back update totals
+		one_year_back_asset_activity_facts = AssetActivityFact.between(fact_time: one_year_back..@date.end_of_day)
+		
+		# ********************************		
+		# Time at Location
+		# ********************************
+		total_ce = BigDecimal.new(0)
+		total_qty = 0
+		by_location = one_year_back_asset_activity_facts.group_by{|x| x.location_id}		
+		by_location.each do |a|
+			
+			by_asset_entity = a[1].group_by{|x| x.entity_id}
+			by_asset_entity.each do |b|
+
+				by_product = b[1].group_by{|x| x.product_id}
+				by_product.each do |c|
+
+					by_asset_type = c[1].group_by{|x| x.asset_type_id}
+					by_asset_type.each do |d|
+						
+						by_asset_status = d[1].group_by{|x| x.asset_status}
+						by_asset_status.each do |f|
+
+							# Avg Time @ Location
+							days_at_location_sample = f[1].map{|x| x.days_at_location } 
+
+
+							days_at_location_sample.delete_if {|x| x == nil }
+							days_at_location_sample.delete_if {|x| x == 'null'}
+							days_at_location_sample.delete_if {|x| x == 0}
+
+							
+
+							
+							unless days_at_location_sample.size == 0
+							# Avg
+								days_at_location_avg = days_at_location_sample.inject(:+).to_f / days_at_location_sample.size
+								
+							# Find Fact								
+								daily_fact = DailyFact.between(fact_time: @date.beginning_of_day..@date.end_of_day).find_or_create_by(
+									:location_id => a[0],
+									:asset_entity => b[0],
+									:product_id => c[0],
+									:asset_type_id => d[0],
+									:asset_status => f[0],
+								)
+
+								daily_fact.update_attributes(
+									:fact_time => @date,
+									:days_at_location_sample_size => days_at_location_sample.size,
+									:days_at_location_avg => days_at_location_avg,
+								)
+							end
+						##############################
+						end					
+					end
+				end
+			end
+		end
+
+#		print @date.to_s + "\n"
+#		print asset_activity_facts.count.to_s + '  --  ' + Asset.all.count.to_s + ' -- ' + asset_activity_facts.group_by{|x| x.asset }.map{|x| x[0]._id }.count.to_s + "\n \n"
+#		print asset_activity_facts.first.to_json + " \n \n \n " + asset_activity_facts.last.to_json
+	end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	def network_facts		
 		Entity.all.each do |entity|				
@@ -48,6 +216,7 @@ class BuildReport
 					end
 				end
 			end
+
 		# Asset Activity Summary
 			asset_activity_facts = entity.visible_asset_activity_facts.between(fact_time: @date.beginning_of_day..@date.end_of_day).desc(:fact_time)
 			assets = asset_activity_facts.group_by{|x| x.asset }.map{|x| x[1].first }

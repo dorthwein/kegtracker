@@ -1,6 +1,10 @@
-#simple_container.scanner {
+#scanner{
 	padding: 0px 30px 30px 30px;
+	margin: auto;
+	text-align: left;
 	min-height: 300px;
+	border:1px solid #CCC;
+	width:650px;
 
 }
 .scanner.input_toggle_group h5{
@@ -23,7 +27,7 @@
 	margin:0px 20px 0px 0px;
 }
 #scan_input {
-	width:900px;
+	width:100%;
 	display: inline-block;
 	
 }

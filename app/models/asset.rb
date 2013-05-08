@@ -76,187 +76,50 @@ class Asset
 	field :user_email_description, type: String				
 	belongs_to :user
 	
-	belongs_to :production_invoice, :class_name => 'Invoice'
-	field :production_invoice_number, type: String
+	belongs_to :production_invoice, :class_name => 'Invoice' 	# Not Active
+	field :production_invoice_number, type: String				# Not Active
 
 # Relations	
 	# Life Cycle
 	field :last_action_time, :type => Time
 	field :fill_time, :type => Time
 
-	belongs_to :fill_location, :class_name => 'Location'
-	field :fill_location_description, type: String	
-	belongs_to :fill_network, :class_name => 'Network'
-	field :fill_network_description, type: String	
 
-=begin
-# Not active
-	field :delivery_time, :type => Time
-	belongs_to :delivery_location, :class_name => 'Location'
-	field :delivery_location_description, type: String	
-	belongs_to :delivery_network, :class_name => 'Network'	
-	field :delivery_network_description, type: String	
-
-# Not active
-	field :pickup_time, :type => Time
-	belongs_to :pickup_location, :class_name => 'Location'
-
-	field :pickup_location_description, type: String	
-	belongs_to :pickup_network, :class_name => 'Network'	
-	field :pickup_network_description, type: String
-=end
-=begin
-# To be moved to invoice
-	def add_to_invoice options
-		print '->' 
-		invoice = Invoice.where(:_id => options[:invoice_id]).first
-		if !invoice.nil?	
-			print "\n \n"	
-			print 'Adding to Invoice'
-			print "\n \n"
-			invoice = Invoice.find(options[:invoice_id]) 
-			
-			print invoice.to_json
-			print "\n \n"
-		
-			self.invoice_attached_asset = invoice.add_invoice_asset_detail({:asset => self, :asset_activity_fact => self.asset_activity_fact})
-		end
-	end
-=end
-
-	def deliver options
-		# Options: time, location, correction, invoice
-		self.handle_code = 1
-		self.asset_status = 2
-		
-		self.last_action_time = options[:time]		
-		self.location_id = options[:location_id]
-		
-#		self.delivery_time = options[:time]
-#		self.delivery_location_id = options[:location_id]				
-				
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)		
-		self.asset_cycle_fact.deliver(self.asset_activity_fact) rescue (
-			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-			self.asset_cycle_fact.deliver(self.asset_activity_fact)
-		)
-		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
-		self.asset_activity_fact.save!
-
-#		self.process_asset_cycle_fact(options)	# - To be moved
-#		self.add_to_invoice(options) # - To be moved
-	end	
-
-	def pickup options
-		# Options: time, location, correction, invoice
-		self.handle_code = 2
-		self.asset_status = 0		
-		self.last_action_time = options[:time]
-		
-		self.location_id = options[:location_id]
-		
-#		self.pickup_time = options[:time]
-#		self.pickup_location_id = options[:location_id]
-				
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)						
-
-		self.asset_cycle_fact.pickup(self.asset_activity_fact) rescue (
-			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-			self.asset_cycle_fact.pickup(self.asset_activity_fact)
-		)
-		
-		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
-		self.asset_activity_fact.save!
-
-#		self.process_asset_cycle_fact(options)
-#		self.add_to_invoice(options)
-	end
-
-
-	def register options
-		self.handle_code = 3
-		self.last_action_time = options[:time]
-		self.location_id = options[:location_id]
-
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
-		self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
-			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-			self.asset_cycle_fact.move(self.asset_activity_fact)
-		)
-		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
-		self.asset_activity_fact.save!
-	end
-
-	def fill options
-		# Options: time, location_id, product_id, correction
-		self.handle_code = 4		
-		self.asset_status = 1
-		self.last_action_time = options[:time]				
-		self.location_id = options[:location_id]
-		self.product_id = options[:product_id]
-		self.fill_time = options[:time]
-		self.fill_location_id = options[:location_id]	
-		self.fill_count = self.fill_count.to_i + 1	
-
-		self.batch_number = options[:batch_number]
-
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
-		if !self.asset_activity_fact.nil? && !self.asset_cycle_fact.nil?
-			self.asset_cycle_fact.end(self.asset_activity_fact)
-		end
-
-		self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-
-		self.asset_cycle_fact.fill(self.asset_activity_fact) rescue (
-			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-			self.asset_cycle_fact.fill(self.asset_activity_fact)
-		)
-		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
-		self.asset_activity_fact.save!
-
-#		self.add_to_invoice(options)
-	end
+#	belongs_to :fill_location, :class_name => 'Location'
+#	field :fill_location_description, type: String	
+#	belongs_to :fill_network, :class_name => 'Network'
+#	field :fill_network_description, type: String	
 
 	def move options
 		# Options: time, location, correction
-		self.handle_code = 5
-		self.last_action_time = options[:time]
-		self.location_id = options[:location_id]
+		if options[:handle_code].to_i == 6
+			if self.location_network != Location.find(options[:location_id]).network
+				self.last_action_time = options[:time]
+				self.location_id = options[:location_id]
+				self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+				self.asset_activity_fact.save!
+				print "RFNet Catch \n"
+			end
+		else			
+			print "Not RF \n"			
+			self.last_action_time = options[:time]			# Required
+			self.location_id = options[:location_id]		# Required
+			self.user_id = options[:user_id]
 
-		self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
+			options[:asset_type_id].nil? ? nil : self.asset_type_id = options[:asset_type_id] 					# If not nil					
+			options[:batch_number].nil? ? nil : self.batch_number = options[:batch_number]
+			options[:product_id].nil? ? nil : self.product_id = options[:product_id] 							# If not nil
 
-		self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
-			self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-			self.asset_cycle_fact.move(self.asset_activity_fact)
-		)
-		self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
-		self.asset_activity_fact.save!
+			unless options[:product_id].nil?
+				self.fill_time = options[:time]
+			end
 
-#		self.add_to_invoice(options)
-	end
-
-
-	def rfnet options
-		# Options: time, location, correction
-		if self.location_network != Location.find(options[:location_id]).network
-			self.handle_code = 5	# Records as a move
-			self.last_action_time = options[:time]
-			self.location_id = options[:location_id]
-			
 			self.asset_activity_fact = AssetActivityFact.create_from_asset(self)
-			self.asset_cycle_fact.move(self.asset_activity_fact) rescue (
-				self.asset_cycle_fact = AssetCycleFact.create_by_asset(self)
-				self.asset_cycle_fact.move(self.asset_activity_fact)
-			)
-			self.asset_activity_fact.asset_cycle_fact_id = self.asset_cycle_fact._id
 			self.asset_activity_fact.save!
 
-			print "RFNet Catch \n"
+			self.save!
 		end
-	end	
-
-	def audit options
-		# HC = 7
+#		self.add_to_invoice(options)
 	end
 
 	def get_asset_status_description
@@ -267,36 +130,29 @@ class Asset
 			return 'Full'	
 		when 2
 			return 'Market'	
-		when 3
-			return 'Damaged'	
-		when 4
-			return 'Lost'	
-		else
-			return 'Unknown'	
+#		when 3
+#			return 'Damaged'	
+#		when 4
+#			return 'Lost'	
+#		else
+#			return 'Unknown'	
 		end
 	end
-	def get_asset_concern_description
-
-	end
-
-	def get_handle_code_description
-		case self.handle_code.to_i
-		when 1
-			return 'Delivery'	
-		when 2
-			return 'Pickup'
-		when 3
-			return 'Add'
-		when 4
-			return 'Fill'
-		when 5
-			return 'Move'
-		when 6
-			return 'RFNet'
-		when 7
-			return 'Audit'
+	
+	def set_asset_status
+		unless self.location.nil?
+		  case self.location.location_type 
+		  when 1
+		    self.asset_status = 1
+		  when 2
+		    self.asset_status = 0
+		  when 3
+		    self.asset_status = 2
+		  end 
+		else 
+		  self.destroy
 		end
-	end	
+	end
 
 	def calc_days_at_location
 		# in days
@@ -307,7 +163,7 @@ class Asset
 		end
 	end
 
-	before_save :sync_descriptions	
+	before_save :sync_descriptions
 	def sync_descriptions
 		self.sku = Sku.find_or_create_by(entity: self.product.entity, primary_asset_type: self.asset_type, product: self.product)
 		self.invoice_number = self.invoice.invoice_number rescue nil
@@ -315,18 +171,28 @@ class Asset
 		self.location_network = self.location.network		
 		self.location_entity = self.location.entity
 
+		self.set_asset_status
+		self.asset_status_description = self.get_asset_status_description
+
 #		self.fill_network = self.fill_location.network		
 		self.product_entity = self.product.entity rescue nil
 
 		# Check Descriptions
 		self.network_description = self.network.description
 		self.entity_description = self.entity.description	
+
+		if self.asset_status.to_i == 0
+			self.product = nil
+			self.batch_number = nil
+			self.invoice_number = nil
+			self.invoice = nil
+		end
 		self.product_description = self.asset_status.to_i == 0 ? 'Empty' : self.product.description
-		
 		self.product_entity_description = self.asset_status.to_i == 0 ? 'Empty' : self.product_entity.description
+
 		self.asset_type_description = self.asset_type.description	
-		self.asset_status_description = self.get_asset_status_description		
-		self.handle_code_description = self.get_handle_code_description
+
+#		self.handle_code_description = self.get_handle_code_description
 		self.location_description = self.location.description	
 		self.location_network_description = self.location_network.description			
 
@@ -338,9 +204,7 @@ class Asset
 			self.location_entity_arrival_time = self.asset_activity_fact.location_entity_arrival_time
 		else
 			self.location_entity_arrival_time = self.last_action_time
-		end
-		
-		
+		end		
 	end	
 
 	after_save :after_save

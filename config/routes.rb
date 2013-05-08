@@ -1,6 +1,7 @@
 Cobalt::Application.routes.draw do 	
   	match 'access_denied' => 'access_denied#index', :via => [:get, :post]  	
 	match 'popup_record_not_found' => 'access_denied#popup_record_not_found', :via => [:get, :post]  	  	
+	match 'bad_browser' => 'access_denied#bad_browser', :via => [:get, :post]  	  		
 
 
 	namespace :accounting do 		
@@ -14,6 +15,7 @@ Cobalt::Application.routes.draw do
 		end
 	end
 
+
 	namespace :maintenance do 				
 		resources :rfid_antennas
 		resources :rfid_readers	  
@@ -21,7 +23,7 @@ Cobalt::Application.routes.draw do
 		match 'rfid_readers/reader_delete' => 'rfid_readers#reader_delete', :via => [:get, :post]
 		match 'rfid_readers/reader_new' => 'rfid_readers#reader_new', :via => [:get, :post]
 		match 'rfid_readers/reader_select' => 'rfid_readers#reader_select', :via => [:get, :post]
-	
+
 		match 'rfid_readers/antennas' => 'rfid_readers#antennas', :via => [:get, :post]
 	  	match 'rfid_readers/antenna_select' => 'rfid_readers#antenna_select', :via => [:get, :post]
 		match 'rfid_readers/antenna_save' => 'rfid_readers#antenna_save', :via => [:get, :post]
@@ -77,9 +79,12 @@ Cobalt::Application.routes.draw do
 		match 'keg_tracker' => 'keg_tracker#index', :via => [:get, :post]  	
   	end
 
+
+
 	namespace :reports do 
 		namespace :assets do 
 			resources :overview
+			resources :time_at_location
 		end
 #		match 'viewer' => 'viewer#index', :via => [:get, :post]  	
 		

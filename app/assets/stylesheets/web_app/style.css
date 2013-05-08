@@ -14,6 +14,9 @@ a:link, a:visited {
 	color:#333;
 }
 a:hover, a:hover { color: #444; font-weight: 900;}
+a {outline : none;}
+a img {outline : none;}
+img {border : 0;}
 
 #header {
 	height:30px;	
@@ -290,57 +293,9 @@ MENU STYLING
 .left {
 	float:left;
 }
-
-
-
 .categoryControlContainer {		
-	margin:0px auto 15px auto;
-	font-size: 12px;
-	width:85%;
-	height: 20px;
-	vertical-align:top;
-	clear:both;
-
-}
-
-.categoryControlContainer div {		
-	width:100%;
-	text-align: middle;
-	margin:0px auto 0px auto;
-	
-}
-.goog-inline-block.goog-menu-button {
-	background:none;
-}
-
-
-.categoryControlContainer .goog-inline-block.goog-menu-button-outer-box {		
-	width:100%;
-
-}
-.categoryControlFilter label{
-	font-weight: bolder;
-	color:#2d2d2d;
-}
-
-.categoryControlFilter div{
-
-	padding:5px 0;
-	border-radius:10px;
-	border:none;
-}
-.categoryControlFilter .goog-inline-block .goog-menu-button-dropdown {
-	display:none;
-}
-
-.categoryControlFilter .goog-inline-block .goog-menu-button-outer-box, .categoryControlFilter .goog-inline-block .goog-menu-button-inner-box, .categoryControlFilter .goog-inline-block .goog-menu-button {
-	background: #d14836;
-	color:#FFF;	
-	border: none;
-	margin:0;
-	padding: 0;
-	height:25px;
-
+	font-size: 12px;	
+	float:left;
 }
 
 /* Filtered Items ul */
@@ -354,13 +309,12 @@ MENU STYLING
 	background: #baebff;
 	padding:0 5px 0px 5px;
 	border-radius: 10px;
-	float:right;
+	float:left;
 }
 
 .categoryControlFilter li div.goog-inline-block.goog-link-button {
 	width:5%;
 	float:left;	
-
 }
 
 .categoryControlFilter li div.goog-control.goog-inline-block {
@@ -373,33 +327,33 @@ MENU STYLING
 	padding:0 1% 0 1%; 
 	width:98%;
 }
-#chart4 {
+#table_chart {
 	height:300px;
 	width:100%;
 }
-#chart4 .headerRow {
+#table_chart .headerRow {
 	background: #FFF;
 }
-#chart4 .tableRow {
+#table_chart .tableRow {
 
 }
-#chart4 .oddTableRow {
+#table_chart .oddTableRow {
 
 }
-#chart4 .selectedTableRow {
+#table_chart .selectedTableRow {
 	background: #1faeff;
 	color:#FFF;
 
 
 }
-#chart4 .selectedTableRow .tableCell {
+#table_chart .selectedTableRow .tableCell {
 	border-bottom:1px solid #1faeff;
 	color:#FFF;
 }
-#chart4 .hoverTableRow {
+#table_chart .hoverTableRow {
 
 }
-#chart4 .headerCell {
+#table_chart .headerCell {
 	font-size: 14px;
 	font-weight: bolder;
 	color: #333;
@@ -408,13 +362,13 @@ MENU STYLING
 	padding:0 3px 0 3px;
 	
 }
-#chart4 .tableCell {
+#table_chart .tableCell {
 	color:#333;
 	padding:5px 3px 5px 3px;
 	border-bottom: 1px solid #EEE;
 
 }
-#chart4 .rowNumberCell {
+#table_chart .rowNumberCell {
 
 }
 

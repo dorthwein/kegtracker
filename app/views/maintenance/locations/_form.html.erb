@@ -12,11 +12,10 @@
 		<tr>
 			<td>	<b> Description </b>	</td>
 			<td>	
-				<%= text_field(:location, :description, :class => 'required') %>				
+				<%= text_field(:location, :description, :class => 'required') %>
 			<td>
 				<b>	Account # </b>
 			</td>
-
 			<td>
 				<%= text_field(:location, :externalID) %>				
 			</td>
@@ -35,7 +34,21 @@
 				<%= select(:location, :location_type, @location_types.map{|x| [x[:description], x[:_id]]}, :class => 'required') %>		
           	</td>	
 		</tr>
-	
+		<tr> 
+			<td> 
+				<b> Scope </b>
+			</td>
+			<td>	
+				<%= select(:location, :scope, [['Private', 0], ['Public', 1]], :class => 'required') %>
+			</td>
+		
+			<td>	</td>
+			<td>	</td>
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> Address </h3> </th>			
+		</tr>
+
 		<tr>
 			<td>
 				<b> Address Name </b>

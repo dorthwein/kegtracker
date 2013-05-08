@@ -3,16 +3,14 @@ class Network
   include Mongoid::Timestamps  
   include ExtendMongoid
 
-
   field :record_status, type: Integer, default: 1
 
   auto_increment :netid, index: true #, type: Integer        # Unique
 
   field :description, type: String, :default => nil	
   field :tagCounter, type: Integer, :default => 1 # Maybe useless - See Barcode Maker
-  
-
-  # 1 = Production, 2 = Distribution, 3 = Market
+    
+  # 1 = Brewery, 2 = Retail, 3 = Retail
   field :network_type, type: Integer, :default => 2
 
   # Depreicated
@@ -20,27 +18,24 @@ class Network
   field :distribution, type: Integer, :default => 0
   field :production, type: Integer, :default => 0
 
- # field :smart_mode, type: Integer, :default => 0   # When assets move in/out things occur to them  
+ # field :smart_mode, type: Integer, :default => 0   # When assets move in/out things occur to them
   field :auto_mode, type: Integer, :default => 1   
 
   belongs_to :smart_mode_product, :class_name => 'Product'
-  belongs_to :smart_mode_in_location, :class_name => 'Location'
-  belongs_to :smart_mode_out_location, :class_name => 'Location'
+  belongs_to :smart_mode_in_location, :class_name => 'Location'     
+  belongs_to :smart_mode_out_location, :class_name => 'Location'    
 
-
-  field :smart_mode_product_description, type: String
-  field :smart_mode_in_location_description, type: String
-  field :smart_mode_out_location_description, type: String
+  field :smart_mode_product_description, type: String         
+  field :smart_mode_in_location_description, type: String     
+  field :smart_mode_out_location_description, type: String    
 
   field :entity_description, type: String
   field :network_type_description, type: String
 
 # has_one :entity
   has_many :barcode_makers
-  belongs_to :entity, index: true  
-  
+  belongs_to :entity, index: true   
   has_many :locations
-
 
   def partner_locations
     self.locations.where(:location_type => 5)
@@ -49,7 +44,7 @@ class Network
       network_types = [ 
                         {:_id => 1, :description => 'Brewery'},
                         {:_id => 2, :description => 'Distributor'},
-                        {:_id => 3, :description => 'Market'}
+                        {:_id => 3, :description => 'Retail'}
                       ]
     return network_types
   end
@@ -61,7 +56,7 @@ class Network
     when 2
       return 'Distributor'
     when 3
-      return 'Market'
+      return 'Retail'
     end
   end
 

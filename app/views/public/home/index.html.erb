@@ -4,13 +4,10 @@
 	}
 
 
-	h3 {
-		margin:10px 0 5px 50px; 	
-	}
+	h3 { margin:10px 0 5px 50px; }
 
 
-	#upper_table table {
-		width:100%;
+	#upper_table table { width:100%;
 	}
 
 
@@ -27,8 +24,9 @@
 
 
 	#lower_table td {
-		width:24%;
-		padding:0 2%;
+		width:30%;
+		padding:0 20px;
+		
 		vertical-align: top;
 		text-align: center;
 	}
@@ -41,6 +39,7 @@
 
 
 	p{
+
 		line-height: 200%;
 		text-align: justify; 
 	}
@@ -91,13 +90,12 @@
 				<li> Free 1 time registration - <%= link_to('sign up now', :public_join_index) %> 	</li>
 		</div>
 
-		<div style="text-align:left; margin:20px 0 0 0; padding:5px; float:right;">		
+		<div style=" width:25%; text-align:left; margin:20px 0 0 0; padding:5px; float:right;">		
 			<div>
 				<h3 style="padding:0; margin: 5px 0">
 					Find a lost keg's owner
 				</h3>
-				<input type="text" placeholder="Coming Soon" id="find_keg_input" style="width:100%" />
-				<br />
+				<input type="text" placeholder="Coming Soon" id="find_keg_input" style="width:100%; border:1px solid #CCC" disabled="true" />				
 				<button class="jqxButton" style="float:right; margin:5px 0px;"> Search </button>
 			</div>
 
@@ -134,6 +132,7 @@
 -->
 		<div class="seperator" style="height:10px">	</div>
 		<div style="display:inline-block; clear:both; width:100%;">
+	
 		<table id="lower_table">
 			<tr>
 				<td> 
@@ -172,44 +171,10 @@
 			</tr>
 		</table>
 	</div>
-
-	<table style="width:100%; display:none;">
-		<tbody>
-			<tr>
-				<td style="width:50%; text-align:left">	
-					
-				</td>
-				<td rowspan="2" style="padding:0 10px"> 
-
-						
-				</td>
-				<td style="width:50%; text-align:right">	
-					
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align:middle; vertical-align:top">	
-				</td>
-				<td style="text-align:middle; vertical-align:top">		
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-		
-	<div style="text-align:center; display:none;">
-		<h1>
-			Keg Tracking by Industry Folk for Industry Folk
-		</h1>
-
-		<p style="padding:0px">
-			
-		</p>
-	</div>
 </div>
 <script>
 $(document).ready(function(){ 
-  	$('#find_keg_input').jqxInput({width: '100%', theme:'metro', height:25, disabled:true })
+//  	$('#find_keg_input').jqxInput({width: '100%', theme:'metro', height:25, disabled:true })
     jqxIntialize()
     $('.jqxButton').jqxButton({disabled:true})
 })

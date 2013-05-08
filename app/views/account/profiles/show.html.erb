@@ -292,16 +292,16 @@
         $("#keg_tracker_button").jqxButton({ theme: theme, width:150, height:25 })
         $("#keg_tracker_button").on('click', function(){            
             $.ajax({
-                url: location.href + '/keg_tracker_activation',
+                url: parseUrl(location) + '/keg_tracker_activation',
                 type: 'POST',
                 dataType: 'JSON', 
                 data: {activation: $(this).val()}           
             }).done(function(data) {
                 if(data['keg_tracker'] == 1){
-                    $('#keg_tracker_button').html('Deactivate KegTracker')
+                    $('#keg_tracker_button').html('Deactivate Keg Tracker')
                     $('#keg_tracker_button').val(0)
                 } else {
-                    $('#keg_tracker_button').html('Activate KegTracker')
+                    $('#keg_tracker_button').html('Activate Keg Tracker')
                     $('#keg_tracker_button').val(1)
                 }
             });
