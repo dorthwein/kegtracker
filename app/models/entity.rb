@@ -222,7 +222,7 @@ class Entity
 		if self.keg_tracker == 1
 			return Location.any_of(
 				{ entity_id: self._id	},
-				{ :network_id.in => self.distribution_partnerships_shared_networks.map{|x| x._id}, location_type: 5 }		
+				{ :network_id.in => self.distribution_partnerships_shared_networks.map{|x| x._id}, scope: 0, record_status: 1 }		
 			)
 		else
 			return self.locations

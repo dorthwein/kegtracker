@@ -4,10 +4,12 @@ var system = {};
 $(window).resize(function() {  	
 	setViews();
 });
+
 function toThemeProperty(className) {
     return className + " " + className + "-" + settings.theme;
 }
- function default_groupsrenderer(text, group, expanded, data) {	
+
+function default_groupsrenderer(text, group, expanded, data) {	
 	return '<div class="' + toThemeProperty('jqx-grid-groups-row') + '" style="position: absolute; width:100%;">	<span>' + group + '</span> </div>';
 }
 
@@ -18,19 +20,12 @@ function jqxGridColumnListBoxWidth(){
 
 function setViews(){	
 	var displayWidth =  $(window).width() - $('.full.sidebar').outerWidth();
-	var jqxGridHeight = $(window).height() - $('.toolbar').outerHeight() - $('#footer').outerHeight();
-
-	
-	
+	var jqxGridHeight = $(window).height() - $('.toolbar').outerHeight() - $('#footer').outerHeight();	
 	$('.jqxGridColumnListBox').jqxListBox({width: '100%' });
 	$('.jqxGrid.full.display').jqxGrid({width:'100%', height: jqxGridHeight});
-
 	$('.full.display').width(displayWidth);
-
 	$('.full.display').height(	$(window).height() - $('#footer').outerHeight()); // $('.toolbar').outerHeight() <-- Add this to include toolbar
-
 	$('.full.sidebar').height($(window).height() - 20);
-
 	$('.jqxValidator').jqxValidator('updatePosition');
 }
 
@@ -50,6 +45,8 @@ settings.jqxGridProperties = {
 	showfiltercolumnbackground: false,
 	selectionmode: 'multiplerowsextended',
 }
+
+
 
 system.simple_grid_height = '800px';
 system.simple_grid_width = '958px';

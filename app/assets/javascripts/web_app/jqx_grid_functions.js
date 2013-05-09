@@ -108,24 +108,25 @@ function jqxIntialize(){
 	});
 
 //	$(".delete").jqxButton({ theme: theme });            
-	$(".delete").click(function () {	
-		var rowindexes = $('.jqxGrid').jqxGrid('getselectedrowindexes');
-		var ids = []
-		$.each(rowindexes, function(key, value){
-			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', value);
-			ids.push(rowdata['_id'])
-		})
-
-		$.ajax({
-			type: "DELETE",
-			dataType : "JSON",
-			url: parseUrl(location) + '/delete_multiple',
-			data: { 
-				ids: ids,
-			},
-		}).done(function( data ) {			
-			window.dataAdapter.dataBind();
-		});		        	
+	$(".delete").click(function () {
+		if(confirm('Are you sure you want to delete these records?')){
+			var rowindexes = $('.jqxGrid').jqxGrid('getselectedrowindexes');
+			var ids = []
+			$.each(rowindexes, function(key, value){
+				var rowdata = $('.jqxGrid').jqxGrid('getrowdata', value);
+				ids.push(rowdata['_id'])
+			})
+			$.ajax({
+				type: "DELETE",
+				dataType : "JSON",
+				url: parseUrl(location) + '/delete_multiple',
+				data: { 
+					ids: ids,
+				},
+			}).done(function( data ) {			
+				window.dataAdapter.dataBind();
+			});		        
+		}
 	});
 
 	// Button Processing/Action	

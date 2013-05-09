@@ -16,13 +16,6 @@ class Location
 
   field :asset_count, type: Integer
 
-#  field :on_premise, type: Integer    
-#  field :off_premise, type: Integer
-#  field :empty, type: Integer
-#  field :inventory, type: Integer  
-#  field :production, type: Integer  
-#  field :partner_entity, type: Integer
-
   field :location_type, type: Integer, :default => 6
   field :location_type_description, type: String
 

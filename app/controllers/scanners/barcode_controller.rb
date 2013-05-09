@@ -5,23 +5,9 @@ class Scanners::BarcodeController < ApplicationController
   def index	
 #  	["T1",2,1,"we0ws","RF"]
     @locations = []
-    user_networks = current_user.entity.networks
-    partner_networks = []
-
-    if current_user.entity.keg_tracker == 1
-      partner_networks = current_user.entity.distribution_partnerships_shared_networks        
-    end
-    all_networks = user_networks + partner_networks      
-    user_networks.each do |x|
-      #@locations.push(x.locations.map{|y| [y.description + ' - ' + x.description, y._id] })
-      @locations = @locations + x.locations.map{|y| [y.description + ' (' + x.description + ')', y._id] }
-    end
-    partner_networks.each do |x|
-      @locations = @locations + x.locations.map{|y| [y.description + ' (' + x.description + ')', y._id] }
-    end
+    @locations = current_user.entity.visible_locations.map{|y| [y.description + ' (' + y.network_description + ')', y._id] }
     @asset_types = AssetType.all.map{|x| [x.description, x._id] }
     @products = current_user.entity.production_products.map{|x| [x.description, x._id]}
-
     respond_to do |format|
       format.html 
     end
@@ -29,16 +15,11 @@ class Scanners::BarcodeController < ApplicationController
   
 # Scan Processing  
   def scan  
-	scans_array = Array.new
-	scans_array.push(params[:scan])
-
-#  scan = Asset.process_scans({:scans => scans_array})
-  scan_snapshot = Scanner.process_scans({:scans => scans_array})
-
-#  scan_snapshot = []  
- # scan_snapshot.push(scan)  	
+    scans_array = Array.new
+    scans_array.push(params[:scan])
+    scan_snapshot = Scanner.process_scans({:scans => scans_array})
     respond_to do |format|
-		    format.json { render json: scan_snapshot} #scan_drone.processed_scans }
+		    format.json { render json: scan_snapshot}
     end
   end
 
@@ -50,7 +31,6 @@ class Scanners::BarcodeController < ApplicationController
   def find_invoice
     respond_to do |format|
         format.json {  
-
           if !params[:invoice].nil?            
             invoice = Invoice.find_or_create_by(:entity => current_user.entity, :invoice_number => params[:invoice][:invoice_number].to_s)        
             invoice_details = JqxConverter.jqxGrid(invoice.invoice_line_items);
@@ -62,15 +42,4 @@ class Scanners::BarcodeController < ApplicationController
         }
     end
   end
-
-# Scan Table 
-=begin
-  def scanTable
-  	data = Hash.new
-  	data.merge!(:scans => Scan.new)
-	   respond_to do |format|
-		    format.json { render json: data }
-	   end  	
-  end
-=end
 end
