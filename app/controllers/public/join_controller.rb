@@ -12,6 +12,11 @@ class Public::JoinController < ApplicationController
 			format.json { 				
 				user = User.where(:email => params[:user][:email]).first
 				if user.nil?
+					params[:user]
+					params[:user][:operation] = 1
+					params[:user][:account] = 1
+					params[:user][:financial] = 1
+					
 					user = User.create!(params[:user])
 					params[:entity][:mode] = 1
 					entity = Entity.create!(params[:entity])
