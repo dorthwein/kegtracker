@@ -129,6 +129,27 @@ function jqxIntialize(){
 		}
 	});
 
+	$(".restore").click(function () {
+		if(confirm('Are you sure you want to restore these records?')){
+			var rowindexes = $('.jqxGrid').jqxGrid('getselectedrowindexes');
+			var ids = []
+			$.each(rowindexes, function(key, value){
+				var rowdata = $('.jqxGrid').jqxGrid('getrowdata', value);
+				ids.push(rowdata['_id'])
+			})
+			$.ajax({
+				type: "POST",
+				dataType : "JSON",
+				url: parseUrl(location) + '/restore_multiple',
+				data: { 
+					ids: ids,
+				},
+			}).done(function( data ) {			
+				window.dataAdapter.dataBind();
+			});		        
+		}
+	});
+
 	// Button Processing/Action	
 	// NEW BUTTON 
 //	$(".excelExport").jqxButton({ theme: theme});

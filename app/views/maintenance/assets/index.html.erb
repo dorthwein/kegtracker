@@ -1,121 +1,119 @@
-    <div class="full display">
-        <div class="toolbar">
-            <h3 class="left">   Asset Maintenance    </h3>
-            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
-            <div id="gridOptions">
-                <div id="gridOptionsButtons">
+<div class="full display">
+    <div class="toolbar">
+        <h3 class="left">   Asset Maintenance    </h3>
+        <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+        <div id="gridOptions">
+            <div id="gridOptionsButtons">
 <!--
-                    <button class='new'> New </button>
-                    <button class='delete'> Delete </button>
+                <button class='new'> New </button>
+                <button class='delete'> Delete </button>
 -->
 
-                    <button class='excelExport'> Excel </button>       
-                    <button class='jqxFilterToggle'> Filter Off </button>
-                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
-                </div>
-                <div id="gridOptionsExtended">
-                    <div class="jqxGridColumnListBox">  </div>                
-                </div>
+                <button class='excelExport'> Excel </button>       
+                <button class='jqxFilterToggle'> Filter Off </button>
+                <button class='jqxGridColumnListBoxToggle' > Columns </button>
             </div>
-        </div>        
-        <div class="jqxGrid full display">  </div>
-    </div>
+            <div id="gridOptionsExtended">
+                <div class="jqxGridColumnListBox">  </div>                
+            </div>
+        </div>
+    </div>        
+    <div class="jqxGrid full display">  </div>
+</div>
 <script>
-$(document).ready(function(){
-
-/*      
-	Datafields Mapping
-      a: entity_description,
-      b: product_entity_description,
-      c: tag_value,
-      d: asset_type_description,
-      e: asset_status_description,
-      f: product_description,
-      g: location_description,
-      h: location_entity_description,,
-      i: _id,
-      j: fill_time
-      k: last_action_time.to_i,
-      l: asset_cycle_fact_id,  
-      m: location_entity_possession_time,       
-      n: batch_number
-
-      
-*/	
-	var source =
-	{
-		datatype: "json",
-		datafields: [
-			{ name: 'a', type: 'string' },
-			{ name: 'b', type: 'string' },
-			{ name: 'c', type: 'string' },
-			{ name: 'd', type: 'string' },
-			{ name: 'e', type: 'string' },
-			{ name: 'f', type: 'string' },
-			{ name: 'g', type: 'string' },
-			{ name: 'h', type: 'string' },
-			{ name: 'i'},
-			{ name: 'j', type: 'date' },
-			{ name: 'k', type: 'date' },
-//			{ name: 'l'},
-			{ name: 'm', type: 'number'},
-			{ name: 'n', type: 'string'},			
-			{ name: 'o', type: 'string'},			
-		],
-		url: parseUrl(location),
-		updaterow: function (rowid, rowdata, commit) {
-			// synchronize with the server - send update command
-			// call commit with parameter true if the synchronization with the server is successful 
-			// and with parameter false if the synchronization failder.		
-			commit(true);
-		}		
-	};
-/*
-	On grid load - get total # rows
-*/
+	$(document).ready(function(){
+	/*      
+		Datafields Mapping
+	      a: entity_description,
+	      b: product_entity_description,
+	      c: tag_value,
+	      d: asset_type_description,
+	      e: asset_status_description,
+	      f: product_description,
+	      g: location_description,
+	      h: location_entity_description,,
+	      i: _id,
+	      j: fill_time
+	      k: last_action_time.to_i,
+	      l: asset_cycle_fact_id,  
+	      m: location_entity_possession_time,       
+	      n: batch_number      
+	*/	
 
 
-	window.dataAdapter = new $.jqx.dataAdapter(source, {
-		beforeSend: function(jqXHR, settings){					 	
-		},
-		loadComplete: function (data) { 			 
-		},
-		loadError: function (xhr, status, error) { }      
+		var source =
+		{
+			datatype: "json",
+			datafields: [
+				{ name: 'a', type: 'string' },
+				{ name: 'b', type: 'string' },
+				{ name: 'c', type: 'string' },
+				{ name: 'd', type: 'string' },
+				{ name: 'e', type: 'string' },
+				{ name: 'f', type: 'string' },
+				{ name: 'g', type: 'string' },
+				{ name: 'h', type: 'string' },
+				{ name: 'i'},
+				{ name: 'j', type: 'date' },
+				{ name: 'k', type: 'date' },
+	//			{ name: 'l'},
+				{ name: 'm', type: 'number'},
+				{ name: 'n', type: 'string'},			
+				{ name: 'o', type: 'string'},			
+			],
+			url: parseUrl(location),
+			updaterow: function (rowid, rowdata, commit) {
+				// synchronize with the server - send update command
+				// call commit with parameter true if the synchronization with the server is successful 
+				// and with parameter false if the synchronization failder.		
+				commit(true);
+			}		
+		};
+	/*
+		On grid load - get total # rows
+	*/
+
+
+		window.dataAdapter = new $.jqx.dataAdapter(source, {
+			beforeSend: function(jqXHR, settings){					 	
+			},
+			loadComplete: function (data) { 			 
+			},
+			loadError: function (xhr, status, error) { }      
+		});
+		//	window.dataAdapter = dataAdapter
+
+	 
+		// Initialize Grid
+		var gridSettings = settings.jqxGridProperties
+		gridSettings['source'] = dataAdapter;
+		gridSettings['columns'] = [
+			{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },
+
+
+			{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },
+			{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
+			{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },
+			{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },
+			{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd'  },
+			{ text: 'Tag Value', datafield: 'c' },//, hidden:true },
+
+			{ text: 'Location', datafield: 'g', filtertype: 'checkedlist' },
+			{ text: 'Cur. Holder', datafield: 'h', filtertype: 'checkedlist' },
+			{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
+			{ text: 'Batch Number', datafield: 'n'},
+			{ text: 'Invoice Number', datafield: 'o', hidden:true},
+			{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
+			{ text: 'View', datafield: 'i', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+				return 'View'
+			}, buttonclick: function (row) {
+				var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+				var url = parseUrl(location) + "/" + rowdata['i'] + "/edit"						
+				openPopupWindow(url)
+			}},		
+		]
+		$(".jqxGrid").jqxGrid( gridSettings );
+		jqxIntialize()
+
 	});
-	//	window.dataAdapter = dataAdapter
-
- 
-	// Initialize Grid
-	var gridSettings = settings.jqxGridProperties
-	gridSettings['source'] = dataAdapter;
-	gridSettings['columns'] = [
-		{ text: 'Owner', datafield: 'a', filtertype: 'checkedlist', hidden: true },
-
-
-		{ text: 'Product', datafield: 'f', filtertype: 'checkedlist' },
-		{ text: 'Size', datafield: 'd', filtertype: 'checkedlist' },
-		{ text: 'Brewery', datafield: 'b', filtertype: 'checkedlist', hidden:true },
-		{ text: 'Status', datafield: 'e', filtertype: 'checkedlist' },
-		{ text: 'Fill Date', datafield: 'j', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'Tag Value', datafield: 'c' },//, hidden:true },
-
-		{ text: 'Location', datafield: 'g', filtertype: 'checkedlist' },
-		{ text: 'Cur. Holder', datafield: 'h', filtertype: 'checkedlist' },
-		{ text: 'Days at Location', datafield: 'm', filtertype: 'number', width:150 },
-		{ text: 'Batch Number', datafield: 'n'},
-		{ text: 'Invoice Number', datafield: 'o', hidden:true},
-		{ text: 'Last Seen', datafield: 'k', filtertype: 'date', cellsformat: 'd'  },
-		{ text: 'View', datafield: 'i', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
-			return 'View'
-		}, buttonclick: function (row) {
-			var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
-			var url = parseUrl(location) + "/" + rowdata['i'] + "/edit"						
-			openPopupWindow(url)
-		}},		
-	]
-	$(".jqxGrid").jqxGrid( gridSettings );
-	jqxIntialize()
-
-});
-
 </script>

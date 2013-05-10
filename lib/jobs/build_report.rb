@@ -15,7 +15,6 @@ class BuildReport
 #		field :fact_time, type: Time
 
 # Prep Stage
-
 #		locations = asset_activity_facts.group_by{|x| x.location}.map{|x| x[0]._id}
 #		asset_entities = asset_activity_facts.group_by{|x| x.entity}.map{|x| x[0]._id}
 #		products = asset_activity_facts.group_by{|x| x.product}.map{|x| x[0]._id}
@@ -28,11 +27,11 @@ class BuildReport
 #:asset_type_id => d,
 #:asset_status => f,
 
-		asset_activity_facts = AssetActivityFact.any_of(
+		assets = Asset.where(record_status: 1).map{|x| x._id}
+		asset_activity_facts = AssetActivityFact.where(:asset_id.in => assets).any_of(
 			{ :next_asset_activity_fact_time.gt => @date },
-			{ :next_asset_activity_fact_time => nil, :fact_time.lt => @date }
+			{ :next_asset_activity_fact_time => nil, :fact_time.lt => @date, }
 		).desc(:fact_time)
-
 
 		# ****************		
 		# Asset Counts
@@ -53,8 +52,9 @@ class BuildReport
 						
 						by_asset_status = d[1].group_by{|x| x.asset_status}
 						by_asset_status.each do |f|
+
 						##############################
-							# Qty Assets								
+							# Qty Assets
 							qty = f[1].count
 							total_qty = total_qty + qty
 							
@@ -84,7 +84,8 @@ class BuildReport
 								)
 							end
 						##############################
-						end					
+
+						end							   
 					end
 				end
 			end

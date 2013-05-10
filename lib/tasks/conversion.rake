@@ -22,3 +22,32 @@ task :convert_asset_status_description => :environment do
 		print i.to_s + ' / ' + facts.count.to_s + " \n "
 	end
 end
+
+task :purge_dead_asset_activity_facts => :environment do
+	Asset.where(entity_id: nil).each do |x|
+		x.delete
+	end
+	Asset.where(asset_activity_fact: nil).each do |x|
+		x.delete
+	end
+	assets = Asset.all.map{|x| x._id}
+	activity_facts = AssetActivityFact.not_in(:asset_id => assets)
+	activity_facts.each do |x|
+		x.delete
+	end
+
+end
+
+task :view_dead_asset_activity_facts => :environment do
+	print Asset.where(entity_id: nil).count.to_s + "<--- Asset with No Owner # \n"
+	
+	
+	print Asset.where(asset_activity_fact: nil).count.to_s + "<--- Asset with no Activity Fact"
+		
+	assets = Asset.all.map{|x| x._id}
+
+	print AssetActivityFact.not_in(:asset_id => assets).count.to_s + "<---- Activity Fact with no asset"
+	
+
+end
+

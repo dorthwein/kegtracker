@@ -4,7 +4,6 @@ class Reports::Assets::OverviewController < ApplicationController
 		  	format.html # index.html.erb
 		    format.json {  
 		        cols = [
-
 					{:id => :location_description, label: 'Location', type:'string'},
 					{:id => :asset_entity_description, label: 'Owner', type:'string'},
 					{:id => :entity_city, label: 'City',  type: 'string' },					
@@ -15,13 +14,12 @@ class Reports::Assets::OverviewController < ApplicationController
 					{:id => :location_entity_description, label: 'Asset Holder', type:'string'},		
 					{:id => :product_entity_description, label: 'Brewer', type:'string'},		          
 			        {:id => :quantity, label: '# Assets',  type: 'number' },
-
 			        {:id => :case_equivalent, label: 'CEs',  type: 'number' },
 			        {:id => :fact_time, label: 'Date', type: 'date'},
 		        ]
 
 		        @date = Time.new
-		        source = current_user.entity.visible_daily_facts.between(fact_time: @date.beginning_of_day..@date.end_of_day)
+		        source = current_user.entity.visible_daily_facts.between(fact_time: @date.beginning_of_day..@date.end_of_day).where(:quantity.gt => 0)
 		        render json: GoogleChartApi.table(source, cols)
 		    }		
 		end

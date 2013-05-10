@@ -14,7 +14,16 @@ Cobalt::Application.routes.draw do
 			end
 		end
 	end
+	namespace :trash do 
+		resources :distribution_partnerships, :assets, :overdue_assets, :locations, :prices, :tax_rules, :locations, :skus, :users, :networks, :production_partnerships, :leasing_partnerships, :products, :barcodes, :production, :barcode_makers do
+		  collection do
+		    delete 'delete_multiple'
+		    post 'restore_multiple' # Not needed
+			get 'trash'		    # Not Implemented
+		  end
+		end
 
+	end
 
 	namespace :maintenance do 				
 		resources :rfid_antennas

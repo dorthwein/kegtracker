@@ -7,7 +7,7 @@ class Asset
 
 # Instead of changing key values - simply change key mapping before send 
 # harder on the system easier on bandwidth
-#
+
 # Fixed Details
 	field :netid, type: Integer
 	field :tag_value, type: String
@@ -45,21 +45,13 @@ class Asset
 	
 	# Asset Status: 0 = Empty, 1 = Full, 2 = In Market
 	field :asset_status, type: Integer, :default => 0
-	field :asset_status_description, type: String
+	field :asset_status_description, type: String			
 
-# 	Asset Status Key: 
-#		1 = To long @ Distributor	I/O
-# 		2 = @ Non-partner entity 	I/O
-#		3 = Lost 					I/O
+	field :asset_overdue,		type: Integer, :default => 0
+	field :asset_damaged,		type: Integer, :default => 0
+	field :asset_lost,			type: Integer, :default => 0
 
-# 		4 = Damaged 				I/O
-#  		5 = Missed Scans			I/O
-
-	field :asset_overdue, type: Integer, :default => 0
-	field :asset_inactive, type: Integer, :default => 0
-
-
-	field :location_description, type: String			
+	field :location_description, type: String				
 	belongs_to :location, index: true
 	field :days_at_location, type: Integer
 
@@ -134,8 +126,8 @@ class Asset
 #			return 'Damaged'	
 #		when 4
 #			return 'Lost'	
-#		else
-#			return 'Unknown'	
+		else
+			self.delete
 		end
 	end
 	
@@ -150,7 +142,7 @@ class Asset
 		    self.asset_status = 2
 		  end 
 		else 
-		  self.destroy
+		  self.delete
 		end
 	end
 
@@ -216,4 +208,11 @@ class Asset
 	index({ product_id: 1 }, { name: "product_index" })
 	index({ entity_id: 1 }, { name: "entity_index" })	
 end
+
+
+
+
+
+
+
 

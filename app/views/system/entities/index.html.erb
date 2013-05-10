@@ -1,28 +1,43 @@
-    <div class="toolbar">   
 
-    </div>
-
-<div class="full sidebar">
-
-   	<input type="button" value="New" class='new' data-role="none"/>
-	<input type="button" value="Delete" class='delete' data-role="none" />
-    <input type="button" value="Excel" class='excelExport' data-role="none"/> 
-
-    <button class='jqxFilterToggle' data-role="none"> Filter Off </button>
-
-	<%= form_tag("entities/distributor_upload", :method => "post", :multipart => true) do %>	
-	<!-- Distributor Upload -->
-		<input type="submit" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
-
-		 <%= file_field_tag 'csv_file' %>
-
-		
-	<% end %>
-    <div class="jqxGridColumnListBox">  </div>
-</div>
 <div class="full display">
-    <div class="jqxGrid full display"></div>
+    <div class="toolbar">
+        <h3 class="left">   System Entities    </h3>
+        <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+        <div id="gridOptions">
+            <div id="gridOptionsButtons">
+                <button class='excelExport'> Excel </button>       
+                <button class='jqxFilterToggle'> Filter Off </button>
+                <button class='jqxGridColumnListBoxToggle' > Columns </button>                
+				<%= form_tag("entities/distributor_upload", :method => "post", :multipart => true) do %>	
+
+            </div>
+            <div id="gridOptionsExtended">
+                <div class="jqxGridColumnListBox">  </div>                
+            </div>
+        </div>
+    </div>        
+    <div class="jqxGrid full display">  </div>
 </div>
+
+<!--   OLD 	-->
+<!--
+	<div class="toolbar">
+	</div>
+
+	<div class="full sidebar">
+	   	<input type="button" value="New" class='new' data-role="none"/>
+		<input type="button" value="Delete" class='delete' data-role="none" />
+	    <input type="button" value="Excel" class='excelExport' data-role="none"/> 
+		
+			<input type="submit" style="float:left; margin:5px;" value="Upload Distributors" id='distributor_upload_button' data-role="none" />
+			 <%= file_field_tag 'csv_file' %>
+		<% end %>
+	    <div class="jqxGridColumnListBox">  </div>
+	</div>
+	<div class="full display">
+	    <div class="jqxGrid full display"></div>
+	</div>
+-->
 
 <script>
 $(document).ready(function(){        

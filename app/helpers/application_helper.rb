@@ -41,7 +41,7 @@ html
 		return html.html_safe
 	end
 
-	
+
 	def web_app_menu
 html = <<html
 		<div id="header" style="display:none;">
@@ -286,6 +286,29 @@ html
 
 
 	def side_navigation_bar
+		if current_user.system_admin == 1		
+system = <<html		
+	        <div class="section expandable">
+	            <h4 class="title"> System </h4> 
+	            <div class="content">   
+					<ul>   
+						<li> #{link_to 'Entities', :system_entities } </li>
+						<li> #{link_to 'Registrations', :system_registrations } </li>
+						<li> Networks (Disabled) </li>
+						<li> #{link_to 'Entity Types', :system_entity_types } </li>
+						<li> #{link_to 'Product Types', :system_product_types } </li>
+						<li> #{link_to 'Asset Types', :system_asset_types } </li>
+						<li> #{link_to 'Unit Sizes', :system_measurement_units } </li>
+						<li> #{link_to 'Asset State', :system_asset_states } </li>
+						<li> #{link_to 'Handle Codes', :system_handle_codes } </li>
+					</ul>
+				</div>
+			</div>
+
+html
+	else
+		system = ''
+	end
 html = <<html
 	    <div class="full sidebar">
 	        <div class="section first"> 
@@ -318,11 +341,17 @@ html = <<html
 									<li> #{link_to 'Overview', :reports_assets_overview_index } </li>
 									<li>  #{ link_to 'All', :maintenance_assets } </li>
 									<li>  #{ link_to 'Overdue', :maintenance_overdue_assets } </li>
-								
 								<!--	<li> #{link_to 'Time at Location', :reports_assets_time_at_location_index } </li>		                           -->
 								<!-- # Assets Overdue -->									
 	                        </ul>
 	                    </li>
+						<li class="expandable">
+	                        <div class="title"> Distributor </div>
+	                        <ul class="content">
+	                        	<!-- Inventory Count over time # summation of assets then can add dimensions -->
+									<li>  #{ link_to 'Audit', :maintenance_overdue_assets } </li>					
+	                        </ul>
+	                    </li>	                    
 	                </ul>
 	            </div>
 	        </div>
@@ -332,8 +361,8 @@ html = <<html
 	            <div class="content">   
 	                <ul>   
 	                    <li>    #{ link_to 'Users', :maintenance_users }    </li>
-	                    <li>    #{ link_to 'Invoices', :accounting_invoices }  </li>
-	                    <!--
+	                    <li>    #{ link_to 'Invoice Manifests', :accounting_invoices }  </li>
+					<!--
 	                    <li class="expandable">    
 
 	                        <div class="title"> Assets </div>
@@ -346,8 +375,7 @@ html = <<html
 
 	                        </ul>
 	                    </li>
-	                    -->
-
+					-->
 	                    <li>    #{ link_to 'Distributors', :maintenance_distribution_partnerships }  </li>
 	                    <li>    #{ link_to 'Contract Brewers', :maintenance_production_partnerships }  </li>
                         <li>  	#{ link_to 'Products', :maintenance_products } </li>
@@ -358,8 +386,21 @@ html = <<html
 	                </ul>
 	            </div>            
 	        </div>
-	        
-
+	        <div class="section expandable">
+	            <h4 class="title"> Trash </h4> 
+	            <div class="content">   
+	                <ul>   
+	                    <li>    #{ link_to 'Users', :trash_users }    </li>	                    
+	                    <li>    #{ link_to 'Distributors', :trash_distribution_partnerships }  </li>
+	                    <li>    #{ link_to 'Contract Brewers', :trash_production_partnerships }  </li>
+                        <li>  	#{ link_to 'Products', :trash_products } </li>
+                        <li>  	#{ link_to 'SKUs', :trash_skus } </li>
+	                    <li>    #{ link_to 'Locations', :trash_locations }  </li>  
+	                    <li>    #{ link_to 'Networks', :trash_networks }  </li>                     
+	                </ul>
+	            </div>            
+	        </div>	        
+	        #{system}
 	        <div class="section"> 				
 				<h4 class="title"> #{link_to 'Sign out', destroy_user_session_path, :method => :delete } </h4>
 	        </div>
