@@ -16,13 +16,12 @@ class Public::JoinController < ApplicationController
 					params[:user][:operation] = 1
 					params[:user][:account] = 1
 					params[:user][:financial] = 1
-					
+
 					user = User.create!(params[:user])
 					params[:entity][:mode] = 1
 					entity = Entity.create!(params[:entity])
 					user.entity_id = entity._id
 					entity.keg_tracker = 1
-					
 				end
 
 				if user.save! && entity.save!
@@ -35,3 +34,5 @@ class Public::JoinController < ApplicationController
 		end	
 	end
 end
+
+

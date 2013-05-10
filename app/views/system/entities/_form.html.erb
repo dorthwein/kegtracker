@@ -10,10 +10,12 @@
 
 		<tr>
 			<td>	<b> Description </b>	</td>
-			<td>	<input type="text" id="description" class="jqxInput required" data-role="none" />	</td>
+			<td>	
+				<%= text_field(:entity, :description, :class => 'required') %>			
+			</td>
 			<td> <b> Entity Mode </b> </td>
 			<td>		
-				<input type="text" id="mode" class="jqxInput" data-role="none" />
+				<%= text_field(:entity, :mode, :class => 'required') %>			
 			</td>
 		</tr>
 <!--
@@ -52,14 +54,14 @@
 
 			</td>
 			<td>
-				<input type="text" id="name" class="jqxInput" data-role="none" />
+				<%= text_field(:entity, :name, :class => 'required') %>								
 			</td>
 			<td>	
 				<b> Street </b>
 
 			</td>
 			<td>
-				<input type="text" id="street" class="jqxInput" data-role="none" />
+				<%= text_field(:entity, :street, :class => 'required') %>							
 			</td>
 
 		</tr>
@@ -68,13 +70,15 @@
 				<b> City </b>
 			</td>
 			<td>
-				<input type="text" id="city" class="jqxInput" data-role="none" />	
+				<%= text_field(:entity, :city, :class => 'required') %>			
+				
 			</td>
 			<td>
 				<b> State </b>
 			</td>
 			<td>
-				<input type="text" class="jqxInput" id="state" data-role="none" />
+				<%= text_field(:entity, :state, :class => 'required') %>			
+				
 			</td>
 		</tr>
 		<tr>
@@ -84,7 +88,7 @@
 				<b> Zip </b>
 			</td>
 			<td>
-				<input type="text" id="zip" class="jqxInput" data-role="none" />
+				<%= text_field(:entity, :zip, :class => 'required') %>			
 			</td>
 		</tr>
 		<tr>
@@ -92,7 +96,7 @@
 				<b> KegTracker Rate </b>				
 			</td>
 			<td>
-				<input type="text" id="kt_rate" class="jqxInput" data-role="none" />
+				<%= text_field(:entity, :kt_rate, :class => 'required') %>						
 			</td>
 		</tr>
 	</tbody>

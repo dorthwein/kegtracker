@@ -11,7 +11,13 @@ class Maintenance::AssetsController < ApplicationController
 		respond_to do |format|		
 		  	format.html # index.html.erb
 		  	format.json {
-  				render json: JqxConverter.jqxGrid(current_user.entity.visible_assets.map{ |x| {
+          if current_user.system_admin == 1
+            assets = Asset.all          
+          else
+            assets = current_user.entity.visible_assets
+          end
+          
+  				render json: JqxConverter.jqxGrid(assets.map{ |x| {
             a: x.entity_description,
             b: x.product_entity_description,
             c: x.tag_value,
