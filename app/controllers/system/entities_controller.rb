@@ -22,7 +22,7 @@ class System::EntitiesController < ApplicationController
   def show
     respond_to do |format|
       @record = Entity.find(params[:id])        
-      if can? :update, record 
+      if can? :update, @record 
         format.html {redirect_to :action => 'edit'}
       else           
         format.html {render :layout => 'popup'}      
@@ -78,7 +78,7 @@ class System::EntitiesController < ApplicationController
   # PUT /entities/1.json
   def update  
     @record = Entity.find(params[:id])        
-    record.update_attributes(params[:entity])
+    @record.update_attributes(params[:entity])
     
     respond_to do |format|
       format.html
