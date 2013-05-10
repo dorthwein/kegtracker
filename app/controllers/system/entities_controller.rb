@@ -81,7 +81,7 @@ class System::EntitiesController < ApplicationController
     @record.update_attributes(params[:entity])
     
     respond_to do |format|
-      format.html
+      
       format.json {
         render json: {}
       }

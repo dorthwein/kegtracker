@@ -35,7 +35,6 @@ class Entity
 	# Billing Information
 	# 0 = inactive, 1 = active
 	field :keg_tracker, type: Integer
-
 	field :kt_rate, type: BigDecimal, default: 0
 	field :payment_token, type: String
 	field :card_ending, type: String
@@ -48,7 +47,6 @@ class Entity
 
 	# 0 = No Billing, 1 = Active Billing, 2 = Billing Error
 	field :billing_status, type: Integer, default: 0
-
 
 	field :admin_user_email, type: String
 	field :description, type: String    
