@@ -1,6 +1,7 @@
+<%= form_for([:system, @record], :remote => true) do %>
 <div>
-	<button class=" left popup jqxButton save" data-role="none"> Save	</button>	
-	<button class=" left popup jqxButton cancel" data-role="none"> Cancel	</button>					
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
 </div>
 <table class="popup jqxValidator">
 	<tbody>
@@ -101,3 +102,4 @@
 		</tr>
 	</tbody>
 </table>	
+<% end %>

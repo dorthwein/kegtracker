@@ -21,16 +21,13 @@ class System::EntitiesController < ApplicationController
   # GET /entities/1.json
   def show
     respond_to do |format|
-      record = Entity.find(params[:id])        
+      @record = Entity.find(params[:id])        
       if can? :update, record 
         format.html {redirect_to :action => 'edit'}
       else           
         format.html {render :layout => 'popup'}      
         format.json {              
           response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
-          render json: response 
         }
       end
     end
@@ -43,9 +40,7 @@ class System::EntitiesController < ApplicationController
       format.html {render :layout => 'popup'}      
       format.json {                  
         record = Entity.new
-        response = {}
-        response[:jqxDropDownLists] = {}        
-        response[:record] = record              
+        response = {}      
         render json: response 
       }    
     end
@@ -54,12 +49,11 @@ class System::EntitiesController < ApplicationController
   # GET /entities/1/edit
   def edit
     respond_to do |format|
+        @record = Entity.find(params[:id])        
         format.html {render :layout => 'popup'}
-        format.json { 
-          record = Entity.find(params[:id])
+        format.json {           
           response = {}
-          response[:jqxDropDownLists] = {}        
-          response[:record] = record              
+
           render json: response 
         }        
     end    
@@ -68,9 +62,9 @@ class System::EntitiesController < ApplicationController
   # POST /entities
   # POST /entities.json
   def create
-    record = Entity.new(params[:record])
+    @record = Entity.find(params[:entity])            
     respond_to do |format|
-      if record.save
+      if @record.save
         format.html 
         format.json {  render json: {} }
       else
@@ -83,8 +77,8 @@ class System::EntitiesController < ApplicationController
   # PUT /entities/1
   # PUT /entities/1.json
   def update  
-    record = Entity.find(params[:id])
-    record.update_attributes(params[:record])
+    @record = Entity.find(params[:id])        
+    record.update_attributes(params[:entity])
     
     respond_to do |format|
       format.html
