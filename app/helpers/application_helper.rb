@@ -345,13 +345,16 @@ html = <<html
 								<!-- # Assets Overdue -->									
 	                        </ul>
 	                    </li>
+	                    
+	                    <!-- 
 						<li class="expandable">
 	                        <div class="title"> Distributor </div>
 	                        <ul class="content">
-	                        	<!-- Inventory Count over time # summation of assets then can add dimensions -->
+	                        	
 									<li>  #{ link_to 'Audit', :maintenance_overdue_assets } </li>					
 	                        </ul>
-	                    </li>	                    
+	                    </li>
+	                    -->	                    
 	                </ul>
 	            </div>
 	        </div>

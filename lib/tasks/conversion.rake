@@ -40,14 +40,10 @@ end
 
 task :view_dead_asset_activity_facts => :environment do
 	print Asset.where(entity_id: nil).count.to_s + "<--- Asset with No Owner # \n"
-	
-	
+
 	print Asset.where(asset_activity_fact: nil).count.to_s + "<--- Asset with no Activity Fact"
-		
 	assets = Asset.all.map{|x| x._id}
-
-	print AssetActivityFact.not_in(:asset_id => assets).count.to_s + "<---- Activity Fact with no asset"
 	
-
+	print AssetActivityFact.not_in(:asset_id => assets).count.to_s + "<---- Activity Fact with no asset"
 end
 
