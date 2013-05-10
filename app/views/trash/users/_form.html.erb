@@ -1,0 +1,109 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
+<div>
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
+</div>
+
+<table class="popup">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> User </h3> </th>			
+		</tr>
+
+
+		<tr>
+			<td>				
+				<b> E-Mail </b>
+			</td>
+			<td>
+				<%= text_field(:user, :email, :class => 'required') %>				
+			</td>
+			<td>	
+				<b> Entity </b>
+			</td>
+			<td>				
+				<%= select(:user, :entity_id, @entities.map{|x| [x.description, x._id]}, :include_blank => true, :class => 'required') %>		
+			</td>
+
+		</tr>
+		<tr>
+			<td>
+				<b> Change Password </b>
+			</td>
+			<td>
+				<%= password_field(:user, :password) %>
+			
+			</td>	
+			<td>
+	            <b> Confirm Password </b>
+	        </td>
+	        <td>
+	        	<%= password_field(:user, :password_confirmation) %>				
+			</td>
+		</tr>
+		<tr>
+			<th colspan="4"> <h3> User Details </h3> </th>			
+		</tr>
+		<tr>
+			<td>
+				<b > First Name </b>
+			</td>
+		 	<td>
+		 		<%= text_field(:user, :first_name) %>				
+		 	</td>
+		
+			<td>
+				<b> Last Name </b>
+			</td>
+			<td>
+				<%= text_field(:user, :last_name) %>				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b> Office Phone </b>
+			</td>
+			<td>
+				<%= text_field(:user, :office_phone) %>				
+			</td>
+			<td>
+				<b> Cell Phone </b>
+			</td>
+			<td>
+				<%= text_field(:user, :cell_phone) %>				
+			</td>
+		</tr>		
+		<tr>
+			<th colspan="4"> <h3> Scanning </h3> </th>			
+		</tr>
+		<tr>
+			<td>
+                <b> Operations </b>
+            </td>
+            <td>
+            	
+				<%= select(:user, :operation, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				         
+			</td>
+            <td>	            
+                <b> Financials </b>
+            </td>
+            <td>
+            	<%= select(:user, :financial, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				
+            </td>
+        </tr>
+        <tr>
+        	<td>
+                <b> Account Admin </b>
+            </td>
+            <td>
+              	<%= select(:user, :account, @user_permission_options.map{|x| [x[:description], x[:_id]]}) %>				
+            </td>
+            <td>
+
+            </td>
+            <td>
+            </td>
+        </tr>
+	</tbody>
+</table>	
+<% end %>

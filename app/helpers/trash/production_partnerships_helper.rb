@@ -1,0 +1,2 @@
+module Trash::ProductionPartnershipsHelper
+end

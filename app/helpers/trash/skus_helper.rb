@@ -1,0 +1,2 @@
+module Trash::SkusHelper
+end

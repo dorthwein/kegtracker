@@ -1,0 +1,2 @@
+module Trash::NetworksHelper
+end

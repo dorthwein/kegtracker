@@ -1,0 +1,86 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
+<div>
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
+</div>
+
+<table class="popup">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Details </h3> </th>			
+		</tr>
+
+		<tr>
+			<td>	<b> Product </b>	</td>
+			<td>
+				<%= select(:sku, :product_id, @products.map{|x| [x.description, x._id]}, :class => 'required') %>						
+			</td>
+			<td>	<b> Entity </b> </td>
+			<td>	
+				<%= select(:sku, :entity_id, @entities.map{|x| [x.description, x._id]}, :class => 'required') %>					
+			</td>
+
+		</tr>
+		<tr>
+			<td>	<b> Item #	</b>		</td>
+			<td>	
+				<%= text_field(:sku, :item_number, :class => '') %>			
+			</td>	
+			<td>	<b> Primary Asset Type  </b> </td>
+			<td>	
+
+				<%= select(:sku, :primary_asset_type_id, @primary_asset_types.map{|x| [x.description, x._id]}, :include_blank => true, :class => 'required') %>						
+			</td>
+		</tr>
+
+		<tr>
+			<td> 					</td>
+			<td> <b> 	Container Type	</b> </td>
+			<td> <b>	Qty/parent		</b> </td>
+			<td> <b> 	UPC / Barcode	</b> </td>
+		</tr>
+		<tr>
+			<td>	<b> Unit </b>	 	</td>
+			<td>	
+				<%= select(:sku, :tier_1_asset_type_id, @tier_1_asset_types.map{|x| [x.description, x._id]}, :class => '') %>				
+				</div>	
+			</td>
+			<td>	
+				<%= number_field(:sku, :tier_1_qty_per_tier_2, :class => '') %>		
+			</td>
+			<td>
+				<%= text_field(:sku, :tier_1_upc, :class => '') %>		
+				
+			</td>		
+		</tr>
+
+		<tr>
+			<td>	<b> Consumer Pack </b>	 	</td>
+			<td>	
+				<%= select(:sku, :tier_2_asset_type_id, @tier_2_asset_types.map{|x| [x.description, x._id]}, :class => '') %>								
+			</td>
+			<td>	
+				<%= number_field(:sku, :tier_2_qty_per_tier_3, :class => '') %>		
+			</td>		
+			<td>	
+				<%= text_field(:sku, :tier_2_upc, :class => '') %>		
+			</td>		
+		</tr>
+
+		<tr>
+			<td>	<b> Case </b>	 	</td>
+			<td>	
+				<%= select(:sku, :tier_3_asset_type_id, @tier_3_asset_types.map{|x| [x.description, x._id]}, :class => '') %>						
+			</td>
+			<td>	
+				<%= number_field(:sku, :tier_3_qty_per_tier_4, :class => '') %>		
+	
+			</td>		
+			<td>	
+				<%= text_field(:sku, :tier_3_upc, :class => '') %>		
+			</td>		
+		</tr>
+
+	</tbody>
+</table>	
+<% end %>

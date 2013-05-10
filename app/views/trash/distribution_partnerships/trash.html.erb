@@ -1,0 +1,93 @@
+    <div class="toolbar">   
+        <h3 class="left">
+            Distributor Partnership Maintenance
+        </h3>
+        <h3 class="right">
+            <%= current_user.entity.description %>
+        </h3>
+    </div>
+
+    <div class="full sidebar">
+
+	   	<input type="button" value="New" class='new' data-role="none"/>
+		<input type="button" value="Delete" class='delete' data-role="none"/>
+        <input type="button" value="Excel" class='excelExport' data-role="none"/>       
+        <input type="button" value="Filter" class=' jqxFilterToggle' data-role="none" />
+        <div class="jqxGridColumnListBox">  </div>
+    </div>
+    <div class="full display">
+        <div class="jqxGrid full display"></div>
+    </div>
+
+<script>
+$(document).ready(function(){    
+    var source =
+    {
+        datatype: "json",
+        datafields: [
+            { name: 'entity_description' },
+            { name: 'partner_description' }, 
+            { name: 'overdue_time' }, 
+            { name: 'entity_name' },
+            { name: 'entity_address_1' },
+            { name: 'entity_address_2' },
+            { name: 'entity_city' },
+            { name: 'entity_state' },               
+            { name: 'entity_zip' },                 
+            { name: 'entity_id'},
+            { name: 'partner_name' },
+            { name: 'partner_address_1' },
+            { name: 'partner_address_2' },
+            { name: 'partner_city' },
+            { name: 'partner_state' },              
+            { name: 'partner_zip' },                
+            { name: 'partner_id'},
+            { name: '_id'},         
+        ], 
+        url: parseUrl(location),
+        updaterow: function (rowid, rowdata, commit) {
+            // synchronize with the server - send update command
+            // call commit with parameter true if the synchronization with the server is successful 
+            // and with parameter false if the synchronization failder.     
+            commit(true);
+        }
+        
+    };
+
+    window.dataAdapter = new $.jqx.dataAdapter(source, {
+        beforeSend: function(jqXHR, settings){
+                
+        },
+        loadComplete: function (data) { 
+                        
+        },
+        loadError: function (xhr, status, error) { }      
+    });
+//  window.dataAdapter = dataAdapter
+
+    // Initialize Grid
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [             
+        { text: 'Brewery', datafield: 'entity_description', filtertype: 'checkedlist' }, 
+        { text: 'Distributor', datafield: 'partner_description', filtertype: 'checkedlist' }, 
+        { text: 'Max # Days', datafield: 'overdue_time' },
+        { text: 'Dist. Address', datafield: 'partner_address_1' },
+        { text: 'Dist. Address', datafield: 'partner_address_2' },
+        { text: 'Dist. City', datafield: 'partner_city' },
+        { text: 'Dist. State', datafield: 'partner_state', filtertype: 'checkedlist' },
+        { text: 'Dist. Zip', datafield: 'partner_zip' },
+        { text: 'View', datafield: '_id', exportable: false, columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            var url = parseUrl(location) + "/" + rowdata['_id']                      
+            openPopupWindow(url)
+        }}, 
+    ]
+
+    $(".jqxGrid").jqxGrid( gridSettings );  
+    jqxIntialize()
+                        
+});
+</script>

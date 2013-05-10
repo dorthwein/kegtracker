@@ -1,0 +1,99 @@
+    <div class="full display">
+        <div class="toolbar">
+            <h3 class="left">   SKU Maintenance    </h3>
+            <h3 class="right">  <%= current_user.entity.description %>  </h3>    
+            <div id="gridOptions">
+                <div id="gridOptionsButtons">
+                    <button class='restore'> Restore </button>
+                    <button class='excelExport'> Excel </button>       
+                    <button class='jqxFilterToggle'> Filter Off </button>
+                    <button class='jqxGridColumnListBoxToggle' > Columns </button>
+                </div>
+                <div id="gridOptionsExtended">
+                    <div class="jqxGridColumnListBox">  </div>                
+                </div>
+            </div>
+        </div>        
+        <div class="jqxGrid full display">  </div>
+    </div>
+<script>
+$(document).ready(function(){
+    var source =
+    {
+        datatype: "json",
+        datafields: [
+            { name: 'item_number'},
+            { name: 'product_description'},
+            { name: 'primary_asset_type_description'},          
+
+            { name: 'tier_1_upc'},          
+            { name: 'tier_1_asset_type_description'},
+            { name: 'tier_1_qty_per_tier_2'},
+
+            { name: 'tier_2_upc'},
+            { name: 'tier_2_asset_type_description'},
+            { name: 'tier_2_qty_per_tier_3'},
+
+            { name: 'tier_3_upc'},
+            { name: 'tier_3_asset_type_description'},
+            { name: 'tier_3_qty_per_tier_4'},
+
+            { name: 'tier_4_upc'},
+            { name: 'tier_4_asset_type_description'},
+            
+            { name: '_id' }
+        ], 
+        url: parseUrl(location),
+        updaterow: function (rowid, rowdata, commit) {
+            // synchronize with the server - send update command
+            // call commit with parameter true if the synchronization with the server is successful 
+            // and with parameter false if the synchronization failder.     
+            commit(true);
+        }
+// test     
+    };
+
+    window.dataAdapter = new $.jqx.dataAdapter(source, {
+        beforeSend: function(jqXHR, settings){
+                
+        },
+        loadComplete: function (data) { 
+             
+        },
+        loadError: function (xhr, status, error) { }      
+    });
+//  window.dataAdapter = dataAdapter
+
+    // Initialize Grid
+    var gridSettings = settings.jqxGridProperties
+    gridSettings['source'] = dataAdapter;
+    gridSettings['columns'] = [
+        { text:'Item #', datafield: 'item_number'},
+        { text:'Product', datafield: 'product_description', filtertype: 'checkedlist' },
+        { text:'Primary Asset Type', datafield: 'primary_asset_type_description', filtertype: 'checkedlist' },
+
+        { text:'Unit', width: '8%', datafield: 'tier_1_asset_type_description', filtertype: 'checkedlist' },
+        { text:'UPC (Unit)',    width: '8%', datafield: 'tier_1_upc'},
+        { text:'Unit/pack', width: '5%', datafield: 'tier_1_qty_per_tier_2'},
+
+        { text:'Consumer Pack', width: '8%', datafield: 'tier_2_asset_type_description', filtertype: 'checkedlist' },
+        { text:'UPC (Consumer Pk.)',    width: '8%', datafield: 'tier_2_upc'},
+        { text:'Pack/Case', width: '5%', datafield: 'tier_2_qty_per_tier_3'},
+        
+        { text:'Case', width: '8%', datafield: 'tier_3_asset_type_description', filtertype: 'checkedlist' },
+        { text:'UPC (Case)',    width: '8%', datafield: 'tier_3_upc'},
+        { text:'Case/Pallet', width: '5%', datafield: 'tier_3_qty_per_tier_4'},     
+        { text: 'View', datafield: '_id', columntype: 'button', filterable:false, width:'75px', cellsrenderer: function (row) {
+            return 'View'
+        }, buttonclick: function (row) {
+            var rowdata = $('.jqxGrid').jqxGrid('getrowdata', row);
+            var url = parseUrl(location) + "/" + rowdata['_id']                      
+            openPopupWindow(url)
+        }}, 
+    ]
+    $(".jqxGrid").jqxGrid( gridSettings );  
+    jqxIntialize()
+                        
+});
+
+</script>

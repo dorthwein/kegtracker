@@ -1,0 +1,2 @@
+module Trash::UsersHelper
+end

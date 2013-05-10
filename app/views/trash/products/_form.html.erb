@@ -1,0 +1,34 @@
+<%= form_for([:maintenance, @record], :remote => true) do %>
+<div>
+	<%= submit_tag("Save", :class => "save left") %>
+	<%= button_tag "Cancel",:type => 'button',:class => "cancel left" %>
+</div>
+
+<table class="popup jqxValidator">
+	<tbody>
+		<tr>
+			<th colspan="4"> <h3> Details </h3> </th>			
+		</tr>
+
+		<tr>
+			<td>	<b> Description </b>	</td>
+			<td>					
+				<%= text_field(:product, :description, :class => 'required') %>		
+			</td>
+			<td>	<b> Product # </b>	 	</td>
+			<td>
+				<%= text_field(:product, :externalID, :class => '') %>
+			</td>		
+		</tr>				
+		<tr>
+			<td>	<b> Brewer </b>	</td>
+			<td>	
+				<%= select(:product, :entity_id, @entities.map{|x| [x.description, x._id]}, :include_blank => true, :class => 'required') %>
+			</td>
+			<td>	</td>
+			<td>	</td>
+		</tr>
+
+	</tbody>
+</table>	
+<% end %> 

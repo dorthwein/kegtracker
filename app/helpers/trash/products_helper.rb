@@ -1,0 +1,2 @@
+module Trash::ProductsHelper
+end

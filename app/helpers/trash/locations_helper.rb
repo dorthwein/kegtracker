@@ -1,0 +1,2 @@
+module Trash::LocationsHelper
+end
