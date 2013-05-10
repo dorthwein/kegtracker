@@ -4,7 +4,14 @@ class ApplicationController < ActionController::Base
 	before_filter :layout_by_resource
 
 	rescue_from CanCan::AccessDenied do |exception|
-		redirect_to :access_denied, :alert => exception.message
+#		respond_to do |format|
+			render :file => '/access_denied/index.html.erb'
+#        	format.html {
+        		
+ #       	}
+ #   	end
+		
+		#redirect_to :access_denied, :alert => exception.message
 	end	
 
 	def layout_by_resource

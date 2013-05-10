@@ -1,11 +1,11 @@
 class AccessDeniedController < ApplicationController  
   layout "web_app"
 
-  def index
-    respond_to do |format|
-      format.html {render :layout => 'popup'}
-    end
-  end		
+  def index                                     
+    respond_to do |format|                      
+      format.html {render :layout => 'web_app'} 
+    end                                         
+  end		                                         
 
   def popup_record_not_found
     respond_to do |format|
