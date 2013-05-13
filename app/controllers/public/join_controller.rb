@@ -13,9 +13,9 @@ class Public::JoinController < ApplicationController
 				user = User.where(:email => params[:user][:email]).first
 				if user.nil?
 					params[:user]
-					params[:user][:operation] = 1
-					params[:user][:account] = 1
-					params[:user][:financial] = 1
+					params[:user][:operation] = 3
+					params[:user][:account] = 3
+					params[:user][:financial] = 3
 
 					user = User.create!(params[:user])
 					params[:entity][:mode] = 1
