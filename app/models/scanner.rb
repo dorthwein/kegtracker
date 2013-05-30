@@ -74,7 +74,7 @@ class Scanner
 					:product_id => obj[:from_network].smart_mode_product._id,
 					:correction => obj[:correction],
 					:user_id => obj[:user_id],
-					:handle_code => obj[:handle_code]
+					:handle_code => obj[:handle_code],
 #					:handle_code => obj[:handle_code],
 				})
 			end
@@ -129,6 +129,7 @@ class Scanner
 
 
 	def self.normal_process obj
+		print obj.to_json
 		obj[:asset].move(obj)
 		obj[:asset].save!
 		return obj
@@ -179,19 +180,21 @@ class Scanner
 			obj[:tag][:network] = obj[:user].entity.networks.first
 		else
 			obj[:tag][:network] = Network.where(:netid => obj[:tag][:netid]).first		
-		end	
+		end
+
 		obj[:asset] = Asset.where(netid: obj[:tag][:network].netid, tag_value: obj[:tag][:value]).first
 
 		if obj[:asset].nil? 
 			obj[:asset] = Asset.new(
-				:location_id => obj[:location_id],				
+				:location_id => obj[:location_id],
 				:network_id => obj[:tag][:network]._id, 
 				:asset_status => 0, 
+				:asset_type_id => obj[:asset_type_id],
 				:tag_value => obj[:tag][:value],
 				:netid => obj[:tag][:network].netid,
 				:tag_key => obj[:tag][:key], 
 				:entity_id => obj[:tag][:network].entity._id
-			)		
+			)
 		end
 		obj[:asset].save!
 		return obj

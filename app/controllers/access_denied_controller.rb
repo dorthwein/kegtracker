@@ -1,3 +1,4 @@
+
 class AccessDeniedController < ApplicationController  
   layout "web_app"
 
@@ -18,3 +19,4 @@ class AccessDeniedController < ApplicationController
     end
   end
 end
+

@@ -71,12 +71,12 @@ class Network
     self.network_type_description = self.get_network_type_description
 
     if self.locations.count == 0
-      location = Location.create(:description => self.description, :network => self, :location_type => 6)
-      self.smart_mode_in_location = location
-      self.smart_mode_out_location = location
+#      location = Location.create(:description => self.description, :network => self, :location_type => 6)
+#      self.smart_mode_in_location = location
+#      self.smart_mode_out_location = location
 
-      self.smart_mode_in_location_description = self.smart_mode_in_location.description
-      self.smart_mode_out_location_description = self.smart_mode_out_location.description    
+#      self.smart_mode_in_location_description = self.smart_mode_in_location.description
+#      self.smart_mode_out_location_description = self.smart_mode_out_location.description    
     end
 	end	
 
@@ -86,7 +86,7 @@ class Network
       out_location = Location.create(:description => "Keg Room", :network => self, :location_type => 1)
       in_location = Location.create(:description => "Empty Keg Area", :network => self, :location_type => 2)
     elsif self.network_type == 2
-      location = Location.create(:description => self.entity.description + " General Area", :network => self, :location_type => 5)
+      location = Location.create(:description => self.entity.description + "General Area", :network => self, :location_type => 1)
     end  
     self.smart_mode_in_location = in_location
     self.smart_mode_out_location = out_location
